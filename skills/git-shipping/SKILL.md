@@ -2,6 +2,7 @@
 name: git-shipping
 description: Use when making code changes in a git repo, switching branches, or when asked to `push`, `commit`, `pr`, or manage branches. Use before starting implementation to confirm you're on the right branch.
 compatibility: Requires git, gh, git-wt, and cxg.
+license: MIT
 ---
 
 # Git Shipping

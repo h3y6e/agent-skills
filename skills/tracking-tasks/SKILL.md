@@ -3,6 +3,7 @@ name: tracking-tasks
 description: Use when starting any multi-step work, resuming an existing task, switching direction mid-task, or wrapping up. Use proactively when a request spans more than one response — open or create a task note before diving in.
 compatibility: Requires Obsidian with CLI enabled and vault "log".
 allowed-tools: Bash(obsidian:*) Bash(ghq get log) Bash(rg:*) Read Edit Write
+license: MIT
 ---
 
 # Tracking Tasks
