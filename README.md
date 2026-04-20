@@ -9,3 +9,4 @@ Personal [agent skills](https://agentskills.io/).
 ## Related
 
 - [h3y6e/spec-skills](https://github.com/h3y6e/spec-skills) — Spec-driven development skills.
+- [h3y6e/dotfiles](https://github.com/h3y6e/dotfiles/tree/main/dot_agents/exact_skills) — Agent skills managed via dotfiles with chezmoi.
