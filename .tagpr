@@ -1,0 +1,6 @@
+[tagpr]
+	releaseBranch = main
+	versionFile = skills/git-shipping/SKILL.md,skills/tracking-tasks/SKILL.md
+	vPrefix = true
+	changelog = false
+	calendarVersioning = YYYY.MM.MICRO
