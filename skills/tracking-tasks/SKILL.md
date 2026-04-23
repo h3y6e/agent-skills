@@ -4,6 +4,9 @@ description: Use when starting any multi-step work, resuming an existing task, s
 compatibility: Requires Obsidian with CLI enabled and vault "log".
 allowed-tools: Bash(obsidian:*) Bash(ghq get log) Bash(rg:*) Read Edit Write
 license: MIT
+metadata:
+  author: h3y6e
+  version: 2026.4.0
 ---
 
 # Tracking Tasks
