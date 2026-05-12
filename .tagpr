@@ -1,6 +1,6 @@
 [tagpr]
 	releaseBranch = main
-	versionFile = skills/git-shipping/SKILL.md,skills/tracking-tasks/SKILL.md
+	versionFile = skills/adapting-skills/SKILL.md,skills/authoring-skills/SKILL.md,skills/git-shipping/SKILL.md,skills/tracking-tasks/SKILL.md
 	vPrefix = true
 	changelog = false
 	calendarVersioning = YYYY.MM.MICRO
