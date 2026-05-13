@@ -20,7 +20,7 @@ metadata:
 Path: `task/YYYY-MM-DD-<slug>.md`. Frontmatter: `title`, `status` (`backlog`→`todo`→`in-progress`→`done`/`canceled`), `tags`. Sections: Goal, DoD (checklist), Research, Notes.
 
 - Infer slug, title, tags from context — don't ask.
-- On session start: search with `obsidian tasks todo vault=log` or `obsidian search:context`, then read the file directly.
+- On session start: search with `obsidian search:context` or direct `rg` under the log vault, then read the file directly.
 - Fill Goal and DoD before substantial work, then set status to `in-progress`.
 - The note is the source of truth. Sync after initial plan, each work batch, direction changes, and before final response.
 - Evidence before claims — don't mark done until verification is recorded.
