@@ -46,7 +46,8 @@ When creating a new worktree, consider whether to carry over uncommitted work:
 
 ## Pull Request
 
-- Body structure: `## Summary`, optional `## Background`, `## Changes`, optional `## Impact`.
+- Prefer a repository PR template when one applies (`pull_request_template.*` or `PULL_REQUEST_TEMPLATE/`; use `gh pr create --template <file>` when useful).
+- Fallback body structure only: `## Summary`, optional `## Background`, `## Changes`, optional `## Impact`.
 - Default to draft PR (`gh pr create --draft`). Only create a ready PR when the user explicitly requests it.
 
 ## Common Mistakes
