@@ -9,22 +9,19 @@ metadata:
 
 # Authoring Skills
 
-Skill authoring is TDD for process docs: scenario, failure, `SKILL.md`, verify, refactor. A skill is reusable technique, pattern, tool, or reference, not session history. Without observed/simulated failure, teaching is unproven.
+Skill authoring is TDD for process docs: scenario, failure, `SKILL.md`, verify, refactor. A skill is reusable technique, pattern, tool, or reference, not session history.
 
 ## Create Or Skip
 
-Create/edit from reusable guidance or paired failure/success lessons that are non-obvious, broad, judgment-based. Dedup first; skip one-offs/local conventions; automate enforceable rules.
+Create/edit only for reusable, non-obvious, broad, judgment-based lessons or paired failure/success evidence. Dedup first; skip one-offs, local conventions, generic hygiene, and obvious advice inferable from the trigger, repo instructions, or tool docs. Automate enforceable rules.
 
 ## Structure
 
-Use `skill-name/SKILL.md`; frontmatter needs matching `name`/`description`; keep under 1024 chars. Name chars: lowercase letters, numbers, hyphens only; no spaces, underscores, slashes, uppercase, punctuation. Name by action/core insight; gerunds (`-ing`) fit process skills. Use `scripts/` for reusable tools and `references/` for heavy reference.
+Use `skill-name/SKILL.md`; frontmatter needs matching `name`/`description`; keep under 1024 chars. Names use lowercase letters, numbers, and hyphens only. Name by action/core insight; gerunds fit process skills. Use `scripts/` for reusable tools and `references/` for heavy reference.
 
 ## Description
 
-Description: trigger, not workflow. Start with `Use when...`, name symptoms/situations, stay tech-agnostic unless needed, avoid first person, stay under 500 chars, include searchable keywords: symptoms, errors, tools, file types.
-
-Good: `description: Use when tests have race conditions or pass/fail inconsistently.`
-Bad: `description: Use for async tests by replacing sleeps with polling.`
+Description: trigger, not workflow. Start with `Use when...`; name symptoms/situations; stay tech-agnostic unless needed; avoid first person; stay under 500 chars; include searchable keywords.
 
 ## Strict Loop
 
@@ -32,18 +29,19 @@ Mapping: test case = pressure/application scenario; production code = `SKILL.md`
 
 Do not deploy or mark a behavior-changing skill valid without a failing scenario first.
 
-1. **RED**: write pressure scenarios; for discipline skills, combine time, sunk cost, authority, and exhaustion. Run or simulate without the skill and record exact rationalizations.
+1. **RED**: write pressure scenarios; for discipline skills, combine time, sunk cost, authority, and exhaustion. Record baseline rationalizations.
 2. **GREEN**: write the smallest `SKILL.md` that blocks those failures.
-3. **VERIFY**: test the same scenarios with the skill, preferably using a fresh subagent with task-local context.
-4. **REFACTOR**: plug new rationalizations, remove excess text, and re-test before moving to another skill.
+3. **VERIFY**: test the same scenarios, preferably with a fresh subagent.
+4. **REFACTOR**: plug rationalizations, remove excess text, and re-test.
 
-Validate by type: discipline skills need pressure compliance; techniques need application and variation scenarios; patterns need recognition and counter-examples; references need retrieval, application, and gap tests.
+Validate by type: discipline skills need pressure compliance; techniques need application/variation; patterns need recognition/counter-examples; references need retrieval, application, and gap tests.
 
-References: use `empirical-validation.md` for empirical review or substantial behavior changes; `retrospective-codification.md` for reusable lessons; `description-tuning.md` for trigger misses; `skill-structure.md` for placement decisions.
+References: use `empirical-validation.md` for empirical review or major behavior changes; `retrospective-codification.md` for reusable lessons; `description-tuning.md` for trigger misses; `skill-structure.md` for placement.
 
 ## Quality Rules
 
-- Keep frequently loaded skills very short; keep others under 500 words.
+- Keep frequently loaded skills very short; keep others under 500 words. This is an upper bound, not a target. A skill can be much shorter; never pad toward 500 words.
+- Write only non-obvious guidance: traps, judgment calls, failure modes, and exceptions. Delete generic checklists that do not change agent behavior.
 - Move heavy examples, APIs, syntax into references.
 - Add scripts only for deterministic repeated operations.
 - Prefer one excellent example; avoid multi-language dilution.
