@@ -4,7 +4,7 @@ description: Use when evaluating, adopting, absorbing, or adapting specified exi
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.5.3
+  version: 2026.5.4
 ---
 
 # Adapting Skills
