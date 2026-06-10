@@ -1,6 +1,5 @@
 ---
 source: skills/slicing-issues/SKILL.md
-source_sha256: e5a30d5a46d9582a93918d429895c1866e54894b6064dfda804707b5b178ea64
 name: slicing-issues
 description: 'spec、plan、PRD、feature idea、または conversation を、vertical slice、acceptance criteria、dependencies、verification を持つ、独立実装可能な GitHub/Linear issue や ticket に分割するときに使う。'
 ---

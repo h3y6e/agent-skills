@@ -1,6 +1,5 @@
 ---
 source: skills/designing-with-artifacts/SKILL.md
-source_sha256: 9084e4b4974b754f474ba8e5014e3a11618b95c1ab9e0beaaf5c1dd8c735ed3e
 name: designing-with-artifacts
 description: '実装前に、既存 code、issue、spec、ADR、README/CONTRIBUTING、または project instructions に照らして plan/design を stress-test、sanity-check、または選択するときに使う。'
 ---

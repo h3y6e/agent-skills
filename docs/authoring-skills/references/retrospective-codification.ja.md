@@ -1,6 +1,5 @@
 ---
 source: skills/authoring-skills/references/retrospective-codification.md
-source_sha256: 35089940a1a1e695eb423cdce9ae2dffa9cc2618b0e0d846ae9e8a4bc95832e7
 ---
 
 # Retrospective の codification

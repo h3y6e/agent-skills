@@ -16,8 +16,6 @@ gh skill install h3y6e/agent-skills
 
 Installable skills under `skills/` stay English-only. Japanese human-facing copies live under `docs/<skill>/SKILL.ja.md` and `docs/<skill>/references/*.ja.md`.
 
-Run `bash scripts/check-ja-docs.sh` to verify that Japanese docs still match their source files.
-
 ## Related
 
 - [h3y6e/spec-skills](https://github.com/h3y6e/spec-skills) — Spec-driven development skills.

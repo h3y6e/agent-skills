@@ -1,6 +1,5 @@
 ---
 source: skills/git-shipping/SKILL.md
-source_sha256: 49552c8314cfffaf73cd498e261a6c7a1e35c3a49aa927ef32064ba843a62f9b
 name: git-shipping
 description: 'git repo で code change を行う、branch を切り替える、または `push`、`commit`、`pr`、branch 管理を依頼されたときに使う。実装を始める前に、正しい branch 上にいることを確認する。'
 compatibility: 'git、gh、cxg、git-wt が必要。生の git worktree を使わない。'

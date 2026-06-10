@@ -1,6 +1,5 @@
 ---
 source: skills/framing-problems/SKILL.md
-source_sha256: 3dc090dca83f922bc657118ad70cba1a99f2abefc0403b3580b16902eaa0456b
 name: framing-problems
 description: 'request があいまいな pain、solution idea、product idea、または「何を作るべきか」から始まり、本当の問題、優先度、success criteria が不明確なときに使う。'
 ---

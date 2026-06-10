@@ -1,6 +1,5 @@
 ---
 source: skills/adapting-skills/references/adoption-rubric.md
-source_sha256: db590b39a8c19312b4becedbf271e9816c86415df82b5f47ef631c6a80d55ec3
 ---
 
 # 採用 rubric

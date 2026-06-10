@@ -1,6 +1,5 @@
 ---
 source: skills/adapting-skills/SKILL.md
-source_sha256: 63b667f087a9b0d8b14243da5809e3bec10dc8a3cd797d0bc524cc010c4a5fa6
 name: adapting-skills
 description: '指定された既存の agent skill を評価、採用、吸収、または適応し、skill の乱立を避けながらローカルワークフローに合う skill セットへ取り込むときに使う。'
 ---

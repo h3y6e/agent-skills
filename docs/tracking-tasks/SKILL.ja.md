@@ -1,6 +1,5 @@
 ---
 source: skills/tracking-tasks/SKILL.md
-source_sha256: 387fdf8b7b27d35bca9f7c9b3c659fc60cd811cb53de855dd7609f56921c0ba5
 name: tracking-tasks
 description: 'multi-step work の開始、既存 task の再開、task 途中の方向転換、wrap-up、または Obsidian で cross-session task context を記録するときに使う。'
 compatibility: 'CLI が有効な Obsidian と vault "log" が必要。'

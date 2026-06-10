@@ -1,6 +1,5 @@
 ---
 source: skills/authoring-skills/references/description-tuning.md
-source_sha256: 0c1840cd0ed880efa8f5b48d6ba224720e5de56c59617bf71b76524eddf2ea24
 ---
 
 # Description の調整

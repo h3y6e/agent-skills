@@ -1,6 +1,5 @@
 ---
 source: skills/dispatching-parallel-agents/SKILL.md
-source_sha256: 76c8e06d7724e4a3d89320bc86475d683e04dfd56c4c951cdf2ca08618524e2d
 name: dispatching-parallel-agents
 description: 'file、state、dependencies、verification を分離でき、2 つ以上の独立した task、failure、investigation、または research question を parallel subagent に分割しても安全なときに使う。'
 ---

@@ -1,6 +1,5 @@
 ---
 source: skills/reviewing-architecture/SKILL.md
-source_sha256: 7fbbe9998ff174309fd001d359004a5e01a1c02b46315591aa8547cecd8df49b
 name: reviewing-architecture
 description: 'refactoring candidate、shallow module、leaky interface、duplicated orchestration、test しにくい behavior、複数 file に広がる変更など、code structure の architecture friction を review するときに使う。'
 ---

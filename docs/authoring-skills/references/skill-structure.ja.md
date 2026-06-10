@@ -1,6 +1,5 @@
 ---
 source: skills/authoring-skills/references/skill-structure.md
-source_sha256: b6f83a086219a55a641e2ff8b2d2d27c9b1cac4677b6bf7017ae2d2eef6fa417
 ---
 
 # Skill の構造

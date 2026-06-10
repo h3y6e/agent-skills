@@ -1,6 +1,5 @@
 ---
 source: skills/authoring-skills/SKILL.md
-source_sha256: 44357fe70d493b729aa4dea73466cafd715ae0b675d427fc30c6b31548c89e6c
 name: authoring-skills
 description: '再利用可能な教訓を厳密な agent skill として作成、編集、検証、または体系化するときに使う。'
 ---

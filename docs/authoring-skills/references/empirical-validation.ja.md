@@ -1,6 +1,5 @@
 ---
 source: skills/authoring-skills/references/empirical-validation.md
-source_sha256: af13ef3dd963b30847a8ff5a3f55eed66837b525314511a6f8464de17453c957
 ---
 
 # 実証的 validation
