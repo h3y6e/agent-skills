@@ -1,53 +1,53 @@
-# Retrospective の codification
+# Retrospective Codification
 
-task が trial and error を通じて再利用可能な教訓を生んだとき、または user が教訓の codify を依頼したときに使う。すべての task 後に自動実行しない。
+Use this when a task produced a reusable lesson through trial and error, or the user asks to codify a lesson. Do not run it automatically after every task.
 
-## 中核ルール
+## Core Rule
 
-対になった教訓だけを codify する:
+Codify only paired lessons:
 
-- first failure: 最初に試したことと、その失敗の仕方
-- final solution: うまくいったこと
-- bridging insight: 最初に知っておくべきだったこと
+- first failure: what was tried first and how it failed
+- final solution: what worked
+- bridging insight: what should have been known first
 
-insight は session history ではなく、future-facing instruction として書く。
+Write the insight as a future-facing instruction, not as session history.
 
-## ループ
+## Loop
 
-1. **Extract**: first failure、final solution、bridging insight、命令形の future instruction を 1 つ記録する。
-2. **Dedup**: insight から 2-3 個の key を使い、既存 skill、project instructions、rules を検索する。完全に cover されている場合は proposal を作らない。部分的に cover されている場合は、新しい skill を追加せず append/update する。
+1. **Extract**: record first failure, final solution, bridging insight, and one imperative future instruction.
+2. **Dedup**: search existing skills, project instructions, and rules with 2-3 keys from the insight. If fully covered, make no proposal. If partially covered, append/update instead of adding a new skill.
 3. **Classify destination**:
-   - mechanically detectable -> prose ではなく lint/static rule
-   - short always-on instruction -> project または user agent instruction
-   - multi-step procedure、judgment、template -> 既存 skill に append、または skill を作成
-   - one-off または project-specific detail -> note、issue、PR、または no adoption
-4. **Prefer smallest durable form**: detectable case では prose より lint。new skill より append/absorb。new skill は standalone recurring value がある場合だけ。
-5. **Write only requested scope**: user の explicit request 外で persistent agent behavior を変える場合は、proposal を提示して待つ。
+   - mechanically detectable -> lint/static rule, not prose
+   - short always-on instruction -> project or user agent instruction
+   - multi-step procedure, judgment, or template -> append to an existing skill or create a skill
+   - one-off or project-specific detail -> note, issue, PR, or no adoption
+4. **Prefer smallest durable form**: lint over prose for detectable cases; append/absorb over new skill; new skill only for standalone recurring value.
+5. **Write only requested scope**: if changing persistent agent behavior outside the user's explicit request, present the proposal and wait.
 
-## 出力
+## Output
 
 ```markdown
-## 振り返り
-- 最初の failure:
-- 最終 solution:
-- insight:
+## Retrospective
+- First failure:
+- Final solution:
+- Insight:
 
-## 提案
-- 採用 candidate:
-- 検出した duplicate:
-- 採用しないもの:
+## Proposals
+- Adoption candidates:
+- Duplicate detected:
+- Not adopted:
 
-## 検証
-- 反映先の rationale:
-- dedup evidence:
-- 書き込み approval または explicit request:
+## Validation
+- Destination rationale:
+- Dedup evidence:
+- Write approval or explicit request:
 ```
 
-## 注意信号
+## Red Flags
 
-- failure 側のない final solution
-- "念のため" の skill
-- mechanically enforceable rule を prose だけで書く
-- dedup check を skip する
+- final solution without the failure side
+- "just in case" skill
+- mechanically enforceable rule written only in prose
+- skipped dedup check
 - silent persistent behavior change
-- 体裁を保つためだけの薄い insight
+- thin insight written to save face

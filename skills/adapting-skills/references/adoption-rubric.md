@@ -1,36 +1,36 @@
-# 採用 rubric
+# Adoption Rubric
 
-外部または reference skill を採用、適応、または却下する前に評価するときに使う。
+Use this when evaluating external or reference skills before adoption, adaptation, or rejection.
 
-## 採用条件
+## Gate
 
-繰り返し発生し、近いうちに必要になる task にだけ採用する。既存の local/adopted skill がすでに need を cover している場合は、それを使うか改善することを優先する。同じ candidate を後で再評価しないよう、却下理由を記録する。
+Adopt only for a recurring, near-term task. If an existing local/adopted skill already covers the need, prefer using or improving it. Record rejection reasons so the same candidate is not re-evaluated later.
 
-## 評価軸
+## Axes
 
-| 軸 | 質問 |
+| Axis | Question |
 | --- | --- |
-| Fit | description は実際の task と user intent に合っているか。 |
-| Non-redundancy | installed skill や repo-local skill がまだ cover していない価値を提供するか。 |
-| Compatibility | 利用できない tool、private convention、固定 path、lifecycle assumption を避けているか。 |
-| Quality | when-not-to-use、concrete workflow、output contract、validation story が明確か。 |
-| Footprint | 重い detail が demand-loaded になっており、context cost が正当化できるか。 |
-| Maintenance | upstream は十分新しいか、安全に fork しやすいか。 |
-| License | 対象 repository での reuse が許可されているか。 |
+| Fit | Does the description match the actual task and user intent? |
+| Non-redundancy | Does it provide value not already covered by installed or repo-local skills? |
+| Compatibility | Does it avoid unavailable tools, private conventions, fixed paths, or lifecycle assumptions? |
+| Quality | Does it have clear when-not-to-use, concrete workflow, output contract, and validation story? |
+| Footprint | Is the context cost justified, with heavy detail demand-loaded? |
+| Maintenance | Is upstream recent enough or easy to fork safely? |
+| License | Is reuse allowed for the target repository? |
 
-## 手順
+## Process
 
-1. まず既存 catalog/adopted/repo-local skills を確認する。
-2. 広く検索する前に、trusted または curated source から top-down に candidate を評価する。
-3. 惜しいがそのままでは合わない candidate には、call-site workaround より `absorb` または `adapt` を優先する。
-4. 外部から採用する場合は、評価した exact source を pin または snapshot する。
-5. high-impact または ambiguous な candidate には empirical validation を使う。
+1. Check existing catalog/adopted/repo-local skills first.
+2. Evaluate candidates top-down from trusted or curated sources before broad search.
+3. For close-but-not-quite candidates, prefer `absorb` or `adapt` over call-site workarounds.
+4. Pin or snapshot the exact source evaluated when adopting externally.
+5. Use empirical validation for high-impact or ambiguous candidates.
 
-## 注意信号
+## Red Flags
 
-- title は一致しているが trigger が一致していないという理由で採用する
-- "念のため" の installation
-- production use に floating refs を使う
-- license がない、または provenance が不明
-- 単独価値が弱い広い setup/router skill
-- new evidence なしに、以前却下した candidate を再評価する
+- adopting because the title matches while the trigger does not
+- "just in case" installation
+- floating refs for production use
+- no license or unclear provenance
+- broad setup/router skill with little standalone value
+- re-evaluating a previously rejected candidate without new evidence

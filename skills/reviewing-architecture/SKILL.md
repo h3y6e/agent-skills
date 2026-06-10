@@ -1,86 +1,86 @@
 ---
 name: reviewing-architecture
-description: refactoring candidate、shallow module、leaky interface、duplicated orchestration、test しにくい behavior、複数 file に広がる変更など、code structure の architecture friction を review するときに使う。
+description: Use when reviewing code structure for architecture friction such as refactoring candidates, shallow modules, leaky interfaces, duplicated orchestration, hard-to-test behavior, or changes that spread across files.
 license: MIT
 metadata:
   author: h3y6e
   version: 2026.6.1
 ---
 
-# Architecture の review
+# Reviewing Architecture
 
-interface を設計する前に architectural friction を表に出し、candidate を提案する。goal は locality、leverage、testability を改善すること。
+Surface architectural friction and propose candidates before designing interfaces. The goal is better locality, leverage, and testability.
 
-## 語彙
+## Vocabulary
 
-- **Module**: interface と implementation を持つ code。
-- **Interface**: caller が知る必要のあるすべてのもの: type、invariant、error、ordering、config、behavior。
-- **Implementation**: interface の背後に隠された code。
-- **Depth**: 小さな interface の背後にどれだけの behavior があるか。
-- **Shallow module**: interface complexity が implementation complexity に近い module。
-- **Seam**: caller を編集せずに behavior を変えられる場所。
-- **Adapter**: seam の背後にある concrete implementation。
-- **Locality**: change と bug が局所に留まること。
-- **Leverage**: caller が少ない知識でより多くの behavior を得ること。
+- **Module**: code with an interface and implementation.
+- **Interface**: everything callers must know: types, invariants, errors, ordering, config, and behavior.
+- **Implementation**: code hidden behind the interface.
+- **Depth**: how much behavior sits behind a small interface.
+- **Shallow module**: interface complexity is close to implementation complexity.
+- **Seam**: a place behavior can vary without editing callers.
+- **Adapter**: concrete implementation behind a seam.
+- **Locality**: changes and bugs stay concentrated.
+- **Leverage**: callers get more behavior from less knowledge.
 
-## 探索
+## Explore
 
-まず関連 artifact を読む: `README.md`、`docs/adr/`、`docs/specs/`、`specs/`、referenced issues。主 task が proposed plan の stress-test である場合は、代わりに `designing-with-artifacts` を使う。
+Read relevant artifacts first: `README.md`, `docs/adr/`, `docs/specs/`, `specs/`, and referenced issues. Use `designing-with-artifacts` instead when the main task is stress-testing a proposed plan.
 
-friction を探索する:
+Explore for friction:
 
-- 1 つの concept を理解するために多くの small module を行き来する必要がある
-- helper は test のためだけに存在するが、bug は call site で起きる
-- interface が implementation detail を露出しすぎている
-- 複数の caller が同じ orchestration を重複している
-- public behavior を通じた test が書きにくい
-- change が boundary を越えて漏れる
-- uncertainty の高い design work が、戻しにくい implementation と混ざっている
+- understanding one concept requires jumping across many small modules
+- helpers exist only for testing but bugs occur at call sites
+- interfaces expose too many implementation details
+- multiple callers duplicate the same orchestration
+- tests are hard to write through public behavior
+- changes leak across boundaries
+- high-uncertainty design work is mixed with irreversible implementation
 
-real friction が見つからない場合はそう言う。refactor を捏造しない。evidence なしに recommendation しない。各 candidate について、code、test、issue、spec、または concrete change scenario を cite する。
+If you cannot find real friction, say so. Do not invent refactors. No recommendation without evidence: cite code, tests, issues, specs, or a concrete change scenario for each candidate.
 
-deletion test を適用する: module を削除して complexity が消えるなら、おそらく shallow だった。complexity が caller 群に再出現するなら、その module は役目を果たしている可能性がある。
+Apply the deletion test: if deleting a module removes complexity, it was probably shallow; if complexity reappears across callers, the module may be earning its keep.
 
-## Candidate の提示
+## Present Candidates
 
-先に新しい interface を提案しない。candidate を提示する:
+Do not propose new interfaces first. Present candidates:
 
-- 関連する files/modules
+- files/modules involved
 - problem
-- locality、leverage、または tests にどう効いているか
-- 改善の方向
-- その change によって影響を受ける、または保護される tests
-- その change によって保護される behavior または requirement coverage
-- ADR/spec conflict があればそれ
+- why it hurts locality, leverage, or tests
+- direction of improvement
+- tests affected or protected by the change
+- behavior or requirement coverage protected by the change
+- ADR/spec conflicts, if any
 
-detailed design の前に、どの candidate を探索するかを尋ねる。
+Ask which candidate to explore before detailed design.
 
-この形を使う:
+Use this shape:
 
 ```markdown
 ## Candidate <N>: <name>
-- 関連 files/modules:
-- friction:
-- 重要な理由:
-- 改善の方向:
-- tests:
-- evidence:
+- Files/modules:
+- Friction:
+- Why it matters:
+- Improvement direction:
+- Tests:
+- Evidence:
 ```
 
-## 設計 follow-up
+## Design Follow-Up
 
-選ばれた candidate を探索するとき:
+When exploring a selected candidate:
 
-- caller が必要とする behavior を定義する
-- interface を implementation より小さく保つ
-- recommendation の前に、意味のある 2-3 個の interface option を比較する
-- plausible な場合は、minimal option、flexible option、common-case-optimized option を少なくとも含める
-- abstraction seam を追加する前に、少なくとも 2 つの plausible adapter を要求する
-- internal refactor 後も残るべき tests を特定する
-- uncertainty の高い work は、戻しにくい refactor の前に research または spike として前倒しする
-- ADR は、戻しにくく、意外性があり、trade-off がある decision にだけ提案する
+- define the behavior callers need
+- keep the interface smaller than the implementation
+- compare 2-3 meaningfully different interface options before recommending one
+- include at least a minimal option, a flexible option, and a common-case-optimized option when they are plausible
+- require at least two plausible adapters before adding an abstraction seam
+- identify tests that should survive internal refactors
+- front-load high-uncertainty work as research or a spike before irreversible refactors
+- offer an ADR only for hard-to-reverse, surprising, trade-off decisions
 
-interface option は次で比較する:
+Compare interface options with:
 
-| option | interface size | hidden complexity | caller impact | test impact | evidence/risk |
+| Option | Interface size | Hidden complexity | Caller impact | Test impact | Evidence/Risk |
 | --- | --- | --- | --- | --- | --- |

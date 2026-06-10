@@ -1,0 +1,31 @@
+name: check-ja-docs
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/check-ja-docs.yaml
+      - docs/**
+      - scripts/check-ja-docs.sh
+      - skills/**
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/check-ja-docs.yaml
+      - docs/**
+      - scripts/check-ja-docs.sh
+      - skills/**
+
+permissions:
+  contents: read
+
+jobs:
+  check-ja-docs:
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - run: bash scripts/check-ja-docs.sh

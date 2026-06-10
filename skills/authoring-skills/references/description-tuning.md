@@ -1,37 +1,37 @@
-# Description の調整
+# Description Tuning
 
-skill が trigger されにくい、trigger されすぎる、または user が trigger accuracy の tuning を依頼したときに使う。すべての edit 後に自動実行しない。
+Use this when a skill under-triggers, over-triggers, or the user asks to tune trigger accuracy. Do not run it automatically after every edit.
 
-## 中核ルール
+## Core Rule
 
-`description` は trigger contract である。狭すぎる、広すぎる、または user の situation ではなく workflow を説明していると、silent failure が起きる。
+The `description` is the trigger contract. Silent failures happen when it is too narrow, too broad, or describes the workflow instead of the user's situation.
 
-## 分類
+## Tracks
 
-rewrite の前に track を選ぶ:
+Choose the track before rewriting:
 
-| Track | 用途 | 形 |
+| Track | Use For | Shape |
 | --- | --- | --- |
-| Meta | skill authoring、selection、evaluation、retrospective、setup | `Use ONLY when...` または `Invoke ONLY when...`。near-miss として `Do NOT auto-invoke...` を含める。 |
-| Project | user が proactive trigger を期待する domain/task skill | `Use when...`。symptom、file name、command、error、tool を含め、適切な場合は "even if the tool/domain is not named" を含める。 |
+| Meta | Skill-authoring, selection, evaluation, retrospective, setup | `Use ONLY when...` or `Invoke ONLY when...`; include `Do NOT auto-invoke...` near-misses. |
+| Project | Domain/task skills users expect to trigger proactively | `Use when...`; include symptoms, file names, commands, errors, and "even if the tool/domain is not named" when appropriate. |
 
 ## Checklist
 
-- 最初の clause が trigger を述べている。
-- wording は implementation focus ではなく user-intent focus である。
-- description が workflow を要約していない。
-- concrete surface keyword が含まれている: symptom、file shape、command、error、tool。
-- over-triggering が起きやすい場合は near-miss case を名指ししている。
-- frontmatter は 1024 chars 未満を保つ。description は 500 chars 未満を優先する。
-- body と description が一致している。
+- First clause states the trigger.
+- Wording is user-intent focused, not implementation focused.
+- Description does not summarize the workflow.
+- Concrete surface keywords are included: symptoms, file shapes, commands, errors, tools.
+- Near-miss cases are named when over-triggering is likely.
+- Frontmatter remains under 1024 chars; prefer description under 500 chars.
+- Body and description agree.
 
-## Trigger 評価
+## Trigger Eval
 
-重要な description change では、現実的な query を約 20 個定義する:
+For important description changes, define about 20 realistic queries:
 
-- 8-10 個は、言い回しが異なり implicit need を含む should-trigger query。
-- 8-10 個は should-not-trigger query。多くは keyword を共有するが別 skill を必要とする near-miss。
-- 明らかに無関係な negative query は避ける。
-- iteration する場合は train/validation に分ける。train score ではなく validation performance で選ぶ。
+- 8-10 should-trigger queries with varied phrasing and implicit need.
+- 8-10 should-not-trigger queries, mostly near-misses sharing keywords but requiring a different skill.
+- Avoid obviously irrelevant negative queries.
+- Split train/validation if iterating; choose by validation performance, not train score.
 
-miss を記録し、1 iteration につき 1 theme を更新する。body/description mismatch が原因でない限り、description-only tuning と body rewrite を混ぜない。
+Record misses, update one theme per iteration, and do not mix description-only tuning with body rewrites unless body/description mismatch is the cause.

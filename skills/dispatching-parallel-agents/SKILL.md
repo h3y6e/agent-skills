@@ -1,95 +1,95 @@
 ---
 name: dispatching-parallel-agents
-description: file、state、dependencies、verification を分離でき、2 つ以上の独立した task、failure、investigation、または research question を parallel subagent に分割しても安全なときに使う。
+description: Use when splitting two or more independent tasks, failures, investigations, or research questions across parallel subagents is safe because files, state, dependencies, and verification can be isolated.
 license: MIT
 metadata:
   author: h3y6e
   version: 2026.6.1
 ---
 
-# Parallel Agents の dispatch
+# Dispatching Parallel Agents
 
-独立性が本物の場合にだけ subagent を dispatch する。parallelism が有効なのは、それぞれの agent が他 agent の context を必要とせず、同じ state に触れずに推論や編集を進められる場合である。
+Dispatch subagents only when independence is real. Parallelism helps when each agent can reason and edit without needing the others' context or touching the same state.
 
-work unit がまだ定義されていない場合は、agent を dispatch する前に `slicing-issues` を使う。
+If work units are not defined yet, use `slicing-issues` before dispatching agents.
 
-## 使うとき
+## Use When
 
-- 複数の failing test files が、それぞれ異なる原因を持つ可能性が高い
-- 別々の subsystem が独立して壊れている
-- research question を独立して回答できる
-- 各 task に明確な owner と expected output がある
-- agent が同じ file の編集を避けられる
-- 各 task を integration 前に独立して検証できる
+- multiple failing test files have different likely causes
+- separate subsystems are broken independently
+- research questions can be answered independently
+- each task has a clear owner and expected output
+- agents can avoid editing the same files
+- each task can be verified independently before integration
 
-## 使わないとき
+## Do Not Use When
 
-- 1 つの root cause がすべての failure を説明し得る
-- system state を全体として理解する必要がある
-- task が file、migration、generated output、または external state を共有している
-- work の分解方法がまだ分かっていない
-- correctness のために result の順序付けが必要である
-- ある agent の answer が別 agent の task definition を変え得る
+- one root cause may explain all failures
+- the system state must be understood as a whole
+- tasks share files, migrations, generated output, or external state
+- you do not yet know how the work decomposes
+- results must be sequenced for correctness
+- one agent's answer can change another agent's task definition
 
-## 手順
+## Process
 
-1. work を、期待される verification を持つ独立 domain にまとめる。
-2. 各 agent に 1 domain、明示的な file ownership、触れてはならない protected paths を割り当てる。
-3. 各 agent に、自分だけが codebase にいるわけではなく、他者の edit を revert してはならないと伝える。
-4. 各 agent に fresh で self-contained な context を渡す: goal、constraints、relevant errors、commands、expected output、verification、owned files、触れてはならない file。継承された session history に依存しない。
-5. conflict の可能性を確認してから、agent を 1 回の parallel batch で実行する。
-6. すべての result を読み、diff を確認し、overlap を解決する。
-7. integration 後に関連する full verification を実行する。
+1. Group work into independent domains with expected verification.
+2. Assign each agent one domain, explicit file ownership, and protected paths not to touch.
+3. Tell each agent they are not alone in the codebase and must not revert others' edits.
+4. Give each agent fresh, self-contained context: goal, constraints, relevant errors, commands, expected output, verification, owned files, and files not to touch. Do not rely on inherited session history.
+5. Run agents in one parallel batch only after checking for likely conflicts.
+6. Read every result, inspect diffs, and resolve overlaps.
+7. Run the full relevant verification after integration.
 
-## 独立性チェック
+## Independence Check
 
-dispatch 前に、各 task は以下を満たしている必要がある:
+Before dispatch, each task must have:
 
-- distinct files、または read-only research scope
-- shared generated artifacts、migrations、global state がない
-- 独立して review できる明確な result
-- 別 agent の pending answer への依存がない
-- その domain の完了を証明できる verification method
+- distinct files or read-only research scope
+- no shared generated artifacts, migrations, or global state
+- a clear result that can be reviewed independently
+- no dependency on another agent's pending answer
+- a verification method whose result proves that domain's completion
 
-いずれかが失敗する場合は、parallelize せず順番に進める。
+If any item fails, sequence the work instead.
 
-## Prompt の形
+## Prompt Shape
 
 ```text
-タスク: <1 つの problem domain>
+Task: <one problem domain>
 
-コンテキスト:
-- relevant failure または requirement
-- この agent が ownership を持つ files または modules
-- constraints と触れてはならない files
+Context:
+- relevant failure or requirement
+- files or modules owned by this agent
+- constraints and files not to touch
 
-ゴール:
-- 完了時に true であるべきこと
+Goal:
+- what should be true when done
 
-返す内容:
-- root cause または finding
-- 実施した変更
-- 実行した verification
-- 証明できた requirement または task coverage
-- 残る risk
+Return:
+- root cause or finding
+- changes made
+- verification run
+- requirement or task coverage proven
+- remaining risk
 ```
 
-ownership を明確に言えない場合は、まだ parallelize しない。
+If ownership cannot be stated clearly, do not parallelize yet.
 
-## 統合レポート
+## Integration Report
 
-agent が戻ったら、以下を要約する:
+After agents return, summarize:
 
 ```markdown
-## 結果
-- Agent/task: outcome と変更 file
+## Results
+- Agent/task: outcome and files changed
 
-## 競合
-- overlap または contradiction と、その解決
+## Conflicts
+- Overlap or contradiction, and resolution
 
-## 検証
-- integration 後に実行した command
+## Verification
+- Commands run after integration
 
-## 残るリスク
-- 確認していないこと
+## Remaining Risk
+- What was not checked
 ```

@@ -1,2 +1,7 @@
 - Keep `.tagpr` `versionFile` synchronized with every `skills/*/SKILL.md` path whenever skills are added, renamed, or removed.
 - Do not edit skill `version` metadata manually; release automation updates those values.
+- Keep installable runtime skills English-only under `skills/`.
+- Put Japanese human-facing skill docs under `docs/<skill>/SKILL.ja.md` and `docs/<skill>/references/*.ja.md`.
+- Do not place Japanese docs or sidecars inside `skills/`, because `gh skill install` copies additional files.
+- Do not create `SKILL.md` files under `docs/`; use `SKILL.ja.md` for Japanese skill docs.
+- Keep Japanese docs synchronized with source files using repo-root `source` paths and `source_sha256`.
