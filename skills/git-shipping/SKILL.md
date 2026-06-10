@@ -1,7 +1,7 @@
 ---
 name: git-shipping
 description: Use when making code changes in a git repo, switching branches, or when asked to `push`, `commit`, `pr`, or manage branches. Use before starting implementation to confirm you're on the right branch.
-compatibility: Requires git, gh, cxg, and git-wt or an environment worktree tool. Do not use raw git worktree.
+compatibility: Requires git, gh, cxg, and git-wt. Do not use raw git worktree.
 license: MIT
 metadata:
   author: h3y6e
@@ -34,7 +34,7 @@ Check repo visibility with `gh repo view --json visibility -q '.visibility'`.
 ## Branch
 
 Start new feature work in a clean feature-branch worktree, not on the default branch.
-Prefer an environment worktree tool when available; otherwise check `git wt -h` and use `git wt`.
+When creating a worktree, check `git wt -h` before choosing flags and use `git wt`.
 Do not call raw `git worktree` directly.
 
 Do not move already-started work into a new worktree just to satisfy this workflow. If files are already being edited in the current checkout, keep working there and create or switch to the appropriate branch in place when safe.
@@ -59,7 +59,5 @@ Do not move already-started work into a new worktree just to satisfy this workfl
 | Moving already-started work just to satisfy the workflow | Keep working in the current checkout; branch in place when safe, and ask before relocating changes |
 | Copying modified or untracked files into new worktrees by default | Create clean worktrees; transfer in-progress changes only on explicit request |
 | Treating `push` / `commit` as a single git command | Follow Intent Expansion above |
-| Ignoring an available environment worktree tool | Use it before falling back to `git wt` |
-| Using raw `git worktree` | Use a layout-compatible environment tool, otherwise use `git wt` |
-| Guessing `git wt` usage | Run `git wt -h` before choosing flags |
+| Using raw `git worktree` | Use `git wt`; run `git wt -h` before choosing flags |
 | Skipping `cxg lint` | Always pipe through `cxg lint` before committing |
