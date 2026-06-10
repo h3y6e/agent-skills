@@ -1,90 +1,90 @@
 ---
 name: slicing-issues
-description: Use when breaking a spec, plan, PRD, feature idea, or conversation into independently implementable GitHub/Linear issues or tickets with vertical slices, acceptance criteria, dependencies, and verification.
+description: spec、plan、PRD、feature idea、または conversation を、vertical slice、acceptance criteria、dependencies、verification を持つ、独立実装可能な GitHub/Linear issue や ticket に分割するときに使う。
 license: MIT
 metadata:
   author: h3y6e
   version: 2026.6.1
 ---
 
-# Slicing Issues
+# Issue の slicing
 
-Break source material into thin vertical issues that can be implemented and verified independently. This skill produces tool-neutral issue drafts; publish only when the issue tracker is clear.
+source material を、独立して実装・検証できる thin vertical issue に分割する。この skill は tool-neutral な issue draft を作る。issue tracker が明確な場合だけ publish する。
 
-## Source Material
+## 入力素材
 
-Use whichever exists:
+存在するものを使う:
 
-- current conversation
-- a referenced issue
-- `docs/specs/*`, `specs/*`, or a PRD
-- an implementation plan
-- code exploration when needed to understand boundaries
+- 現在の conversation
+- 参照された issue
+- `docs/specs/*`、`specs/*`、または PRD
+- implementation plan
+- boundary を理解するために必要な場合は code exploration
 
-If the problem or success criteria are still unclear, use `framing-problems` before slicing. If slices already exist and only execution is parallel, use `dispatching-parallel-agents`.
+problem または success criteria がまだ不明確な場合は、slicing の前に `framing-problems` を使う。slice がすでに存在し、execution だけが parallel の場合は `dispatching-parallel-agents` を使う。
 
-## Slice Rules
+## Slice rules
 
-- Prefer vertical slices over layer-by-layer tasks.
-- Each issue should deliver a narrow complete path through relevant layers.
-- Each issue should be demoable or verifiable on its own.
-- Prefer many thin slices over one large issue.
-- Each slice must map to source requirements, user stories, risks, or decisions it covers.
-- Each slice needs concrete acceptance criteria and verification with expected evidence.
-- Front-load high-uncertainty discovery before irreversible implementation slices.
-- Do not use placeholders like `TBD`, `TODO`, "handle errors", or "write tests" without concrete scope.
-- Mark a slice `HITL` only when human judgment is required.
-- Mark a slice `AFK` when an agent can implement it from the issue plus repo context.
-- Publish approved issues in dependency order, blockers first.
+- layer-by-layer task より vertical slice を優先する。
+- 各 issue は relevant layers を通る narrow complete path を deliver する。
+- 各 issue は単独で demo または verify できるべきである。
+- 1 つの大きな issue より、多くの thin slice を優先する。
+- 各 slice は、それが cover する source requirement、user story、risk、または decision に対応している必要がある。
+- 各 slice には concrete acceptance criteria と、expected evidence を含む verification が必要である。
+- uncertainty の高い discovery は、戻しにくい implementation slice の前に置く。
+- concrete scope なしに `TBD`、`TODO`、"handle errors"、"write tests" のような placeholder を使わない。
+- human judgment が必要な場合だけ slice を `HITL` と mark する。
+- agent が issue と repo context から実装できる場合は `AFK` と mark する。
+- approved issue は dependency order で、blocker から publish する。
 
-Reject a slice if it cannot be verified independently or if it only creates infrastructure without observable behavior.
+単独で verify できない slice、または observable behavior なしに infrastructure だけを作る slice は却下する。
 
-## Process
+## 手順
 
-1. Gather the source and any parent issue context.
-2. Explore the codebase only if needed to avoid bad boundaries.
-3. Draft slices with title, mode, dependencies, covered requirements, acceptance criteria, and verification.
-4. Ask the user to approve granularity and dependencies.
-5. After approval, produce issue bodies or publish through the available GitHub/Linear workflow.
-6. Do not close or modify parent/source issues unless explicitly requested.
+1. source と parent issue context があれば集める。
+2. bad boundary を避けるために必要な場合だけ codebase を探索する。
+3. title、mode、dependencies、covered requirements、acceptance criteria、verification を含む slice を draft する。
+4. granularity と dependencies について user の approve を求める。
+5. approve 後、issue body を作るか、利用可能な GitHub/Linear workflow で publish する。
+6. 明示的に依頼されていない限り、parent/source issue を close または modify しない。
 
-## Issue Body
+## Issue body
 
 ```markdown
-## Parent or source
+## 親または source
 
-Reference to parent issue, PRD, spec, or conversation section.
+parent issue、PRD、spec、または conversation section への参照。
 
-## What to build
+## 作るもの
 
-Describe the end-to-end behavior, not layer-by-layer implementation.
+layer-by-layer implementation ではなく、end-to-end behavior を説明する。
 
-## Boundaries
+## 境界
 
-Files, modules, systems, and explicitly out-of-scope work when known.
+分かっている場合は、files、modules、systems、明示的な out-of-scope work。
 
 ## Mode
 
-AFK or HITL, with one sentence explaining why.
+AFK または HITL。理由を 1 文で説明する。
 
 ## Covered requirements
 
-- Requirement or source section this issue satisfies.
+- この issue が満たす requirement または source section。
 
 ## Acceptance criteria
 
-- [ ] Specific, testable criterion
-- [ ] Specific, testable criterion
+- [ ] 具体的で test 可能な criterion
+- [ ] 具体的で test 可能な criterion
 
 ## Verification
 
-- Command, manual check, or review method, including expected evidence that proves completion.
+- 完了を証明する expected evidence を含む command、manual check、または review method。
 
 ## Blocked by
 
-None, or references to blocking issues.
+なし、または blocking issue への参照。
 
 ## Notes
 
-Relevant decisions, source spec, or out-of-scope boundaries.
+関連する decision、source spec、または out-of-scope boundary。
 ```

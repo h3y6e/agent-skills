@@ -1,89 +1,89 @@
 ---
 name: framing-problems
-description: Use when a request starts from vague pain, a solution idea, product idea, or "what should I build?" and the real problem, priority, or success criteria are unclear.
+description: request があいまいな pain、solution idea、product idea、または「何を作るべきか」から始まり、本当の問題、優先度、success criteria が不明確なときに使う。
 license: MIT
 metadata:
   author: h3y6e
   version: 2026.6.1
 ---
 
-# Framing Problems
+# 問題の framing
 
-Find the problem before shaping the solution. Use this when the user has a pain, idea, or direction, but the underlying problem is still fuzzy.
+solution を形にする前に problem を見つける。user に pain、idea、または direction はあるが、その奥にある problem がまだあいまいなときに使う。
 
-## Ground Rules
+## 基本ルール
 
-- Do not evaluate or propose solutions yet.
-- Treat solution ideas as clues to the pain behind them.
-- Ask one question at a time.
-- Prefer recent concrete episodes over abstract opinions.
-- Keep the user's own words visible in the output.
-- Do not lead the user toward your suspected cause.
-- If the request bundles independent problems, stop and surface the decomposition choice before refining details.
+- まだ solution を評価したり提案したりしない。
+- solution idea は、その背後にある pain への clue として扱う。
+- 一度に 1 つの質問をする。
+- 抽象的な opinion より、最近の具体的な episode を優先する。
+- output の中に user 自身の言葉を見える状態で残す。
+- suspected cause に user を誘導しない。
+- request が独立した problem を束ねている場合は、detail を深掘りする前に止まり、分解の選択肢を表に出す。
 
-## When Not To Use
+## 使わないとき
 
-Skip this when the problem, priority, and success criteria are already clear enough to write a spec, issue, or design; move directly to that next artifact.
+problem、priority、success criteria が、spec、issue、または design を書くのに十分明確な場合は skip し、直接その next artifact に進む。
 
-## Interview Moves
+## インタビューの進め方
 
-Start with the trigger:
+trigger から始める:
 
-- "What happened that made this feel worth solving?"
-- "When did you last feel this pain?"
-- "What are you doing today instead?"
+- "何が起きて、これを解く価値があると感じたのですか?"
+- "最後にこの痛みを感じたのはいつですか?"
+- "今は代わりに何をしていますか?"
 
-Then deepen one problem at a time:
+その後、1 つの problem ずつ深める:
 
-- **Specific scene**: when, where, who, what was happening
-- **Frequency**: how often it happens
-- **Impact**: time, money, risk, frustration, opportunity cost
-- **Current workaround**: what the user does today and why it is not enough
-- **Spread**: whether others have the same problem
-- **Urgency**: what gets worse if nothing changes
+- **具体的な場面**: いつ、どこで、誰が、何が起きていたか
+- **頻度**: どのくらい頻繁に起きるか
+- **影響**: time、money、risk、frustration、opportunity cost
+- **現在の workaround**: user が今日していることと、それでは不十分な理由
+- **広がり**: 他の人も同じ problem を持つか
+- **緊急度**: 何も変えない場合に何が悪化するか
 
-When the user jumps to a solution, acknowledge it, then return to the scene that made the solution feel necessary.
+user が solution に飛んだ場合は、それを受け止めてから、その solution が必要だと感じた scene に戻る。
 
-Do not judge the solution idea or propose alternatives. Use it only as evidence of what felt painful enough to solve.
+solution idea を judge したり alternative を提案したりしない。解く価値があるほど painful だったものの evidence としてだけ使う。
 
-## Stop Conditions
+## 終了条件
 
-Move to the output when at least one problem has a concrete scene, current workaround, impact, and priority reason. If multiple independent problems appear, stop with a decomposition recommendation. If key facts are still unknown after three focused questions, summarize the uncertainty instead of continuing indefinitely.
+少なくとも 1 つの problem について、concrete scene、current workaround、impact、priority reason が揃ったら output に進む。複数の独立した problem が現れた場合は、分解の recommendation を添えて止める。3 つの focused question の後も key facts が不明な場合は、無期限に続けず uncertainty を要約する。
 
-## Output
+## 出力
 
-End with a problem map:
+最後は problem map にする:
 
 ```markdown
-# Problem Map: <theme>
+# 問題マップ: <theme>
 
-## Summary
-<2-3 sentences>
+## 要約
+<2-3 文>
 
-## Problems
+## 問題
 
 ### 1. <problem>
-- Scene: <concrete episode>
-- Frequency: <known or unknown>
-- Impact: <cost or risk>
-- Current workaround: <today's behavior>
-- Priority reason: <why this ranks here>
+- Scene: <具体的 episode>
+- Frequency: <既知または不明>
+- Impact: <cost または risk>
+- Current workaround: <現在の behavior>
+- 優先理由: <この順位になる理由>
 
-## Priority
-| Rank | Problem | Frequency | Impact | Confidence |
+## 優先度
+| 順位 | 問題 | 頻度 | 影響 | 確信度 |
 | --- | --- | --- | --- | --- |
 
-## Material Uncertainties
-- <unknown that would change priority, scope, or success criteria>
+## 重要な不確実性
+- <priority、scope、success criteria を変え得る unknown>
 
-## Next Step
-<research, hypothesis, spec, prototype, or no action>
+## 次の step
+<research、hypothesis、spec、prototype、または no action>
 ```
 
-## Common Mistakes
+## よくある誤り
 
-- Letting a proposed app, tool, or feature define the problem.
-- Asking leading questions that smuggle in your theory.
-- Asking broad surveys instead of grounding in a recent episode.
-- Turning the interview into advice.
-- Prioritizing by excitement instead of frequency, impact, spread, and urgency.
+- proposed app、tool、feature に problem を定義させる。
+- 自分の仮説を忍び込ませる leading question を聞く。
+- 最近の episode に grounding せず、広い survey を聞く。
+- interview を advice に変える。
+- excitement で優先順位を決め、frequency、impact、spread、urgency を無視する。

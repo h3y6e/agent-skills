@@ -1,31 +1,31 @@
-# Skill Structure
+# Skill の構造
 
-Use this when deciding what belongs in `SKILL.md`, `references/`, or `scripts/`.
+何を `SKILL.md`、`references/`、または `scripts/` に入れるかを決めるときに使う。
 
-## Start From Concrete Examples
+## 具体例から始める
 
-Before structuring a skill, collect concrete usage examples from the user, current conversation, or realistic generated scenarios. For each example, ask:
+skill を構造化する前に、user、現在の conversation、または realistic generated scenario から具体的な usage example を集める。各 example について次を問う:
 
-- What task should trigger the skill?
-- What output should it produce?
-- What repeated work would the agent otherwise rediscover?
-- What information is core workflow versus reference detail?
-- What edge cases or dependencies change the workflow?
+- どの task が skill を trigger すべきか。
+- どの output を生成すべきか。
+- agent がなければ再発見する repeated work は何か。
+- core workflow と reference detail のどちらに属する information か。
+- workflow を変える edge case または dependency は何か。
 
-## Resource Placement
+## Resource の配置
 
-| Location | Put Here | Do Not Put Here |
+| Location | ここに置くもの | ここに置かないもの |
 | --- | --- | --- |
-| `SKILL.md` | Core principle, trigger-sensitive workflow, decision rules, output contract, short examples | Long API docs, exhaustive variants, session history |
-| `references/` | Heavy docs, detailed patterns, advanced cases, variant-specific guides | Instructions required on every invocation without a pointer |
-| `scripts/` | Deterministic repeated operations, validators, generators, reusable helpers | One-off commands or code the agent will not rerun |
+| `SKILL.md` | Core principle、trigger-sensitive workflow、decision rule、output contract、short example | Long API docs、exhaustive variant、session history |
+| `references/` | 重い docs、detailed pattern、advanced case、variant-specific guide | pointer なしで毎 invocation に必要な instruction |
+| `scripts/` | deterministic repeated operations、validators、generators、reusable helpers | one-off command、または agent が rerun しない code |
 
-Only create directories that are actually used. Every referenced file must exist and the `SKILL.md` body must say when to read it.
+実際に使う directory だけを作る。参照された file はすべて存在し、`SKILL.md` body はいつそれを読むかを述べていなければならない。
 
-## Structure Checks
+## 構造チェック
 
-- Progressive disclosure is clear: metadata -> `SKILL.md` -> references/scripts on demand.
-- The body stays lean and self-contained for the common path.
-- A repeated helper produced in multiple evaluations is promoted to `scripts/`.
-- Large reference files include headings or search terms.
-- Examples are complete enough to adapt and not spread across many shallow variants.
+- Progressive disclosure が明確である: metadata -> `SKILL.md` -> references/scripts on demand。
+- body は common path に対して lean かつ self-contained である。
+- 複数の evaluation で生まれた repeated helper は `scripts/` に昇格する。
+- large reference file には heading または search term が含まれている。
+- example は adapt するのに十分 complete であり、多数の shallow variant に分散していない。

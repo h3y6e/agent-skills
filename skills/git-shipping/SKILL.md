@@ -1,63 +1,63 @@
 ---
 name: git-shipping
-description: Use when making code changes in a git repo, switching branches, or when asked to `push`, `commit`, `pr`, or manage branches. Use before starting implementation to confirm you're on the right branch.
-compatibility: Requires git, gh, cxg, and git-wt. Do not use raw git worktree.
+description: git repo で code change を行う、branch を切り替える、または `push`、`commit`、`pr`、branch 管理を依頼されたときに使う。実装を始める前に、正しい branch 上にいることを確認する。
+compatibility: git、gh、cxg、git-wt が必要。生の git worktree を使わない。
 license: MIT
 metadata:
   author: h3y6e
   version: 2026.6.1
 ---
 
-# Git Shipping
+# Git shipping
 
-Every code change flows through: branch → commit → push → PR. This skill ensures each step follows project conventions.
+すべての code change は branch → commit → push → PR を通る。この skill は、各 step が project conventions に従うようにする。
 
-## Intent Expansion
+## 意図の展開
 
-Treat short git requests as workflow shorthand, not literal single commands.
+短い git request は、文字通りの単一 command ではなく workflow の shorthand として扱う。
 
-| User says | What it means |
+| ユーザーの依頼 | 意味 |
 |-----------|---------------|
-| `commit` | Inspect repo, stage coherent chunks, commit with proper message |
-| `push` | Inspect repo, create coherent commits if needed, then push |
-| `pr` | Inspect repo, move off default branch if needed, commit, push, open PR |
+| `commit` | repo を確認し、coherent chunks を stage し、適切な message で commit する |
+| `push` | repo を確認し、必要なら coherent commit を作り、その後 push する |
+| `pr` | repo を確認し、必要なら default branch から移動し、commit、push、PR 作成を行う |
 
-Ask only when the intended change scope is unclear enough that you might include unrelated work.
+意図した change scope が不明確で、unrelated work を含めてしまう可能性がある場合だけ質問する。
 
-## Language Rule
+## 言語ルール
 
-Check repo visibility with `gh repo view --json visibility -q '.visibility'`.
+`gh repo view --json visibility -q '.visibility'` で repo visibility を確認する。
 
-- **PUBLIC**: Use English for commit messages, PR titles, and PR bodies.
-- **PRIVATE / INTERNAL**: Use the language the user is currently using.
+- **PUBLIC**: commit message、PR title、PR body には English を使う。
+- **PRIVATE / INTERNAL**: user が現在使っている言語を使う。
 
-## Branch
+## ブランチ
 
-Start new feature work in a clean feature-branch worktree, not on the default branch.
-When creating a worktree, check `git wt -h` before choosing flags and use `git wt`.
-Do not call raw `git worktree` directly.
+新規 feature work は default branch 上ではなく、clean feature-branch worktree で始める。
+worktree を作るときは、flag を選ぶ前に `git wt -h` を確認し、`git wt` を使う。
+生の `git worktree` を呼ばない。
 
-Do not move already-started work into a new worktree just to satisfy this workflow. If files are already being edited in the current checkout, keep working there and create or switch to the appropriate branch in place when safe.
+すでに始まっている work を、この workflow を満たすためだけに新しい worktree へ移動しない。file が現在の checkout ですでに編集中なら、そこで作業を続け、安全な場合にその場で適切な branch を作成または切り替える。
 
-## Commit
+## コミット
 
-**REQUIRED SUB-SKILL:** Use `cxg` skill for commit message format.
+**必須サブスキル:** commit message format には `cxg` skill を使う。
 
 ## Pull Request
 
-- Prefer a repository PR template when one applies.
-- When no template applies, use only these sections, in this order: `## Summary`, `## Background`, `## Changes`, optional `## Impact`.
-- Use `## Impact` only for behavior changed by merging the PR. Omit it when there is no behavior change; do not list unchanged behavior, non-goals, or work not done.
-- Do not add ad hoc `Testing`, `Verification`, `Checklist`, `Related issues`, or `Screenshots` sections. Never dump every local verification command into the PR body.
-- New PRs default to draft (`gh pr create --draft`); preserve existing PR draft/ready state unless asked.
+- 該当する repository PR template がある場合は優先して使う。
+- 該当する template がない場合は、次の section だけをこの順序で使う: `## Summary`、`## Background`、`## Changes`、任意の `## Impact`。
+- `## Impact` は PR merge によって変わる behavior にだけ使う。behavior change がない場合は省略する。unchanged behavior、non-goals、未実施の作業を列挙しない。
+- ad hoc な `Testing`、`Verification`、`Checklist`、`Related issues`、`Screenshots` section を追加しない。local verification command をすべて PR body に dump しない。
+- 新規 PR は draft を default にする (`gh pr create --draft`)。依頼がない限り、既存 PR の draft/ready state は保つ。
 
-## Common Mistakes
+## よくある誤り
 
-| Mistake | Fix |
+| 誤り | 修正 |
 |---------|-----|
-| Starting new work directly on the default branch | Create a clean feature-branch worktree first |
-| Moving already-started work just to satisfy the workflow | Keep working in the current checkout; branch in place when safe, and ask before relocating changes |
-| Copying modified or untracked files into new worktrees by default | Create clean worktrees; transfer in-progress changes only on explicit request |
-| Treating `push` / `commit` as a single git command | Follow Intent Expansion above |
-| Using raw `git worktree` | Use `git wt`; run `git wt -h` before choosing flags |
-| Skipping `cxg lint` | Always pipe through `cxg lint` before committing |
+| 新規 work を default branch 上で直接始める | 先に clean feature-branch worktree を作る |
+| workflow を満たすためだけに、すでに始まっている work を移動する | 現在の checkout で作業を続け、安全な場合にその場で branch を切る。change を移す前に質問する |
+| modified file や untracked file を default で新しい worktree へ copy する | clean worktree を作る。in-progress change は明示依頼がある場合だけ transfer する |
+| `push` / `commit` を単一 git command として扱う | 上記の意図の展開に従う |
+| 生の `git worktree` を使う | `git wt` を使う。flag を選ぶ前に `git wt -h` を実行する |
+| `cxg lint` を skip する | commit 前に必ず `cxg lint` を通す |

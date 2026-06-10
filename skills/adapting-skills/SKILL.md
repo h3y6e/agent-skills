@@ -1,87 +1,87 @@
 ---
 name: adapting-skills
-description: Use when evaluating, adopting, absorbing, or adapting specified existing agent skills into a local workflow-compatible skill set without skill sprawl.
+description: 指定された既存の agent skill を評価、採用、吸収、または適応し、skill の乱立を避けながらローカルワークフローに合う skill セットへ取り込むときに使う。
 license: MIT
 metadata:
   author: h3y6e
   version: 2026.6.1
 ---
 
-# Adapting Skills
+# Skills の適応
 
-Adapt specified source skill(s) into a smaller, local, workflow-compatible skill set. The default is to reduce skill count.
+指定された移行元 skill を、より小さく、ローカルワークフローに合う skill セットへ適応する。デフォルトでは skill 数を減らす。
 
-**REQUIRED SUB-SKILL:** Use `authoring-skills` before creating or editing any `SKILL.md`. This skill chooses adopt/adapt/absorb/reject; `authoring-skills` controls drafting, RED scenarios, description quality, and validation evidence. For external candidates, use `references/adoption-rubric.md`.
+**必須サブスキル:** `SKILL.md` を作成または編集する前に `authoring-skills` を使う。この skill は採用、適応、吸収、却下を選ぶ。`authoring-skills` は草稿作成、RED シナリオ、description 品質、検証 evidence を扱う。外部候補には `references/adoption-rubric.md` を使う。
 
-## Inputs
+## 入力
 
-Read only needed inputs:
+必要な入力だけを読む:
 
-- source skill(s): local paths, installed skills, URLs, or pasted text
-- target workflow constraints and existing project instructions
-- already adopted skills and repo-local skills
-- named validation expectations
+- 移行元 skill: ローカルパス、インストール済み skill、URL、または貼り付けられたテキスト
+- 対象ワークフローの制約と既存の project instructions
+- すでに採用済みの skill と repo-local skill
+- 名前付きの検証期待値
 
-## Decisions
+## 判断
 
-Classify each source skill:
+各移行元 skill を分類する:
 
-| Decision | Use When |
+| 判断 | 使う条件 |
 | --- | --- |
-| `adopt as-is` | It is standalone, compatible, and does not conflict with target workflow. |
-| `adapt` | The core workflow is valuable but source conventions, tool syntax, or scope must change. |
-| `absorb` | Only a small idea is useful; add it to an existing skill instead of creating a new one. |
-| `reject` | It is redundant, one-off, too broad, too tool-specific, or not worth the context cost. |
+| `adopt as-is` | 単独で成立し、互換性があり、対象ワークフローと衝突しない。 |
+| `adapt` | 中核となるワークフローには価値があるが、移行元の慣習、tool 構文、または scope を変える必要がある。 |
+| `absorb` | 小さな考え方だけが有用で、新しい skill を作るのではなく既存 skill に追加する。 |
+| `reject` | 重複している、一回限りである、広すぎる、tool 固有すぎる、または context cost に見合わない。 |
 
-Prefer `adopt as-is` or `absorb` over `adapt`. Create a new skill only when it has standalone recurring value.
+`adapt` より `adopt as-is` または `absorb` を優先する。単独で繰り返し価値がある場合だけ新しい skill を作る。
 
-## Adaptation Rules
+## 適応ルール
 
-- Preserve the source skill's useful behavior, not its incidental naming, directory layout, or tool assumptions.
-- Remove setup workflows, private conventions, and lifecycle state machines unless the target workflow already uses them.
-- Merge overlapping triggers instead of keeping competing skills.
-- Keep resulting `SKILL.md` files under 500 words when practical.
-- Description must say when to use the skill, not summarize its workflow.
-- Add output contracts, stop conditions, and validation scenarios for behavior-changing skills.
-- Do not claim empirical validation unless a fresh evaluator actually ran the scenarios.
+- 移行元 skill の有用なふるまいを保つ。偶発的な命名、ディレクトリ構成、tool 前提は保たない。
+- 対象ワークフローがすでに使っている場合を除き、setup workflow、private conventions、lifecycle state machine を削る。
+- 競合する skill を残すのではなく、重なっている trigger を統合する。
+- 実用上可能なら、生成される `SKILL.md` は 500 words 未満に保つ。
+- Description は workflow の要約ではなく、その skill をいつ使うかを述べる。
+- ふるまいを変える skill には、output contract、stop condition、validation scenario を追加する。
+- fresh evaluator が実際に scenario を実行していない限り、empirical validation を主張しない。
 
-## Process
+## 手順
 
-1. Read the source skill(s) and identify the recurring behavior they protect.
-2. Compare against already adopted and repo-local skills.
-3. Produce a decision table before editing.
-4. Apply the smallest change: adopt, absorb, adapt, or reject.
-5. Update README or catalogs only for skills that remain.
-6. Record validation status: `untested`, `structurally reviewed`, or `scenario-tested`.
+1. 移行元 skill を読み、それが守っている再利用可能なふるまいを特定する。
+2. すでに採用済みの skill と repo-local skill と比較する。
+3. 編集前に decision table を作る。
+4. 最小の変更を適用する: adopt、absorb、adapt、reject。
+5. 残る skill についてだけ README や catalog を更新する。
+6. 検証状態を記録する: `untested`、`structurally reviewed`、または `scenario-tested`。
 
-## Output
+## 出力
 
 ```markdown
-## Decision Table
-| Source skill | Decision | Reason | Destination |
+## 判断表
+| 移行元 skill | 判断 | 理由 | 反映先 |
 | --- | --- | --- | --- |
 
-## Changes
-- <skill or file>: <what changed and why>
+## 変更
+- <skill または file>: <何を、なぜ変えたか>
 
-## Rejected
-- <source skill>: <reason>
+## 却下
+- <移行元 skill>: <理由>
 
-## Adoption Evidence
-- Source snapshot:
-- Rubric axes checked:
-- Redundancy/compatibility evidence:
+## 採用 evidence
+- 移行元 snapshot:
+- 確認した rubric 軸:
+- 重複/互換性 evidence:
 - License/provenance:
 
-## Validation
-- Structural checks:
-- Scenario status:
-- Empirical status:
+## 検証
+- 構造 check:
+- scenario の状態:
+- empirical の状態:
 ```
 
-## Common Mistakes
+## よくある誤り
 
-- Forking a whole skill when one paragraph should be absorbed.
-- Keeping source-specific setup because it was in the original.
-- Creating a router skill that duplicates descriptions.
-- Saying a skill is validated after only static review.
+- 1 段落だけ吸収すればよいのに、skill 全体を fork する。
+- 元の skill に含まれていたという理由で、移行元固有の setup を残す。
+- description を重複させる router skill を作る。
+- static review だけで skill が検証済みだと言う。

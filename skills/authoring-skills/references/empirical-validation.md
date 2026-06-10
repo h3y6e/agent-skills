@@ -1,68 +1,68 @@
-# Empirical Validation
+# 実証的 validation
 
-Use this when a skill is high-importance, substantially revised, behaving unexpectedly, or the user asks for empirical evaluation. Skip it for small wording edits unless the trigger or behavior changed.
+skill の重要度が高い、大きく revise した、予期しないふるまいをしている、または user が empirical evaluation を依頼したときに使う。trigger または behavior が変わっていない小さな wording edit では skip する。
 
-## Loop
+## ループ
 
-1. **Static consistency**: compare frontmatter `description` with the body. If the description promises behavior the body does not cover, fix that before execution.
-2. **Scenario setup**: define 2-3 realistic scenarios before evaluating. Use one median case and one or two edge cases.
-3. **Requirements checklist**: for each scenario, define 3-7 judged items before execution. Include at least one `[critical]` item. Do not add, remove, or retag items after seeing results.
-4. **Baseline**: for new skills, compare with no skill; for existing skills, snapshot the old version and compare old versus new.
-5. **Fresh evaluator**: use a new evaluator/subagent for each round. Do not substitute self-rereading. If dispatch is unavailable, report `empirical validation skipped` or run static structural review only.
-6. **Execution report**: evaluator runs the scenario with the target skill and reports requirement achievement, unclear points, discretionary fill-ins, retries, and phase weakness.
-7. **Two-sided evaluation**: success is binary: any failed `[critical]` item means failure. Also record accuracy, unclear points, discretionary fill-ins, and optional step/duration/retry counts if available. For subjective outputs, collect user review before editing.
-8. **Minimum fix**: before editing, state which checklist item or judgment wording the fix should satisfy. Apply one theme per iteration.
-9. **Re-evaluate**: use a fresh evaluator again. Stop after two consecutive rounds with no new unclear points and no meaningful metric improvement. Use three rounds for high-importance skills.
+1. **Static consistency**: frontmatter `description` と body を比較する。description が body で cover していない behavior を約束している場合は、execution 前に直す。
+2. **Scenario setup**: 評価前に現実的な scenario を 2-3 個定義する。median case を 1 つ、edge case を 1-2 個使う。
+3. **Requirements checklist**: 各 scenario について、execution 前に 3-7 個の judged item を定義する。少なくとも 1 つの `[critical]` item を含める。result を見た後で item を追加、削除、retag しない。
+4. **Baseline**: 新しい skill では no skill と比較する。既存 skill では old version を snapshot し、old と new を比較する。
+5. **Fresh evaluator**: 各 round で新しい evaluator/subagent を使う。self-rereading で代用しない。dispatch が使えない場合は `empirical validation skipped` と報告するか、static structural review だけを実行する。
+6. **Execution report**: evaluator は target skill を使って scenario を実行し、requirement achievement、unclear points、discretionary fill-ins、retries、phase weakness を報告する。
+7. **Two-sided evaluation**: success は binary。失敗した `[critical]` item が 1 つでもあれば failure。accuracy、unclear points、discretionary fill-ins、利用可能なら optional step/duration/retry count も記録する。subjective output では、編集前に user review を集める。
+8. **Minimum fix**: 編集前に、どの checklist item または judgment wording を fix が満たすべきかを述べる。1 iteration につき 1 theme を適用する。
+9. **Re-evaluate**: 再び fresh evaluator を使う。new unclear point がなく、meaningful metric improvement もない round が 2 回連続したら止める。high-importance skill では 3 round を使う。
 
-If the same failure class recurs three or more times, stop patching wording and restructure the skill.
+同じ failure class が 3 回以上繰り返す場合は、wording patch を止めて skill を再構成する。
 
-For trigger accuracy, use `description-tuning.md`.
+trigger accuracy には `description-tuning.md` を使う。
 
-## Evaluator Prompt
+## 評価者 prompt
 
 ```markdown
-You are a blank-slate evaluator for <skill name>.
+あなたは <skill name> の blank-slate evaluator です。
 
-## Target Skill
-<path or full text>
+## 対象 skill
+<path または full text>
 
-## Scenario
-<realistic task context>
+## シナリオ
+<現実的な task context>
 
-## Requirements Checklist
+## 要件 checklist
 1. [critical] <minimum bar>
-2. <normal judged item>
-3. <normal judged item>
+2. <通常の judged item>
+3. <通常の judged item>
 
-## Task
-Use the target skill to execute the scenario, then report:
+## タスク
+target skill を使って scenario を実行し、その後次を報告してください:
 
-- Deliverable:
-- Requirement achievement: pass / fail / partial for each item
-- Trace: Understanding / Planning / Execution / Formatting, with stuck or skipped phases
-- Unclear points:
-  - Issue:
-  - Cause:
-  - General Fix Rule:
-- Discretionary fill-ins:
-- Retries:
+- 成果物:
+- Requirement achievement: 各 item について pass / fail / partial
+- Trace: Understanding / Planning / Execution / Formatting。詰まった phase または skip した phase を含める
+- 不明点:
+  - issue:
+  - cause:
+  - general fix rule:
+- discretionary fill-ins:
+- retries:
 ```
 
-## Result Record
+## 結果記録
 
 ```markdown
 ## Iteration N
 
-### Changes
-- <minimum fix and checklist item it targets>
+### 変更
+- <minimum fix と、それが対象にする checklist item>
 
-### Results
-| Scenario | Success | Accuracy | Weak phase | New unclear points |
+### 結果
+| scenario | success | accuracy | 弱い phase | 新しい unclear point |
 | --- | --- | --- | --- | --- |
 
-### Ledger
-- Added/Re-seen: <failure class> - <why the existing instruction did not prevent it>
+### 台帳
+- Added/Re-seen: <failure class> - <既存 instruction がそれを防げなかった理由>
 
-### Next
-- <next minimum fix or stop reason>
+### 次
+- <次の minimum fix または stop reason>
 ```
