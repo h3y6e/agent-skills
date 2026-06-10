@@ -49,7 +49,7 @@ Do not move already-started work into a new worktree just to satisfy this workfl
 - When no template applies, use only these sections, in this order: `## Summary`, `## Background`, `## Changes`, optional `## Impact`.
 - Use `## Impact` only for behavior changed by merging the PR. Omit it when there is no behavior change; do not list unchanged behavior, non-goals, or work not done.
 - Do not add ad hoc `Testing`, `Verification`, `Checklist`, `Related issues`, or `Screenshots` sections. Never dump every local verification command into the PR body.
-- Default to draft PR (`gh pr create --draft`). Only create a ready PR when the user explicitly requests it.
+- New PRs default to draft (`gh pr create --draft`); preserve existing PR draft/ready state unless asked.
 
 ## Common Mistakes
 
