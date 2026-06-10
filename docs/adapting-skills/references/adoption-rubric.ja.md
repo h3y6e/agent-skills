@@ -2,39 +2,39 @@
 source: skills/adapting-skills/references/adoption-rubric.md
 ---
 
-# 採用 rubric
+# 採用判断の基準
 
-外部または reference skill を採用、適応、または却下する前に評価するときに使う。
+外部スキルや参考スキルを、採用・調整・却下のどれで扱うか評価するときに使う。
 
 ## 採用条件
 
-繰り返し発生し、近いうちに必要になる task にだけ採用する。既存の local/adopted skill がすでに need を cover している場合は、それを使うか改善することを優先する。同じ candidate を後で再評価しないよう、却下理由を記録する。
+繰り返し発生し、近いうちに必要になる作業にだけ採用する。既存のローカルスキルや採用済みスキルで足りる場合は、それを使うか改善することを優先する。同じ候補を後で再評価しないよう、却下理由を記録する。
 
 ## 評価軸
 
-| 軸 | 質問 |
+| 軸 | 確認すること |
 | --- | --- |
-| Fit | description は実際の task と user intent に合っているか。 |
-| Non-redundancy | installed skill や repo-local skill がまだ cover していない価値を提供するか。 |
-| Compatibility | 利用できない tool、private convention、固定 path、lifecycle assumption を避けているか。 |
-| Quality | when-not-to-use、concrete workflow、output contract、validation story が明確か。 |
-| Footprint | 重い detail が demand-loaded になっており、context cost が正当化できるか。 |
-| Maintenance | upstream は十分新しいか、安全に fork しやすいか。 |
-| License | 対象 repository での reuse が許可されているか。 |
+| 適合性 | description が実際の作業とユーザーの意図に合っているか。 |
+| 重複のなさ | インストール済みスキルやリポジトリ内スキルでまだ満たせていない価値があるか。 |
+| 互換性 | 利用できないツール、非公開の慣習、固定パス、ライフサイクル前提に依存していないか。 |
+| 品質 | 使わない条件、具体的な手順、出力形式、検証方針が明確か。 |
+| 負荷 | 重い詳細は必要時に読む形になっており、コンテキスト量に見合うか。 |
+| 保守性 | 上流が十分新しいか、安全に fork しやすいか。 |
+| ライセンス | 対象リポジトリで再利用できるライセンスか。 |
 
 ## 手順
 
-1. まず既存 catalog/adopted/repo-local skills を確認する。
-2. 広く検索する前に、trusted または curated source から top-down に candidate を評価する。
-3. 惜しいがそのままでは合わない candidate には、call-site workaround より `absorb` または `adapt` を優先する。
-4. 外部から採用する場合は、評価した exact source を pin または snapshot する。
-5. high-impact または ambiguous な candidate には empirical validation を使う。
+1. まず既存カタログ、採用済みスキル、リポジトリ内スキルを確認する。
+2. 広く検索する前に、信頼できるソースや選定済みソースから候補を順に評価する。
+3. 惜しいがそのままでは合わない候補は、呼び出し側で回避策を書くより `absorb` または `adapt` を優先する。
+4. 外部から採用する場合は、評価した正確なソースを固定またはスナップショット化する。
+5. 影響が大きい候補や判断が難しい候補には、実証的検証を使う。
 
 ## 注意信号
 
-- title は一致しているが trigger が一致していないという理由で採用する
-- "念のため" の installation
-- production use に floating refs を使う
-- license がない、または provenance が不明
-- 単独価値が弱い広い setup/router skill
-- new evidence なしに、以前却下した candidate を再評価する
+- タイトルだけ一致していて、起動条件が合っていないのに採用する
+- 「念のため」のインストール
+- 本番利用で固定されていない参照を使う
+- ライセンスがない、または由来が不明
+- 単独の価値が弱い、広すぎるセットアップ用・ルーター用スキル
+- 新しい根拠なしに、以前却下した候補を再評価する

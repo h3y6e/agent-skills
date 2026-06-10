@@ -1,66 +1,66 @@
 ---
 source: skills/authoring-skills/SKILL.md
 name: authoring-skills
-description: '再利用可能な教訓を厳密な agent skill として作成、編集、検証、または体系化するときに使う。'
+description: '再利用できる教訓を、厳密なエージェントスキルとして作成・編集・検証・定着させるときに使う。'
 ---
 
 
-# Skills の作成
+# スキルの作成
 
-Skill 作成は process docs の TDD である: scenario、failure、`SKILL.md`、verify、refactor。skill は再利用可能な技法、pattern、tool、reference であり、session history ではない。
+スキル作成は、作業手順ドキュメントに対する TDD として進める。場面、失敗、`SKILL.md`、検証、改善の順に扱う。スキルは、再利用できる技法、型、道具、参照資料であり、セッション履歴ではない。
 
 ## 作成するか見送るか
 
-再利用可能で、非自明で、広く使え、判断を伴う教訓、または failure/success evidence が対になっているものだけを作成または編集する。まず重複排除する。一回限りのもの、local convention、一般的な hygiene、trigger や repo instructions や tool docs から明らかに推測できる助言は見送る。強制できるルールは自動化する。
+作成または編集するのは、再利用でき、明らかすぎず、広く使え、判断を伴う教訓に限る。失敗例と成功例の根拠が対になっている場合も対象にする。まず重複を確認する。一回限りの内容、ローカルの慣習、一般的な注意事項、起動条件・リポジトリ指示・ツールドキュメントから明らかに分かる助言は見送る。機械的に強制できるルールは自動化する。
 
 ## 構造
 
-`skill-name/SKILL.md` を使う。frontmatter には一致する `name` / `description` が必要で、1024 chars 未満に保つ。名前は lowercase letters、numbers、hyphens のみを使う。action または core insight で命名する。process skill には gerund が合う。再利用可能な tool には `scripts/`、重い reference には `references/` を使う。
+`skill-name/SKILL.md` を使う。フロントマターには一致する `name` / `description` が必要で、1024 文字未満に保つ。名前には小文字の英字、数字、ハイフンだけを使う。行動または中核となる気づきで命名する。手順を表すスキルには動名詞が合う。再利用できる道具は `scripts/`、重い参照資料は `references/` に置く。
 
-## Description の書き方
+## description の書き方
 
-Description は trigger であり、workflow ではない。`Use when...` で始める。symptom や situation を名指しする。必要な場合を除き tech-agnostic にする。first person を避ける。500 chars 未満に保つ。検索可能な keyword を含める。
+`description` は起動条件であり、手順の要約ではない。`Use when...` で始める。症状や状況を具体的に書く。必要がない限り、特定の技術に寄せすぎない。一人称は避ける。500 文字未満に保つ。検索に使われそうなキーワードを含める。
 
 ## 厳密なループ
 
-対応関係: test case = pressure/application scenario、production code = `SKILL.md`、RED = baseline violation または rationalization、GREEN = compliant use、refactor = loophole を塞ぐ。
+対応関係: テストケース = 負荷のかかる場面または適用場面、本番コード = `SKILL.md`、RED = 何もしない場合の違反または言い訳、GREEN = ルールに沿った使用、リファクタリング = 抜け道を塞ぐこと。
 
-失敗 scenario が先にない状態で、ふるまいを変える skill を deploy したり valid として扱ったりしてはならない。
+先に失敗場面がないまま、ふるまいを変えるスキルを導入したり、有効だと扱ったりしてはならない。
 
-1. **RED**: pressure scenario を書く。discipline skill では、time、sunk cost、authority、exhaustion を組み合わせる。baseline rationalization を記録する。
-2. **GREEN**: その failure を防ぐ最小の `SKILL.md` を書く。
-3. **VERIFY**: 同じ scenario を test する。できれば fresh subagent を使う。
-4. **REFACTOR**: rationalization を塞ぎ、余分な text を削り、再 test する。
+1. **RED**: 負荷のかかる場面を書く。規律を守らせるスキルでは、時間制約、埋没コスト、権威、疲労を組み合わせる。何もしない場合に出る言い訳を記録する。
+2. **GREEN**: その失敗を防ぐ最小の `SKILL.md` を書く。
+3. **VERIFY**: 同じ場面で検証する。できれば新しいサブエージェントを使う。
+4. **REFACTOR**: 言い訳の抜け道を塞ぎ、余分な文章を削り、再検証する。
 
-type 別に検証する: discipline skill には pressure compliance が必要。technique には application/variation が必要。pattern には recognition/counter-example が必要。reference には retrieval、application、gap test が必要。
+種類ごとに検証する。規律を守らせるスキルには、負荷がかかった状況でも従えることが必要。技法には適用例と変形例が必要。型には認識例と反例が必要。参照資料には、取得、適用、抜けの確認が必要。
 
-References: empirical review や大きなふるまい変更には `empirical-validation.md` を使う。再利用可能な教訓には `retrospective-codification.md` を使う。trigger miss には `description-tuning.md` を使う。配置には `skill-structure.md` を使う。
+参照資料: 実証的なレビューや大きなふるまい変更には `empirical-validation.md` を使う。再利用できる教訓には `retrospective-codification.md` を使う。起動条件の取りこぼしには `description-tuning.md` を使う。配置の判断には `skill-structure.md` を使う。
 
 ## 品質ルール
 
-- 頻繁に load される skill は非常に短く保ち、それ以外も 500 words 未満に保つ。これは上限であり目標ではない。skill はもっと短くてよい。500 words に近づけるために水増ししない。
-- 非自明な guidance だけを書く: trap、judgment call、failure mode、exception。agent behavior を変えない一般的な checklist は削除する。
-- 重い example、API、syntax は references へ移す。
-- script は deterministic repeated operations のためだけに追加する。
-- 優れた example を 1 つ優先する。複数言語に薄く広げることを避ける。
-- flowchart は非自明な decision または loop にだけ使う。
-- skill を cross-reference するときは、explicit requirement marker とともに skill name で参照する。path や `@` link は避ける。
-- counter や red flag は実際の rationalization に対してだけ追加する。
-- narrative session history と hidden dependency を避ける。
-- feedback から改善するときは、関連のない section を書き直すのではなく、観測された behavior を修正して再検証する。
+- 頻繁に読み込まれるスキルは非常に短く保ち、それ以外も 500 語未満に保つ。これは上限であり目標ではない。スキルはもっと短くてよい。500 語に近づけるために水増ししない。
+- 明らかすぎない指針だけを書く。罠、判断が必要な点、失敗しやすい形、例外に絞る。エージェントのふるまいを変えない一般的なチェックリストは削る。
+- 重い例、API、構文は参照資料へ移す。
+- スクリプトは、決定的に繰り返せる操作のためだけに追加する。
+- 薄い例を複数並べるより、優れた例を 1 つ置く。
+- フローチャートは、判断やループが明らかでない場合だけ使う。
+- スキルを相互参照するときは、明示的な必須マーカーとともにスキル名で参照する。パスや `@` リンクは避ける。
+- 反例や注意信号は、実際に出た言い訳に対してだけ追加する。
+- 物語調のセッション履歴や、本文から見えない依存関係を避ける。
+- フィードバックをもとに改善するときは、無関係な節を書き直すのではなく、観測されたふるまいを直して再検証する。
 
-## Evidence の記録
+## 根拠の記録
 
-skill が機能すると主張する前に、以下を記録する:
+スキルが機能すると主張する前に、以下を記録する。
 
-- 使用した scenario
-- critical requirement
-- baseline failure、または baseline を省略した理由
-- result: `untested`、`structurally reviewed`、または `scenario-tested`
-- unclear point または discretionary fill-in
+- 使用した場面
+- 重要な要件
+- 何もしない場合の失敗、またはその確認を省略した理由
+- 結果: `untested`、`structurally reviewed`、または `scenario-tested`
+- 不明点、または判断で補った内容
 
-validation を省略した場合は `untested` と言う。通ったかのように示唆しない。
+検証を省略した場合は `untested` と言う。通ったかのように示唆しない。
 
 ## 最終確認
 
-Trigger-only description。簡潔で実行可能な body。必要な supporting file。RED scenario。記録済みの validation status。
+起動条件だけを書いた `description`。簡潔で実行可能な本文。必要な補助ファイル。RED 場面。記録済みの検証状態。

@@ -1,84 +1,84 @@
 ---
 source: skills/reviewing-architecture/SKILL.md
 name: reviewing-architecture
-description: 'refactoring candidate、shallow module、leaky interface、duplicated orchestration、test しにくい behavior、複数 file に広がる変更など、code structure の architecture friction を review するときに使う。'
+description: 'リファクタリング候補、浅いモジュール、漏れのあるインターフェース、重複した処理の組み立て、テストしにくいふるまい、複数ファイルに広がる変更など、コード構造上の摩擦をレビューするときに使う。'
 ---
 
 
-# Architecture の review
+# アーキテクチャレビュー
 
-interface を設計する前に architectural friction を表に出し、candidate を提案する。goal は locality、leverage、testability を改善すること。
+インターフェースを設計する前に、アーキテクチャ上の摩擦を表に出し、候補を提案する。目標は、変更の局所性、少ない知識で使えること、テストしやすさを改善することである。
 
 ## 語彙
 
-- **Module**: interface と implementation を持つ code。
-- **Interface**: caller が知る必要のあるすべてのもの: type、invariant、error、ordering、config、behavior。
-- **Implementation**: interface の背後に隠された code。
-- **Depth**: 小さな interface の背後にどれだけの behavior があるか。
-- **Shallow module**: interface complexity が implementation complexity に近い module。
-- **Seam**: caller を編集せずに behavior を変えられる場所。
-- **Adapter**: seam の背後にある concrete implementation。
-- **Locality**: change と bug が局所に留まること。
-- **Leverage**: caller が少ない知識でより多くの behavior を得ること。
+- **モジュール**: インターフェースと実装を持つコード。
+- **インターフェース**: 呼び出し側が知る必要のあるすべてのもの。型、不変条件、エラー、順序、設定、ふるまい。
+- **実装**: インターフェースの背後に隠されたコード。
+- **深さ**: 小さなインターフェースの背後に、どれだけのふるまいがあるか。
+- **浅いモジュール**: インターフェースの複雑さが、実装の複雑さに近いモジュール。
+- **差し替え点**: 呼び出し側を編集せずに、ふるまいを変えられる場所。
+- **アダプター**: 差し替え点の背後にある具体的な実装。
+- **局所性**: 変更やバグが局所に留まること。
+- **レバレッジ**: 呼び出し側が少ない知識でより多くのふるまいを得られること。
 
 ## 探索
 
-まず関連 artifact を読む: `README.md`、`docs/adr/`、`docs/specs/`、`specs/`、referenced issues。主 task が proposed plan の stress-test である場合は、代わりに `designing-with-artifacts` を使う。
+まず関連資料を読む。`README.md`、`docs/adr/`、`docs/specs/`、`specs/`、参照された issue。主なタスクが提案された計画の検討である場合は、代わりに `designing-with-artifacts` を使う。
 
-friction を探索する:
+摩擦を探す。
 
-- 1 つの concept を理解するために多くの small module を行き来する必要がある
-- helper は test のためだけに存在するが、bug は call site で起きる
-- interface が implementation detail を露出しすぎている
-- 複数の caller が同じ orchestration を重複している
-- public behavior を通じた test が書きにくい
-- change が boundary を越えて漏れる
-- uncertainty の高い design work が、戻しにくい implementation と混ざっている
+- 1 つの概念を理解するために、多くの小さなモジュールを行き来する必要がある
+- 補助関数はテストのためだけに存在するが、バグは呼び出し側で起きる
+- インターフェースが実装詳細を露出しすぎている
+- 複数の呼び出し側が同じ処理の組み立てを重複して持っている
+- 公開されたふるまいを通じたテストが書きにくい
+- 変更が境界を越えて漏れる
+- 不確実性の高い設計作業が、戻しにくい実装と混ざっている
 
-real friction が見つからない場合はそう言う。refactor を捏造しない。evidence なしに recommendation しない。各 candidate について、code、test、issue、spec、または concrete change scenario を cite する。
+実際の摩擦が見つからない場合はそう言う。リファクタリングを捏造しない。根拠なしに推奨しない。各候補について、コード、テスト、issue、仕様、または具体的な変更場面を示す。
 
-deletion test を適用する: module を削除して complexity が消えるなら、おそらく shallow だった。complexity が caller 群に再出現するなら、その module は役目を果たしている可能性がある。
+削除テストを適用する。モジュールを削除して複雑さが消えるなら、おそらく浅かった。複雑さが呼び出し側の群れに再出現するなら、そのモジュールは役目を果たしている可能性がある。
 
-## Candidate の提示
+## 候補の提示
 
-先に新しい interface を提案しない。candidate を提示する:
+先に新しいインターフェースを提案しない。候補を提示する。
 
-- 関連する files/modules
-- problem
-- locality、leverage、または tests にどう効いているか
+- 関連するファイル/モジュール
+- 問題
+- 局所性、レバレッジ、またはテストにどう効いているか
 - 改善の方向
-- その change によって影響を受ける、または保護される tests
-- その change によって保護される behavior または requirement coverage
-- ADR/spec conflict があればそれ
+- その変更によって影響を受ける、または保護されるテスト
+- その変更によって保護されるふるまい、または要件のカバー範囲
+- ADR/仕様との衝突があればそれ
 
-detailed design の前に、どの candidate を探索するかを尋ねる。
+詳細設計の前に、どの候補を探索するかを尋ねる。
 
 この形を使う:
 
 ```markdown
-## Candidate <N>: <name>
-- 関連 files/modules:
-- friction:
+## 候補 <N>: <名前>
+- 関連ファイル/モジュール:
+- 摩擦:
 - 重要な理由:
 - 改善の方向:
-- tests:
-- evidence:
+- テスト:
+- 根拠:
 ```
 
-## 設計 follow-up
+## 設計の続き
 
-選ばれた candidate を探索するとき:
+選ばれた候補を探索するとき:
 
-- caller が必要とする behavior を定義する
-- interface を implementation より小さく保つ
-- recommendation の前に、意味のある 2-3 個の interface option を比較する
-- plausible な場合は、minimal option、flexible option、common-case-optimized option を少なくとも含める
-- abstraction seam を追加する前に、少なくとも 2 つの plausible adapter を要求する
-- internal refactor 後も残るべき tests を特定する
-- uncertainty の高い work は、戻しにくい refactor の前に research または spike として前倒しする
-- ADR は、戻しにくく、意外性があり、trade-off がある decision にだけ提案する
+- 呼び出し側が必要とするふるまいを定義する
+- インターフェースを実装より小さく保つ
+- 推奨の前に、意味のある 2-3 個のインターフェース案を比較する
+- 妥当な場合は、最小案、柔軟案、よくある使い方に最適化した案を少なくとも含める
+- 抽象化の差し替え点を追加する前に、少なくとも 2 つの妥当なアダプターを求める
+- 内部リファクタリング後も残るべきテストを特定する
+- 不確実性の高い作業は、戻しにくいリファクタリングの前に調査または試作として前倒しする
+- ADR は、戻しにくく、意外性があり、トレードオフがある判断にだけ提案する
 
-interface option は次で比較する:
+インターフェース案は次で比較する:
 
-| option | interface size | hidden complexity | caller impact | test impact | evidence/risk |
+| 案 | インターフェースの大きさ | 隠れる複雑さ | 呼び出し側への影響 | テストへの影響 | 根拠/リスク |
 | --- | --- | --- | --- | --- | --- |

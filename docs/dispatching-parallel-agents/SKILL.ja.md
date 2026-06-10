@@ -1,92 +1,92 @@
 ---
 source: skills/dispatching-parallel-agents/SKILL.md
 name: dispatching-parallel-agents
-description: 'file、state、dependencies、verification を分離でき、2 つ以上の独立した task、failure、investigation、または research question を parallel subagent に分割しても安全なときに使う。'
+description: 'ファイル、状態、依存関係、検証を分離でき、2 つ以上の独立したタスク、失敗調査、調査作業、または研究上の問いを並列のサブエージェントに分けても安全なときに使う。'
 ---
 
 
-# Parallel Agents の dispatch
+# 並列エージェントへの分担
 
-独立性が本物の場合にだけ subagent を dispatch する。parallelism が有効なのは、それぞれの agent が他 agent の context を必要とせず、同じ state に触れずに推論や編集を進められる場合である。
+本当に独立している場合にだけ、サブエージェントへ分担する。並列化が有効なのは、それぞれのエージェントが他のエージェントの文脈を必要とせず、同じ状態に触れずに推論や編集を進められる場合である。
 
-work unit がまだ定義されていない場合は、agent を dispatch する前に `slicing-issues` を使う。
+作業単位がまだ定義されていない場合は、エージェントへ分担する前に `slicing-issues` を使う。
 
 ## 使うとき
 
-- 複数の failing test files が、それぞれ異なる原因を持つ可能性が高い
-- 別々の subsystem が独立して壊れている
-- research question を独立して回答できる
-- 各 task に明確な owner と expected output がある
-- agent が同じ file の編集を避けられる
-- 各 task を integration 前に独立して検証できる
+- 複数の失敗しているテストファイルが、それぞれ異なる原因を持つ可能性が高い
+- 別々のサブシステムが独立して壊れている
+- 調査上の問いに独立して答えられる
+- 各タスクに明確な担当範囲と期待する成果物がある
+- エージェントが同じファイルを編集せずに済む
+- 統合前に各タスクを独立して検証できる
 
 ## 使わないとき
 
-- 1 つの root cause がすべての failure を説明し得る
-- system state を全体として理解する必要がある
-- task が file、migration、generated output、または external state を共有している
-- work の分解方法がまだ分かっていない
-- correctness のために result の順序付けが必要である
-- ある agent の answer が別 agent の task definition を変え得る
+- 1 つの根本原因ですべての失敗を説明できる可能性がある
+- システム状態を全体として理解する必要がある
+- タスクがファイル、マイグレーション、生成物、または外部状態を共有している
+- 作業の分け方がまだ分かっていない
+- 正しさのために結果の順序付けが必要である
+- あるエージェントの回答が、別のエージェントのタスク定義を変え得る
 
 ## 手順
 
-1. work を、期待される verification を持つ独立 domain にまとめる。
-2. 各 agent に 1 domain、明示的な file ownership、触れてはならない protected paths を割り当てる。
-3. 各 agent に、自分だけが codebase にいるわけではなく、他者の edit を revert してはならないと伝える。
-4. 各 agent に fresh で self-contained な context を渡す: goal、constraints、relevant errors、commands、expected output、verification、owned files、触れてはならない file。継承された session history に依存しない。
-5. conflict の可能性を確認してから、agent を 1 回の parallel batch で実行する。
-6. すべての result を読み、diff を確認し、overlap を解決する。
-7. integration 後に関連する full verification を実行する。
+1. 作業を、期待する検証方法を持つ独立した領域にまとめる。
+2. 各エージェントに 1 つの領域、明示的なファイル所有範囲、触れてはならない保護パスを割り当てる。
+3. 各エージェントに、自分だけがコードベースにいるわけではなく、他者の編集を戻してはならないと伝える。
+4. 各エージェントに、新しく単体で完結した文脈を渡す。目標、制約、関連エラー、コマンド、期待する成果物、検証方法、担当ファイル、触れてはならないファイルを含める。引き継がれたセッション履歴に依存しない。
+5. 競合の可能性を確認してから、エージェントを 1 回の並列実行として動かす。
+6. すべての結果を読み、差分を確認し、重なりを解決する。
+7. 統合後に、関連する全体検証を実行する。
 
 ## 独立性チェック
 
-dispatch 前に、各 task は以下を満たしている必要がある:
+分担前に、各タスクは以下を満たしている必要がある。
 
-- distinct files、または read-only research scope
-- shared generated artifacts、migrations、global state がない
-- 独立して review できる明確な result
-- 別 agent の pending answer への依存がない
-- その domain の完了を証明できる verification method
+- 別々のファイル、または読み取り専用の調査範囲である
+- 共有する生成物、マイグレーション、グローバル状態がない
+- 独立してレビューできる明確な結果がある
+- 別エージェントの未回答に依存していない
+- その領域の完了を証明できる検証方法がある
 
-いずれかが失敗する場合は、parallelize せず順番に進める。
+いずれかを満たせない場合は、並列化せず順番に進める。
 
-## Prompt の形
+## プロンプトの形
 
 ```text
-タスク: <1 つの problem domain>
+タスク: <1 つの問題領域>
 
 コンテキスト:
-- relevant failure または requirement
-- この agent が ownership を持つ files または modules
-- constraints と触れてはならない files
+- 関連する失敗または要件
+- このエージェントが担当するファイルまたはモジュール
+- 制約と触れてはならないファイル
 
 ゴール:
-- 完了時に true であるべきこと
+- 完了時に成り立っているべきこと
 
 返す内容:
-- root cause または finding
+- 根本原因または発見
 - 実施した変更
-- 実行した verification
-- 証明できた requirement または task coverage
-- 残る risk
+- 実行した検証
+- 証明できた要件またはタスク範囲
+- 残るリスク
 ```
 
-ownership を明確に言えない場合は、まだ parallelize しない。
+担当範囲を明確に言えない場合は、まだ並列化しない。
 
 ## 統合レポート
 
-agent が戻ったら、以下を要約する:
+エージェントが戻ったら、以下を要約する。
 
 ```markdown
 ## 結果
-- Agent/task: outcome と変更 file
+- エージェント/タスク: 結果と変更ファイル
 
 ## 競合
-- overlap または contradiction と、その解決
+- 重なりまたは矛盾と、その解決
 
 ## 検証
-- integration 後に実行した command
+- 統合後に実行したコマンド
 
 ## 残るリスク
 - 確認していないこと

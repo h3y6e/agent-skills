@@ -2,71 +2,71 @@
 source: skills/authoring-skills/references/empirical-validation.md
 ---
 
-# 実証的 validation
+# 実証的検証
 
-skill の重要度が高い、大きく revise した、予期しないふるまいをしている、または user が empirical evaluation を依頼したときに使う。trigger または behavior が変わっていない小さな wording edit では skip する。
+重要度の高いスキル、大きく改訂したスキル、予期しないふるまいをしているスキル、またはユーザーが実証的な評価を依頼したときに使う。起動条件やふるまいが変わらない小さな文言修正では省略する。
 
 ## ループ
 
-1. **Static consistency**: frontmatter `description` と body を比較する。description が body で cover していない behavior を約束している場合は、execution 前に直す。
-2. **Scenario setup**: 評価前に現実的な scenario を 2-3 個定義する。median case を 1 つ、edge case を 1-2 個使う。
-3. **Requirements checklist**: 各 scenario について、execution 前に 3-7 個の judged item を定義する。少なくとも 1 つの `[critical]` item を含める。result を見た後で item を追加、削除、retag しない。
-4. **Baseline**: 新しい skill では no skill と比較する。既存 skill では old version を snapshot し、old と new を比較する。
-5. **Fresh evaluator**: 各 round で新しい evaluator/subagent を使う。self-rereading で代用しない。dispatch が使えない場合は `empirical validation skipped` と報告するか、static structural review だけを実行する。
-6. **Execution report**: evaluator は target skill を使って scenario を実行し、requirement achievement、unclear points、discretionary fill-ins、retries、phase weakness を報告する。
-7. **Two-sided evaluation**: success は binary。失敗した `[critical]` item が 1 つでもあれば failure。accuracy、unclear points、discretionary fill-ins、利用可能なら optional step/duration/retry count も記録する。subjective output では、編集前に user review を集める。
-8. **Minimum fix**: 編集前に、どの checklist item または judgment wording を fix が満たすべきかを述べる。1 iteration につき 1 theme を適用する。
-9. **Re-evaluate**: 再び fresh evaluator を使う。new unclear point がなく、meaningful metric improvement もない round が 2 回連続したら止める。high-importance skill では 3 round を使う。
+1. **静的な整合性**: フロントマターの `description` と本文を比較する。`description` が本文で扱っていないふるまいを約束している場合は、実行前に直す。
+2. **場面設定**: 評価前に現実的な場面を 2-3 個定義する。典型例を 1 つ、端の例を 1-2 個使う。
+3. **要件チェックリスト**: 各場面について、実行前に評価項目を 3-7 個定義する。少なくとも 1 つは `[critical]` にする。結果を見た後で項目を追加、削除、分類変更しない。
+4. **基準比較**: 新しいスキルでは、スキルなしの状態と比較する。既存スキルでは旧版を保存し、旧版と新版を比較する。
+5. **新しい評価者**: 各回で新しい評価者またはサブエージェントを使う。自分で読み直すだけで代用しない。分担実行が使えない場合は `empirical validation skipped` と報告するか、静的な構造レビューだけを行う。
+6. **実行レポート**: 評価者は対象スキルを使って場面を実行し、要件の達成状況、不明点、判断で補った内容、再試行回数、弱かった段階を報告する。
+7. **両面評価**: 成否は二値で判定する。失敗した `[critical]` 項目が 1 つでもあれば失敗。精度、不明点、判断で補った内容、利用できる場合は任意の手順数・所要時間・再試行回数も記録する。主観的な成果物では、編集前にユーザーレビューを集める。
+8. **最小修正**: 編集前に、どのチェック項目または判断文を満たすための修正かを述べる。1 回の調整で 1 つのテーマだけ適用する。
+9. **再評価**: もう一度新しい評価者を使う。新しい不明点がなく、意味のある指標改善もない回が 2 回続いたら止める。重要度の高いスキルでは 3 回使う。
 
-同じ failure class が 3 回以上繰り返す場合は、wording patch を止めて skill を再構成する。
+同じ失敗の種類が 3 回以上繰り返す場合は、文言修正を止めてスキルを再構成する。
 
-trigger accuracy には `description-tuning.md` を使う。
+起動精度には `description-tuning.md` を使う。
 
-## 評価者 prompt
+## 評価者プロンプト
 
 ```markdown
-あなたは <skill name> の blank-slate evaluator です。
+あなたは <スキル名> の、前提知識を持たない評価者です。
 
-## 対象 skill
-<path または full text>
+## 対象スキル
+<パスまたは全文>
 
 ## シナリオ
-<現実的な task context>
+<現実的なタスク文脈>
 
-## 要件 checklist
-1. [critical] <minimum bar>
-2. <通常の judged item>
-3. <通常の judged item>
+## 要件チェックリスト
+1. [critical] <最低基準>
+2. <通常の評価項目>
+3. <通常の評価項目>
 
 ## タスク
-target skill を使って scenario を実行し、その後次を報告してください:
+対象スキルを使ってシナリオを実行し、その後次を報告してください:
 
 - 成果物:
-- Requirement achievement: 各 item について pass / fail / partial
-- Trace: Understanding / Planning / Execution / Formatting。詰まった phase または skip した phase を含める
+- 要件達成: 各項目について pass / fail / partial
+- 経過: 理解 / 計画 / 実行 / 整形。詰まった段階または省略した段階を含める
 - 不明点:
-  - issue:
-  - cause:
-  - general fix rule:
-- discretionary fill-ins:
-- retries:
+  - 問題:
+  - 原因:
+  - 一般化した修正ルール:
+- 判断で補った内容:
+- 再試行:
 ```
 
 ## 結果記録
 
 ```markdown
-## Iteration N
+## 反復 N
 
 ### 変更
-- <minimum fix と、それが対象にする checklist item>
+- <最小修正と、それが対象にするチェック項目>
 
 ### 結果
-| scenario | success | accuracy | 弱い phase | 新しい unclear point |
+| シナリオ | 成功 | 精度 | 弱い段階 | 新しい不明点 |
 | --- | --- | --- | --- | --- |
 
 ### 台帳
-- Added/Re-seen: <failure class> - <既存 instruction がそれを防げなかった理由>
+- 追加/再確認: <失敗の種類> - <既存の指示がそれを防げなかった理由>
 
 ### 次
-- <次の minimum fix または stop reason>
+- <次の最小修正または止める理由>
 ```

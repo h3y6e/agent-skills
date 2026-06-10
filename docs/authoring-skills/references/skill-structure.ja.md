@@ -2,34 +2,34 @@
 source: skills/authoring-skills/references/skill-structure.md
 ---
 
-# Skill の構造
+# スキルの構成
 
 何を `SKILL.md`、`references/`、または `scripts/` に入れるかを決めるときに使う。
 
 ## 具体例から始める
 
-skill を構造化する前に、user、現在の conversation、または realistic generated scenario から具体的な usage example を集める。各 example について次を問う:
+スキルの構成を決める前に、ユーザー、現在の会話、または現実的に作った場面から、具体的な使用例を集める。各例について次を問う。
 
-- どの task が skill を trigger すべきか。
-- どの output を生成すべきか。
-- agent がなければ再発見する repeated work は何か。
-- core workflow と reference detail のどちらに属する information か。
-- workflow を変える edge case または dependency は何か。
+- どのタスクでスキルが起動すべきか。
+- どの成果物を生成すべきか。
+- エージェントがスキルなしでは毎回調べ直す作業は何か。
+- どの情報が中核手順に属し、どの情報が参照用の詳細に属するか。
+- 手順を変える端のケースや依存関係は何か。
 
-## Resource の配置
+## リソースの配置
 
-| Location | ここに置くもの | ここに置かないもの |
+| 場所 | ここに置くもの | ここに置かないもの |
 | --- | --- | --- |
-| `SKILL.md` | Core principle、trigger-sensitive workflow、decision rule、output contract、short example | Long API docs、exhaustive variant、session history |
-| `references/` | 重い docs、detailed pattern、advanced case、variant-specific guide | pointer なしで毎 invocation に必要な instruction |
-| `scripts/` | deterministic repeated operations、validators、generators、reusable helpers | one-off command、または agent が rerun しない code |
+| `SKILL.md` | 中核原則、起動条件に関わる手順、判断ルール、出力契約、短い例 | 長い API ドキュメント、網羅的な派生例、セッション履歴 |
+| `references/` | 重いドキュメント、詳細な型、高度なケース、派生ごとのガイド | ポインタなしで毎回の起動時に必要になる指示 |
+| `scripts/` | 決定的に繰り返せる操作、検証器、生成器、再利用できる補助処理 | 一回限りのコマンド、またはエージェントが再実行しないコード |
 
-実際に使う directory だけを作る。参照された file はすべて存在し、`SKILL.md` body はいつそれを読むかを述べていなければならない。
+実際に使うディレクトリだけを作る。参照されたファイルはすべて存在していなければならない。`SKILL.md` の本文には、それをいつ読むかを書く。
 
 ## 構造チェック
 
-- Progressive disclosure が明確である: metadata -> `SKILL.md` -> references/scripts on demand。
-- body は common path に対して lean かつ self-contained である。
-- 複数の evaluation で生まれた repeated helper は `scripts/` に昇格する。
-- large reference file には heading または search term が含まれている。
-- example は adapt するのに十分 complete であり、多数の shallow variant に分散していない。
+- 段階的な開示が明確である: metadata -> `SKILL.md` -> 必要に応じて references/scripts。
+- 本文は通常経路に対して軽く、単体で読める。
+- 複数回の評価で繰り返し使われた補助処理は `scripts/` に昇格する。
+- 大きな参照ファイルには、見出しまたは検索語が含まれている。
+- 例は応用できるだけ十分に完結しており、薄い派生例を多数ばらまいていない。

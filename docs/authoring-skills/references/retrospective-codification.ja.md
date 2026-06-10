@@ -2,56 +2,56 @@
 source: skills/authoring-skills/references/retrospective-codification.md
 ---
 
-# Retrospective の codification
+# 振り返りから教訓を残す
 
-task が trial and error を通じて再利用可能な教訓を生んだとき、または user が教訓の codify を依頼したときに使う。すべての task 後に自動実行しない。
+試行錯誤を通じて再利用できる教訓が得られたとき、またはユーザーが教訓として残すことを依頼したときに使う。すべてのタスク後に自動で実行しない。
 
 ## 中核ルール
 
-対になった教訓だけを codify する:
+対になった教訓だけを残す。
 
-- first failure: 最初に試したことと、その失敗の仕方
-- final solution: うまくいったこと
-- bridging insight: 最初に知っておくべきだったこと
+- 最初の失敗: 最初に試したことと、その失敗の仕方
+- 最終的な解決策: うまくいったこと
+- つなぎとなる気づき: 最初に知っておくべきだったこと
 
-insight は session history ではなく、future-facing instruction として書く。
+気づきはセッション履歴ではなく、今後使える指示として書く。
 
 ## ループ
 
-1. **Extract**: first failure、final solution、bridging insight、命令形の future instruction を 1 つ記録する。
-2. **Dedup**: insight から 2-3 個の key を使い、既存 skill、project instructions、rules を検索する。完全に cover されている場合は proposal を作らない。部分的に cover されている場合は、新しい skill を追加せず append/update する。
-3. **Classify destination**:
-   - mechanically detectable -> prose ではなく lint/static rule
-   - short always-on instruction -> project または user agent instruction
-   - multi-step procedure、judgment、template -> 既存 skill に append、または skill を作成
-   - one-off または project-specific detail -> note、issue、PR、または no adoption
-4. **Prefer smallest durable form**: detectable case では prose より lint。new skill より append/absorb。new skill は standalone recurring value がある場合だけ。
-5. **Write only requested scope**: user の explicit request 外で persistent agent behavior を変える場合は、proposal を提示して待つ。
+1. **抽出**: 最初の失敗、最終的な解決策、つなぎとなる気づき、命令形の今後の指示を 1 つ記録する。
+2. **重複確認**: 気づきから 2-3 個のキーを使い、既存スキル、プロジェクト指示、ルールを検索する。完全に含まれている場合は提案しない。部分的に含まれている場合は、新しいスキルを追加せず追記または更新する。
+3. **反映先の分類**:
+   - 機械的に検出できるもの -> 文章ではなく lint または静的ルール
+   - 短く常時有効にすべき指示 -> プロジェクト指示またはユーザーのエージェント指示
+   - 複数手順、判断、テンプレート -> 既存スキルへ追記、またはスキルを作成
+   - 一回限り、またはプロジェクト固有の詳細 -> ノート、issue、PR、または採用しない
+4. **長く残る最小形を優先する**: 検出できるものは文章より lint。新しいスキルより追記や吸収。新しいスキルは、単独で繰り返し使う価値がある場合だけ。
+5. **依頼された範囲だけを書く**: ユーザーの明示依頼の外で、継続的なエージェントのふるまいを変える場合は、提案を提示して待つ。
 
 ## 出力
 
 ```markdown
 ## 振り返り
-- 最初の failure:
-- 最終 solution:
-- insight:
+- 最初の失敗:
+- 最終的な解決策:
+- 気づき:
 
 ## 提案
-- 採用 candidate:
-- 検出した duplicate:
+- 採用候補:
+- 検出した重複:
 - 採用しないもの:
 
 ## 検証
-- 反映先の rationale:
-- dedup evidence:
-- 書き込み approval または explicit request:
+- 反映先の理由:
+- 重複確認の根拠:
+- 書き込み承認または明示依頼:
 ```
 
 ## 注意信号
 
-- failure 側のない final solution
-- "念のため" の skill
-- mechanically enforceable rule を prose だけで書く
-- dedup check を skip する
-- silent persistent behavior change
-- 体裁を保つためだけの薄い insight
+- 失敗側のない最終的な解決策
+- 「念のため」のスキル
+- 機械的に強制できるルールを文章だけで書く
+- 重複確認を省略する
+- 黙って継続的なふるまいを変える
+- 体裁を保つためだけの薄い気づき

@@ -2,40 +2,40 @@
 source: skills/authoring-skills/references/description-tuning.md
 ---
 
-# Description の調整
+# description の調整
 
-skill が trigger されにくい、trigger されすぎる、または user が trigger accuracy の tuning を依頼したときに使う。すべての edit 後に自動実行しない。
+スキルが起動しにくい、起動しすぎる、またはユーザーが起動精度の調整を依頼したときに使う。編集のたびに自動で実行しない。
 
 ## 中核ルール
 
-`description` は trigger contract である。狭すぎる、広すぎる、または user の situation ではなく workflow を説明していると、silent failure が起きる。
+`description` は起動条件の契約である。狭すぎる、広すぎる、またはユーザーの状況ではなく手順を説明していると、必要な場面で静かに起動しない。
 
 ## 分類
 
-rewrite の前に track を選ぶ:
+書き直す前に分類を選ぶ。
 
-| Track | 用途 | 形 |
+| 分類 | 用途 | 形 |
 | --- | --- | --- |
-| Meta | skill authoring、selection、evaluation、retrospective、setup | `Use ONLY when...` または `Invoke ONLY when...`。near-miss として `Do NOT auto-invoke...` を含める。 |
-| Project | user が proactive trigger を期待する domain/task skill | `Use when...`。symptom、file name、command、error、tool を含め、適切な場合は "even if the tool/domain is not named" を含める。 |
+| メタ | スキル作成、選定、評価、振り返り、設定 | `Use ONLY when...` または `Invoke ONLY when...`。近いが起動してはいけない例として `Do NOT auto-invoke...` を含める。 |
+| プロジェクト | ユーザーが能動的な起動を期待する、領域別またはタスク別のスキル | `Use when...`。症状、ファイル名、コマンド、エラー、ツールを含め、必要なら "even if the tool/domain is not named" も含める。 |
 
-## Checklist
+## 確認項目
 
-- 最初の clause が trigger を述べている。
-- wording は implementation focus ではなく user-intent focus である。
-- description が workflow を要約していない。
-- concrete surface keyword が含まれている: symptom、file shape、command、error、tool。
-- over-triggering が起きやすい場合は near-miss case を名指ししている。
-- frontmatter は 1024 chars 未満を保つ。description は 500 chars 未満を優先する。
-- body と description が一致している。
+- 最初の節が起動条件を述べている。
+- 実装方法ではなく、ユーザーの意図に焦点を当てている。
+- `description` が手順の要約になっていない。
+- 具体的に検索される表面上のキーワードが入っている。症状、ファイル形状、コマンド、エラー、ツールなど。
+- 起動しすぎる可能性がある場合は、近いが起動してはいけない例を名指ししている。
+- フロントマターは 1024 文字未満を保つ。`description` は 500 文字未満を優先する。
+- 本文と `description` が一致している。
 
-## Trigger 評価
+## 起動条件の評価
 
-重要な description change では、現実的な query を約 20 個定義する:
+重要な `description` 変更では、現実的な依頼文を約 20 個定義する。
 
-- 8-10 個は、言い回しが異なり implicit need を含む should-trigger query。
-- 8-10 個は should-not-trigger query。多くは keyword を共有するが別 skill を必要とする near-miss。
-- 明らかに無関係な negative query は避ける。
-- iteration する場合は train/validation に分ける。train score ではなく validation performance で選ぶ。
+- 8-10 個は、言い回しが異なり、暗黙の必要性を含む「起動すべき」依頼文にする。
+- 8-10 個は「起動すべきでない」依頼文にする。多くはキーワードを共有するが、別のスキルを必要とする近い例にする。
+- 明らかに無関係な否定例は避ける。
+- 繰り返し調整する場合は、訓練用と検証用に分ける。訓練用の点数ではなく、検証用での結果で選ぶ。
 
-miss を記録し、1 iteration につき 1 theme を更新する。body/description mismatch が原因でない限り、description-only tuning と body rewrite を混ぜない。
+取りこぼしを記録し、1 回の調整で 1 つのテーマだけ更新する。本文と `description` の不一致が原因でない限り、`description` だけの調整と本文の書き直しを混ぜない。

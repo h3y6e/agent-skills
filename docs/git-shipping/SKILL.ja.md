@@ -1,61 +1,60 @@
 ---
 source: skills/git-shipping/SKILL.md
 name: git-shipping
-description: 'git repo で code change を行う、branch を切り替える、または `push`、`commit`、`pr`、branch 管理を依頼されたときに使う。実装を始める前に、正しい branch 上にいることを確認する。'
-compatibility: 'git、gh、cxg、git-wt が必要。生の git worktree を使わない。'
+description: 'Git リポジトリでコード変更を行うとき、ブランチを切り替えるとき、または `push`、`commit`、`pr`、ブランチ管理を依頼されたときに使う。実装を始める前に、正しいブランチにいることを確認する。'
+compatibility: 'git、gh、cxg、git-wt が必要。生の git worktree は使わない。'
 ---
-
 
 # Git shipping
 
-すべての code change は branch → commit → push → PR を通る。この skill は、各 step が project conventions に従うようにする。
+すべてのコード変更は、ブランチ → commit → push → PR の流れを通す。このスキルは、それぞれの手順をプロジェクトの慣習に沿わせる。
 
 ## 意図の展開
 
-短い git request は、文字通りの単一 command ではなく workflow の shorthand として扱う。
+短い Git 依頼は、単一コマンドの実行依頼ではなく、作業手順全体の省略表現として扱う。
 
 | ユーザーの依頼 | 意味 |
 |-----------|---------------|
-| `commit` | repo を確認し、coherent chunks を stage し、適切な message で commit する |
-| `push` | repo を確認し、必要なら coherent commit を作り、その後 push する |
-| `pr` | repo を確認し、必要なら default branch から移動し、commit、push、PR 作成を行う |
+| `commit` | リポジトリの状態を確認し、まとまりごとに stage し、適切なメッセージで commit する |
+| `push` | リポジトリを確認し、必要ならまとまった commit を作り、その後 push する |
+| `pr` | リポジトリを確認し、必要ならデフォルトブランチから移動し、commit、push、PR 作成まで行う |
 
-意図した change scope が不明確で、unrelated work を含めてしまう可能性がある場合だけ質問する。
+意図した変更範囲が不明確で、無関係な作業を含めてしまいそうな場合だけ質問する。
 
 ## 言語ルール
 
-`gh repo view --json visibility -q '.visibility'` で repo visibility を確認する。
+`gh repo view --json visibility -q '.visibility'` でリポジトリの公開範囲を確認する。
 
-- **PUBLIC**: commit message、PR title、PR body には English を使う。
-- **PRIVATE / INTERNAL**: user が現在使っている言語を使う。
+- **PUBLIC**: commit message、PR title、PR body は英語で書く。
+- **PRIVATE / INTERNAL**: ユーザーが現在使っている言語で書く。
 
 ## ブランチ
 
-新規 feature work は default branch 上ではなく、clean feature-branch worktree で始める。
-worktree を作るときは、flag を選ぶ前に `git wt -h` を確認し、`git wt` を使う。
-生の `git worktree` を呼ばない。
+新しい作業はデフォルトブランチ上で直接始めず、変更のない feature branch の worktree で始める。
+worktree を作るときは、フラグを選ぶ前に `git wt -h` を確認し、`git wt` を使う。
+生の `git worktree` は呼ばない。
 
-すでに始まっている work を、この workflow を満たすためだけに新しい worktree へ移動しない。file が現在の checkout ですでに編集中なら、そこで作業を続け、安全な場合にその場で適切な branch を作成または切り替える。
+すでに始まっている作業を、この手順を満たすためだけに新しい worktree へ移動しない。現在の checkout でファイルがすでに編集中なら、そこで作業を続け、安全な場合にその場で適切なブランチを作成または切り替える。
 
 ## コミット
 
-**必須サブスキル:** commit message format には `cxg` skill を使う。
+**必須サブスキル:** commit message の形式には `cxg` スキルを使う。
 
-## Pull Request
+## プルリクエスト
 
-- 該当する repository PR template がある場合は優先して使う。
-- 該当する template がない場合は、次の section だけをこの順序で使う: `## Summary`、`## Background`、`## Changes`、任意の `## Impact`。
-- `## Impact` は PR merge によって変わる behavior にだけ使う。behavior change がない場合は省略する。unchanged behavior、non-goals、未実施の作業を列挙しない。
-- ad hoc な `Testing`、`Verification`、`Checklist`、`Related issues`、`Screenshots` section を追加しない。local verification command をすべて PR body に dump しない。
-- 新規 PR は draft を default にする (`gh pr create --draft`)。依頼がない限り、既存 PR の draft/ready state は保つ。
+- リポジトリに該当する PR template がある場合は、それを優先して使う。
+- 該当する template がない場合は、次の節だけをこの順序で使う: `## Summary`、`## Background`、`## Changes`、必要な場合のみ `## Impact`。
+- `## Impact` は、PR を merge することで変わるふるまいにだけ使う。ふるまいの変更がない場合は省略する。変わらないこと、非目標、実施していない作業を列挙しない。
+- その場限りの `Testing`、`Verification`、`Checklist`、`Related issues`、`Screenshots` 節を追加しない。手元で実行した検証コマンドをすべて PR body に貼り付けない。
+- 新規 PR は既定で draft にする (`gh pr create --draft`)。依頼がない限り、既存 PR の draft/ready 状態は変えない。
 
 ## よくある誤り
 
 | 誤り | 修正 |
 |---------|-----|
-| 新規 work を default branch 上で直接始める | 先に clean feature-branch worktree を作る |
-| workflow を満たすためだけに、すでに始まっている work を移動する | 現在の checkout で作業を続け、安全な場合にその場で branch を切る。change を移す前に質問する |
-| modified file や untracked file を default で新しい worktree へ copy する | clean worktree を作る。in-progress change は明示依頼がある場合だけ transfer する |
-| `push` / `commit` を単一 git command として扱う | 上記の意図の展開に従う |
-| 生の `git worktree` を使う | `git wt` を使う。flag を選ぶ前に `git wt -h` を実行する |
-| `cxg lint` を skip する | commit 前に必ず `cxg lint` を通す |
+| 新しい作業をデフォルトブランチ上で直接始める | 先に変更のない feature branch の worktree を作る |
+| 手順を満たすためだけに、すでに始まっている作業を移動する | 現在の checkout で作業を続け、安全な場合にその場でブランチを切る。変更を移す前に質問する |
+| 変更済みファイルや未追跡ファイルを、既定で新しい worktree にコピーする | 変更のない worktree を作る。進行中の変更は明示依頼がある場合だけ移す |
+| `push` / `commit` を単一の Git コマンドとして扱う | 上記の意図の展開に従う |
+| 生の `git worktree` を使う | `git wt` を使う。フラグを選ぶ前に `git wt -h` を実行する |
+| `cxg lint` を省略する | commit 前に必ず `cxg lint` を通す |

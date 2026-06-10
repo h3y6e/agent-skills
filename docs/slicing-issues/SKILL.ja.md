@@ -1,88 +1,88 @@
 ---
 source: skills/slicing-issues/SKILL.md
 name: slicing-issues
-description: 'spec、plan、PRD、feature idea、または conversation を、vertical slice、acceptance criteria、dependencies、verification を持つ、独立実装可能な GitHub/Linear issue や ticket に分割するときに使う。'
+description: '仕様、計画、PRD、機能案、または会話を、縦に薄い単位、受け入れ条件、依存関係、検証方法を持つ、独立実装可能な GitHub/Linear issue やチケットへ分割するときに使う。'
 ---
 
 
-# Issue の slicing
+# issue の分割
 
-source material を、独立して実装・検証できる thin vertical issue に分割する。この skill は tool-neutral な issue draft を作る。issue tracker が明確な場合だけ publish する。
+元資料を、独立して実装・検証できる縦に薄い issue へ分割する。このスキルは、特定ツールに依存しない issue 草案を作る。issue 管理ツールが明確な場合だけ公開する。
 
 ## 入力素材
 
 存在するものを使う:
 
-- 現在の conversation
+- 現在の会話
 - 参照された issue
 - `docs/specs/*`、`specs/*`、または PRD
-- implementation plan
-- boundary を理解するために必要な場合は code exploration
+- 実装計画
+- 境界を理解するために必要な場合はコード調査
 
-problem または success criteria がまだ不明確な場合は、slicing の前に `framing-problems` を使う。slice がすでに存在し、execution だけが parallel の場合は `dispatching-parallel-agents` を使う。
+問題または成功条件がまだ不明確な場合は、分割の前に `framing-problems` を使う。分割単位がすでに存在し、実行だけを並列化する場合は `dispatching-parallel-agents` を使う。
 
-## Slice rules
+## 分割ルール
 
-- layer-by-layer task より vertical slice を優先する。
-- 各 issue は relevant layers を通る narrow complete path を deliver する。
-- 各 issue は単独で demo または verify できるべきである。
-- 1 つの大きな issue より、多くの thin slice を優先する。
-- 各 slice は、それが cover する source requirement、user story、risk、または decision に対応している必要がある。
-- 各 slice には concrete acceptance criteria と、expected evidence を含む verification が必要である。
-- uncertainty の高い discovery は、戻しにくい implementation slice の前に置く。
-- concrete scope なしに `TBD`、`TODO`、"handle errors"、"write tests" のような placeholder を使わない。
-- human judgment が必要な場合だけ slice を `HITL` と mark する。
-- agent が issue と repo context から実装できる場合は `AFK` と mark する。
-- approved issue は dependency order で、blocker から publish する。
+- 層ごとのタスクより、縦に切った単位を優先する。
+- 各 issue は、関連する層を通る狭く完結した経路を届ける。
+- 各 issue は単独でデモまたは検証できるべきである。
+- 1 つの大きな issue より、多くの薄い分割を優先する。
+- 各分割は、それが満たす元資料の要件、ユーザーストーリー、リスク、または判断に対応している必要がある。
+- 各分割には、具体的な受け入れ条件と、期待する根拠を含む検証方法が必要である。
+- 不確実性の高い発見作業は、戻しにくい実装単位の前に置く。
+- 具体的な範囲なしに `TBD`、`TODO`、"handle errors"、"write tests" のような仮置きを使わない。
+- 人間の判断が必要な場合だけ、分割単位を `HITL` と印付けする。
+- エージェントが issue とリポジトリ文脈から実装できる場合は `AFK` と印付けする。
+- 承認済み issue は依存順に、ブロッカーから公開する。
 
-単独で verify できない slice、または observable behavior なしに infrastructure だけを作る slice は却下する。
+単独で検証できない分割、または観察できるふるまいなしに基盤だけを作る分割は却下する。
 
 ## 手順
 
-1. source と parent issue context があれば集める。
-2. bad boundary を避けるために必要な場合だけ codebase を探索する。
-3. title、mode、dependencies、covered requirements、acceptance criteria、verification を含む slice を draft する。
-4. granularity と dependencies について user の approve を求める。
-5. approve 後、issue body を作るか、利用可能な GitHub/Linear workflow で publish する。
-6. 明示的に依頼されていない限り、parent/source issue を close または modify しない。
+1. 元資料と、あれば親 issue の文脈を集める。
+2. 悪い境界を避けるために必要な場合だけ、コードベースを調べる。
+3. タイトル、モード、依存関係、満たす要件、受け入れ条件、検証方法を含む分割案を作る。
+4. 粒度と依存関係について、ユーザーの承認を求める。
+5. 承認後、issue 本文を作るか、利用できる GitHub/Linear の手順で公開する。
+6. 明示的に依頼されていない限り、親 issue や元 issue を閉じたり変更したりしない。
 
-## Issue body
+## issue 本文
 
 ```markdown
-## 親または source
+## 親または元資料
 
-parent issue、PRD、spec、または conversation section への参照。
+親 issue、PRD、仕様、または会話内の該当箇所への参照。
 
 ## 作るもの
 
-layer-by-layer implementation ではなく、end-to-end behavior を説明する。
+層ごとの実装ではなく、端から端までのふるまいを説明する。
 
 ## 境界
 
-分かっている場合は、files、modules、systems、明示的な out-of-scope work。
+分かっている場合は、ファイル、モジュール、システム、明示的な対象外作業。
 
-## Mode
+## モード
 
 AFK または HITL。理由を 1 文で説明する。
 
-## Covered requirements
+## 満たす要件
 
-- この issue が満たす requirement または source section。
+- この issue が満たす要件または元資料の節。
 
-## Acceptance criteria
+## 受け入れ条件
 
-- [ ] 具体的で test 可能な criterion
-- [ ] 具体的で test 可能な criterion
+- [ ] 具体的でテスト可能な条件
+- [ ] 具体的でテスト可能な条件
 
-## Verification
+## 検証
 
-- 完了を証明する expected evidence を含む command、manual check、または review method。
+- 完了を証明する期待根拠を含むコマンド、手動確認、またはレビュー方法。
 
-## Blocked by
+## ブロック元
 
-なし、または blocking issue への参照。
+なし、またはブロックしている issue への参照。
 
-## Notes
+## 補足
 
-関連する decision、source spec、または out-of-scope boundary。
+関連する判断、元仕様、または対象外の境界。
 ```
