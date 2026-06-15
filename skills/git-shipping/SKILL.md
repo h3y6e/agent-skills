@@ -45,6 +45,7 @@ Do not move already-started work into a new worktree just to satisfy this workfl
 
 ## Pull Request
 
+- PR titles must use Conventional Commit subject format: `type(scope): subject`.
 - Prefer a repository PR template when one applies.
 - When no template applies, use only these sections, in this order: `## Summary`, `## Background`, `## Changes`, optional `## Impact`.
 - Use `## Impact` only for behavior changed by merging the PR. Omit it when there is no behavior change; do not list unchanged behavior, non-goals, or work not done.
@@ -59,5 +60,6 @@ Do not move already-started work into a new worktree just to satisfy this workfl
 | Moving already-started work just to satisfy the workflow | Keep working in the current checkout; branch in place when safe, and ask before relocating changes |
 | Copying modified or untracked files into new worktrees by default | Create clean worktrees; transfer in-progress changes only on explicit request |
 | Treating `push` / `commit` as a single git command | Follow Intent Expansion above |
+| Using a prose PR title | Use Conventional Commit subject format: `type(scope): subject` |
 | Using raw `git worktree` | Use `git wt`; run `git wt -h` before choosing flags |
 | Skipping `cxg lint` | Always pipe through `cxg lint` before committing |
