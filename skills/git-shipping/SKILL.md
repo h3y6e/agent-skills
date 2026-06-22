@@ -5,7 +5,7 @@ compatibility: Requires git, gh, cxg, and git-wt. Do not use raw git worktree.
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.6.5
+  version: 2026.6.6
 ---
 
 # Git Shipping

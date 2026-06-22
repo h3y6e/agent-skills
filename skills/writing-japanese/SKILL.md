@@ -2,7 +2,7 @@
 name: writing-japanese
 description: Use when writing, editing, or reviewing Japanese technical prose, book chapters, drafts, articles, or explanations where sentence-per-line formatting, paragraph logic, argument rigor, reader load, tone, restrained rhetoric, non-LLM phrasing, and concision matter.
 metadata:
-  version: 2026.6.5
+  version: 2026.6.6
   ref: https://gist.githubusercontent.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d/raw/5ed08e4475365fd233aa0d3ab71c19b87e1a5732/SKILL.md
 ---
 
