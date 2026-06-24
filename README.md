@@ -11,6 +11,7 @@ gh skill install h3y6e/agent-skills
 ## Dependencies
 
 - [h3y6e/cxg](https://github.com/h3y6e/cxg) — Used by `git-shipping` for commit message formatting and linting.
+- [h3y6e/anna](https://github.com/h3y6e/anna) — Used by `tracking-tasks` for task note lookup.
 
 ## Related
 
