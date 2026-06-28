@@ -1,0 +1,31 @@
+amends "package://github.com/jdx/hk/releases/download/v1.48.0/hk@1.48.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.48.0/hk@1.48.0#/Builtins.pkl"
+
+exclude = List(".agents/**", ".vendor/**")
+
+local linters = new Mapping<String, Step> {
+    ["actionlint"] = Builtins.actionlint
+    ["ghalint-workflow"] = Builtins.ghalint_workflow
+    ["mise"] = Builtins.mise
+    ["pinact"] = Builtins.pinact
+    ["rumdl"] = Builtins.rumdl
+    ["zizmor"] = Builtins.zizmor
+    ["trailing_whitespace"] = Builtins.trailing_whitespace
+    ["newlines"] = Builtins.newlines
+    ["detect_private_key"] = Builtins.detect_private_key
+}
+
+hooks {
+    ["pre-commit"] {
+        fix = true
+        stash = "git"
+        steps = linters
+    }
+    ["fix"] {
+        fix = true
+        steps = linters
+    }
+    ["check"] {
+        steps = linters
+    }
+}
