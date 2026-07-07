@@ -4,7 +4,7 @@ description: Use when creating, editing, validating, or codifying reusable lesso
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.6.7
+  version: 2026.7.0
 ---
 
 # Authoring Skills
