@@ -2,9 +2,9 @@
 description: Guides systematic root-cause debugging. Use when tests fail, builds break, behavior doesn't match expectations, or you encounter any unexpected error. Use when you need a systematic approach to finding and fixing the root cause rather than guessing.
 metadata:
     github-path: skills/debugging-and-error-recovery
-    github-ref: refs/tags/0.6.2
+    github-ref: refs/tags/0.6.3
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: d7f832d654e1a16755dcece28bf53a112dbcf0ce
+    github-tree-sha: 8845857bad758f5313263b7d79f7d82067b764bb
 name: debugging-and-error-recovery
 ---
 # Debugging and Error Recovery
@@ -35,7 +35,7 @@ When anything unexpected happens:
 6. RESUME only after verification passes
 ```
 
-**Don't push past a failing test or broken build to work on the next feature.** Errors compound. A bug in Step 3 that goes unfixed makes Steps 4-10 wrong.
+**Don't push past a failing test or broken build to work on the next feature.** Errors compound. A bug in Step 3 that goes unfixed makes Steps 4-6 wrong.
 
 ## The Triage Checklist
 

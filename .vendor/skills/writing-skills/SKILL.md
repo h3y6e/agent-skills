@@ -2,9 +2,9 @@
 description: Use when creating new skills, editing existing skills, or verifying skills work before deployment
 metadata:
     github-path: skills/writing-skills
-    github-ref: refs/tags/v6.0.3
+    github-ref: refs/tags/v6.1.1
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: fd00c456f13ea60ae568838036d483e7b4a4a44c
+    github-tree-sha: 69e051f84da949c75eaa1f94a1f5acc4c3e402b6
 name: writing-skills
 ---
 # Writing Skills
@@ -13,7 +13,7 @@ name: writing-skills
 
 **Writing skills IS Test-Driven Development applied to process documentation.**
 
-**Personal skills live in your runtime's skills directory** — see [claude-code-tools.md](../using-superpowers/references/claude-code-tools.md), [codex-tools.md](../using-superpowers/references/codex-tools.md), [copilot-tools.md](../using-superpowers/references/copilot-tools.md), or [gemini-tools.md](../using-superpowers/references/gemini-tools.md) for the path on your runtime. Codex, Copilot CLI, and Gemini CLI all also recognize `~/.agents/skills/` as a cross-runtime alias.
+**Personal skills live in your runtime's skills directory** 
 
 You write test cases (pressure scenarios with subagents), watch them fail (baseline behavior), write the skill (documentation), watch tests pass (agents comply), and refactor (close loopholes).
 
