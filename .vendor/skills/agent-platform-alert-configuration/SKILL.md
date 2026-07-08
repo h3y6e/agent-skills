@@ -1,15 +1,12 @@
 ---
-allowed-tools:
-    - terraform
-    - gcloud
-    - python
+allowed-tools: terraform gcloud python
 description: 'Configures best-practice alerting policies for Google Cloud Vertex AI / Agent Platform agents on Agent Runtime. Use when analyzing, writing, or deploying alerting policies to monitor agent latency, error rates, and quality metrics (response quality, tool use, hallucination). Also use when provisioning online monitors for quality evaluation, or analyzing live metrics traffic footprints. NOTE: This skill currently only works for the Agent Runtime. Don''t use for configuring general GCP alert policies or non-agent GCP alerting policies.'
 metadata:
     category: AiAndMachineLearning
     github-path: skills/cloud/agent-platform-alert-configuration
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 16707b4dbdc738f80a39b54e13a3ff2d04ad6b6b
+    github-tree-sha: 902286bccc7534fce1821369b508290faa1859a8
 name: agent-platform-alert-configuration
 ---
 # Agent Platform Alert Configuration

@@ -2,9 +2,9 @@
 description: Refines raw ideas into sharp, actionable concepts through structured divergent and convergent thinking. Use when an idea is still vague, when you need to stress-test assumptions before committing to a plan, or when you want to expand options before converging on one. Triggers on "ideate", "refine this idea", or "stress-test my plan".
 metadata:
     github-path: skills/idea-refine
-    github-ref: refs/tags/0.6.2
+    github-ref: refs/tags/0.6.3
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: b03c3dd70f49a564888b33a363d04e07edda8f4c
+    github-tree-sha: 14f474d8f51370ddd9127ff3d171810a1acf891a
 name: idea-refine
 ---
 # Idea Refine
@@ -23,7 +23,7 @@ This skill is primarily an interactive dialogue. Invoke it with an idea, and the
 
 ```bash
 # Optional: Initialize the ideas directory
-bash /mnt/skills/user/idea-refine/scripts/idea-refine.sh
+bash skills/idea-refine/scripts/idea-refine.sh
 ```
 
 **Trigger Phrases:**

@@ -1,13 +1,13 @@
 ---
 argument-hint: '[lite|full|ultra]'
 description: |
-    Forces the laziest solution that actually works, simplest, shortest, most minimal. Channels a senior dev who has seen everything: question whether the task needs to exist at all (YAGNI), reach for the standard library before custom code, native platform features before dependencies, one line before fifty. Supports intensity levels: lite, full (default), ultra. Use whenever the user says "ponytail", "be lazy", "lazy mode", "simplest solution", "minimal solution", "yagni", "do less", or "shortest path", and whenever they complain about over-engineering, bloat, boilerplate, or unnecessary dependencies.
+    Forces the laziest solution that actually works, simplest, shortest, most minimal. Channels a senior dev who has seen everything: question whether the task needs to exist at all (YAGNI), reach for the standard library before custom code, native platform features before dependencies, one line before fifty. Supports intensity levels: lite, full (default), ultra. Use on ANY coding task: writing, adding, refactoring, fixing, reviewing, or designing code, and choosing libraries or dependencies. Also use whenever the user says "ponytail", "be lazy", "lazy mode", "simplest solution", "minimal solution", "yagni", "do less", or "shortest path", or complains about over-engineering, bloat, boilerplate, or unnecessary dependencies. Do NOT use for non-coding requests (general knowledge, prose, translation, summaries, recipes).
 license: MIT
 metadata:
     github-path: skills/ponytail
-    github-ref: refs/tags/v4.8.3
+    github-ref: refs/tags/v4.8.4
     github-repo: https://github.com/DietrichGebert/ponytail
-    github-tree-sha: 96f214870ce10d1329c4bff08aa008e2e75dfc98
+    github-tree-sha: f2a46af45b7c0a57edf990bd43ed2e79782c31ef
 name: ponytail
 ---
 # Ponytail

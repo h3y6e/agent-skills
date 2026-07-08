@@ -2,9 +2,9 @@
 description: You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.
 metadata:
     github-path: skills/brainstorming
-    github-ref: refs/tags/v6.0.3
+    github-ref: refs/tags/v6.1.1
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: 27e73ef7b83994e913cba378081b587412d2e9cb
+    github-tree-sha: b14f49a55a8387cfa12ac89794ab79698d7fddbb
 name: brainstorming
 ---
 # Brainstorming Ideas Into Designs

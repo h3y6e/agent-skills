@@ -2,9 +2,9 @@
 description: Delivers changes incrementally. Use when implementing any feature or change that touches more than one file. Use when you're about to write a large amount of code at once, or when a task feels too big to land in one step.
 metadata:
     github-path: skills/incremental-implementation
-    github-ref: refs/tags/0.6.2
+    github-ref: refs/tags/0.6.3
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 98e1743a15d0ff04ce8a0a92d005aa165fe06810
+    github-tree-sha: da7154bb2c7b46a921534ed03c9ca15376602dc1
 name: incremental-implementation
 ---
 # Incremental Implementation
@@ -247,3 +247,7 @@ After completing all increments for a task:
 - [ ] The build is clean
 - [ ] The feature works end-to-end as specified
 - [ ] No uncommitted changes remain
+
+## See Also
+
+Per-increment verification is the local check. Before declaring a task done, apply the project-wide Definition of Done as the final gate, the standing bar every increment clears regardless of the task. See `references/definition-of-done.md`.

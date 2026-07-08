@@ -2,9 +2,9 @@
 description: Creates specs before coding. Use when starting a new project, feature, or significant change and no specification exists yet. Use when requirements are unclear, ambiguous, or only exist as a vague idea.
 metadata:
     github-path: skills/spec-driven-development
-    github-ref: refs/tags/0.6.2
+    github-ref: refs/tags/0.6.3
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: a73f385d99fb07ec0a8f1d8bbd17ec478d11f46b
+    github-tree-sha: 8a6049f381636e580e2db44e6cc65cb5682b8bcc
 name: spec-driven-development
 ---
 # Spec-Driven Development
@@ -142,6 +142,10 @@ With the validated spec, generate a technical implementation plan:
 4. Identify what can be built in parallel vs. what must be sequential
 5. Define verification checkpoints between phases
 
+> Follow `planning-and-task-breakdown` for the dependency-graph mapping and vertical-slicing mechanics behind these steps; it is the canonical source. The bullets above are a lightweight summary; if they ever diverge, `planning-and-task-breakdown` takes precedence.
+>
+> **Output convention:** Save the plan to `tasks/plan.md` and the task list to `tasks/todo.md`, per the `/plan` command convention. Create `tasks/` if it does not exist. Downstream commands (`/build`, etc.) expect these paths.
+
 The plan should be reviewable: the human should be able to read it and say "yes, that's the right approach" or "no, change X."
 
 ### Phase 3: Tasks
@@ -153,6 +157,8 @@ Break the plan into discrete, implementable tasks:
 - Each task includes a verification step (test, build, manual check)
 - Tasks are ordered by dependency, not by perceived importance
 - No task should require changing more than ~5 files
+
+> Follow `planning-and-task-breakdown` for the full task-sizing and dependency-ordering mechanics; it is the canonical source. The template below is a lightweight inline form; if they ever diverge, `planning-and-task-breakdown` takes precedence.
 
 **Task template:**
 ```markdown

@@ -2,9 +2,9 @@
 description: Instruments code so production behavior is visible and diagnosable. Use when adding logging, metrics, tracing, or alerting. Use when shipping any feature that runs in production and you need evidence it works. Use when production issues are reported but you can't tell what happened from the available data.
 metadata:
     github-path: skills/observability-and-instrumentation
-    github-ref: refs/tags/0.6.2
+    github-ref: refs/tags/0.6.3
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: d8045c8cc4a5b30e5a4670100ade6da9bb0760fc
+    github-tree-sha: e970a55caf9ef4128bdb04af83b4a4dd08045b37
 name: observability-and-instrumentation
 ---
 # Observability and Instrumentation
@@ -203,3 +203,5 @@ After instrumenting a feature, confirm:
 - [ ] A single request can be followed end-to-end in the tracing UI without broken spans
 - [ ] Every new alert is symptom-based, has a runbook link, and was test-fired once
 - [ ] An induced failure in staging was located via telemetry alone, without reading the source
+
+For the at-a-glance version of this list, including the pre-launch instrumentation gate, see `references/observability-checklist.md`.
