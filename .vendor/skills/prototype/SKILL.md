@@ -1,11 +1,10 @@
 ---
-description: Build a throwaway prototype to flesh out a design — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
-disable-model-invocation: true
+description: Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.
 metadata:
     github-path: skills/engineering/prototype
-    github-ref: refs/tags/v1.0.1
+    github-ref: refs/tags/v1.1.0
     github-repo: https://github.com/mattpocock/skills
-    github-tree-sha: 7ee08d81624de91a6dd8c61a438a32c50d570185
+    github-tree-sha: 046ef7c3aae3ec1934b075b26dba1cf87c9b1d5a
 name: prototype
 ---
 # Prototype

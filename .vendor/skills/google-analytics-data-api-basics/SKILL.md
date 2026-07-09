@@ -1,10 +1,11 @@
 ---
 description: Manages Google Analytics reporting data, enables the Analytics Data API via the Cloud CLI, and creates reports using the Google Analytics Data API (v1beta). Use when you need to interact with Google Analytics properties, run customized analytics reports, query metrics (like activeUsers, screenPageViews) and dimensions (like city, date), check metrics and dimensions compatibility, or verify API enablement.
 metadata:
+    category: GoogleAnalytics
     github-path: skills/analytics/google-analytics-data-api-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a3afb5158abe9613afe1d514ac73233e9c0ca08c
+    github-tree-sha: 0aaac414cdf264f4d2c2b50f7388a0bda42f42b7
 name: google-analytics-data-api-basics
 ---
 # Getting Started with Google Analytics Data API

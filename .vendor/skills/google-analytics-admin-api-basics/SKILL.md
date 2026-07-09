@@ -1,10 +1,11 @@
 ---
 description: Manages Google Analytics account and property settings, enables the Analytics Admin API via the Cloud CLI, lists accounts and properties, and manages data streams, custom dimensions, conversion events, and integrations. Use when you need to programmatically configure Google Analytics accounts, provision properties, manage data retention, configure Measurement Protocol secrets, or manage Firebase and Google Ads links.
 metadata:
+    category: GoogleAnalytics
     github-path: skills/analytics/google-analytics-admin-api-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 02764f7792618d99229fca43954041378042eda8
+    github-tree-sha: 970603f7a576225382562da749f37254171c3c02
 name: google-analytics-admin-api-basics
 ---
 # Getting Started with Google Analytics Admin API
