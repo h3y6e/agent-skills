@@ -5,7 +5,7 @@ metadata:
     github-path: terraform/module-generation/skills/terraform-stacks
     github-ref: refs/heads/main
     github-repo: https://github.com/hashicorp/agent-skills
-    github-tree-sha: fe0a231fee7958eead13cd9562fbe530b6f568a0
+    github-tree-sha: 7135dc73d3b37e0a4d55ebf35f29cd50d0336d5d
     version: 0.0.1
 name: terraform-stacks
 ---
@@ -233,7 +233,7 @@ Use to safely remove components from a Stack. HCP Terraform requires the compone
 removed {
   from   = component.old_component
   source = "./modules/old-module"
-  
+
   providers = {
     aws = provider.aws.this
   }

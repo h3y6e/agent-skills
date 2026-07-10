@@ -4,7 +4,7 @@ metadata:
     github-path: terraform/code-generation/skills/terraform-style-guide
     github-ref: refs/heads/main
     github-repo: https://github.com/hashicorp/agent-skills
-    github-tree-sha: a6d14b66fa495d767536a6705856fe4553958e24
+    github-tree-sha: 6479909cfba618b042f2272d160d68af1a48f96b
 name: terraform-style-guide
 ---
 # Terraform Style Guide

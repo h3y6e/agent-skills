@@ -5,7 +5,7 @@ metadata:
     github-path: terraform/provider-development/skills/provider-test-patterns
     github-ref: refs/heads/main
     github-repo: https://github.com/hashicorp/agent-skills
-    github-tree-sha: 8d89dacbeae9ecfb05ee7b4c8331fc119f6a45aa
+    github-tree-sha: 423446393df41214a83116524f48cd83f2d70513
     version: 0.0.1
 name: provider-test-patterns
 ---
