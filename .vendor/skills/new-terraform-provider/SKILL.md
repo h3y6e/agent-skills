@@ -6,7 +6,7 @@ metadata:
     github-path: terraform/provider-development/skills/new-terraform-provider
     github-ref: refs/heads/main
     github-repo: https://github.com/hashicorp/agent-skills
-    github-tree-sha: afe431f7ad3827c85181c3b86973de421ad1ba48
+    github-tree-sha: 7c74e390593beac2431648dbd88e599808062685
     version: 0.0.1
 name: new-terraform-provider
 ---
@@ -25,4 +25,3 @@ To scaffold a new Terraform provider with Plugin Framework:
 1. Run `go mod tidy`
 1. Run `go build -o /dev/null`
 1. Run `go test ./...`
-

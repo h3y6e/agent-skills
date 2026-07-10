@@ -6,7 +6,7 @@ metadata:
     github-path: terraform/provider-development/skills/run-acceptance-tests
     github-ref: refs/heads/main
     github-repo: https://github.com/hashicorp/agent-skills
-    github-tree-sha: 675112f945c8668ab68e616a4d8744e74c821eb6
+    github-tree-sha: d03a2e4d86e071a2652507c185f151aacc477309
     version: 0.0.1
 name: run-acceptance-tests
 ---
@@ -17,7 +17,7 @@ To run a focussed acceptance test named `TestAccFeatureHappyPath`:
 1. Run `go test -run=TestAccFeatureHappyPath` with the following environment
    variables:
    - `TF_ACC=1`
-   
+
    Default to non-verbose test output.
 1. The acceptance tests may require additional environment variables for
    specific providers. If the test output indicates missing environment

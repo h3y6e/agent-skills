@@ -6,7 +6,7 @@ metadata:
     github-path: terraform/code-generation/skills/terraform-search-import
     github-ref: refs/heads/main
     github-repo: https://github.com/hashicorp/agent-skills
-    github-tree-sha: ae8924c00f9d9a5da5feb30fe9e654577c10f8f0
+    github-tree-sha: 1a09b6467ff7ccca097a8093e4415e3b65f37537
     version: 0.1.0
 name: terraform-search-import
 ---
@@ -43,7 +43,7 @@ Discover existing cloud resources using declarative queries and generate configu
    - ** If supported**: Check for terraform version available.
    - ** If terraform version is above 1.14.0** Use Terraform Search workflow (below)
    - ** If not supported or terraform version is below 1.14.0 **: Use Manual Discovery workflow (see [references/MANUAL-IMPORT.md](references/MANUAL-IMPORT.md))
-   
+
    **Note**: The list of supported resources is rapidly expanding. Always verify current support before using manual import.
 
 ## Prerequisites
@@ -150,7 +150,7 @@ list "aws_instance" "all" {
 # Find instances by tag
 list "aws_instance" "production" {
   provider = aws
-  
+
   config {
     filter {
       name   = "tag:Environment"
@@ -162,7 +162,7 @@ list "aws_instance" "production" {
 # Find instances by type
 list "aws_instance" "large" {
   provider = aws
-  
+
   config {
     filter {
       name   = "instance-type"
@@ -186,7 +186,7 @@ locals {
 list "aws_instance" "all_regions" {
   for_each = toset(local.regions)
   provider = aws
-  
+
   config {
     region = each.value
   }
@@ -203,7 +203,7 @@ variable "target_environment" {
 
 list "aws_instance" "by_env" {
   provider = aws
-  
+
   config {
     filter {
       name   = "tag:Environment"
@@ -281,7 +281,7 @@ resource "aws_instance" "web_server" {
   ami           = var.ami_id
   instance_type = var.instance_type
   subnet_id     = var.subnet_id
-  
+
   tags = {
     Name        = "web-server"
     Environment = var.environment
@@ -348,7 +348,7 @@ provider "aws" {
 
 list "aws_instance" "team_instances" {
   provider = aws
-  
+
   config {
     filter {
       name   = "tag:Owner"
@@ -359,7 +359,7 @@ list "aws_instance" "team_instances" {
       values = ["running"]
     }
   }
-  
+
   limit = 50
 }
 ```
