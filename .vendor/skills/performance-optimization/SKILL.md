@@ -1,10 +1,10 @@
 ---
-description: Optimizes application performance. Use when performance requirements exist, when you suspect performance regressions, or when Core Web Vitals or load times need improvement. Use when profiling reveals bottlenecks that need fixing.
+description: Optimizes application performance across frontend, backend, queries, and databases. Use when performance requirements exist, when you suspect performance regressions, when Core Web Vitals or load times need improvement, when N+1 query patterns need fixing, or when profiling reveals bottlenecks.
 metadata:
     github-path: skills/performance-optimization
-    github-ref: refs/tags/0.6.2
+    github-ref: refs/tags/0.6.4
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: f904d17bd259a81493209cfc3f3c00cafd321b3a
+    github-tree-sha: c329c2c8d8b760d794b864a5b642e0a80a49a68e
 name: performance-optimization
 ---
 # Performance Optimization
