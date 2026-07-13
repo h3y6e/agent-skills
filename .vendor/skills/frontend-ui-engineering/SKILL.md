@@ -1,10 +1,10 @@
 ---
-description: Builds production-quality UIs. Use when building or modifying user-facing interfaces. Use when creating components, implementing layouts, managing state, or when the output needs to look and feel production-quality rather than AI-generated.
+description: Builds production-quality, accessible, responsive user-facing UIs. Use when building or modifying interfaces and pages, creating components, implementing layouts, meeting WCAG accessibility requirements, managing state, or when the output needs to look and feel production-quality rather than AI-generated.
 metadata:
     github-path: skills/frontend-ui-engineering
-    github-ref: refs/tags/0.6.2
+    github-ref: refs/tags/0.6.4
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 7c86ee1c42a9bbe3ef80c774a4bd5a49668513fb
+    github-tree-sha: f70bc8f809c39b8e4b7cf7227f9c7d509d73fa13
 name: frontend-ui-engineering
 ---
 # Frontend UI Engineering
