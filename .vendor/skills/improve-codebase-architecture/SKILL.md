@@ -3,7 +3,7 @@ description: Scan a codebase for deepening opportunities, present them as a visu
 disable-model-invocation: true
 metadata:
     github-path: skills/engineering/improve-codebase-architecture
-    github-ref: refs/tags/v1.0.1
+    github-ref: refs/tags/v1.1.0
     github-repo: https://github.com/mattpocock/skills
     github-tree-sha: e5beae48471adf87c513b5cbcb0ca347467546da
 name: improve-codebase-architecture

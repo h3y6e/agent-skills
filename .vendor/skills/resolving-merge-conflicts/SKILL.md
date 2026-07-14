@@ -2,7 +2,7 @@
 description: Use when you need to resolve an in-progress git merge/rebase conflict.
 metadata:
     github-path: skills/engineering/resolving-merge-conflicts
-    github-ref: refs/tags/v1.0.1
+    github-ref: refs/tags/v1.1.0
     github-repo: https://github.com/mattpocock/skills
     github-tree-sha: b601c90446f887a94ec68e5c2301a8919f949a2c
 name: resolving-merge-conflicts
