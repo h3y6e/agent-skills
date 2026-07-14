@@ -5,7 +5,7 @@ metadata:
     github-path: terraform/provider-development/skills/provider-actions
     github-ref: refs/heads/main
     github-repo: https://github.com/hashicorp/agent-skills
-    github-tree-sha: 909bb594d085e012510d9bf92a4934b4c9d76079
+    github-tree-sha: ea74a9265b81b262c1fe72a68ede409e6f6e5d84
     version: 0.0.1
 name: provider-actions
 ---
@@ -18,6 +18,15 @@ Terraform Actions enable imperative operations during the Terraform lifecycle. A
 **References:**
 - [Terraform Plugin Framework](https://developer.hashicorp.com/terraform/plugin/framework)
 - [Terraform Actions RFC](https://github.com/hashicorp/terraform/blob/main/docs/plugin-protocol/actions.md)
+
+## First Action Setup
+
+When adding the first action to a provider that has never had one, several one-time scaffolding steps are required:
+
+1. **Implement `ProviderWithActions`** — add an `Actions()` method to the provider that returns `[]func() action.Action`.
+2. **Set `ActionData` in `Configure`** — the provider's `Configure` method must set `resp.ActionData = v` alongside the existing `ResourceData`, `DataSourceData`, and `EphemeralResourceData` assignments.
+3. **Create `ActionWithConfigure` base type** — if the provider uses embedded base types (e.g. `ResourceWithConfigure`), create an equivalent `ActionWithConfigure` type implementing `action.ConfigureRequest` / `action.ConfigureResponse`.
+4. **Action-schema helper variants** — if the provider injects common schema attributes (e.g. `namespace`) via helper functions, action-schema variants are needed since `action/schema` types differ from `resource/schema` types.
 
 ## File Structure
 
@@ -267,7 +276,11 @@ result, err := wait.WaitForStatus(ctx,
 
 ## Action Triggers
 
-Actions are invoked via `action_trigger` lifecycle blocks in Terraform configurations:
+Actions are invoked via `action_trigger` lifecycle blocks in Terraform configurations. A standalone `action` block without a corresponding trigger is declared but never executed.
+
+### HCL Syntax
+
+Action parameters must be wrapped in a `config {}` block. Trigger references use the `action.` prefix, and `actions` is a list. Events are bare identifiers, not quoted strings.
 
 ```hcl
 action "provider_service_action" "name" {
@@ -378,6 +391,42 @@ func sweepResources(region string) error {
 }
 ```
 
+### Using `terraform_data` as a No-Op Trigger
+
+`terraform_data` can serve as a no-op trigger resource for action tests that don't need real infrastructure. This is valuable for error-case and validation tests:
+
+```hcl
+resource "terraform_data" "trigger" {
+  lifecycle {
+    action_trigger {
+      events  = [after_create]
+      actions = [action.provider_service_action.test]
+    }
+  }
+}
+
+action "provider_service_action" "test" {
+  config {
+    param = "invalid-value"
+  }
+}
+```
+
+### Using `PostApplyFunc` to Verify Side Effects
+
+Actions don't produce state that can be checked with `resource.TestCheckResourceAttr`. Use `PostApplyFunc` on `resource.TestStep` to query the API after apply and confirm the action produced the expected side effect:
+
+```go
+Steps: []resource.TestStep{
+    {
+        Config: testConfig,
+        PostApplyFunc: func() {
+            // query the API to verify the action's side effect occurred
+        },
+    },
+},
+```
+
 ### Testing Best Practices
 
 **Service-Specific Prerequisites**
@@ -479,3 +528,5 @@ Before submitting your action implementation:
 - [Terraform Provider Development](https://developer.hashicorp.com/terraform/plugin)
 - [terraform-plugin-framework GitHub](https://github.com/hashicorp/terraform-plugin-framework)
 - [terraform-plugin-testing](https://github.com/hashicorp/terraform-plugin-testing)
+- [Writing a Terraform Action (blog)](https://danielmschmidt.de/posts/2025-09-26-writing-a-terraform-action/)
+- Reference implementations: `terraform-provider-tfe` (`action_query_run.go`, `action_query_run_test.go`), `terraform-provider-vault` (`action_rotate_root.go`)

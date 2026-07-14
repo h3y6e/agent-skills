@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/gemini-agents-api
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 3a09820442e90abb4d6802b27d2b74a1d3fd6f5c
+    github-tree-sha: c4d09f7fbaf86ea2165780b3688a7cb7dc2ff124
 name: gemini-agents-api
 ---
 # Gemini Enterprise Agent Platform - Managed Agents API Skill
@@ -346,7 +346,7 @@ interaction = client.interactions.create(
 {
   "agent": "projects/your-project-id/locations/global/agents/my-custom-agent",
   "input": [{
-    "role": "user",
+    "type": "user_input",
     "content": [{"type": "text", "text": "Hello! Who are you?"}]
   }]
 }
