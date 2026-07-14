@@ -1,5 +1,6 @@
 [global]
 disable = ["MD013"]
+exclude = [".vendor/**"]
 
 [per-file-ignores]
 "AGENTS.md" = ["MD041"]
