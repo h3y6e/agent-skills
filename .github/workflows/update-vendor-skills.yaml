@@ -2,8 +2,12 @@ name: update-vendor-skills
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * 1"
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -15,25 +19,9 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
-        id: app-token
-        with:
-          client-id: ${{ vars.APP_CLIENT_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          permission-contents: write
-          permission-pull-requests: write
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          token: ${{ steps.app-token.outputs.token }}
           persist-credentials: false
-      - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
-      - id: skill-update
-        uses: h3y6e/gh-skill-update-action@ef708035a955ed549e143ad55d708e89e39f98c3 # v1.2.0
+      - uses: h3y6e/gh-skill-update-action@ef708035a955ed549e143ad55d708e89e39f98c3 # v1.2.0
         with:
-          token: ${{ steps.app-token.outputs.token }}
           dir: .vendor/skills
-      - if: steps.skill-update.outputs.pr-number != ''
-        run: gh pr merge "$PR_NUMBER" --auto --squash
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          PR_NUMBER: ${{ steps.skill-update.outputs.pr-number }}
