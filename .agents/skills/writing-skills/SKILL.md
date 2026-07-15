@@ -36,12 +36,13 @@ Treat loading tier and information role independently. Keep required procedures,
 ## Workflow
 
 1. Record capability, triggers, evaluated near-misses, artifacts, and process invariants. Connect requirements to examples.
-2. Design evaluation first. Discovery cases cover direct triggers, paraphrases, near-misses, competing skills, and multi-skill use. Execution cases make required research, branches, artifacts, and verification scorable. Baseline behavior-constraining skills without the skill.
-3. Write the minimum skill. Format `description` as "capability. `Use when` triggers." Give important steps input, decisions, evidence, completion criteria, and incomplete transitions as needed.
-4. Distribute information by loading design. Never hide universally required instructions in references.
-5. Pass mechanical validation before evaluation.
-6. Evaluate discovery and execution separately. Measure activation, misses, and false activations; then requirement satisfaction, validator success, premature completion, and unnecessary tools. Repeat important skills across intended models. Follow `.vendor/skills/writing-skills/testing-skills-with-subagents.md`.
-7. Prune statements that do not change default behavior. Keep each rule once per loading tier. Prefer established terms over invented shorthand. State expected behavior positively; reserve prohibitions for dangerous boundaries or observed failures, with an alternative and reason.
+2. Search `.vendor/skills/` for skills related to the target capability, domain, and triggers, then read relevant candidates before design. Treat them only as authoring evidence: incorporate applicable guidance so the new skill stands alone, without naming or linking any consulted skill, directory, or path in any resulting file.
+3. Design evaluation first. Discovery cases cover direct triggers, paraphrases, near-misses, competing skills, and multi-skill use. Execution cases make required research, branches, artifacts, and verification scorable. Baseline behavior-constraining skills without the skill.
+4. Write the minimum skill. Format `description` as "capability. `Use when` triggers." Give important steps input, decisions, evidence, completion criteria, and incomplete transitions as needed.
+5. Distribute information by loading design. Never hide universally required instructions in references.
+6. Pass mechanical validation before evaluation.
+7. Evaluate discovery and execution separately. Measure activation, misses, and false activations; then requirement satisfaction, validator success, premature completion, and unnecessary tools. Repeat important skills across intended models. Follow `.vendor/skills/writing-skills/testing-skills-with-subagents.md`.
+8. Prune statements that do not change default behavior. Keep each rule once per loading tier. Prefer established terms over invented shorthand. State expected behavior positively; reserve prohibitions for dangerous boundaries or observed failures, with an alternative and reason.
 
 Before applying TDD to skill authoring, read `.vendor/skills/writing-skills/SKILL.md`. When iterative comparison is needed, use `.vendor/skills/empirical-prompt-tuning/SKILL.md`.
 
