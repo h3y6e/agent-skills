@@ -1,2 +1,3 @@
 - Keep `.tagpr` `versionFile` synchronized with every `skills/*/SKILL.md` path whenever skills are added, renamed, or removed.
 - Do not edit skill `version` metadata manually; release automation updates those values.
+- Add files under `.vendor/skills` exactly as generated, without modifying or validating them.
