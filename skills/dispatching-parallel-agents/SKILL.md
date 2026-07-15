@@ -11,7 +11,7 @@ metadata:
 
 Dispatch subagents only when independence is real. Parallelism helps when each agent can reason and edit without needing the others' context or touching the same state.
 
-If work units are not defined yet, use `slicing-issues` before dispatching agents.
+If work units must be recorded as issues and are not defined yet, use `creating-issues` before dispatching agents.
 
 ## Use When
 
