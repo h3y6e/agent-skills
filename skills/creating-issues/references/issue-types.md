@@ -1,25 +1,25 @@
-# Issue種別ごとに書く内容
+# What to Write per Issue Type
 
-各見出しに何を書くかを、該当する種別だけ次のとおり指示する。
-該当しない見出しを埋めるために推測しない。
+For each heading, this specifies what to write, only for the applicable type.
+Don't guess to fill a heading that doesn't apply.
 
-## バグ
+## Bug
 
-- **情報源と根拠**: 再現手順、ログ、テスト、影響範囲を記録する。原因と解決案は仮説として、観測事実と分けて記録する。
-- **問題**: 期待する挙動と実際に観測した挙動、失敗後の状態と外部への副作用が既知か分からないままかを記録する。
-- **受け入れ基準**: 回帰テストと、再発していないと判定できる判定基準を含める。
+- **Sources and rationale**: Record reproduction steps, logs, tests, and impact scope. Record cause and fix as hypotheses, separate from observed facts.
+- **Problem**: Record the expected behavior versus the actually observed behavior, and whether the post-failure state and external side effects are known or remain unknown.
+- **Acceptance criteria**: Include a regression test and judgment criteria for confirming non-recurrence.
 
-## 調査
+## Research
 
-- **問題**/**成果**: 問題には答える問いを、成果には下す決定を置く。実装作業は書かない。
-- **検証**: 必要な根拠、取得方法、成果物を記録する。
-- **判断ゲート**: 中止条件と、どの結果なら後続issueが必要かを記録する。
-- 結論が出る前に、後続実装の対象範囲や受け入れ基準を推測しない。
+- **Problem** / **Outcome**: Put the question to answer in Problem, and the decision to make in Outcome. Don't write implementation work.
+- **Verification**: Record the evidence needed, how to obtain it, and the deliverable.
+- **Decision gate**: Record the stop condition and which outcomes require a follow-up issue.
+- Don't guess the scope or acceptance criteria of downstream implementation before a conclusion is reached.
 
-## 移行/アーキテクチャ変更
+## Migration / Architecture Change
 
-- **問題**/**成果**: 問題には現在の状態を、成果には目標の状態を記録する。
-- **対象範囲**: 変えてはいけない契約と、デプロイ順序、互換性を保つ期間、バックフィル、二重読み書き、整合性の確認のうち適用するものを記録する。
-- **判断ゲート**: 移行全体について、観測期間、終了条件、中止条件、後戻りできない時点、必要な承認、ロールバックまたは前方復旧を記録する。
-- **判断ゲート**: 導入するフラグ、アダプター、二重書き込み、コピー、旧経路それぞれについて、観測方法、削除条件、削除フェーズを記録する。
-- **検証**: 旧経路の利用がゼロであることを削除前の判定基準として含める。
+- **Problem** / **Outcome**: Record the current state in Problem, and the target state in Outcome.
+- **Scope**: Record contracts that must not change, and whichever of deploy ordering, compatibility window, backfill, dual read/write, and consistency checks apply.
+- **Decision gate**: For the migration as a whole, record the observation period, exit condition, stop condition, point of no return, required approvals, and rollback or roll-forward.
+- **Decision gate**: For each flag, adapter, dual write, copy, and old path introduced, record how it's observed, its removal condition, and its removal phase.
+- **Verification**: Include zero usage of the old path as the pre-removal judgment criterion.

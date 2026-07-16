@@ -1,29 +1,29 @@
-# Issueセット
+# Issue Sets
 
-独立した成果が複数ある場合、または一度にgreenを保てない広範囲の機械的な変更の場合に読む。
+Read this when there are multiple independent outcomes, or a broad mechanical change that can't stay green all at once.
 
-## グラフの規則
+## Graph rules
 
-- **tracer bullet**（要求を最初から最後まで通しで検証できる最小の垂直スライス）を基本にし、スキーマ、バックエンド、フロントエンド、テストのような層別のノードを作らない。
-- 各ノードは一つの新規コンテキストで完了でき、単独で着地・デモ・検証できる大きさにする。
-- セットアップ、設定、ドキュメントは、それを必要とする最初の成果へ含める。
-- エッジは「先にあると便利」ではなく、後続ノードを着手できない条件だけに付ける。
-- 情報源の各要求を一つのノードへ割り当て、意図的な重複は理由を記録する。
-- 精密に問えない領域を推測でノード化しない。
-  後続の境界を変える分からない事項は、問いと必要な根拠を明記できる調査ノードだけにする。
+- Default to a **tracer bullet** (the smallest vertical slice that verifies a requirement end to end); don't create layer-based nodes like schema, backend, frontend, and tests.
+- Size each node so it completes in one fresh context and can land, demo, and verify on its own.
+- Fold setup, configuration, and documentation into the first outcome that needs them.
+- Add an edge only for a condition that blocks the downstream node from starting, not for "nice to have first."
+- Assign each source requirement to one node, and record the reason for any intentional overlap.
+- Don't turn an area you can't precisely question into a node by guessing.
+  For an unknown that would change a downstream boundary, create only a research node whose question and needed evidence are explicit.
 
-## 広範囲の機械的な変更
+## Broad mechanical changes
 
-一つの変更が多数の呼び出し元を同時に壊し、垂直スライスを単独でgreenにできない場合だけ使う。
+Use only when one change breaks many call sites at once, so a vertical slice can't stay green on its own.
 
-1. **Expand:** 新旧を共存させ、既存挙動を保つ。
-2. **Migrate:** パッケージやディレクトリなど影響範囲の単位で呼び出し元を移す。
-3. **Contract:** 全呼び出し元の移行を確認して旧経路を削除する。
+1. **Expand:** Let old and new coexist, preserving existing behavior.
+2. **Migrate:** Move call sites unit by unit — package, directory, or similar blast-radius boundary.
+3. **Contract:** Confirm every call site has migrated, then remove the old path.
 
-各フェーズに事前条件、検証、中止条件、ロールバックまたは前方復旧、完了条件を持たせる。
-各migrateノードはExpandに、Contractは全migrateノードにブロックされる。
+Give each phase preconditions, verification, a stop condition, rollback or roll-forward, and completion criteria.
+Each migrate node is blocked by Expand; Contract is blocked by every migrate node.
 
-## 草案の提示
+## Presenting the draft
 
 ```markdown
 ## Issue graph
@@ -39,4 +39,4 @@
 | --- | --- | --- | --- |
 ```
 
-グラフが非巡回で、一つ以上のフロンティア（着手可能な先頭ノード）を持ち、ブロック元から順に公開できることを確認する。
+Confirm the graph is acyclic, has at least one frontier (a startable leading node), and can be published in blocker-first order.

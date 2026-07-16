@@ -1,30 +1,30 @@
-# Issueを公開する
+# Publishing an Issue
 
-ユーザーがタイトル、本文、ノードの粒度、依存エッジを承認し、公開を依頼した場合だけ読む。
+Read this only when the user has approved the title, body, node granularity, and dependency edges, and has requested publishing.
 
-## 公開前の確認
+## Pre-publish checks
 
-- 対象のトラッカーとリポジトリを特定し、認証状態を確認する。
-- 公開対象が承認済みかつ`ready`のノードだけであることを確認し、`blocked`のノードは草案に残す。
-- リポジトリの公開範囲と、issueテンプレート、既存のラベル、issue種別、関連付け機能を確認する。
-- 公開直前に、文言ではなく同じ問題や決定を指しているかで重複検索をやり直す。
-- 新しい重複候補が見つかった場合は公開を止め、採用・統合・除外を判断して草案と承認へ戻る。
-- 公開されたトラッカーへセキュリティ上の発見事項、認証情報の所在、個人情報を公開する場合は、内容を示して個別に承認を得る。
-- 承認済みの草案とトラッカー上の必須フィールドが矛盾する場合は、変更案を提示して再承認を得る。
-- トラッカー標準の関連付け機能がなく本文へ`Blocked by`を加える場合は、変換後の全本文を提示して再承認を得る。
+- Identify the target tracker and repository, and check authentication status.
+- Confirm only approved, `ready` nodes are being published, and leave `blocked` nodes in the draft.
+- Check the repository's visibility, and its issue template, existing labels, issue types, and linking features.
+- Right before publishing, redo the duplicate search by whether it points at the same problem or decision, not by wording.
+- If a new duplicate candidate turns up, stop publishing, decide to adopt, merge, or exclude it, and return to the draft-and-approval step.
+- When publishing security findings, credential locations, or personal information to a public tracker, show the content and get separate approval.
+- When the approved draft conflicts with a required tracker field, present the proposed change and get re-approval.
+- When the tracker lacks native linking and `Blocked by` is added to the body, present the full converted body and get re-approval.
 
-## 公開
+## Publishing
 
-1. トポロジカル順序でブロック元のノードから作成し、IDとURLを記録する。
-2. 全ノードのID取得後、トラッカー標準のブロック関係と親子関係を接続する。
-3. トラッカー標準の関連付け機能がないトラッカーだけ、承認済み本文の`Blocked by`をフォールバックにする。
-4. 明示の依頼がない親issueや元issueは変更もクローズもしない。
-5. 各issueと関連付けを読み戻し、承認済みのタイトル、本文、エッジ、ラベル、種別と比較する。
+1. Create nodes in topological order, blockers first, and record each ID and URL.
+2. After every node has an ID, connect blocking and parent-child relationships using tracker-native linking.
+3. Only for a tracker without native linking, fall back to the approved body's `Blocked by`.
+4. Don't modify or close a parent or source issue without an explicit request.
+5. Read back each issue and its links, and compare against the approved title, body, edges, labels, and type.
 
-## 部分失敗
+## Partial Failure
 
-作成済みissue、未作成のノード、未接続のエッジを分けて報告し、停止する。
-同じノードを無条件に再試行したり、作成済みissueを自動削除したりしない。
-再開前にトラッカーの現状を読み戻し、残作業だけを提示する。
+Report created issues, un-created nodes, and unconnected edges separately, then stop.
+Don't unconditionally retry the same node, or auto-delete an already-created issue.
+Before resuming, read back the tracker's current state and present only the remaining work.
 
-完了時は全issueのID、タイトル、URLと関連付けの検証結果を返す。
+On completion, return every issue's ID, title, and URL, plus the verification result of the links.
