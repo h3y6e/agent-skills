@@ -3,12 +3,13 @@ name: writing-japanese
 description: Use when writing, editing, or reviewing Japanese technical prose, book chapters, drafts, articles, or explanations where sentence-per-line formatting, paragraph logic, argument rigor, reader load, tone, restrained rhetoric, non-LLM phrasing, and concision matter.
 metadata:
   version: 2026.7.0
-  ref: https://gist.githubusercontent.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d/raw/5ed08e4475365fd233aa0d3ab71c19b87e1a5732/SKILL.md
+  refs: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d, https://gist.github.com/k16shikano/eb2929f13ed19c97188393d297be8432
 ---
 
 # 日本語技術文書の文章規範
 
 日本語で技術的な原稿（書籍の章、記事、解説文）を書く・推敲するときは、以下の規範に従う。
+読者に最後まで読み進めさせたい「読み物」を書く・推敲するとき、または「密度はあるが平坦でおもしろくない」文章を診断・修正するときは、[緩急と緊張の設計](references/pacing-and-tension.md) も読む。
 
 ## 整形
 
