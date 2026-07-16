@@ -1,35 +1,35 @@
-# Issue Set
+# Issueセット
 
-独立したoutcomeが複数ある場合、または一度にgreenを保てないwide mechanical changeの場合に読む。
+独立した成果が複数ある場合、または一度にgreenを保てない広範囲の機械的な変更の場合に読む。
 
-## Graphの規則
+## グラフの規則
 
-- tracer bulletを基本にし、schema、backend、frontend、testのようなlayer別nodeを作らない。
-- 各nodeは一つのfresh contextで完了でき、単独でland、demo、verificationできる大きさにする。
-- setup、config、documentationは、それを必要とする最初のoutcomeへ含める。
-- edgeは「先にあると便利」ではなく、後続nodeを開始できない条件だけに付ける。
-- sourceの各要求を一つのnodeへ割り当て、意図的な重複は理由を記録する。
-- 精密に問えない領域を推測でnode化しない。
-  後続境界を変えるunknownは、質問と必要Evidenceを明記できるinvestigation nodeだけにする。
+- **tracer bullet**（要求を最初から最後まで通しで検証できる最小の垂直スライス）を基本にし、スキーマ、バックエンド、フロントエンド、テストのような層別のノードを作らない。
+- 各ノードは一つの新規コンテキストで完了でき、単独で着地・デモ・検証できる大きさにする。
+- セットアップ、設定、ドキュメントは、それを必要とする最初の成果へ含める。
+- エッジは「先にあると便利」ではなく、後続ノードを着手できない条件だけに付ける。
+- 情報源の各要求を一つのノードへ割り当て、意図的な重複は理由を記録する。
+- 精密に問えない領域を推測でノード化しない。
+  後続の境界を変える分からない事項は、問いと必要な根拠を明記できる調査ノードだけにする。
 
-## Wide Mechanical Change
+## 広範囲の機械的な変更
 
-一つの変更が多数のcallerを同時に壊し、vertical sliceを単独でgreenにできない場合だけ使う。
+一つの変更が多数の呼び出し元を同時に壊し、垂直スライスを単独でgreenにできない場合だけ使う。
 
 1. **Expand:** 新旧を共存させ、既存挙動を保つ。
-2. **Migrate:** packageやdirectoryなどblast radius単位でcallerを移す。
-3. **Contract:** 全callerの移行を確認して旧経路を削除する。
+2. **Migrate:** パッケージやディレクトリなど影響範囲の単位で呼び出し元を移す。
+3. **Contract:** 全呼び出し元の移行を確認して旧経路を削除する。
 
-各phaseにprecondition、verification、abort、rollbackまたはforward recovery、completion conditionを持たせる。
-各migrate nodeはExpandに、Contractは全migrate nodeにblockされる。
+各フェーズに事前条件、検証、中止条件、ロールバックまたは前方復旧、完了条件を持たせる。
+各migrateノードはExpandに、Contractは全migrateノードにブロックされる。
 
-## Draftの提示
+## 草案の提示
 
 ```markdown
 ## Issue graph
 
 1. <title>
-   - Readiness: ready-for-approval | blocked
+   - Readiness: ready | blocked
    - Blocked by: none | <node title>
    - Covers: <source requirement>
 
@@ -39,4 +39,4 @@
 | --- | --- | --- | --- |
 ```
 
-graphがacyclicで、一つ以上のfrontierを持ち、blockerから順に公開できることを確認する。
+グラフが非巡回で、一つ以上のフロンティア（着手可能な先頭ノード）を持ち、ブロック元から順に公開できることを確認する。

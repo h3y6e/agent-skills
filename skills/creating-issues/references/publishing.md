@@ -1,30 +1,30 @@
 # Issueを公開する
 
-ユーザーがtitle、body、nodeの粒度、blocking edgeを承認し、公開を依頼した場合だけ読む。
+ユーザーがタイトル、本文、ノードの粒度、依存エッジを承認し、公開を依頼した場合だけ読む。
 
-## Preflight
+## 公開前の確認
 
-- 対象trackerとrepositoryを特定し、認証状態を確認する。
-- 公開対象が承認済みかつ`ready-for-approval`のnodeだけであることを確認し、`blocked` nodeはdraftに残す。
-- repository visibility、issue template、既存label、issue type、relation機能を確認する。
-- 公開直前にdomain conceptで重複検索をやり直す。
-- 新しい重複候補が見つかった場合は公開を止め、採用、統合、除外を判断してdraftと承認へ戻る。
-- public trackerへsecurity finding、credential location、個人情報を公開する場合は、内容を示して個別承認を得る。
-- 承認済みdraftとtracker上の必須fieldが矛盾する場合は、変更案を提示して再承認を得る。
-- native relationがなく本文へ`Blocked by`を加える場合は、変換後の全bodyを提示して再承認を得る。
+- 対象のトラッカーとリポジトリを特定し、認証状態を確認する。
+- 公開対象が承認済みかつ`ready`のノードだけであることを確認し、`blocked`のノードは草案に残す。
+- リポジトリの公開範囲と、issueテンプレート、既存のラベル、issue種別、関連付け機能を確認する。
+- 公開直前に、文言ではなく同じ問題や決定を指しているかで重複検索をやり直す。
+- 新しい重複候補が見つかった場合は公開を止め、採用・統合・除外を判断して草案と承認へ戻る。
+- 公開されたトラッカーへセキュリティ上の発見事項、認証情報の所在、個人情報を公開する場合は、内容を示して個別に承認を得る。
+- 承認済みの草案とトラッカー上の必須フィールドが矛盾する場合は、変更案を提示して再承認を得る。
+- トラッカー標準の関連付け機能がなく本文へ`Blocked by`を加える場合は、変換後の全本文を提示して再承認を得る。
 
-## Publish
+## 公開
 
-1. topological orderでblocker nodeから作成し、IDとURLを記録する。
-2. 全nodeのID取得後、native blocking relationとparent / child relationを接続する。
-3. native relationがないtrackerだけ、承認済み本文の`Blocked by`をfallbackにする。
-4. 明示依頼がないparent / source issueは変更もcloseもしない。
-5. 各issueとrelationを読み戻し、承認済みtitle、body、edge、label、typeと比較する。
+1. トポロジカル順序でブロック元のノードから作成し、IDとURLを記録する。
+2. 全ノードのID取得後、トラッカー標準のブロック関係と親子関係を接続する。
+3. トラッカー標準の関連付け機能がないトラッカーだけ、承認済み本文の`Blocked by`をフォールバックにする。
+4. 明示の依頼がない親issueや元issueは変更もクローズもしない。
+5. 各issueと関連付けを読み戻し、承認済みのタイトル、本文、エッジ、ラベル、種別と比較する。
 
 ## 部分失敗
 
-作成済みissue、未作成node、未接続edgeを分けて報告し、停止する。
-同じnodeをblind retryしたり、作成済みissueを自動削除したりしない。
-再開前にtrackerの現状を読み戻し、残作業だけを提示する。
+作成済みissue、未作成のノード、未接続のエッジを分けて報告し、停止する。
+同じノードを無条件に再試行したり、作成済みissueを自動削除したりしない。
+再開前にトラッカーの現状を読み戻し、残作業だけを提示する。
 
-完了時は全issueのID、title、URLとrelationの検証結果を返す。
+完了時は全issueのID、タイトル、URLと関連付けの検証結果を返す。

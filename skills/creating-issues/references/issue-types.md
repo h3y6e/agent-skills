@@ -1,28 +1,25 @@
-# Issue種別のOverlay
+# Issue種別ごとに書く内容
 
-該当するoverlayだけを共通本文へ加える。
-該当しないfieldを埋めるために推測しない。
+各見出しに何を書くかを、該当する種別だけ次のとおり指示する。
+該当しない見出しを埋めるために推測しない。
 
-## Bug
+## バグ
 
-- expected behaviorとobserved behaviorを分ける。
-- reproduction、log、test、影響範囲をEvidence状態付きで記録する。
-- 原因と解決案は仮説として、観測事実から分離する。
-- failure後のstateと外部副作用が既知かunknownかを記録する。
-- acceptanceには回帰testと、再発していないと判定できるoracleを含める。
+- **情報源と根拠**: 再現手順、ログ、テスト、影響範囲を記録する。原因と解決案は仮説として、観測事実と分けて記録する。
+- **問題**: 期待する挙動と実際に観測した挙動、失敗後の状態と外部への副作用が既知か分からないままかを記録する。
+- **受け入れ基準**: 回帰テストと、再発していないと判定できる判定基準を含める。
 
-## Investigation
+## 調査
 
-- 実装作業ではなく、答えるquestionまたは下すdecisionを一つ置く。
-- 必要なEvidence、取得方法、成果物、ownerを記録する。
-- stop conditionと、どの結果なら後続issueが必要かを記録する。
-- 結論が出る前に後続実装のscopeやacceptanceを推測しない。
+- **問題**/**成果**: 問題には答える問いを、成果には下す決定を置く。実装作業は書かない。
+- **検証**: 必要な根拠、取得方法、成果物を記録する。
+- **判断ゲート**: 中止条件と、どの結果なら後続issueが必要かを記録する。
+- 結論が出る前に、後続実装の対象範囲や受け入れ基準を推測しない。
 
-## MigrationまたはArchitecture
+## 移行/アーキテクチャ変更
 
-- current state、target state、変えてはいけないcontractを記録する。
-- deploy order、compatibility window、backfill、dual read/write、reconciliationの適用を判定する。
-- observation window、exit criteria、abort conditionsを記録する。
-- irreversible point、必要なapproval、rollbackまたはforward recoveryを記録する。
-- flag、adapter、dual write、copy、old pathにはowner、観測方法、削除条件、削除phaseを付ける。
-- old pathの利用がゼロであることを削除前のoracleにする。
+- **問題**/**成果**: 問題には現在の状態を、成果には目標の状態を記録する。
+- **対象範囲**: 変えてはいけない契約と、デプロイ順序、互換性を保つ期間、バックフィル、二重読み書き、整合性の確認のうち適用するものを記録する。
+- **判断ゲート**: 移行全体について、観測期間、終了条件、中止条件、後戻りできない時点、必要な承認、ロールバックまたは前方復旧を記録する。
+- **判断ゲート**: 導入するフラグ、アダプター、二重書き込み、コピー、旧経路それぞれについて、観測方法、削除条件、削除フェーズを記録する。
+- **検証**: 旧経路の利用がゼロであることを削除前の判定基準として含める。

@@ -8,98 +8,107 @@ metadata:
 
 # Issueを作成する
 
-会話、既存issue、spec、plan、audit、researchから、承認可能なissue graphを作る。
-単一issueは1 nodeのgraphとして扱い、入力側に単数か複数かを選ばせない。
+会話、既存issue、仕様書、計画、監査、調査、フィードバックから、承認可能なissueグラフを作る。
+**ノード**は1件のissueを、**エッジ**はノード間の依存関係を指す。
+単一issueは1ノードのグラフとして扱い、入力側に単数か複数かを選ばせない。
 
 ## 境界
 
-- 対象は新規issueの作成であり、既存issueの実装、triage、readiness reviewではない。
-- 問題または観測可能なoutcomeを述べられない場合は`framing-problems`を使い、issue作成を止める。
-- issueのblocking edgeは定義するが、実行時の並列安全性は`dispatching-parallel-agents`が判定する。
-- repoを探索できるfresh-context executorを既定とし、変わりやすいfile pathやcode snippetは契約を固定する場合だけ書く。
+- 対象は新規issueの作成または既存issueの改善であり、実装、トリアージ、状態レビューではない。
+- 問題または観測可能な成果を述べられない場合はissue作成を止め、ユーザーに問題や成果を確認する。
+- issueは、コンテキストを知らないが、リポジトリ自体は自分で調べられる実行者が着手する前提で書く。
+- ファイルパスやコードスニペットは実装が進むと古くなる。特定の内容を要件として固定したい場合を除き、実行者が自分で調べられるように抽象的に書く。
 
 ## 手順
 
-### 1. Sourceと既存issueを確認する
+### 1. 情報源と既存issueを確認する
 
-sourceの全文、既存issueならcomments、参照先、必要なrepo contextを読む。
-trackerのtemplate、言語、label、issue typeを確認し、表現ではなくdomain conceptで重複issueを検索する。
+情報源の全文、既存issueならそのコメント、参照先、必要なリポジトリの情報を読む。
+issueテンプレート、言語、ラベル、issue種別を確認する。
+重複issueは、文言が一致するかではなく、同じ問題や決定を指しているかで判断する。
 
-**完了条件:** sourceと重複候補を列挙し、採用、除外、統合の判断にEvidenceがある。
+**完了条件:** 情報源と重複候補を列挙し、採用・除外・統合の判断に根拠がある。
 
-### 2. Readinessを判定する
+### 2. 状態を判定する
 
-sourceから要求、決定、制約、riskだけを抽出し、各主張を`confirmed | inferred | assumption | unknown | contradiction`に分ける。
+各ノードの状態（`readiness`）は`ready`か`blocked`のいずれかを取る。
+情報源から要求、決定、制約、リスクを抽出し、それぞれが情報源に明記されているか、明記されていないが推測や想定で補ったものか、情報源にも文脈にもなく分からないままか、情報源内で矛盾しているかを確認する。
+分からない事項や矛盾が何に影響するかで、次の表のとおり対応する。
 
-| 状態 | 次の行動 |
+| 分からない事項や矛盾が影響する対象 | 次の行動 |
 | --- | --- |
-| 問題またはoutcomeが不明 | `framing-problems`へ渡す |
-| outcomeは明確だが答えや実現性が不明 | investigation issueにする |
-| 実装詳細だけが不明 | 通常のissueを作る |
-| scope、acceptance、不可逆判断を変えるunknownまたはcontradictionがある | Decision Gateを置き、依存nodeを`blocked`にする |
+| 問題または観測可能な成果そのもの | issue作成を止め、ユーザーに問題や成果を確認する |
+| 答えや実現性（成果自体は明確な場合） | 調査issueとして`ready`にする |
+| 実装の詳細だけ | 通常のissueとして`ready`にする |
+| 対象範囲、受け入れ基準、不可逆な判断 | **判断ゲート**を置き、依存ノードを`blocked`にする |
 
-**完了条件:** 結果を変えるunknownとcontradictionが、仮定や実装方針へ紛れ込んでいない。
+**完了条件:** 結果を変える分からない事項や矛盾が、推測や想定へ紛れ込んでいない。
 
-### 3. Issue graphを決める
+### 3. issueグラフを決める
 
-一つのfresh contextで完了でき、独立してlandできる中間outcomeやrollback境界がなければ1 nodeにする。
-独立して承認、実装、検証できるoutcomeが複数ある場合、またはwide mechanical changeの場合は[issue setの規則](references/issue-sets.md)を読む。
-一つのfresh contextに収まらず、独立outcomeもまだ特定できない場合は、境界を決めるinvestigation nodeだけを作る。
+一つの新規コンテキストで完了でき、かつ独立して着地できる中間成果やロールバック境界がなければ、1ノードにする。
+独立して承認・実装・検証できる成果が複数ある場合、または広範囲の機械的な変更の場合は[issueセットの規則](references/issue-sets.md)を読む。
+一つの新規コンテキストに収まらず、独立した成果もまだ特定できない場合は、境界を決める調査ノードだけを作る。
 
-**完了条件:** 各nodeが一つのcoherent outcomeを持ち、edgeが実際の開始条件だけを表す。
+**完了条件:** 各ノードが一つの一貫した成果を持ち、エッジが実際の着手条件だけを表す。
 
-### 4. 各nodeを書く
+### 4. 各ノードを書く
 
-node metadataにtitle、readiness、blocking edgeを置き、本文は次を基本形にする。
-空のsectionは残さない。
-本文はstableなintent、constraint、acceptance、oracleに絞り、repoから調べられる実装手順はordering自体が契約になる場合だけ書く。
+ノードのメタデータにタイトル、状態、依存エッジを置き、本文は次を基本形にする。
+空のセクションは残さない。
+本文は変わらない意図、制約、受け入れ基準、判定基準に絞り、リポジトリから調べられる実装手順は、並び順自体が契約になる場合だけ書く。
 
 ```markdown
-## Source and evidence
+## 情報源と根拠
 
-- [confirmed] 根拠と参照先
-- [inferred | assumption | unknown | contradiction] 結果に影響する主張と確認方法
+- 情報源に明記されている事実と、その参照先
+- 明記されていないが推測や想定で補った主張は、その根拠と確認方法
+- 分からないままの事項があれば、その内容
+- 情報源内で矛盾している記述があれば、その内容
 
-## Problem
+## 問題
 
-## Outcome
+- 現状で観測できる問題点（何が、なぜ困っているか）
 
-## Scope
+## 成果
 
-- In scope:
-- Must preserve:
-- Out of scope:
+- 完了後に観測できる状態（何がどう変わるか）
 
-## Acceptance criteria
+## 対象範囲
+
+- 対象:
+- 維持すること:
+- 対象外:
+
+## 受け入れ基準
 
 - [ ] 観測可能な期待結果
 - [ ] 禁止される結果が起きないこと
 
-## Verification
+## 検証
 
-- 検証方法 -> 第三者がpass / failを判定できるoracleと期待Evidence
+- 第三者が合否を判定できる検証方法、判定基準、期待される根拠
 
-## Decision gates
+## 判断ゲート
 
-- 結果を分岐させる未決事項、必要なEvidence、owner
+- 結果を分岐させる未決事項、必要な根拠
 ```
 
-bug、investigation、migration、architectureに該当するnodeでは[issue種別の規則](references/issue-types.md)を読み、該当するoverlayだけを加える。
-confirmed以外の主張はEvidence状態を本文に残し、contradictionの影響を受けるnodeを`ready-for-approval`にしない。
-question、必要Evidence、stop conditionが明確なinvestigation nodeは、答えがunknownでも`ready-for-approval`にできる。
-planned verificationを実行済みのEvidenceとして書かない。
+ノードがバグ、調査、移行、アーキテクチャ変更のいずれかに該当する場合だけ、[issue種別の規則](references/issue-types.md)を読み、該当する見出しに指示された内容を書く。
+情報源に明記されている事実以外の主張は根拠の状態を本文に残し、矛盾の影響を受けるノードを`ready`にしない。
+問い、必要な根拠、中止条件が明確な調査ノードは、分からないままの事項が残っていても`ready`にできる。
+実施予定の検証を、実施済みの根拠として書かない。
 
-### 5. Graph全体を検査する
+### 5. グラフ全体を検査する
 
-- 抽出した要求、決定、制約、riskを一つのnodeのacceptanceとverification、またはEvidence付きout-of-scopeへ対応させる。
-- node間のscope重複、要件欠落、循環edge、`TBD`、`TODO`、判定不能なacceptanceを解消する。
-- 各nodeが本文とrepo contextだけで着手でき、単独でpass / failを判定できることを確認する。
-- graphに少なくとも一つのunblocked nodeがあることを確認する。
+- 抽出した要求、決定、制約、リスクを、一つのノードの受け入れ基準と検証、または根拠付きの対象外項目へ対応させる。
+- ノード間の対象範囲の重複、要件の欠落、循環するエッジ、`TBD`、`TODO`、判定できない受け入れ基準を解消する。
+- 各ノードが本文とリポジトリの情報だけで着手でき、単独で合否を判定できることを確認する。
+- グラフに少なくとも一つ、`blocked`でないノードがあることを確認する。
 
 ### 6. 承認と公開を分ける
 
-最終draft、source coverage、重複候補、blocking edgeを提示し、title、body、nodeの粒度、edgeへの承認を得る。
-承認後にいずれかを変更した場合は再承認を得る。
-公開依頼があり、対象trackerが判明し、公開対象nodeがすべて`ready-for-approval`で、graphが承認済みの場合だけ[issueを公開する](references/publishing.md)を読む。
-trackerが不明な場合と、公開対象に`blocked` nodeがある場合はdraftで止める。
-それ以外はdraftを最終成果物にする。
+最終的な草案、情報源の網羅状況、重複候補、依存エッジを提示する。
+その上で、タイトル、本文、ノードの粒度、エッジへの承認を得る。
+公開の依頼があり、対象のトラッカーが判明し、公開対象のノードがすべて`ready`で、グラフが承認済みの場合だけ[issueを公開する](references/publishing.md)を読む。
+トラッカーが不明な場合と、公開対象に`blocked`のノードがある場合は草案で止める。
