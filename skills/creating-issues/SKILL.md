@@ -8,55 +8,55 @@ metadata:
 
 # Creating Issues
 
-Build an approvable issue graph from a conversation, existing issue, spec, plan, audit, research, or feedback.
+Build an approvable issue graph from source material — a conversation, existing issue, spec, plan, audit, research, or feedback.
 A **node** is one issue; an **edge** is a dependency between nodes.
-Treat a single issue as a one-node graph — never make the caller pick singular vs. plural up front.
+A single issue is just a one-node graph — skip the singular-vs-plural choice.
 
 ## Boundaries
 
 - Scope is creating new issues or improving existing ones, not implementation, triage, or status review.
 - If you can't state the problem or an observable outcome, stop and ask the user to confirm it.
-- Write issues for an implementer who lacks context but can investigate the repository itself.
-- File paths and code snippets go stale as implementation proceeds; write abstractly enough for the implementer to look them up, unless a detail must be pinned down as a requirement.
+- Write for an implementer with no context, but repository access.
+- File paths and code snippets go stale as implementation proceeds; write abstractly, and pin down specifics only when required.
 
 ## Process
 
 ### 1. Check sources and existing issues
 
-Read the source material in full — including comments and links for an existing issue — plus any repository context needed.
+Read all source material — comments and links too, for an existing issue — plus any needed repository context.
 Check the issue template, language, labels, and issue type.
-Judge duplicates by whether they point at the same problem or decision, not by wording.
+Judge duplicates by shared problem or decision, not wording.
 
-**Completion criteria:** Sources and duplicate candidates are enumerated, and the include/exclude/merge decision has a stated rationale.
+**Completion criteria:** Sources and duplicates are listed; include/exclude/merge is reasoned.
 
 ### 2. Determine readiness
 
 Each node's `readiness` is `ready` or `blocked`.
-Extract requirements, decisions, constraints, and risks from the sources, and classify each as stated explicitly, filled in by inference or assumption, unknown, or contradicted within the sources.
+Extract requirements, decisions, constraints, and risks, and classify each as explicit, inferred/assumed, unknown, or contradicted.
 Handle unknowns and contradictions by what they affect:
 
-| What the unknown or contradiction affects | Next action |
+| Affects | Next action |
 | --- | --- |
-| The problem or observable outcome itself | Stop issue creation and ask the user to confirm the problem or outcome |
-| The answer or feasibility (the outcome itself is clear) | Mark it `ready` as a research issue |
-| Implementation details only | Mark it `ready` as a normal issue |
-| Scope, acceptance criteria, or an irreversible decision | Add a **decision gate** and mark dependent nodes `blocked` |
+| The problem/outcome itself | Stop and ask the user to confirm it |
+| The answer/feasibility (outcome is clear) | Mark `ready` as a research issue |
+| Implementation details only | Mark `ready` as a normal issue |
+| Scope, acceptance criteria, or an irreversible decision | Add a **decision gate**; mark dependents `blocked` |
 
-**Completion criteria:** No outcome-changing unknown or contradiction has been smuggled into an inference or assumption.
+**Completion criteria:** No outcome-changing unknown or contradiction is hidden in an inference or assumption.
 
 ### 3. Decide the issue graph
 
-Use one node when it completes in a single fresh context with no independently-landable intermediate result or rollback boundary.
-When multiple outcomes can be approved, implemented, and verified independently, or the change is broad and mechanical, read [issue set rules](references/issue-sets.md).
+Use one node if it completes in one fresh context, with no intermediate result or rollback boundary that lands independently.
+For multiple independently approvable, implementable, and verifiable outcomes, or a broad mechanical change, read [issue set rules](references/issue-sets.md).
 When the work doesn't fit one fresh context and independent outcomes aren't identifiable yet, create only a research node that determines the boundary.
 
-**Completion criteria:** Each node has one coherent outcome, and edges represent only real start conditions.
+**Completion criteria:** Each node has one coherent outcome; edges reflect only real start conditions.
 
 ### 4. Write each node
 
-Put the title, readiness, and dependency edges in the node's metadata; use the template below for the body.
+Put the title, readiness, and dependency edges in the node's metadata; body follows the template below.
 Don't leave empty sections.
-Keep the body to durable intent, constraints, acceptance criteria, and judgment criteria — write implementation steps discoverable from the repository only when the ordering itself is a contract.
+Keep the body to durable intent, constraints, acceptance criteria, and judgment criteria; add implementation steps only when their order is itself a contract.
 
 ```markdown
 ## Sources and rationale
@@ -94,16 +94,15 @@ Keep the body to durable intent, constraints, acceptance criteria, and judgment 
 - Open question that branches the outcome, and the evidence needed
 ```
 
-For a bug, research, migration, or architecture-change node only, read [issue type rules](references/issue-types.md) and write what the applicable heading instructs.
-For any claim beyond facts stated explicitly in the sources, keep its evidentiary status in the body, and don't mark a node `ready` if a contradiction affects it.
+For a bug, research, migration, or architecture-change node only, read [issue type rules](references/issue-types.md) and follow the applicable heading.
 A research node can be `ready` with unknowns remaining, as long as its question, needed evidence, and stop condition are clear.
-Don't write planned verification as if it were already-obtained evidence.
+Don't write planned verification as already-obtained evidence.
 
 ### 5. Inspect the whole graph
 
-- Map each extracted requirement, decision, constraint, and risk to one node's acceptance criteria and verification, or to a justified out-of-scope item.
-- Resolve scope overlap between nodes, missing requirements, cyclic edges, `TBD`, `TODO`, and unjudgeable acceptance criteria.
-- Confirm each node can be started from its body and repository information alone, and its pass/fail can be judged independently.
+- Map each requirement, decision, constraint, and risk to one node's acceptance criteria and verification, or to a justified out-of-scope item.
+- Resolve scope overlap, missing requirements, cyclic edges, `TBD`/`TODO`, and unjudgeable acceptance criteria.
+- Confirm each node can start from its body and repository information alone, and its pass/fail can be judged independently.
 - Confirm the graph has at least one node that isn't `blocked`.
 
 ### 6. Separate approval from publishing
