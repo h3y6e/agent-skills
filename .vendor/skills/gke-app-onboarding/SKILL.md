@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/gke-app-onboarding
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: bbfb86a20f01f36d7fe4b2ca92308dfa95a091d0
+    github-tree-sha: 492b452708a0bf75a6cb7be0afbdb5eae6a235ea
 name: gke-app-onboarding
 ---
 # GKE App Onboarding
@@ -176,8 +176,8 @@ kubectl get pods -l app=my-app
 
 Once the application is running on GKE:
 
--   Configure autoscaling — see the `gke-scaling` skill
+-   Configure autoscaling — see the `gke-workload-scaling` skill
 -   Set up observability — see the `gke-observability` skill
--   Harden security — see the `gke-security` skill
+-   Harden security — see the `gke-workload-security` skill
 -   Configure reliability (PDBs, topology spread) — see the `gke-reliability`
     skill

@@ -1,11 +1,11 @@
 ---
-description: Manages Google Analytics reporting data, enables the Analytics Data API via the Cloud CLI, and creates reports using the Google Analytics Data API (v1beta). Use when you need to interact with Google Analytics properties, run customized analytics reports, query metrics (like activeUsers, screenPageViews) and dimensions (like city, date), check metrics and dimensions compatibility, or verify API enablement.
+description: Manages Google Analytics reporting data, enables the Analytics Data API via the Cloud CLI, and creates reports using the Google Analytics Data API (v1beta). Use when you need to interact with Google Analytics properties, run customized analytics reports, query metrics (like activeUsers, screenPageViews) and dimensions (like city, date), check metrics and dimensions compatibility, or verify API enablement. Don't use for Google Analytics Admin API operations (e.g., creating properties, managing users) or for front-end tracking installation.
 metadata:
     category: GoogleAnalytics
     github-path: skills/analytics/google-analytics-data-api-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 0aaac414cdf264f4d2c2b50f7388a0bda42f42b7
+    github-tree-sha: 24d33d7d3fb1b86966ea85e3ce9a5f717a75f1bb
 name: google-analytics-data-api-basics
 ---
 # Getting Started with Google Analytics Data API
@@ -232,12 +232,12 @@ def sample_check_compatibility(property_id: str):
     client = BetaAnalyticsDataClient()
 
     # Define the dimensions and metrics you want to query together.
-    # For example, checking if 'itemDescription' (an e-commerce dimension)
+    # For example, checking if 'itemName' (an e-commerce dimension)
     # is compatible with 'activeUsers' and 'totalRevenue'.
     request = CheckCompatibilityRequest(
         property=f"properties/{property_id}",
         dimensions=[
-            Dimension(name="itemDescription"),
+            Dimension(name="itemName"),
             Dimension(name="date")
         ],
         metrics=[

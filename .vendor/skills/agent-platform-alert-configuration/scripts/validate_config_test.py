@@ -18,33 +18,34 @@ Also tests duplicate detection, and PromQL query syntax validation linting.
 """
 
 import os
+
 import tempfile
 import unittest
 
-import validate_config
+import validate_config  # pytype: disable=import-error
 
 
 class ValidateConfigTest(unittest.TestCase):
 
   def test_lint_query_valid(self):
     query = (
-        "sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count[5m]))"
-        " by (reasoning_engine_id)"
+        "sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m]))"
+        " by (gen_ai_agent_name)"
     )
     self.assertEqual(validate_config.lint_query(query), [])
 
   def test_lint_query_unbalanced_parentheses(self):
     query = (
-        "sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count[5m]))"
-        " by (reasoning_engine_id"
+        "sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m]))"
+        " by (gen_ai_agent_name"
     )
     errors = validate_config.lint_query(query)
     self.assertTrue(any("Parentheses error" in e for e in errors))
 
   def test_lint_query_unbalanced_braces(self):
     query = (
-        'sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count{response_code!~"2.."[5m]))'
-        " by (reasoning_engine_id)"
+        'sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count{error_type!=""[5m]))'
+        " by (gen_ai_agent_name)"
     )
     errors = validate_config.lint_query(query)
     self.assertTrue(any("Curly braces error" in e for e in errors))
@@ -52,8 +53,8 @@ class ValidateConfigTest(unittest.TestCase):
   def test_lint_query_invalid_window(self):
     for invalid_suffix in ("5x", "5y"):
       query = (
-          "sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count"
-          f"[{invalid_suffix}])) by (reasoning_engine_id)"
+          "sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count"
+          f"[{invalid_suffix}])) by (gen_ai_agent_name)"
       )
       errors = validate_config.lint_query(query)
       self.assertTrue(
@@ -65,14 +66,14 @@ class ValidateConfigTest(unittest.TestCase):
         # With resolution
         (
             "avg_over_time((sum(rate("
-            "aiplatform_googleapis_com:reasoning_engine_request_count[5m]"
-            ")) by (reasoning_engine_id))[1w:5m])"
+            "workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m]"
+            ")) by (gen_ai_agent_name))[1w:5m])"
         ),
         # Without resolution
         (
             "avg_over_time((sum(rate("
-            "aiplatform_googleapis_com:reasoning_engine_request_count[5m]"
-            ")) by (reasoning_engine_id))[1w:])"
+            "workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m]"
+            ")) by (gen_ai_agent_name))[1w:])"
         ),
     ]
     for query in queries:
@@ -83,14 +84,14 @@ class ValidateConfigTest(unittest.TestCase):
         # Invalid resolution format: number only (no unit)
         (
             "avg_over_time((sum(rate("
-            "aiplatform_googleapis_com:reasoning_engine_request_count[5m]"
-            ")) by (reasoning_engine_id))[1w:5])"
+            "workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m]"
+            ")) by (gen_ai_agent_name))[1w:5])"
         ),
         # Invalid resolution format: unit only (no number)
         (
             "avg_over_time((sum(rate("
-            "aiplatform_googleapis_com:reasoning_engine_request_count[5m]"
-            ")) by (reasoning_engine_id))[1w:m])"
+            "workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m]"
+            ")) by (gen_ai_agent_name))[1w:m])"
         ),
     ]
     for query in queries:
@@ -100,20 +101,20 @@ class ValidateConfigTest(unittest.TestCase):
       )
 
   def test_lint_query_missing_reference(self):
-    query = "sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count[5m]))"
+    query = "sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m]))"
     errors = validate_config.lint_query(query)
     self.assertTrue(
-        any("missing 'reasoning_engine_id' reference" in e for e in errors)
+        any("missing agent identifier reference" in e for e in errors)
     )
 
   def test_lint_query_valid_with_filter(self):
-    query = 'sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count{reasoning_engine_id="12345"}[5m]))'
+    query = 'sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count{gen_ai_agent_name="my-agent"}[5m]))'
     self.assertEqual(validate_config.lint_query(query), [])
 
   def test_lint_query_valid_with_regex_or_prefix_filter(self):
     query = (
-        'sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count{reasoning_engine_id!~"dev-.*"}[5m]))'
-        " by (reasoning_engine_id)"
+        'sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count{gen_ai_agent_name!~"dev-.*"}[5m]))'
+        " by (gen_ai_agent_name)"
     )
     self.assertEqual(validate_config.lint_query(query), [])
 
@@ -128,7 +129,7 @@ class ValidateConfigTest(unittest.TestCase):
             display_name = "p95 Latency exceeds 3x Standard Deviation (1w baseline)"
             condition_prometheus_query_language {
               query    = <<-EOT
-                sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count[5m])) by (reasoning_engine_id)
+                sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m])) by (gen_ai_agent_name)
               EOT
               duration = "300s"
             }
@@ -146,7 +147,7 @@ class ValidateConfigTest(unittest.TestCase):
           display_name = "[Agent Alert] Latency Anomaly - ${var.agent_name}"
           conditions {
             condition_prometheus_query_language {
-              query = "sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count{reasoning_engine_id=\"12345\"}[5m]))"
+              query = "sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count{gen_ai_agent_name=\"12345\"}[5m]))"
             }
           }
         }
@@ -156,7 +157,7 @@ class ValidateConfigTest(unittest.TestCase):
     self.assertEqual(len(policies[0]["queries"]), 1)
     self.assertEqual(
         policies[0]["queries"][0],
-        'sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count{reasoning_engine_id="12345"}[5m]))',
+        'sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count{gen_ai_agent_name="12345"}[5m]))',
     )
     self.assertEqual(policies[0]["engine_ids"], ["12345"])
 
@@ -165,7 +166,7 @@ class ValidateConfigTest(unittest.TestCase):
           display_name = "[Agent Alert] Latency Anomaly - ${var.agent_name}"
           conditions {
             condition_prometheus_query_language {
-              query = "sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count{reasoning_engine_id=\\\"12345\\\"}[5m]))"
+              query = "sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count{gen_ai_agent_name=\\\"12345\\\"}[5m]))"
             }
           }
         }
@@ -177,7 +178,7 @@ class ValidateConfigTest(unittest.TestCase):
     self.assertEqual(len(policies_three[0]["queries"]), 1)
     self.assertEqual(
         policies_three[0]["queries"][0],
-        'sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count{reasoning_engine_id="12345"}[5m]))',
+        'sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count{gen_ai_agent_name="12345"}[5m]))',
     )
     self.assertEqual(policies_three[0]["engine_ids"], ["12345"])
 
@@ -188,7 +189,7 @@ class ValidateConfigTest(unittest.TestCase):
               display_name = "[Agent Alert] Latency Anomaly - ${var.agent_name}"
               conditions {
                 condition_prometheus_query_language {
-                  query = "sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count[5m])) by (reasoning_engine_id)"
+                  query = "sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m])) by (gen_ai_agent_name)"
                 }
               }
             }
@@ -198,7 +199,7 @@ class ValidateConfigTest(unittest.TestCase):
               display_name = "[Agent Alert] Latency Anomaly - Alternative"
               conditions {
                 condition_prometheus_query_language {
-                  query = "sum(rate(aiplatform_googleapis_com:reasoning_engine_request_count[5m])) by (reasoning_engine_id)"
+                  query = "sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m])) by (gen_ai_agent_name)"
                 }
               }
             }
@@ -209,7 +210,7 @@ class ValidateConfigTest(unittest.TestCase):
         f.write(tf_content_2)
 
       results = validate_config.validate_directory_tf_files(
-          tmpdir, "${var.reasoning_engine_id}"
+          tmpdir, "${var.gen_ai_agent_name}"
       )
       self.assertFalse(results["valid"])
       self.assertEqual(len(results["duplicates_found"]), 1)
@@ -276,13 +277,81 @@ class ValidateConfigTest(unittest.TestCase):
         f.write(tf_content_2)
 
       results = validate_config.validate_directory_tf_files(
-          tmpdir, "${var.reasoning_engine_id}"
+          tmpdir, "${var.gen_ai_agent_name}"
       )
       self.assertFalse(results["valid"])
       self.assertEqual(len(results["duplicates_found"]), 1)
       self.assertEqual(
           results["duplicates_found"][0]["signal_type"], "tool_use_quality_v1"
       )
+
+  def test_validate_policy_duration_quality(self):
+    # Quality metrics alerts: MUST set duration="300s".
+    policy_ok = {
+        "signal_type": "final_response_quality_v1",
+        "queries": [],
+        "duration": "300s",
+    }
+    self.assertEqual(validate_config.validate_policy_duration(policy_ok), [])
+
+    policy_err = {
+        "signal_type": "final_response_quality_v1",
+        "queries": [],
+        "duration": "600s",
+    }
+    self.assertEqual(
+        validate_config.validate_policy_duration(policy_err),
+        [
+            "Duration Error: Quality alerts MUST set duration='300s'. Found"
+            " duration='600s'."
+        ],
+    )
+
+  def test_validate_policy_duration_long_lookback(self):
+    # Long-lookback alerts (>25h): must NOT set a duration (duration is None).
+    query = "sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count[2d]))"
+    policy_ok = {
+        "signal_type": "latency",
+        "queries": [query],
+        "duration": None,
+    }
+    self.assertEqual(validate_config.validate_policy_duration(policy_ok), [])
+
+    policy_err = {
+        "signal_type": "latency",
+        "queries": [query],
+        "duration": "300s",
+    }
+    self.assertEqual(
+        validate_config.validate_policy_duration(policy_err),
+        [
+            "Duration Error: Long-lookback alerts (>25h) must NOT set a"
+            " duration. Found duration='300s' for lookback of 48h."
+        ],
+    )
+
+  def test_validate_policy_duration_short_lookback(self):
+    # Short-lookback alerts (<=25h): MUST set duration="300s".
+    query = "sum(rate(workload_googleapis_com:gen_ai_invoke_agent_duration_count[5m]))"
+    policy_ok = {
+        "signal_type": "latency",
+        "queries": [query],
+        "duration": "300s",
+    }
+    self.assertEqual(validate_config.validate_policy_duration(policy_ok), [])
+
+    policy_err = {
+        "signal_type": "latency",
+        "queries": [query],
+        "duration": None,
+    }
+    self.assertEqual(
+        validate_config.validate_policy_duration(policy_err),
+        [
+            "Duration Error: Short-lookback alerts (<=25h) MUST set"
+            " duration='300s'. Found duration='None'."
+        ],
+    )
 
 
 if __name__ == "__main__":

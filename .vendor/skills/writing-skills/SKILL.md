@@ -2,9 +2,9 @@
 description: Use when creating new skills, editing existing skills, or verifying skills work before deployment
 metadata:
     github-path: skills/writing-skills
-    github-ref: refs/tags/v6.1.1
+    github-ref: refs/tags/v6.2.0
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: 69e051f84da949c75eaa1f94a1f5acc4c3e402b6
+    github-tree-sha: 611ae23b2390aef2d90463b79dbcef3997adc5f4
 name: writing-skills
 ---
 # Writing Skills
@@ -13,7 +13,7 @@ name: writing-skills
 
 **Writing skills IS Test-Driven Development applied to process documentation.**
 
-**Personal skills live in your runtime's skills directory** 
+**Personal skills live in your runtime's skills directory** (`~/.claude/skills/` on Claude Code) — see [codex-tools.md](../using-superpowers/references/codex-tools.md) or [gemini-tools.md](../using-superpowers/references/gemini-tools.md) for the path on those runtimes. Codex, Copilot CLI, and Gemini CLI all also recognize `~/.agents/skills/` as a cross-runtime alias.
 
 You write test cases (pressure scenarios with subagents), watch them fail (baseline behavior), write the skill (documentation), watch tests pass (agents comply), and refactor (close loopholes).
 
@@ -681,13 +681,3 @@ How future agents find your skill:
 6. **Loads example** (only when implementing)
 
 **Optimize for this flow** - put searchable terms early and often.
-
-## The Bottom Line
-
-**Creating skills IS TDD for process documentation.**
-
-Same Iron Law: No skill without failing test first.
-Same cycle: RED (baseline) → GREEN (write skill) → REFACTOR (close loopholes).
-Same benefits: Better quality, fewer surprises, bulletproof results.
-
-If you follow TDD for code, follow it for skills. It's the same discipline applied to documentation.

@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/gke-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: d3c6ac56d13497b1485c8e974e119b797f1ce8e7
+    github-tree-sha: a05bea45984c36128eaa7e91f7dc4d63943a10f3
 name: gke-basics
 ---
 # GKE Basics
@@ -25,40 +25,58 @@ gcloud container clusters get-credentials my-cluster --region=us-central1 --quie
 Load the single, most specific GKE sub-skill below matching your workload
 requirements. **Do not load multiple GKE skills unless explicitly required.**
 
-| Scenario             | Trigger Keywords             | Target Skill           |
-| -------------------- | ---------------------------- | ---------------------- |
-| Golden Path Defaults | production defaults, golden  | `gke-golden-path`      |
-:                      : path                         :                        :
-| Cluster Creation     | create cluster, provision    | `gke-cluster-creation` |
-:                      : GKE                          :                        :
-| Networking & Ingress | private cluster, VPC,        | `gke-networking`       |
-:                      : Gateway API, Ingress, DNS    :                        :
-| Security & IAM       | Workload Identity, Secret    | `gke-security`         |
-:                      : Manager, RBAC, hardening     :                        :
-| Autoscaling          | HPA, VPA, Cluster            | `gke-scaling`          |
-:                      : Autoscaler, NAP              :                        :
-| Compute Classes      | ComputeClass, Spot fallback, | `gke-compute-classes`  |
-:                      : GPU/TPU nodes                :                        :
-| Cost Optimization    | Spot VMs, rightsizing, cost  | `gke-cost`             |
-:                      : allocation                   :                        :
-| AI/ML Workloads      | LLM, GPU/TPU inference,      | `gke-inference`        |
-:                      : serving, vLLM                :                        :
-| Cluster Upgrades     | upgrade, maintenance window, | `gke-upgrades`         |
-:                      : release channel              :                        :
-| Observability        | monitoring, logging,         | `gke-observability`    |
-:                      : Prometheus, dashboards       :                        :
-| Multi-tenancy        | namespace isolation,         | `gke-multitenancy`     |
-:                      : resource quota, LimitRange   :                        :
-| Batch & HPC          | batch, HPC, Kueue, JobSet,   | `gke-batch-hpc`        |
-:                      : parallel jobs                :                        :
-| App Onboarding       | containerize, Dockerfile,    | `gke-app-onboarding`   |
-:                      : deploy app, onboard          :                        :
-| Backup & DR          | backup plan, restore,        | `gke-backup-dr`        |
-:                      : disaster recovery, CMEK      :                        :
-| Storage & PVC        | SSD, PV, PVC, StorageClass,  | `gke-storage`          |
-:                      : GCS FUSE                     :                        :
-| Reliability          | PDB, health probe, liveness, | `gke-reliability`      |
-:                      : readiness                    :                        :
+| Scenario             | Trigger Keywords        | Target Skill                |
+| -------------------- | ----------------------- | --------------------------- |
+| Golden Path Defaults | production defaults,    | `gke-golden-path`           |
+:                      : golden path             :                             :
+| Cluster Creation     | create cluster,         | `gke-cluster-creation`      |
+:                      : provision GKE           :                             :
+| Networking & Ingress | private cluster, VPC,   | `gke-networking`,           |
+:                      : Gateway API, Ingress,   : `gke-service-networking`    :
+:                      : DNS                     :                             :
+| Security & IAM       | Workload Identity,      | `gke-platform-security`,    |
+:                      : Secret Manager, RBAC,   : `gke-workload-security`     :
+:                      : hardening               :                             :
+| Autoscaling          | HPA, VPA, Cluster       | `gke-workload-scaling`      |
+:                      : Autoscaler, NAP         :                             :
+| Compute Classes      | ComputeClass, Spot      | `gke-compute-classes`       |
+:                      : fallback, GPU/TPU nodes :                             :
+| Cost Analysis        | BigQuery billing        | `gke-cost-analysis`         |
+:                      : exports, budgets, live  :                             :
+:                      : monitoring              :                             :
+| Cost Optimization    | Spot VMs, rightsizing,  | `gke-cost-optimization`     |
+:                      : quotas                  :                             :
+| AI/ML Workloads      | LLM, GPU/TPU inference, | `gke-inference`             |
+:                      : serving, vLLM           :                             :
+| GPU/TPU Disruption   | GPU termination, TPU    | `gke-ai-troubleshooting-`   |
+:                      : shutdown, host          : `handle-disruption-gpu-tpu` :
+:                      : maintenance             :                             :
+| Cluster Upgrades     | upgrade, maintenance    | `gke-upgrades`              |
+:                      : window, release channel :                             :
+| Observability        | monitoring, logging,    | `gke-observability`         |
+:                      : Prometheus, dashboards  :                             :
+| Multi-tenancy        | namespace isolation,    | `gke-multitenancy`          |
+:                      : resource quota,         :                             :
+:                      : LimitRange              :                             :
+| Batch & HPC          | batch, HPC, Kueue,      | `gke-batch-hpc`             |
+:                      : JobSet, parallel jobs   :                             :
+| App Onboarding       | containerize,           | `gke-app-onboarding`        |
+:                      : Dockerfile, deploy app, :                             :
+:                      : onboard                 :                             :
+| Backup & DR          | backup plan, restore,   | `gke-backup-dr`             |
+:                      : disaster recovery, CMEK :                             :
+| Storage & PVC        | SSD, PV, PVC,           | `gke-storage`               |
+:                      : StorageClass, GCS FUSE  :                             :
+| Reliability          | PDB, health probe,      | `gke-reliability`           |
+:                      : liveness, readiness     :                             :
+| Productionization    | production readiness,   | `gke-productionize`         |
+:                      : productionize,          :                             :
+:                      : readiness scoring,      :                             :
+:                      : audit cluster           :                             :
+| Manifest Generation  | generate YAML, manifest | `gke-manifest-generation`   |
+:                      : template,               :                             :
+:                      : securityContext probes, :                             :
+:                      : resource limits         :                             :
 
 ## Conceptual & Informational Queries (CRITICAL)
 

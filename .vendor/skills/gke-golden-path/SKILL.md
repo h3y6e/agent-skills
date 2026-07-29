@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/gke-golden-path
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 1d937ba22cb3dd1cbf32841c2d05a5b05e3b130c
+    github-tree-sha: f482eca063819806409b47e1641628798edcea1e
 name: gke-golden-path
 ---
 # GKE Golden Path Configuration
@@ -61,6 +61,7 @@ Setting                                                            | Golden Path
 `autoscaling.autoscalingProfile`                                   | `OPTIMIZE_UTILIZATION`
 `verticalPodAutoscaling.enabled`                                   | `true`
 `monitoringConfig` components                                      | SYSTEM_COMPONENTS, STORAGE, POD, DEPLOYMENT, STATEFULSET, DAEMONSET, HPA, JOBSET, CADVISOR, KUBELET, DCGM, APISERVER, SCHEDULER, CONTROLLER_MANAGER
+`loggingConfig` components                                         | SYSTEM_COMPONENTS, WORKLOADS (enabled by default)
 `advancedDatapathObservabilityConfig.enableMetrics`                | `true`
 `nodeConfig.shieldedInstanceConfig.enableSecureBoot`               | `true`
 `nodeConfig.workloadMetadataConfig.mode`                           | `GKE_METADATA`

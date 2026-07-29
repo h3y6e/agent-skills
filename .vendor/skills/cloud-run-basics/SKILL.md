@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/cloud-run-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 73972d5052397e2dce077edeef92e8d483bd84a8
+    github-tree-sha: 088d9fb03e5140375823f49da4dc3ef2b6b24cc9
 name: cloud-run-basics
 ---
 # Cloud Run Basics
@@ -373,6 +373,10 @@ Replace `WORKER_POOL_NAME` with the name you want for your worker pool.
 
 -   [IAM & Security](references/iam-security.md): Roles, service identities,
     and ingress/egress controls.
+
+-   [Networking Best Practices & Cost Optimization](references/networking.md): Cost
+    optimization strategies, Direct VPC egress, IP address and port exhaustion
+    strategies, performance throughput tuning, and MTU settings.
 
 *If you need product information not found in these references, use the
     Developer Knowledge MCP server `search_documents` tool.*

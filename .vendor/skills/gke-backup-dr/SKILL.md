@@ -5,12 +5,14 @@ metadata:
     github-path: skills/cloud/gke-backup-dr
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 3de86bd2d6882d73078cdc742dcda955585398b5
+    github-tree-sha: 8a32c051b52502f0bcc25fefa0b6a2990686edce
 name: gke-backup-dr
 ---
 # GKE Backup & Disaster Recovery
 
-Protects stateful GKE workloads using Backup for GKE.
+Protects stateful GKE workloads using Backup for GKE. Backup for GKE natively
+captures both Kubernetes resource metadata (manifests, configurations, and
+secrets) and the underlying persistent volume (PV) data.
 
 ## CLI Reference
 
@@ -35,6 +37,9 @@ gcloud container backup-restore restore-plans create <RESTORE_PLAN_NAME> \
 # Execute Restore
 gcloud container backup-restore restores create <RESTORE_NAME> \
   --restore-plan=<RESTORE_PLAN_NAME> --backup=<BACKUP_NAME> --location=<REGION> --quiet
+
+# Verify Restore Status
+gcloud container backup-restore restores describe <RESTORE_NAME> --location=<REGION>
 ```
 
 ## Best Practices
@@ -43,6 +48,16 @@ gcloud container backup-restore restores create <RESTORE_NAME> \
     Keys: `--backup-encryption-key=<KEY>`.
 2.  **Scope**: Prefer backing up specific namespaces rather than the entire
     cluster: `--included-namespaces=<ns1>,<ns2>`.
+3.  **Application Consistency**: Recommend quiescing the database or pausing
+    application writes (e.g. using pre-backup hooks or database-specific tools)
+    prior to backups to ensure data integrity.
+4.  **CSI Volume Snapshots**: Ensure that stateful backups utilize GKE's CSI
+    (Container Storage Interface) driver for volume snapshots to capture
+    persistent volume data.
+5.  **Service Terminology**: Always explicitly refer to the service as **Backup
+    for GKE** in your response. This distinguishes it from the broader (but
+    complementary) Google Cloud **Backup and Disaster Recovery (DR) Service**,
+    as **Backup for GKE** is built specifically for GKE.
 
 ## Troubleshooting & Common Pitfalls (CRITICAL)
 

@@ -2,9 +2,9 @@
 description: Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions
 metadata:
     github-path: skills/using-superpowers
-    github-ref: refs/tags/v6.1.1
+    github-ref: refs/tags/v6.2.0
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: 8528440d6778e041cb1b9a0ada13f9f3cecda663
+    github-tree-sha: a5e27b759e1c907c5076340848308f6aa37f33d4
 name: using-superpowers
 ---
 <SUBAGENT-STOP>

@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/gke-upgrades
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 40dfd9157dc61a4354251310f60c38309d48d6ac
+    github-tree-sha: 4df5d2d1fc4d6fb33ae868bfccbd46c3fe4ffa06
 name: gke-upgrades
 ---
 # GKE Upgrades & Maintenance
@@ -196,5 +196,5 @@ Refer to [`references/troubleshooting.md`](references/troubleshooting.md) for th
 - [GKE Release Notes](https://cloud.google.com/kubernetes-engine/docs/release-notes)
 - [Upgrading GKE Clusters](https://cloud.google.com/kubernetes-engine/docs/how-to/upgrading-a-cluster)
 - [Maintenance Windows & Exclusions](https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions)
-- [Rollout Sequencing Concepts](https://cloud.google.com/kubernetes-engine/docs/concepts/rollout-sequencing)
+- [Rollout Sequencing Concepts](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/rollout-sequencing/about-rollout-sequencing)
 - [Configure Rollout Sequencing](https://cloud.google.com/kubernetes-engine/docs/how-to/rollout-sequencing)
