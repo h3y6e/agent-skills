@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/gke-multitenancy
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a736d769a51449226cc5ea17b68d07c84eb6d1b4
+    github-tree-sha: a94d75c1a0969064daa907e9dd38c6e88ee9918a
 name: gke-multitenancy
 ---
 # GKE Multi-Tenancy
@@ -84,8 +84,8 @@ roleRef:
 ```
 
 **RBAC best practices:** Use Google Groups for subject bindings. Prefer
-namespace-scoped Roles over ClusterRoles. See the `gke-security` skill for full
-RBAC hardening guidance.
+namespace-scoped Roles over ClusterRoles. See the `gke-platform-security` skill
+for full RBAC hardening guidance.
 
 ### 3. Resource Quotas
 
@@ -140,8 +140,8 @@ spec:
 
 ### 5. Network Isolation
 
-Apply default-deny per namespace (see the `gke-security` skill), then allow
-intra-team traffic:
+Apply default-deny per namespace (see the `gke-workload-security` skill), then
+allow intra-team traffic:
 
 ```yaml
 # Allow same-namespace pods to talk + DNS

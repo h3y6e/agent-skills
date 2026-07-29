@@ -16,7 +16,7 @@
 """HCL configuration and PromQL validation script for agent platform metrics.
 
 Parses Terraform HCL alert policy resource blocks, detects duplicate targets
-for reasoning engines, and lints Prometheus queries for correct syntax, time
+for agents, and lints Prometheus queries for correct syntax, time
 windows, and essential label filters.
 """
 
@@ -28,8 +28,19 @@ import re
 import sys
 
 
-def check_balanced_chars(query, open_char, close_char):
-  """Checks if parenthesis or braces are balanced."""
+def check_balanced_chars(
+    query: str, open_char: str, close_char: str
+) -> str | None:
+  """Checks if parenthesis or braces are balanced.
+
+  Args:
+      query: The PromQL or SQL query string to check.
+      open_char: The opening character (e.g., '(' or '{').
+      close_char: The closing character (e.g., ')' or '}').
+
+  Returns:
+      An error message string if unbalanced, otherwise None.
+  """
   count = 0
   for i, char in enumerate(query):
     if char == open_char:
@@ -43,7 +54,110 @@ def check_balanced_chars(query, open_char, close_char):
   return None
 
 
-def lint_query(query):
+def parse_promql_duration(duration_str: str) -> float | None:
+  """Converts PromQL duration string to hours.
+
+  Args:
+      duration_str: The PromQL duration string (e.g., '1h', '5m', '1d').
+
+  Returns:
+      The duration in hours as a float, or None if the format is invalid.
+  """
+  match = re.match(r"^(\d+)([smhdw])$", duration_str)
+  if not match:
+    return None
+  val, unit = match.groups()
+  val = int(val)
+  if unit == "s":
+    return val / 3600
+  if unit == "m":
+    return val / 60
+  if unit == "h":
+    return val
+  if unit == "d":
+    return val * 24
+  if unit == "w":
+    return val * 24 * 7
+  return None
+
+
+def get_max_lookback_hours(query: str) -> float:
+  """Calculates the maximum lookback in hours from windows and offsets.
+
+  Args:
+      query: The PromQL query string.
+
+  Returns:
+      The maximum lookback window or offset found in the query, in hours.
+  """
+  max_hours = 0
+
+  # Check windows and subqueries
+  window_matches = re.finditer(r"\[([^\]]+)\]", query)
+  for match in window_matches:
+    window_str = match.group(1)
+    range_str = window_str.split(":")[0]
+    hours = parse_promql_duration(range_str)
+    if hours and hours > max_hours:
+      max_hours = hours
+
+  # Check offsets
+  offset_matches = re.finditer(r"\boffset\s+(\S+)", query)
+  for match in offset_matches:
+    offset_str = match.group(1)
+    hours = parse_promql_duration(offset_str)
+    if hours and hours > max_hours:
+      max_hours = hours
+
+  return max_hours
+
+
+def validate_policy_duration(policy: dict) -> list[str]:
+  """Validates duration based on lookback window.
+
+  Args:
+      policy: A dictionary representing the parsed alert policy, including
+        'queries', 'duration', and 'signal_type'.
+
+  Returns:
+      A list of error messages, if any validation errors are found.
+  """
+  errors = []
+  max_lookback = 0
+  for query in policy["queries"]:
+    lookback = get_max_lookback_hours(query)
+    if lookback > max_lookback:
+      max_lookback = lookback
+
+  quality_metrics = [
+      "final_response_quality_v1",
+      "tool_use_quality_v1",
+      "hallucination_v1",
+  ]
+
+  if policy["signal_type"] in quality_metrics:
+    if policy["duration"] != "300s":
+      errors.append(
+          "Duration Error: Quality alerts MUST set duration='300s'."
+          f" Found duration='{policy['duration']}'."
+      )
+  elif max_lookback > 25:
+    if policy["duration"] is not None:
+      errors.append(
+          "Duration Error: Long-lookback alerts (>25h) must NOT set a"
+          f" duration. Found duration='{policy['duration']}' for lookback of"
+          f" {max_lookback}h."
+      )
+  elif max_lookback > 0:  # It's a short-lookback PromQL alert
+    if policy["duration"] != "300s":
+      errors.append(
+          "Duration Error: Short-lookback alerts (<=25h) MUST set"
+          f" duration='300s'. Found duration='{policy['duration']}'."
+      )
+  return errors
+
+
+def lint_query(query: str) -> list[str]:
   """Runs a suite of sanity lint checks on a PromQL query.
 
   Args:
@@ -84,32 +198,46 @@ def lint_query(query):
           f" {match.start()}"
       )
 
-  # 5. Ensure the query references reasoning_engine_id in a label filter
+  # 5. Ensure the query references a supported group in a label filter
   # or grouping aggregation.
-  has_group = bool(
-      re.search(r"\b(by|without)\s*\([^)]*reasoning_engine_id[^)]*\)", query)
+  supported_groups = ["namespace", "gen_ai_agent_name"]
+  search_regex = (
+      r"\b(by|without)\s*\([^)]*\b("
+      + "|".join(supported_groups)
+      + r")\b[^)]*\)"
   )
+  has_group = bool(re.search(search_regex, query))
 
   has_filter = False
   brace_matches = re.finditer(r"\{([^}]+)\}", query)
   for match in brace_matches:
-    if "reasoning_engine_id" in match.group(1):
-      has_filter = True
+    for group in supported_groups:
+      if group in match.group(1):
+        has_filter = True
+        break
+    if has_filter:
       break
 
   if not (has_group or has_filter):
     errors.append(
-        "Query is missing 'reasoning_engine_id' reference. It must either"
-        " group by 'reasoning_engine_id' using aggregations (e.g., 'by"
-        " (reasoning_engine_id)') or filter on it (e.g.,"
-        " '{reasoning_engine_id=\"...\"}')."
+        "Query is missing agent identifier reference. It must either group"
+        " by it using aggregations (e.g., 'by (gen_ai_agent_name)') or filter"
+        " on it (e.g., '{gen_ai_agent_name=\"...\"}')."
     )
 
   return errors
 
 
-def extract_alert_policies(hcl_content):
-  """Extracts resource 'google_monitoring_alert_policy' blocks and metadata."""
+def extract_alert_policies(hcl_content: str) -> list[dict]:
+  """Extracts resource 'google_monitoring_alert_policy' blocks and metadata.
+
+  Args:
+      hcl_content: The string content of a Terraform HCL file.
+
+  Returns:
+      A list of dictionaries, each representing a parsed alert policy with
+      keys like 'resource_name', 'queries', 'duration', etc.
+  """
   policies = []
   pattern = re.compile(
       r'resource\s+"google_monitoring_alert_policy"\s+"([^"]+)"\s*\{'
@@ -155,6 +283,10 @@ def extract_alert_policies(hcl_content):
     )
     display_name = display_name_match.group(1) if display_name_match else ""
 
+    # Extract duration
+    duration_match = re.search(r'duration\s*=\s*"([^"]+)"', block_content)
+    duration = duration_match.group(1) if duration_match else None
+
     # Extract PromQL queries
     queries = [
         q.group(1)
@@ -196,7 +328,8 @@ def extract_alert_policies(hcl_content):
       # Check threshold filters for quality metric name
       for flt in filters:
         metric_match = re.search(
-            r"metric\.labels\.evaluation_metric_name\s*=\s*\\*\"([^\"\\]+)\\*\"",
+            r"metric\.labels\.evaluation_metric_name"
+            r"\s*=\s*\\*\"([^\"\\]+)\\*\"",
             flt,
         )
         if metric_match:
@@ -206,14 +339,17 @@ def extract_alert_policies(hcl_content):
     engine_ids = []
     for query in queries:
       for engine_id in re.findall(
-          r"reasoning_engine_id\s*=\s*\"([^\"]+)\"", query
+          r'(?:reasoning_engine_id|gen_ai_agent_name|namespace)'
+          r'\s*=\s*"([^"]+)"',
+          query,
       ):
         if engine_id not in engine_ids:
           engine_ids.append(engine_id)
-
     for flt in filters:
       id_matches = re.findall(
-          r'reasoning_engine_id\s*=\s*\\*"([^"\\]+)\\*"', flt
+          r'(?:reasoning_engine_id|gen_ai_agent_name|namespace)'
+          r'\s*=\s*\\*"([^"\\]+)\\*"',
+          flt,
       )
       for engine_id in id_matches:
         if engine_id not in engine_ids:
@@ -230,6 +366,8 @@ def extract_alert_policies(hcl_content):
         "engine_ids": engine_ids,
         "queries": queries,
         "filters": filters,
+        "duration": duration,
+        "is_sql": "condition_sql" in block_content,
         "start_pos": start_pos,
         "end_pos": end_pos,
         "block_content": block_content,
@@ -238,8 +376,20 @@ def extract_alert_policies(hcl_content):
   return policies
 
 
-def validate_directory_tf_files(directory, expected_engine_var=None):
-  """Scans and validates all *.tf files in a given directory."""
+def validate_directory_tf_files(
+    directory: str, expected_engine_var: str | None = None
+) -> dict:
+  """Scans and validates all *.tf files in a given directory.
+
+  Args:
+      directory: The path to the directory containing Terraform files.
+      expected_engine_var: The expected variable reference for the agent
+        identifier (e.g., '${var.gen_ai_agent_name}').
+
+  Returns:
+      A dictionary summarizing validation results, including 'valid' (bool),
+      'errors' (list of str), and other metadata.
+  """
   tf_files = glob.glob(os.path.join(directory, "*.tf"))
   all_errors = []
   all_policies = []
@@ -261,11 +411,19 @@ def validate_directory_tf_files(directory, expected_engine_var=None):
       policy["filename"] = filename
       all_policies.append(policy)
 
-      for query in policy["queries"]:
-        lint_errs = lint_query(query)
-        for err in lint_errs:
+      if not policy.get("is_sql"):
+        for query in policy["queries"]:
+          lint_errs = lint_query(query)
+          for err in lint_errs:
+            all_errors.append(
+                f"Lint error in '{filename}' -> resource"
+                f" '{policy['resource_name']}': {err}"
+            )
+
+        duration_errs = validate_policy_duration(policy)
+        for err in duration_errs:
           all_errors.append(
-              f"Lint error in '{filename}' -> resource"
+              f"Duration error in '{filename}' -> resource"
               f" '{policy['resource_name']}': {err}"
           )
 
@@ -329,8 +487,8 @@ def main():
   parser.add_argument(
       "--engine-var",
       type=str,
-      default="${var.reasoning_engine_id}",
-      help="The expected variable or literal for the reasoning engine ID.",
+      default="${var.gen_ai_agent_name}",
+      help="The expected variable or literal for the agent identifier.",
   )
   parser.add_argument(
       "--file",
@@ -346,8 +504,10 @@ def main():
       policies = extract_alert_policies(content)
       errors = []
       for p in policies:
-        for q in p["queries"]:
-          errors.extend(lint_query(q))
+        if not p.get("is_sql"):
+          for q in p["queries"]:
+            errors.extend(lint_query(q))
+          errors.extend(validate_policy_duration(p))
       if errors:
         print(f"Validation failed for '{args.file}':", file=sys.stderr)
         for err in errors:

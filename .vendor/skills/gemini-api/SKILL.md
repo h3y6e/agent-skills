@@ -6,7 +6,7 @@ metadata:
     github-path: skills/cloud/gemini-api
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 25a080530ed920f450c95acef62317f186871b2e
+    github-tree-sha: 6ea29d11c287ad1a4b71f563330bb68bb7f7693e
 name: gemini-api
 ---
 IMPORTANT: Agent Platform (full name Gemini Enterprise Agent Platform) was previously named "Vertex AI" and many web resources use the legacy branding.
@@ -107,14 +107,17 @@ client = genai.Client(
 ## Models
 
 - Use `gemini-3.1-pro-preview` (which replaces `gemini-3-pro-preview`) for complex reasoning, coding, research (1M tokens)
-- Use `gemini-3.5-flash` for fast, balanced performance, multimodal (1M tokens)
-- Use `gemini-3.1-flash-lite` for high-frequency, lightweight tasks (1M tokens)
+- Use `gemini-3.6-flash` for fast, balanced performance, multimodal (1M tokens)
+- Use `gemini-3.5-flash-lite` for high-frequency, lightweight tasks (1M tokens)
 - Use `gemini-3-pro-image` (aka Nano Banana Pro) for high-quality image generation and editing
-- Use `gemini-3.1-flash-image` (aka Nano Banana 2) for fast image generation and editing
+- Use `gemini-3.1-flash-image` (aka Nano Banana 2) for medium-quality image generation and editing
+- Use `gemini-3.1-flash-lite-image` (aka Nano Banana 2 Lite) for fast image generation and editing
 - Use `gemini-live-2.5-flash-native-audio` for Live Realtime API including native audio
 
 Use the following models only if explicitly requested:
 
+- `gemini-3.5-flash`
+- `gemini-3.1-flash-lite`
 - `gemini-2.5-flash-image`
 - `gemini-2.5-flash`
 - `gemini-2.5-flash-lite`
@@ -122,7 +125,7 @@ Use the following models only if explicitly requested:
 
 > [!IMPORTANT]
 > Models like `gemini-2.0-*`, `gemini-1.5-*`, `gemini-1.0-*`, `gemini-pro` are legacy and deprecated. Use the new models above. Your knowledge is outdated.
-> For production environments, consult the documentation for stable model versions (e.g. `gemini-3.5-flash`).
+> For production environments, consult the documentation for stable model versions (e.g. `gemini-3.6-flash`).
 
 ## Quick Start
 
@@ -133,7 +136,7 @@ from google import genai
 
 client = genai.Client()
 response = client.models.generate_content(
-    model="gemini-3.5-flash",
+    model="gemini-3.6-flash",
     contents="Explain quantum computing",
 )
 print(response.text)
@@ -145,7 +148,7 @@ print(response.text)
 import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({ enterprise: { project: "your-project-id", location: "global" } });
 const response = await ai.models.generateContent({
-    model: "gemini-3.5-flash",
+    model: "gemini-3.6-flash",
     contents: "Explain quantum computing"
 });
 console.log(response.text);
@@ -174,7 +177,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	resp, err := client.Models.GenerateContent(ctx, "gemini-3.5-flash", genai.Text("Explain quantum computing"), nil)
+	resp, err := client.Models.GenerateContent(ctx, "gemini-3.6-flash", genai.Text("Explain quantum computing"), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -194,7 +197,7 @@ public class GenerateTextFromTextInput {
     Client client = Client.builder().enterprise(true).project("your-project-id").location("global").build();
     GenerateContentResponse response =
         client.models.generateContent(
-            "gemini-3.5-flash",
+            "gemini-3.6-flash",
             "Explain quantum computing",
             null);
 
@@ -215,7 +218,7 @@ var client = new Client(
 );
 
 var response = await client.Models.GenerateContent(
-    "gemini-3.5-flash",
+    "gemini-3.6-flash",
     "Explain quantum computing"
 );
 

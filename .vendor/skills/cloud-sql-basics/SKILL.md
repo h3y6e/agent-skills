@@ -8,7 +8,7 @@ metadata:
     github-path: skills/cloud/cloud-sql-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 1552a691e5c4f908e442d596e37f7554e000449f
+    github-tree-sha: 8f1465994b22a632dd70b44025b7f2339720532c
 name: cloud-sql-basics
 ---
 # Cloud SQL Basics
@@ -91,8 +91,9 @@ access to Cloud SQL resources.
 
 ## Reference Directory
 
--   [Core Concepts](references/core-concepts.md): Instance architecture, high
-    availability (HA), and supported database engines.
+-   [Core Concepts](references/core-concepts.md): Cloud SQL editions (Enterprise
+    & Enterprise Plus), instance architecture, read pools, high availability (HA),
+    and supported database engines.
 
 -   [CLI Usage](references/cli-usage.md): Essential `gcloud sql` commands for
     instance, database, and user management.
@@ -108,6 +109,9 @@ access to Cloud SQL resources.
 
 -   [IAM & Security](references/iam-security.md): Predefined roles, SSL/TLS
     certificates, and Auth Proxy configuration.
+
+-   [Disaster Recovery & Backups](references/dr-backups.md): Backup types,
+    Point-in-Time Recovery (PITR), replicas, read pools comparison, and Enterprise Plus Advanced DR.
 
 *If you need product information not found in these references, use the
     Developer Knowledge MCP server `search_documents` tool.*

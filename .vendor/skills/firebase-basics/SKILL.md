@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/firebase-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: de60be96f924504ec5fa71d5a1f04f7744fcc1bf
+    github-tree-sha: 1f9bbfea2dd399d3b3ee5595b5fc890667929bff
 name: firebase-basics
 ---
 # Firebase Basics
