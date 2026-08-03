@@ -33,10 +33,6 @@ type TaxiRequest = {
 
 **Rationale:** Optional properties cannot guarantee at compile time which properties exist in which state.
 
-## Use `kind` as the unified discriminant
-
-Use `kind` as the discriminant property name for domain states throughout the entire project. (Errors are the one exception: `TaggedError` discriminates on `_tag` — see [error-handling.md](error-handling.md).)
-
 ## Companion Object Pattern
 
 Group a type definition and its related functions under an object of the same name. Branded-type schemas are exposed as a `schema` property on the companion object, not as standalone exports.
@@ -146,5 +142,3 @@ Place each domain concept (type + companion object) in its own dedicated file. C
 // item-type.ts — type ItemType + const ItemType (companion)
 // status.ts — type Status + const Status (companion)
 ```
-
-Barrel files (`index.ts`) are for re-exports only.

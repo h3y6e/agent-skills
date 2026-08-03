@@ -141,8 +141,9 @@ The aggregate state and the events it emits must be persisted within the same tr
 
 ```typescript
 // Bad — state and event are persisted in different transactions; a failure
-// between them leaves the aggregate inconsistent.
-await saveRequest(entity).then(Result.andThenAsync(() => saveEvent(event)));
+// after the first commit leaves the aggregate updated with the event never recorded.
+yield* Result.await(saveRequest(entity));
+yield* Result.await(saveEvent(event));
 ```
 
 The standard implementation is the **Outbox Pattern**: write the state row and the outbox row atomically in the same DB transaction, and let a separate process relay outbox rows to the broker. Express this atomicity in the interface as well. Read-side concerns are split out as `RequestResolver` (interface segregation).

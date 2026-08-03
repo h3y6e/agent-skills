@@ -9,7 +9,7 @@ metadata:
 
 # Functional Domain Modeling in TypeScript
 
-Robust server-side TypeScript design. The library stack is fixed: [better-result](https://github.com/dmmulroy/better-result) for `Result` and `TaggedError`, [valibot](https://valibot.dev) for schemas and branded types. Install them if missing.
+Robust server-side TypeScript design with [better-result](https://github.com/dmmulroy/better-result) (`Result`, `TaggedError`) and [valibot](https://valibot.dev) (schemas, branded types).
 
 ## Invariants
 
@@ -34,7 +34,4 @@ Read only the reference file(s) relevant to the current task.
 | TaggedError design, Result composition, HTTP error mapping | [references/error-handling.md](references/error-handling.md) |
 | Parsing external input, schema→Result factory, PII protection | [references/boundary-defense.md](references/boundary-defense.md) |
 | Collection operations, test fixtures | [references/style-and-testing.md](references/style-and-testing.md) |
-
-## Applying These Principles
-
-These are recommendations, not strict rules. If you deviate, state the reason in a comment. Justifiable reasons include: an external library requires class inheritance, immutable object creation cost is a measured performance concern, or the team has agreed on a different pattern.
+| Setting up lint enforcement (oxlint) | [references/linting.md](references/linting.md) |

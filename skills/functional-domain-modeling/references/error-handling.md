@@ -13,7 +13,7 @@ Core API (verify against the installed version before relying on an example):
 | API | Purpose |
 | --- | --- |
 | `Result.ok(v)` / `Result.err(e)` | Constructors |
-| `Result.try(fn)` / `Result.tryPromise({ try, catch })` | Wrap throwing/rejecting code at infrastructure boundaries |
+| `Result.try({ try, catch })` / `Result.tryPromise({ try, catch })` | Wrap throwing/rejecting code at infrastructure boundaries |
 | `Result.gen(function* () { … })` + `yield*` / `Result.await(p)` | Generator composition (sync and async) |
 | `.map` / `.mapError` / `.andThen` / `.andThenAsync` / `.tryRecover` | Instance combinators |
 | `.match({ ok, err })` / `error.match({ Tag: … })` | Exhaustive pattern matching |
@@ -66,9 +66,9 @@ type StartTripError = RequestNotFound | InvalidState;
 type AppError = RequestNotFound | InvalidState | DriverNotAvailable | /* … */;
 ```
 
-## Never Assume a Promise Cannot Reject
+## Wrap Throwing Code at the Infrastructure Boundary
 
-Wrap every fallible promise (database query, HTTP call, file I/O) with `Result.tryPromise` and an explicit `catch` mapper. A rejection escaping the Result channel is a defect and surfaces as `Panic`.
+Never assume a promise cannot reject. Wrap every throwing or rejecting call (database query, HTTP call, file I/O, `JSON.parse`) at its narrow boundary with `Result.tryPromise` (async) or `Result.try` (sync), mapping the cause to a domain error via `catch`. A rejection or throw escaping the Result channel is a defect and surfaces as `Panic`.
 
 ```typescript
 const getDriver = (driverId: DriverId) =>
@@ -77,6 +77,8 @@ const getDriver = (driverId: DriverId) =>
     catch: (cause) => new RepositoryError({ message: "driver lookup failed", cause }),
   });
 ```
+
+The thunk-only form (`Result.try(fn)`) wraps the cause in the library's generic `UnhandledException`; map to a specific `TaggedError` before the error crosses a layer. For transient failures, use `Result.tryPromise`'s built-in `retry` / `signal` options instead of hand-rolled retry loops.
 
 ## Composing Operations
 
@@ -140,3 +142,10 @@ Keep the detailed internal `message` on the tagged error; create user-safe wordi
 - Unexpected infrastructure failures (e.g., DB connection loss) with no meaningful caller response → delegate to the framework's error handler.
 
 A callback that throws inside `.map` / `.match` / a gen body is treated as a defect and surfaces as `Panic` with the original exception as `cause`.
+
+For an exhaustive `switch` over a state union, make the `default` branch a defect; `satisfies never` turns a newly added state into a compile error:
+
+```typescript
+default:
+  return panic(`Unexpected state: ${JSON.stringify(request satisfies never)}`);
+```
