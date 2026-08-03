@@ -31,11 +31,11 @@ type TaxiRequest = {
 };
 ```
 
-**Rationale:** Optional properties cannot guarantee at compile time which properties exist in which state. With discriminated unions, once you narrow on `kind`, you can safely access state-specific properties.
+**Rationale:** Optional properties cannot guarantee at compile time which properties exist in which state.
 
 ## Use `kind` as the unified discriminant
 
-Use `kind` as the discriminant property name for domain states throughout the entire project. Mixing `type`, `status`, `state`, etc. undermines codebase consistency. (Errors are the one exception: `TaggedError` discriminates on `_tag` — see [error-handling.md](error-handling.md).)
+Use `kind` as the discriminant property name for domain states throughout the entire project. (Errors are the one exception: `TaggedError` discriminates on `_tag` — see [error-handling.md](error-handling.md).)
 
 ## Companion Object Pattern
 
@@ -74,7 +74,7 @@ const TaxiRequest = {
 
 ## Use `type` (not `interface`)
 
-Define domain types with `type`. The declaration merging of `interface` poses a risk: declaring an interface with the same name in another file silently changes the type's shape.
+Define domain types with `type` — `interface` declaration merging lets another file silently change the type's shape.
 
 ```typescript
 // Good
@@ -93,7 +93,7 @@ interface User {
 
 ## Use function property notation (not method notation)
 
-Write functions inside type definitions using function property notation. Method notation makes parameter types bivariant, breaking type safety.
+Write functions inside type definitions using function property notation — method notation makes parameter types bivariant.
 
 ```typescript
 // Good: function property notation — parameters are contravariant
@@ -130,7 +130,7 @@ type ProductId = v.InferOutput<typeof ProductIdSchema>;
 
 ## Ensure immutability with `Readonly<>`
 
-Define domain objects with `Readonly<>` to prevent property reassignment. Express state changes by creating new objects.
+Define domain objects with `Readonly<>`. Express state changes by creating new objects.
 
 ## File structure: one concept per file
 
@@ -147,4 +147,4 @@ Place each domain concept (type + companion object) in its own dedicated file. C
 // status.ts — type Status + const Status (companion)
 ```
 
-Barrel files (`index.ts`) are for re-exports only; do not define types or functions directly in them.
+Barrel files (`index.ts`) are for re-exports only.

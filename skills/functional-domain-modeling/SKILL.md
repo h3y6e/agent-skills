@@ -9,7 +9,7 @@ metadata:
 
 # Functional Domain Modeling in TypeScript
 
-Robust server-side TypeScript design. The library stack is fixed: [better-result](https://github.com/dmmulroy/better-result) for `Result` and `TaggedError`, [valibot](https://valibot.dev) for schemas and branded types. Install them if missing; do not substitute other libraries.
+Robust server-side TypeScript design. The library stack is fixed: [better-result](https://github.com/dmmulroy/better-result) for `Result` and `TaggedError`, [valibot](https://valibot.dev) for schemas and branded types. Install them if missing.
 
 ## Invariants
 

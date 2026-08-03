@@ -80,14 +80,14 @@ const getDriver = (driverId: DriverId) =>
 
 ## Composing Operations
 
-Each step returns a `Result`; on error, subsequent steps are skipped. **Default to `Result.gen`** for composing fallible steps, sync or async: intermediate values get names, the flow reads top-to-bottom like async/await, and `yield*` marks each early exit — readability does not degrade as steps grow. Use `Result.await` for `Promise<Result<…>>` steps and `yield*` a sync `Result` directly.
+Each step returns a `Result`; on error, subsequent steps are skipped. **Default to `Result.gen`** for composing fallible steps, sync or async: intermediate values get names, the flow reads like async/await, and `yield*` marks each early exit — readability does not degrade as steps grow. Use `Result.await` for `Promise<Result<…>>` steps and `yield*` a sync `Result` directly.
 
 Fall back only when `Result.gen` would be pure boilerplate:
 
 - A single transform → one combinator (`.map`, `.andThen`, `.then(Result.map(…))`).
 - `await` the promise, then branch with `.isOk()` / `.isErr()` — when ordinary control-flow narrowing is genuinely clearer.
 
-Avoid long combinator chains (`.andThen().map().…`): they cannot name intermediate values, force curried helpers that exist only to thread arguments, and require the reader to know each combinator's semantics.
+Avoid long combinator chains (`.andThen().map().…`): they cannot name intermediate values and force curried helpers that exist only to thread arguments.
 
 ```typescript
 const assignDriver = (requestId: RequestId, driverId: DriverId, now: Date) =>
@@ -117,7 +117,7 @@ const ensureWaiting = (request: TaxiRequest): Result<Waiting, InvalidState> =>
 
 ## Error Conversion in the Controller Layer
 
-Converting domain errors to HTTP responses is the Controller layer's responsibility. Match exhaustively on the tag with `error.match` — TypeScript enforces that every variant is handled, so no `default` branch is needed.
+Converting domain errors to HTTP responses is the Controller layer's responsibility. Match exhaustively on the tag with `error.match` — TypeScript enforces that every variant is handled.
 
 ```typescript
 const response = result.match({

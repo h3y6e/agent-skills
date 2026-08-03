@@ -43,7 +43,7 @@ const [parsed, invalid] = Result.partition(rows.map(OrderRow.parse));
 
 ## Type-Safe Test Fixtures with `as const satisfies`
 
-Define test fixtures using `as const satisfies Type`. This preserves discriminant literal types and prevents widening, while `satisfies` verifies type compatibility at compile time.
+Define test fixtures using `as const satisfies Type`: `as const` preserves discriminant literal types, `satisfies` verifies type compatibility.
 
 ```typescript
 // ❌ No type checking — typos go unnoticed

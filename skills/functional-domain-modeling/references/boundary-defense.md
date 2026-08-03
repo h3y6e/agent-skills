@@ -32,7 +32,7 @@ type CreateRequestInput = v.InferOutput<typeof CreateRequestInput>;
 
 ## Schema Factory: Validation → Result Conversion
 
-`v.parse` throws; use `v.safeParse` and convert to `Result` for Railway Oriented Programming. Do not hand-write this conversion per schema — define one factory and reuse it project-wide.
+`v.parse` throws; use `v.safeParse` and convert to `Result` for Railway Oriented Programming. Define one factory and reuse it project-wide instead of hand-writing the conversion per schema.
 
 ```typescript
 import * as v from "valibot";
@@ -102,7 +102,7 @@ type ItemId = v.InferOutput<typeof ItemIdSchema>;
 
 ## PII Protection with the Sensitive Type
 
-TypeScript types are erased at runtime, so marking something as PII in the type system does not prevent leakage via `JSON.stringify` or `console.log`. Enclose the value in a closure and mask it during serialization.
+Marking PII in the type system does not prevent leakage via `JSON.stringify` or `console.log`. Enclose the value in a closure and mask it during serialization.
 
 ```typescript
 type Sensitive<T> = Readonly<{
