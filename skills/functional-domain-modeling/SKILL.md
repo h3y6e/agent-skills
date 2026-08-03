@@ -5,6 +5,7 @@ license: MIT
 metadata:
   author: h3y6e
   version: 2026.7.1
+  refs: https://github.com/iwasa-kosui/kamae-ts/releases/tag/v1.1.0
 ---
 
 # Functional Domain Modeling in TypeScript
