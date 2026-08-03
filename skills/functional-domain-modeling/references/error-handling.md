@@ -80,11 +80,14 @@ const getDriver = (driverId: DriverId) =>
 
 ## Composing Operations
 
-Each step returns a `Result`; on error, subsequent steps are skipped. For `Promise<Result<…>>` workflows, prefer in this order:
+Each step returns a `Result`; on error, subsequent steps are skipped. **Default to `Result.gen`** for composing fallible steps, sync or async: intermediate values get names, the flow reads top-to-bottom like async/await, and `yield*` marks each early exit — readability does not degrade as steps grow. Use `Result.await` for `Promise<Result<…>>` steps and `yield*` a sync `Result` directly.
 
-1. `Result.gen` with `Result.await` — best for several fallible steps with intermediate values.
-2. Static async combinators — `.then(Result.andThenAsync(…))`, `.then(Result.map(…))` for short pipelines.
-3. `await` the promise, then use instance methods — when ordinary control-flow narrowing is clearer.
+Fall back only when `Result.gen` would be pure boilerplate:
+
+- A single transform → one combinator (`.map`, `.andThen`, `.then(Result.map(…))`).
+- `await` the promise, then branch with `.isOk()` / `.isErr()` — when ordinary control-flow narrowing is genuinely clearer.
+
+Avoid long combinator chains (`.andThen().map().…`): they cannot name intermediate values, force curried helpers that exist only to thread arguments, and require the reader to know each combinator's semantics.
 
 ```typescript
 const assignDriver = (requestId: RequestId, driverId: DriverId, now: Date) =>

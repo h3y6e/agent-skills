@@ -19,6 +19,7 @@ Apply these throughout:
 - Define domain types with `type`, never `interface`; write functions in type definitions with function property notation (`save: (t: Task) => Promise<void>`).
 - Express state transitions as pure functions whose argument types constrain valid source states and whose return types name the target state. Invalid transitions must be compile errors.
 - Errors are values: domain code returns `Result<T, E>` and never throws. Define each known failure as a `TaggedError` class; reserve `panic` for violated invariants and programmer mistakes.
+- Compose fallible steps with `Result.gen` by default; use a lone combinator only for a single transform. Avoid long combinator chains.
 - Validate every external input (API request, DB row, env var, file, queue message) with a valibot schema at the boundary; trust types inside the domain — do not re-validate.
 - `as` is banned except `as const` and `as const satisfies T`. When a value's type is unknown, parse it through a schema. Brand IDs with `v.brand` so no cast is ever needed.
 
