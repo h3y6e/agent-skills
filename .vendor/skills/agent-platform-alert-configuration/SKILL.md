@@ -6,7 +6,7 @@ metadata:
     github-path: skills/cloud/agent-platform-alert-configuration
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: ffd7e44d4cfe9c6d1d8e0006d0731d1d27fc0a49
+    github-tree-sha: 8e6f5501ab9dac0053873aecf44714f7b16757a4
 name: agent-platform-alert-configuration
 ---
 # Agent Platform Alert Configuration
@@ -18,9 +18,10 @@ name: agent-platform-alert-configuration
 Before executing any commands or writing configurations on behalf of the user,
 you MUST adhere to the following safety tiers based on the action requested:
 
-1.  **Tier R: Read-only (`check_telemetry.py`)**
+1.  **Tier R: Read-only (`check_telemetry.py` / `gather_agent_info.py`)**
     *   **Rule**: No confirmation needed. You may execute these scripts
-        immediately to inspect the telemetry status of the Reasoning Engine.
+        immediately to inspect telemetry status or gather agent configuration
+        details.
 2.  **Tier B: Billing & Resource Creation (`create_online_monitor.py` /
     provisioning)**
     *   **Rule**: **Explicit User Confirmation Required**. These actions incur
@@ -64,7 +65,16 @@ pip install -r scripts/requirements.txt
 1.  **Mandatory Prerequisite Execution Protocol (SEQUENTIAL)**: Before
     generating or writing ANY configuration, you MUST execute these steps in
     order:
-    1.  **Step 1: Metric Scope Check**: Determine where to deploy policies.
+    1.  **Step 1: Streamlined Discovery (Recommended)**: Run
+        `gather_agent_info.py` to automatically identify agent runtime, check
+        telemetry, metric scopes, linked datasets, and more. This script covers
+        most of the manual checks listed in subsequent steps.
+        *   Command: `python3 scripts/gather_agent_info.py --project-id
+            {project_id} --agent-name {agent_name}`
+        *   **Note**: If this script fails, returns partial data, or doesn't
+            produce everything you need, you MUST satisfy requirements by
+            running the manual fallback steps listed in Step 2 and Step 3.
+    2.  **Step 2: Metric Scope Check**: Determine where to deploy policies.
         *   **Action A (CLI)**: Run `gcloud beta monitoring metrics-scopes list
             projects/{project_id}`. If a scoping project is returned, you MUST
             deploy policies there.
@@ -74,7 +84,7 @@ pip install -r scripts/requirements.txt
         *   **Action C (Fallback)**: If ambiguous, ASK the user: "Are you using
             a multi-project Cloud Monitoring Metric Scope? If so, what is the
             scoping project ID?"
-    2.  **Step 2: Pre-existing Policies Check**: Avoid duplicates.
+    3.  **Step 3: Pre-existing Policies Check**: Avoid duplicates.
         *   **Action**: Scan the target directory to see if aggregated policies
             already exist targeting the same metrics (grouped by
             `reasoning_engine_id` or `gen_ai_agent_name`). Use
@@ -180,14 +190,19 @@ pip install -r scripts/requirements.txt
 
 ## Tooling Scripts
 
-Use the following scripts to resolve duplicates and validate configs before
-presenting or applying Terraform changes:
+Use the following scripts to discover agents, gather configuration details,
+resolve duplicates, and validate configs:
 
-1.  **Duplicate Check & Merge**: Checks for pre-existing alerts in the target
+1.  **Agent Information Gathering**: Streamlines discovery, environment auditing
+    (Metric Scopes, BQ Datasets, Notification Channels), table derivations (Log
+    & Trace), and Online Evaluator checks.
+    *   Command: `python3 scripts/gather_agent_info.py --project-id {project_id}
+        --agent-name {agent_name}`
+2.  **Duplicate Check & Merge**: Checks for pre-existing alerts in the target
     folder to ensure changes are merged in-place rather than appended:
     *   Command: `python3 scripts/validate_config.py --directory {target_tf_dir}
         --engine-var '${var.gen_ai_agent_name}'`
-2.  **Config Linting**: Validates PromQL grammar, matching engine labels, and
+3.  **Config Linting**: Validates PromQL grammar, matching engine labels, and
     HCL structure:
     *   Command: `python3 scripts/validate_config.py --file {path_to_tf_file}`
     *   **Self-Correction Loop**: If validation fails (exits non-zero or outputs
@@ -212,7 +227,10 @@ presenting or applying Terraform changes:
     *   `validate_config.py --directory` exiting with code 1: Parse the JSON
         output for duplicate resource targets. Perform in-place upgrade edits,
         then re-check until it passes with 0.
-    *   **Script Execution Failures & Self-Correction**: If script execution
+    *   **Script Execution Failures & Self-Correction**: If the execution of
+        utility scripts (such as `gather_agent_info.py`, `check_telemetry.py`,
+        `create_online_monitor.py`, `analyze_traffic.py`,
+        `list_log_scope_table_names.py`, or `list_trace_scope_table_names.py`)
         fails unexpectedly, you MUST read and inspect the stdout/stderr logs or
         error output. Analyze the error message and attempt to dynamically
         correct parameters and retry execution before escalating or
