@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/bigquery-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 72e53a29a70cad97d41da0e4673a3989bc5fc6ec
+    github-tree-sha: 58a21dda4e3a747c7194b062b4023cd2934a6f3e
 name: bigquery-basics
 ---
 # BigQuery Basics
@@ -67,6 +67,12 @@ intelligence capabilities.
 
 - [Core Concepts](references/core-concepts.md): Storage types, analytics
   workflows, and BigQuery Studio features.
+
+- [Change History](references/change-history.md): Tracking and querying
+  incremental table changes using APPENDS and CHANGES.
+
+-   [Continuous Queries](references/continuous-queries.md): Running continuous
+    SQL statements to analyze incoming data in real time.
 
 - [CLI Usage](references/cli-usage.md): Essential `bq` command-line tool
   operations for managing data and jobs.
