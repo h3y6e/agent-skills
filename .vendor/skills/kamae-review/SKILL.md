@@ -10,9 +10,9 @@ description: |
 license: MIT
 metadata:
     github-path: skills/kamae-review
-    github-ref: refs/tags/v1.1.0
+    github-ref: refs/tags/v1.2.0
     github-repo: https://github.com/iwasa-kosui/kamae-ts
-    github-tree-sha: 165e93f2af6f31646a352fb660a3db9759c0f6c0
+    github-tree-sha: eb32e5543430900313e6d5e47e35a9dc62a5fda7
 name: kamae-review
 ---
 # Kamae Code Review
@@ -51,7 +51,7 @@ If no rules are found, proceed with all checks active. See [`../../rules/README.
    - [`checklist/domain-modeling.md`](./checklist/domain-modeling.md) — Discriminated Unions, Companion Objects, Branded Types, file structure (items 1.x)
    - [`checklist/state-transitions.md`](./checklist/state-transitions.md) — pure state transitions, exhaustiveness (items 2.x)
    - [`checklist/error-handling.md`](./checklist/error-handling.md) — Result types, no thrown exceptions, DU error types (items 3.x)
-   - [`checklist/boundary.md`](./checklist/boundary.md) — schema validation, no `as` assertions (items 4.1, 4.2)
+   - [`checklist/boundary.md`](./checklist/boundary.md) — schema validation, no `as` assertions, schema-derived types (items 4.1, 4.2, 4.4)
    - [`checklist/pii-protection.md`](./checklist/pii-protection.md) — `Sensitive<T>` for PII (item 4.3)
    - [`checklist/declarative-and-tests.md`](./checklist/declarative-and-tests.md) — array operations, events, fixtures (items 5.x, 6.x)
 
@@ -68,7 +68,7 @@ Each checklist item is tagged High / Medium / Low.
 
 - **High** — direct cause of runtime errors or compliance violations (`as`, missing PII protection, missing schema validation, missing Branded Types on semantically distinct primitives).
 - **Medium** — invalid state representation, inconsistent error handling, missing exhaustiveness, catch-all type files, classes for domain models.
-- **Low** — stylistic, readability, edge-case correctness (method notation, `interface` for domain types, missing `Readonly<>`, non-`kind` discriminants, imperative array loops, fixtures without `as const satisfies`).
+- **Low** — stylistic, readability, edge-case correctness (method notation, `interface` for domain types, missing `Readonly<>`, non-`kind` discriminants, imperative array loops, fixtures without `as const satisfies`, matching schema/type duplication). An existing schema/type mismatch is raised according to its incorrect acceptance, rejection, or data-exposure impact.
 
 ## Example Finding
 

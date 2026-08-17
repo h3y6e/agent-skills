@@ -2,9 +2,9 @@
 description: Conducts multi-axis code review. Use before merging any change. Use when reviewing code written by yourself, another agent, or a human. Use when you need to assess code quality across multiple dimensions before it enters the main branch.
 metadata:
     github-path: skills/code-review-and-quality
-    github-ref: refs/tags/0.6.4
+    github-ref: refs/tags/0.6.7
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 1252ada5c8ac5d557f4633d95972c102b8a199fe
+    github-tree-sha: 8c26aef07c0ac94770d48ed68e72c0fd585420a6
 name: code-review-and-quality
 ---
 # Code Review and Quality
@@ -352,8 +352,8 @@ For triaging `npm audit` findings and supply-chain risk (typosquatting, compromi
 ```
 ## See Also
 
-- For detailed security review guidance, see `references/security-checklist.md`
-- For performance review checks, see `references/performance-checklist.md`
+- For detailed security review guidance, see `../../references/security-checklist.md`
+- For performance review checks, see `../../references/performance-checklist.md`
 
 ## Common Rationalizations
 

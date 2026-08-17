@@ -3,9 +3,9 @@ description: Writing, explore — mine raw fragments, no structure yet.
 disable-model-invocation: true
 metadata:
     github-path: skills/in-progress/writing-fragments
-    github-ref: refs/tags/v1.1.0
+    github-ref: refs/tags/v1.2.3
     github-repo: https://github.com/mattpocock/skills
-    github-tree-sha: ae1380aef2436f7a7eb1d62aedcc5f2b8e71d6c5
+    github-tree-sha: ce7d2741a30df8a488f6248c84cf954cff98393f
 name: writing-fragments
 ---
 <what-to-do>

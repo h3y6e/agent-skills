@@ -35,7 +35,7 @@ class AnalyzeTrafficTest(unittest.TestCase):
   def setUp(self):
     super().setUp()
     self.mock_data_dir = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets"
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "_internal"
     )
     if not os.path.exists(self.mock_data_dir):
       raise FileNotFoundError(

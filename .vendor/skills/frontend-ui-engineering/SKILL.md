@@ -2,9 +2,9 @@
 description: Builds production-quality, accessible, responsive user-facing UIs. Use when building or modifying interfaces and pages, creating components, implementing layouts, meeting WCAG accessibility requirements, managing state, or when the output needs to look and feel production-quality rather than AI-generated.
 metadata:
     github-path: skills/frontend-ui-engineering
-    github-ref: refs/tags/0.6.4
+    github-ref: refs/tags/0.6.7
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: f70bc8f809c39b8e4b7cf7227f9c7d509d73fa13
+    github-tree-sha: 893e7558baef6a0773aec4c152ca8bccd544fa03
 name: frontend-ui-engineering
 ---
 # Frontend UI Engineering
@@ -298,7 +298,7 @@ function useToggleTask() {
 
 ## See Also
 
-For detailed accessibility requirements and testing tools, see `references/accessibility-checklist.md`.
+For detailed accessibility requirements and testing tools, see `../../references/accessibility-checklist.md`.
 
 ## Common Rationalizations
 

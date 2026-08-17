@@ -2,9 +2,9 @@
 description: 'Quick-reference card for all ponytail modes, skills, and commands. One-shot display, not a persistent mode. Trigger: /ponytail-help, "ponytail help", "what ponytail commands", "how do I use ponytail".'
 metadata:
     github-path: skills/ponytail-help
-    github-ref: refs/tags/v4.8.3
+    github-ref: refs/tags/v4.9.0
     github-repo: https://github.com/DietrichGebert/ponytail
-    github-tree-sha: fb3c72b0ae7280fcf1d05d938ef003f865be4923
+    github-tree-sha: b7df7bc32b6e4e8bbde8acb2ef3c97ee7e7638f7
 name: ponytail-help
 ---
 # Ponytail Help
@@ -28,12 +28,14 @@ Level sticks until changed or session end.
 |-------|---------|--------------|
 | **ponytail** | `/ponytail` | Lazy mode itself. Simplest solution that works. |
 | **ponytail-review** | `/ponytail-review` | Over-engineering review: `L42: yagni: factory, one product. Inline.` |
+| **ponytail-audit** | `/ponytail-audit` | Whole-repo over-engineering audit: ranked list of what to delete. |
+| **ponytail-debt** | `/ponytail-debt` | Harvest `ponytail:` shortcut comments into a tracked ledger. |
 | **ponytail-gain** | `/ponytail-gain` | Measured-impact scoreboard: less code, less cost, more speed. |
 | **ponytail-help** | `/ponytail-help` | This card. |
 
 Codex uses `@ponytail`, `@ponytail-review`, and `@ponytail-help`; Claude Code
-and OpenCode use the slash-command forms above (OpenCode ships `/ponytail` and
-`/ponytail-review`).
+and OpenCode use the slash-command forms above (OpenCode ships all six as
+slash commands).
 
 ## Deactivate
 

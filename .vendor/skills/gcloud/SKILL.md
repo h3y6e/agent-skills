@@ -1,11 +1,11 @@
 ---
-description: Provides safety-critical validation, guardrails, and data reduction for gcloud CLI operations across Google Cloud Platform (GCP) services and infrastructure. Use when planning, generating, invoking, executing, or managing any gcloud CLI commands or GCP resources with gcloud. Don't use when writing Google Cloud client library code or raw REST/gRPC API requests.
+description: Provides safety-critical validation, guardrails, and data reduction for gcloud CLI operations across Google Cloud Platform (GCP) services and infrastructure. Use when planning, generating, constructing, proposing, describing, or executing any gcloud CLI commands - including when answering questions about gcloud syntax, or formatting flags. Don't use when writing Google Cloud client library code or raw REST/gRPC API requests.
 metadata:
     category: CloudInfrastructureAndServices
     github-path: skills/cloud/gcloud
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 9ef43221b2a562b71ea3fd3ca6d7219ad1db5e61
+    github-tree-sha: 4487ce06ac34e44019ca4f8e3aa46182d6b55f0b
 name: gcloud
 ---
 # gcloud CLI Skill for AI Agents
@@ -53,9 +53,11 @@ name: gcloud
 >
 >     -   **Step 1**: Syntax Validation via `gcloud help <leaf_command>`
 >     -   **Step 2**: Parameter Verification (confirming required and optional
->         flags, and explicitly checking if the `--dry-run` flag is supported)
->     -   **Step 3**: Dry-Run Command Proposal (If `--dry-run` is supported,
->         there MUST be a `--dry-run` invocation before the next step.)
+>         flags, and explicitly checking if the `--dry-run` or `--validate-only`
+>         flag is supported)
+>     -   **Step 3**: Dry-Run Command Proposal (If `--dry-run` or
+>         `--validate-only` is supported, there MUST be a `--dry-run` or
+>         `--validate-only` invocation before the next step.)
 >     -   **Step 4**: Command Proposal & Authorization (If the command is on the
 >         "Prohibited Operations" denylist, state that autonomous execution is
 >         forbidden, and the user MUST be explicitly asked for authorization to
@@ -234,10 +236,10 @@ human-in-the-loop authorization:
 
 ### Execution Guidelines
 
-*   **Dry Run (Mandatory)**: If the `--dry-run` flag (or equivalent) is listed
-    in the command help output, ALWAYS include the flag in the proposed command
-    or initial execution step. ALWAYS preview changes with `--dry-run` prior to
-    actual execution.
+*   **Dry Run (Mandatory)**: If the `--dry-run` or `--validate-only` flag (or
+    equivalent) is listed in the command help output, ALWAYS include the flag in
+    the proposed command or initial execution step. ALWAYS preview changes with
+    `--dry-run` or `--validate-only` prior to actual execution.
 
 *   **Long Running Operations**: For commands that support it, the `--async`
     flag is highly recommended for long-running operations to avoid blocking the
