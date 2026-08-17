@@ -2,9 +2,9 @@
 description: Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions "red-green-refactor", or wants integration tests.
 metadata:
     github-path: skills/engineering/tdd
-    github-ref: refs/tags/v1.1.0
+    github-ref: refs/tags/v1.2.3
     github-repo: https://github.com/mattpocock/skills
-    github-tree-sha: 57e1bee887816ed2af745e5fd388f224f6e61ada
+    github-tree-sha: 423f3cc2bccf3b0ed426fb35eeb4b38d9188a343
 name: tdd
 ---
 # Test-Driven Development
@@ -26,6 +26,8 @@ A **seam** is the public boundary you test at: the interface where you observe b
 **Test only at pre-agreed seams.** Before writing any test, write down the seams under test and confirm them with the user. No test is written at an unconfirmed seam. You can't test everything — agreeing the seams up front is how testing effort lands on the critical paths and complex logic instead of every edge case.
 
 Ask: "What's the public interface, and which seams should we test?"
+
+When the shape of that interface is itself in question — how deep the module is, where the seam belongs, what the interface should expose — use the `/codebase-design` skill for the vocabulary. It is the shared source of the module, interface, depth, seam, adapter, leverage and locality terms, and it is a reference to consult, not a session to run.
 
 ## Anti-patterns
 

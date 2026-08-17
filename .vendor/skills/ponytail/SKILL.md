@@ -5,9 +5,9 @@ description: |
 license: MIT
 metadata:
     github-path: skills/ponytail
-    github-ref: refs/tags/v4.8.4
+    github-ref: refs/tags/v4.9.0
     github-repo: https://github.com/DietrichGebert/ponytail
-    github-tree-sha: f2a46af45b7c0a57edf990bd43ed2e79782c31ef
+    github-tree-sha: cb6e53477eaf04e6daeca22feacb85f9ce20d40c
 name: ponytail
 ---
 # Ponytail
@@ -54,7 +54,7 @@ every sibling caller still broken. Fix it once, where all callers route through.
 - Fewest files possible. Shortest working diff wins — but only once you understand the problem. The smallest change in the wrong place isn't lazy, it's a second bug.
 - Complex request? Ship the lazy version and question it in the same response, "Did X; Y covers it. Need full X? Say so." Never stall on an answer you can default.
 - Two stdlib options, same size? Take the one that's correct on edge cases. Lazy means writing less code, not picking the flimsier algorithm.
-- Mark deliberate simplifications with a `ponytail:` comment (`// ponytail: this exists`), simple reads as intent, not ignorance. Shortcut with a known ceiling (global lock, O(n²) scan, naive heuristic)? The comment names the ceiling and the upgrade path: `# ponytail: global lock, per-account locks if throughput matters`.
+- Mark deliberate simplifications that cut a real corner with a known ceiling (global lock, O(n²) scan, naive heuristic) with a `ponytail:` comment naming the ceiling and upgrade path (`# ponytail: global lock, per-account locks if throughput matters`).
 
 ## Output
 

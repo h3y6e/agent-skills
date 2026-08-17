@@ -2,9 +2,9 @@
 description: Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions
 metadata:
     github-path: skills/using-superpowers
-    github-ref: refs/tags/v6.2.0
+    github-ref: refs/tags/v6.3.0
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: a5e27b759e1c907c5076340848308f6aa37f33d4
+    github-tree-sha: e8e3b9ddf73018fdc48d188b12ba654e7363de9f
 name: using-superpowers
 ---
 <SUBAGENT-STOP>
@@ -60,6 +60,7 @@ If your harness appears here, read its reference file for special instructions:
 - Codex: `references/codex-tools.md`
 - Pi: `references/pi-tools.md`
 - Antigravity: `references/antigravity-tools.md`
+- Hermes Agent: `references/hermes-tools.md`
 
 ## User Instructions
 

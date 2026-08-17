@@ -3,9 +3,9 @@ description: Writing, exploit — assemble raw material into a journey of beats,
 disable-model-invocation: true
 metadata:
     github-path: skills/in-progress/writing-beats
-    github-ref: refs/tags/v1.1.0
+    github-ref: refs/tags/v1.2.3
     github-repo: https://github.com/mattpocock/skills
-    github-tree-sha: 28c4a84a44e1e44b28ce0c45e01892fa3691ace6
+    github-tree-sha: 545d05c3fdbfdd094dd88900b0ef8c9a823eac90
 name: writing-beats
 ---
 <what-to-do>

@@ -51,8 +51,8 @@ Where:
 If the GCP project does not have a linked BQ dataset to the Log bucket, you MUST
 EXPLICITLY ask the user for confirmation before proceeding to create one. If the
 user does not approve, you MUST skip creating security alert policies.
-Otherwise, you can create a linked logging dataset by running the following
-command:
+Otherwise, you can create a linked Cloud Logging dataset by running the
+following command:
 
 ```bash
 gcloud logging links create $LINK_ID \
@@ -86,7 +86,7 @@ Where:
 #### Telemetry query
 
 Use this script to configure the alert policy. Replace each variable enclosed
-in curly braces (e.g., `{placeholder}`) with the corresponding values
+in curly braces (for example, `{placeholder}`) with the corresponding values
 provided below:
 
 ```sql
@@ -178,8 +178,7 @@ Where:
 
 ## Tooling Scripts
 
-1.  **list_log_scope_table_names**: Use this script to retrieve the associated
-    Log scope observability SQL table name of the target GCP project.
+1.  **list_log_scope_table_names (Fallback)**: Use this script ONLY if `gather_agent_info.py` failed to retrieve the associated Log scope observability SQL table name.
     *   Command: `python3 scripts/list_log_scope_table_names.py
         --project_id={gcp_project}`
 

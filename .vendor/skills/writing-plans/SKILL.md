@@ -2,9 +2,9 @@
 description: Use when you have a spec or requirements for a multi-step task, before touching code
 metadata:
     github-path: skills/writing-plans
-    github-ref: refs/tags/v6.2.0
+    github-ref: refs/tags/v6.3.0
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: 6239ac643c14531e67ded0f1a2885c5072d426c6
+    github-tree-sha: e4d3c3faf3853a453016cece5de2ca0581807742
 name: writing-plans
 ---
 # Writing Plans
@@ -69,6 +69,9 @@ independently testable deliverable.
 **Architecture:** [2-3 sentences about approach]
 
 **Tech Stack:** [Key technologies/libraries]
+
+**Spec:** [path to the spec/design doc this plan implements — the plan
+argues from the spec, so the spec travels with it; executors read both]
 
 ## Global Constraints
 

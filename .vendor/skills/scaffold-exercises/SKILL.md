@@ -2,9 +2,9 @@
 description: Create exercise directory structures with sections, problems, solutions, and explainers that pass linting. Use when user wants to scaffold exercises, create exercise stubs, or set up a new course section.
 metadata:
     github-path: skills/misc/scaffold-exercises
-    github-ref: refs/tags/v1.1.0
+    github-ref: refs/tags/v1.2.3
     github-repo: https://github.com/mattpocock/skills
-    github-tree-sha: ef19ca90ec6645b23dc7e68601552ab795e3e6ee
+    github-tree-sha: 44a0ee332b9d67ebbd59389c7eb4e5aff1ce845c
 name: scaffold-exercises
 ---
 # Scaffold Exercises

@@ -4,12 +4,12 @@ description: Grill me about specs for the workflows I want to build, within this
 disable-model-invocation: true
 metadata:
     github-path: skills/in-progress/loop-me
-    github-ref: refs/tags/v1.1.0
+    github-ref: refs/tags/v1.2.3
     github-repo: https://github.com/mattpocock/skills
-    github-tree-sha: 1cec9deaf4f4ce1b99bd0750f1e34bc1100b1285
+    github-tree-sha: 6364da007c562d9f6ad3f54524dbc42465d9893a
 name: loop-me
 ---
-Run a stateful `/grilling` session whose only output is **workflow** specs. Use the grilling discipline — relentless, one question at a time, a recommended answer attached to each — aimed at the vocabulary and goal below. Create, edit, and delete specs as the grilling resolves things.
+Run a stateful `/grilling` session whose only output is **workflow** specs. Use the grilling discipline — relentless, a round of questions at a time, a recommended answer attached to each — aimed at the vocabulary and goal below. Create, edit, and delete specs as the grilling resolves things.
 
 ## The loop lens
 

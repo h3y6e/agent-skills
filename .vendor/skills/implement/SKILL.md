@@ -3,9 +3,9 @@ description: Implement a piece of work based on a spec or set of tickets.
 disable-model-invocation: true
 metadata:
     github-path: skills/engineering/implement
-    github-ref: refs/tags/v1.1.0
+    github-ref: refs/tags/v1.2.3
     github-repo: https://github.com/mattpocock/skills
-    github-tree-sha: aa65990650368f020166bc28d6c05b5b34592c97
+    github-tree-sha: f07d230f645fc9ac390cf13a450bbff12ad791a3
 name: implement
 ---
 Implement the work described by the user in the spec or tickets.

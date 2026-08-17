@@ -12,9 +12,9 @@ description: |
 license: MIT
 metadata:
     github-path: skills/kamae
-    github-ref: refs/tags/v1.1.0
+    github-ref: refs/tags/v1.2.0
     github-repo: https://github.com/iwasa-kosui/kamae-ts
-    github-tree-sha: 81b7e90dfa90e486c322ffac64c6201f52fb0791
+    github-tree-sha: 693779de5e9244a54b0a89e167ad894c3ec89523
 name: kamae
 ---
 # Kamae — Functional Domain Modeling in TypeScript
@@ -38,6 +38,8 @@ For each file:
 If no rules are found, proceed with the plugin defaults already documented in [`../../rules/defaults/`](../../rules/defaults/).
 
 See [`../../rules/README.md`](../../rules/README.md) for the rule format.
+
+Before applying the topic and library guides, inspect nearby files in the same package for an established, consistent coding and import style. Follow that local convention when it exists; use Kamae's guide conventions only when the repository does not establish one.
 
 ## Step 1: Detect project libraries
 
@@ -67,6 +69,8 @@ Treat errors as values via `Result`. Define error types as discriminated unions 
 ### Boundary Defense — [boundary-defense.md](./boundary-defense.md)
 
 Validate every external input (API requests, DB results, file/queue/env) with a schema at runtime. Trust types inside the domain. Do not use type assertions — `as const` and `as const satisfies Type` are the only allowed forms; when the type is unknown, parse through a validation-library schema instead. Apply `Sensitive<T>` to PII fields; the validation schema auto-wraps them.
+
+When a runtime schema already defines a boundary representation, derive its TypeScript type from the schema instead of restating the same shape.
 
 ### Declarative Style — [declarative-style.md](./declarative-style.md)
 

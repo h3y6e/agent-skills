@@ -83,7 +83,7 @@ Where:
 #### Telemetry query
 
 Use this script to configure the alert policy. Replace each variable enclosed
-in curly braces (e.g., `{placeholder}`) with the corresponding values provided
+in curly braces (for example, `{placeholder}`) with the corresponding values provided
 below:
 
 ```sql
@@ -193,8 +193,7 @@ Where:
 
 ## Tooling Scripts
 
-1.  **list_trace_scope_table_names**: Use this script to retrieve the associated
-    Trace scope observability SQL table name of the target GCP project.
+1.  **list_trace_scope_table_names (Fallback)**: Use this script ONLY if `gather_agent_info.py` failed to retrieve the associated Trace scope observability SQL table name.
     *   Command: `python3 scripts/list_trace_scope_table_names.py
         --project_id={gcp_project}`
 

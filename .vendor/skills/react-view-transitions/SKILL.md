@@ -6,7 +6,7 @@ metadata:
     github-path: skills/react-view-transitions
     github-ref: refs/heads/main
     github-repo: https://github.com/vercel-labs/agent-skills
-    github-tree-sha: 56b5533b9503fc1dbdb727e5fcabd4abab3fe19c
+    github-tree-sha: d5c0250898ec0dd3fe06cd46a396cd500ebf5bd5
     version: 1.0.0
 name: vercel-react-view-transitions
 ---
@@ -26,7 +26,7 @@ Implement **all** applicable patterns from this list, in this order:
 | 2 | **Suspense reveal** | "Data loaded" |
 | 3 | **List identity** (per-item `key`) | "Same items, new arrangement" |
 | 4 | **State change** (`enter`/`exit`) | "Something appeared/disappeared" |
-| 5 | **Route change** (layout-level) | "Going to a new place" |
+| 5 | **Route change** (page-level) | "Going to a new place" |
 
 This is an implementation order, not a "pick one" list. Implement every pattern that fits the app. Only skip a pattern if the app has no use case for it.
 
@@ -186,6 +186,10 @@ export function DirectionalTransition({ children }: { children: React.ReactNode 
 
 Types are available during navigation but **not** during subsequent Suspense reveals (separate transitions, no type). Use type maps for page-level enter/exit; use simple string props for Suspense reveals.
 
+### Shared Element Readiness
+
+A shared element transition can pair elements only when both the old and new views are rendered in the same Transition. If incoming content suspends, only its fallback exists for that update; the resolved content appears in a later Suspense transition and can be animated separately.
+
 ---
 
 ## Shared Element Transitions
@@ -308,7 +312,7 @@ When a parent VT mounts/unmounts **as one unit** with nested VTs inside it, the 
 
 ## Next.js Integration
 
-For Next.js setup (`experimental.viewTransition` flag, `transitionTypes` prop on `next/link`, App Router patterns, Server Components), see [references/nextjs.md](references/nextjs.md).
+For Next.js setup (`experimental.viewTransition` flag, `transitionTypes` on `next/link` and `useRouter`, App Router patterns, Server Components), see [references/nextjs.md](references/nextjs.md).
 
 ---
 

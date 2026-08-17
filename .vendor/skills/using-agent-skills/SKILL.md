@@ -2,9 +2,9 @@
 description: Discovers and invokes agent skills. Use when starting a session or when you need to discover which skill applies to the current task. This is the meta-skill that governs how all other skills are discovered and invoked.
 metadata:
     github-path: skills/using-agent-skills
-    github-ref: refs/tags/0.6.3
+    github-ref: refs/tags/0.6.7
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 27e5995a3dc4dd91db86dec8933f476f9275ff8e
+    github-tree-sha: a4dc26040e0f880d2bed91b4cb2e848b9b31e8e0
 name: using-agent-skills
 ---
 # Using Agent Skills
@@ -114,7 +114,7 @@ Your job is surgical precision, not unsolicited renovation.
 
 Every skill includes a verification step. A task is not complete until verification passes. "Seems right" is never sufficient — there must be evidence (passing tests, build output, runtime data).
 
-Per-skill verification is the local check. The project-wide bar that applies to *every* change, regardless of which skill is active, is the Definition of Done: tests pass, no regressions, behavior verified at runtime, docs updated. See `references/definition-of-done.md`. It complements each task's acceptance criteria rather than replacing them.
+Per-skill verification is the local check. The project-wide bar that applies to *every* change, regardless of which skill is active, is the Definition of Done: tests pass, no regressions, behavior verified at runtime, docs updated. See `../../references/definition-of-done.md`. It complements each task's acceptance criteria rather than replacing them.
 
 ## Failure Modes to Avoid
 

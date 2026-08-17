@@ -3,9 +3,9 @@ description: Writing, exploit — shape raw material into an article, paragraph 
 disable-model-invocation: true
 metadata:
     github-path: skills/in-progress/writing-shape
-    github-ref: refs/tags/v1.1.0
+    github-ref: refs/tags/v1.2.3
     github-repo: https://github.com/mattpocock/skills
-    github-tree-sha: 2ca73419c5762c668a30ae0c160165b9baf5b133
+    github-tree-sha: 31af0156520819c15d19358a8e0bd36f82e67ad3
 name: writing-shape
 ---
 <what-to-do>
