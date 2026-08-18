@@ -134,9 +134,11 @@ function validateFrontmatter(
     }
   }
 
+  const modelInvoked = properties["disable-model-invocation"] !== true;
+
   if ([...description].length < 1 || [...description].length > 1024) {
     errors.push("description must contain 1 to 1024 characters");
-  } else if (!description.includes("Use when")) {
+  } else if (modelInvoked && !description.includes("Use when")) {
     errors.push(
       "description must include Use when as the repository trigger phrase",
     );
