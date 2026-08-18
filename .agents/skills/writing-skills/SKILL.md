@@ -20,6 +20,7 @@ Repository rules:
 
 - Put published skills at `skills/<skill-name>/SKILL.md`. Keep the body as short as possible; aim for fewer than 500 words without dropping required instructions or references.
 - Never edit `metadata.version` manually.
+- A skill with `disable-model-invocation: true` also needs `agents/openai.yaml` carrying `policy.allow_implicit_invocation: false`, so explicit invocation holds outside Claude Code.
 - After adding, renaming, or removing a skill, make `.tagpr` `versionFile` match every existing `skills/*/SKILL.md`.
 - Before completion, run [the validator](scripts/validate.ts):
 
@@ -38,7 +39,7 @@ Treat loading tier and information role independently. Keep required procedures,
 1. Record capability, triggers, evaluated near-misses, artifacts, and process invariants. Connect requirements to examples.
 2. Search `.vendor/skills/` for skills related to the target capability, domain, and triggers, then read relevant candidates before design. Treat them only as authoring evidence: incorporate applicable guidance so the new skill stands alone, without naming or linking any consulted skill, directory, or path in any resulting file.
 3. Design evaluation first. Discovery cases cover direct triggers, paraphrases, near-misses, competing skills, and multi-skill use. Execution cases make required research, branches, artifacts, and verification scorable. Baseline behavior-constraining skills without the skill.
-4. Write the minimum skill. Format `description` as "capability. `Use when` triggers." Give important steps input, decisions, evidence, completion criteria, and incomplete transitions as needed.
+4. Write the minimum skill. Format a model-invoked `description` as "capability. `Use when` triggers."; an explicitly invoked skill states capability alone. Give important steps input, decisions, evidence, completion criteria, and incomplete transitions as needed.
 5. Distribute information by loading design. Never hide universally required instructions in references.
 6. Pass mechanical validation before evaluation.
 7. Evaluate discovery and execution separately. Measure activation, misses, and false activations; then requirement satisfaction, validator success, premature completion, and unnecessary tools. Repeat important skills across intended models. Follow `.vendor/skills/writing-skills/testing-skills-with-subagents.md`.
