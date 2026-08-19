@@ -30,6 +30,14 @@ const CreateRequestInput = v.object({
 type CreateRequestInput = v.InferOutput<typeof CreateRequestInput>;
 ```
 
+## Infer Types from Schemas
+
+The schema is the single source of truth for a boundary representation, as shown above: derive the type with `v.InferOutput`, don't restate the shape as a separate hand-written `type`. Duplicated definitions drift apart, and drift papers over acceptance/rejection mismatches that only surface as bugs later.
+
+Use `v.InferInput` instead when a `v.pipe` step (e.g. `v.transform`) makes the parsed output differ from the raw input — the [PII Protection](#pii-protection-with-the-sensitive-type) schema below is exactly that case: `sensitiveString`'s input is a `string`, but its output is a `Sensitive<string>`.
+
+Define a separate domain type only when it's intentionally different from the boundary representation, and make the conversion explicit through a parser or mapper — not implicit reuse of the same name.
+
 ## Schema Factory: Validation → Result Conversion
 
 `v.parse` throws; use `v.safeParse` and convert to `Result` for Railway Oriented Programming. Define one factory and reuse it project-wide instead of hand-writing the conversion per schema.
