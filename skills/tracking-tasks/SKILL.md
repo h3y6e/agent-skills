@@ -6,7 +6,7 @@ allowed-tools: Bash(obsidian:*) Bash(anna recall:*) Bash(ghq get log) Read Edit 
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.8.2
+  version: 2026.8.3
 ---
 
 # Tracking Tasks
