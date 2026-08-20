@@ -51,7 +51,7 @@ Before applying TDD to skill authoring, read `.vendor/skills/writing-skills/SKIL
 
 Choose verification by failure cost, frequency, blast radius, and activation conflicts:
 
-- Run the validator, lint, and structure and link review for every skill.
+- Run the validator, `rumdl check <path>`, and structure and link review for every skill.
 - For behavioral rules or branches, run an applicable baseline plus representative and failure scenarios, then record requirement results.
 - For high-risk, frequent, broad, or activation-conflicting skills, repeat runs or models and compare variance and before/after results.
 
@@ -59,4 +59,4 @@ For scenario evaluation, record model/version, environment/tools, skill commit/h
 
 When codifying experience, record the initial failure, final solution, and connecting insight; then use `.vendor/skills/retrospective-codify/SKILL.md` to choose between automation, project instructions, extending a skill, creating a skill, or no persistence.
 
-Before completion, confirm validator and Markdown lint success, evidence for every process invariant, separate discovery and execution evaluation, and no claim beyond the evidence produced.
+Before completion, confirm validator and `rumdl` success, evidence for every process invariant, separate discovery and execution evaluation, and no claim beyond the evidence produced.
