@@ -4,7 +4,7 @@ description: Use when a request starts from vague pain, a solution idea, product
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.8.2
+  version: 2026.8.3
 ---
 
 # Framing Problems
