@@ -6,7 +6,7 @@ metadata:
     github-path: skills/cloud/agent-platform-alert-configuration
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: c486cce8ef1929732add68896d76329d1443d723
+    github-tree-sha: 0969564825e8466d88e02737c11d2a2ef061c11e
 name: agent-platform-alert-configuration
 ---
 # Agent Platform Alert Configuration
