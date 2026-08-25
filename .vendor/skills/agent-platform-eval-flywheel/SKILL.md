@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/agent-platform-eval-flywheel
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 1c34d1fa21b0fda711236945d1c4d8ebe0f955a6
+    github-tree-sha: e36793aa3eff9458cf4a440bfa6dd6d1a3d39bac
 name: agent-platform-eval-flywheel
 ---
 # Agent Platform Eval Flywheel Skill
@@ -45,6 +45,11 @@ to the following safety tiers based on the action requested:
         that consume compute resources and incur costs. This requires
         **interactive confirmation** with 'Yes'/'No' options. Once granted once,
         you do not have to prompt for future evaluation.
+    *   **Same-turn restriction**: Do not run the evaluation in the same turn as
+        presenting the confirmation prompt. End your turn after asking and wait
+        for the user's reply; only execute after explicit 'Yes' / approval.
+        Printing a preview and then calling the tool before the user can answer
+        does not count as obtaining confirmation.
 
 ## Setup
 

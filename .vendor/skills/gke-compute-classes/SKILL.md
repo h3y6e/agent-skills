@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/gke-compute-classes
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 164dfa9ff0e371fbdaec0a891678972489573e4d
+    github-tree-sha: 9a4d58088079f65127b00f99810e5e34a395e1b0
 name: gke-compute-classes
 ---
 <!-- disableFinding(LINE_OVER_80) -->
@@ -88,6 +88,15 @@ not block the user's initial request.** If asked for YAML/recommendations:
         rules. NEVER emit more than 3 priorities at the same score; if the user
         asks for more (e.g. 5 families "all cheapest-available"), cap at 3 and
         say why.
+    *   **BEST PRACTICE MACHINE-TYPE RULE:** If the user asks for `machineType`
+        (e.g., `n4-standard-16`) only, **NUDGE** to `machineFamily` (e.g., `n4`)
+        as last-resort priority for better obtainability/bin-packing.
+        **Caveat:** Requires manual pools of that family OR **Node Pool
+        Auto-Creation** (`nodePoolAutoCreation.enabled: true`).
+    *   **BEST PRACTICE PRIORITY-ORDER RULE:** In `priorities[]`, order from
+        **Less Obtainable (Scarce/Large) to More Obtainable (Plentiful/Small)**.
+        **NUDGE** to reorder if flipped. Plentiful tiers listed first consume
+        all workloads, blocking usage of preferred scarce tiers.
     *   **CRITICAL STATEFUL RULE:** For PV workloads, do NOT mix Gen 2 (PD) and
         Gen 4 (Hyperdisk) in `priorities[]` (attach failures). **Exception (GKE
         1.35.3-gke.1290000+):** back data PVs with the built-in
