@@ -4,7 +4,7 @@ description: Use when stress-testing, sanity-checking, or choosing a plan/design
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.8.3
+  version: 2026.8.4
 ---
 
 # Designing With Artifacts
