@@ -6,7 +6,7 @@ disable-model-invocation: true
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.1
+  version: 2026.9.2
 ---
 
 # fuck
