@@ -1,17 +1,16 @@
 # Schema
 
-`AGENTS.md` is what makes an agent a disciplined wiki maintainer instead of a general chatbot. A generic template is worth little; most of the value sits in the domain-specific entries.
+`AGENTS.md` holds the one thing this skill cannot: the domain. Restating the layers, the page format, or the operations below buys nothing and then drifts from the original.
 
 ## Checklist
 
-- [ ] Layer definitions, and — if there is a `raw/` — that it is immutable. Where sources are not mirrored, say which they are and that the wiki's `sources[].resource` URIs are the only route back to them.
+- [ ] The sources, and which of them are mirrored into `raw/` versus reachable only through `sources[].resource`.
 - [ ] **Source precedence** — which source wins when two disagree, per kind of claim. For example: "history, points of contention, and attribution of statements come from the meeting notes; current status and owner come from the registry. The registry is a snapshot with no history; the notes carry history but settle the present poorly. Fill neither field from one side alone."
-- [ ] Directory layout, and the boundary between generated and hand-written content.
-- [ ] Page format: fixed headings, frontmatter keys.
+- [ ] The directory layout this bundle uses, and what lives in each directory.
+- [ ] The internal profile — permitted `type` values and the fields each one requires. See below.
 - [ ] Link convention, chosen after deciding which tool the wiki is read in.
 - [ ] Language convention (if mixing languages: which language the prose is in, and what stays in the original — proper nouns, API names).
-- [ ] Workflow for each operation.
-- [ ] Commit convention — prefixing with the operation name makes history explain what caused each change.
+- [ ] Where this domain's operations deviate from the definitions below — nothing, if they don't.
 - [ ] **Named failure modes for this domain.** For example: "do not settle an owner from the roster alone, confirm it inside the document itself"; "abbreviations are sometimes reassigned each year"; "add abbreviations that collide with ordinary words to the exclusion list."
 
 ## Internal profile
@@ -24,8 +23,6 @@ OKF conformance is deliberately near-trivial, so "conformant" guarantees nothing
 - Rules for assigning `stale_after` per `type` — including which types omit it because they describe a fixed past and cannot go stale — and what happens to expired concepts.
 
 ## Operations
-
-Define each here and keep slash commands as thin pointers, so the definition lives in one place.
 
 ### Ingest
 
@@ -46,7 +43,7 @@ One source can touch 10–15 pages. Default to one source at a time with the use
 
 ### Lint
 
-Cover both sides. The mechanical half runs from the installed skill and takes no configuration, because the bundle is its own specification:
+Cover both sides. The mechanical half takes no configuration, because the bundle is its own specification:
 
 ```bash
 .agents/skills/building-wiki/scripts/lint.mjs <bundle-dir> [--fix]
