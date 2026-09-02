@@ -4,7 +4,7 @@ description: Use when splitting two or more independent tasks, failures, investi
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.0
+  version: 2026.9.1
 ---
 
 # Dispatching Parallel Agents
