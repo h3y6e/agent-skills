@@ -4,7 +4,7 @@ description: Compresses documents, prompts, or knowledge sources into fewer toke
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.1
+  version: 2026.9.2
 ---
 
 # Compressing Knowledge
