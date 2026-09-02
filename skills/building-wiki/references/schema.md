@@ -4,8 +4,8 @@
 
 ## Checklist
 
-- [ ] Layer definitions, and that `raw/` is immutable.
-- [ ] **Source precedence** — which source wins when two disagree, per kind of claim. For example: "history, points of contention, and attribution of statements come from `raw/notes`; current status and owner come from `raw/registry`. The registry is a snapshot with no history; the notes carry history but settle the present poorly. Fill neither field from one side alone."
+- [ ] Layer definitions, and — if there is a `raw/` — that it is immutable. Where sources are not mirrored, say which they are and that the wiki's `sources[].resource` URIs are the only route back to them.
+- [ ] **Source precedence** — which source wins when two disagree, per kind of claim. For example: "history, points of contention, and attribution of statements come from the meeting notes; current status and owner come from the registry. The registry is a snapshot with no history; the notes carry history but settle the present poorly. Fill neither field from one side alone."
 - [ ] Directory layout, and the boundary between generated and hand-written content.
 - [ ] Page format: fixed headings, frontmatter keys.
 - [ ] Link convention, chosen after deciding which tool the wiki is read in.
@@ -20,7 +20,7 @@ OKF conformance is deliberately near-trivial, so "conformant" guarantees nothing
 
 - The permitted set of `type` values.
 - Extra fields required per `type` — for example `generated` and `status` on every concept, `verified` on anything carrying numbers.
-- CI validation of **this profile**, not of format conformance.
+- Validation of **this profile**, not of format conformance.
 - Rules for assigning `stale_after` per `type` — including which types omit it because they describe a fixed past and cannot go stale — and what happens to expired concepts.
 
 ## Operations
@@ -30,7 +30,7 @@ Define each here and keep slash commands as thin pointers, so the definition liv
 ### Ingest
 
 1. Pick the target. Grep the index for related passages and their sources.
-2. Read the relevant `raw/` sections.
+2. Read the relevant source material — the `raw/` sections, or fetch the sources not mirrored there.
 3. **Discuss the takeaways with the user.** Skipping this turns the base into a black box that rewrites notes behind their back.
 4. Write the summary page, update `index.md`, and update related existing pages across the wiki.
 5. Append one line to `log.md`.
@@ -39,7 +39,7 @@ One source can touch 10–15 pages. Default to one source at a time with the use
 
 ### Query
 
-1. Descend `index.md` → related pages → index → `raw/`.
+1. Descend `index.md` → related pages → index → the sources behind them.
 2. Cite sources in every answer.
 3. **Good answers belong back in the wiki.** A requested comparison, a discovered connection, a re-organized understanding is worth keeping rather than losing to chat history — that is how exploration compounds too.
 4. Ask before adding: "should this become a page?"
@@ -52,16 +52,16 @@ Cover both sides. The mechanical half runs from the installed skill and takes no
 .agents/skills/building-wiki/scripts/lint.mjs <bundle-dir> [--fix]
 ```
 
-It infers each type's field convention and the prevailing frontmatter key order from the pages that exist, then reports what deviates — a field the rest of that type carries, a key only one page has — alongside what is decidable outright: absolute timestamps, expired `stale_after`, footnote labels resolving to a `sources[].id`, link targets, open page-name reservations, `log.md` heading format. `--fix` reorders frontmatter keys to the prevailing order, moving each key's lines verbatim. Inference keeps the schema the one place the convention is stated; a rule it cannot infer belongs in the repository's own CI check beside it. Everything below is what no script can decide.
+It infers each type's field convention and the prevailing frontmatter key order from the pages that exist, then reports what deviates — a field the rest of that type carries, a key only one page has — alongside what is decidable outright: absolute timestamps, expired `stale_after`, footnote labels resolving to a `sources[].id`, link targets, open page-name reservations, `log.md` heading format. `--fix` reorders frontmatter keys to the prevailing order, moving each key's lines verbatim. Inference keeps the schema the one place the convention is stated; a rule it cannot infer belongs in the repository's own check beside it. Everything below is what no script can decide.
 
 **Internal consistency** (wiki only): contradictions between pages; old claims overturned by newer sources; orphan pages with no inbound links and missing reciprocal links; important concepts mentioned but page-less; open questions left unresolved; one-sided metadata that should exist on both ends (group membership, for instance).
 
-**Fidelity to sources** (wiki against `raw/`): inspect with the intent of finding errors, and treat `raw/` as truth when fixing. The domain's named failure modes tell the linter where to look hardest.
+**Fidelity to sources**: inspect with the intent of finding errors, and treat the source as truth when fixing. Against `raw/` this is a diff; against an unmirrored source it means re-fetching, so the check is only as reliable as the source's own stability — a page whose source has moved or vanished is a finding, not a pass. The domain's named failure modes tell the linter where to look hardest.
 
 ### Update
 
 1. Note the pre-sync pointer.
-2. Update `raw/`.
+2. Update `raw/`. Without one, re-read the source and compare against what the wiki already claims — the pages are the only prior state there is.
 3. **Show the diff** — summarize what arrived. This is what ingest and summarize work from next; syncing without it halves the point.
 4. Regenerate generated artifacts.
 5. Record it in `log.md`.
