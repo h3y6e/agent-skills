@@ -1,10 +1,10 @@
 ---
-description: Structures git workflow practices. Use when making any code change. Use when committing, branching, resolving conflicts, or when you need to organize work across multiple parallel streams. Use when cutting a release, choosing a semantic version bump, tagging, or writing a changelog.
+description: Structures git workflow practices. Use when making any code change. Use when committing, branching, resolving conflicts, opening or reviewing a pull request (PR), pushing to a remote, or when you need to organize work across multiple parallel streams. Use when cutting a release, choosing a semantic version bump, tagging, or writing a changelog.
 metadata:
     github-path: skills/git-workflow-and-versioning
-    github-ref: refs/tags/0.6.3
+    github-ref: refs/tags/0.6.8
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 6c54b67dd522883fc69013535c7cf35b8cdb8930
+    github-tree-sha: 116794299a8929231257cdade82bd87bd0986321
 name: git-workflow-and-versioning
 ---
 # Git Workflow and Versioning

@@ -2,9 +2,9 @@
 description: Discovers and invokes agent skills. Use when starting a session or when you need to discover which skill applies to the current task. This is the meta-skill that governs how all other skills are discovered and invoked.
 metadata:
     github-path: skills/using-agent-skills
-    github-ref: refs/tags/0.6.7
+    github-ref: refs/tags/0.6.8
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: a4dc26040e0f880d2bed91b4cb2e848b9b31e8e0
+    github-tree-sha: 72b68da3152a96bbe8cb6a24a666fc39929378db
 name: using-agent-skills
 ---
 # Using Agent Skills
@@ -23,6 +23,7 @@ Task arrives
     ├── Don't know what you want yet? ──────→ interview-me
     ├── Have a rough concept, need variants? → idea-refine
     ├── New project/feature/change? ──→ spec-driven-development
+    ├── No quality bar written down? ──→ constraint-driven-development
     ├── Have a spec, need tasks? ──────→ planning-and-task-breakdown
     ├── Implementing code? ────────────→ incremental-implementation
     │   ├── UI work? ─────────────────→ frontend-ui-engineering
