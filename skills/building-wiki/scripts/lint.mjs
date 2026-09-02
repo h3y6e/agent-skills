@@ -119,6 +119,7 @@ function checkConvention(pages) {
   const byType = new Map();
   for (const page of pages) {
     if (!page.type) report("error", page.file, "no type — every page declares one");
+    else if (page.file.endsWith("index.md")) continue; // one per directory, so no majority to compare against
     else if (byType.has(page.type)) byType.get(page.type).push(page);
     else byType.set(page.type, [page]);
   }
