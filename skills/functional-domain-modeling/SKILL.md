@@ -4,7 +4,7 @@ description: Functional domain modeling for server-side TypeScript with better-r
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.8.4
+  version: 2026.9.0
   refs: https://github.com/iwasa-kosui/kamae-ts/releases/tag/v1.2.0
 ---
 
