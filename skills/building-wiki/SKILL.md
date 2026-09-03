@@ -29,7 +29,7 @@ Before letting ingests run in parallel, adding a second audience, or passing rou
 
 1. **Interview the domain.** Establish the sources, the readers, the questions the base must answer, and the tool the wiki is read in — the last decides the link convention. Then decide **source precedence**: when two sources disagree, which wins, for which kind of claim. Without written precedence the agent believes whatever it read last. Done when precedence is recorded per claim type and each source is classified as mirrored or reachable only by URI.
 
-2. **Lay out the bundle and fix the page format**, following [`references/page-format.md`](references/page-format.md). Done when `docs/` exists, the link convention is confirmed against the actual viewer, and every mirrored source sits under `docs/raw/`.
+2. **Lay out the bundle and fix the page format**, following [`references/page-format.md`](references/page-format.md). When the bundle is published with GitHub Pages, configure it per [`references/github-pages.md`](references/github-pages.md). Done when `docs/` exists, the link convention is confirmed against the actual viewer, and every mirrored source sits under `docs/raw/`.
 
 3. **Write the schema.** `AGENTS.md` carries only what this skill cannot know: the sources and their precedence, the permitted types, the conventions this domain picked, and the mistakes the agent actually makes here. Author it against the checklist in [`references/schema.md`](references/schema.md). Done when every checklist item is either answered in `AGENTS.md` or reported to the user as not applicable — an item that does not apply earns no line in the schema.
 
