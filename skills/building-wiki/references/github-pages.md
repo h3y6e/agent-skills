@@ -1,6 +1,6 @@
 # Publishing with GitHub Pages
 
-The smallest Jekyll setup that renders a bundle as a site, with the publishing source set to the repository root and `_config.yml` beside `AGENTS.md`.
+The smallest Jekyll setup that renders the bundle as a site. Set the Pages publishing source to `/docs` and put `_config.yml` in `docs/`, so the bundle root is the site root and nothing outside it is published.
 
 ```yaml
 title: <repository name>
@@ -11,18 +11,16 @@ theme: jekyll-theme-minimal
 plugins:
   - jekyll-optional-front-matter   # log.md has no frontmatter
   - jekyll-relative-links          # ../reference/apple.md → the rendered page
-  - jekyll-readme-index            # README.md serves as each directory's index
+  - jekyll-readme-index            # README.md serves as each subdirectory's index
 
 readme_index:
   with_frontmatter: true           # default false skips every README that has frontmatter — all of ours do
 
 exclude:
-  - docs/raw                       # mirrored sources are not for publishing
-  - AGENTS.md
-  - CLAUDE.md
+  - raw                            # mirrored sources are not for publishing
 ```
 
-All four plugins are on the GitHub Pages allowlist, so this builds with the default Pages workflow and no `Gemfile`.
+All three plugins are on the GitHub Pages allowlist, so this builds with the default Pages workflow and no `Gemfile`. `docs/README.md` is the site root without any plugin; `jekyll-readme-index` is for the subdirectories.
 
 ## What the frontmatter does on the site
 
@@ -33,5 +31,3 @@ All four plugins are on the GitHub Pages allowlist, so this builds with the defa
 - **Liquid runs over every page body.** A `{{ job.id }}` or `{% ... %}` in a code sample is interpreted at build time. GitHub Pages runs Jekyll 3.10, which has no `render_with_liquid` switch, so wrap such samples in `{% raw %}` … `{% endraw %}`.
 - **Paths starting with `_` are not published.** Keep subdirectory names free of a leading underscore.
 - **kramdown differs from GitHub's renderer.** Task-list checkboxes (`- [ ]`) render as literal text; tables and fenced code are fine.
-
-Setting the publishing source to `/docs` instead removes the `exclude` entries for root files and makes `docs/README.md` the site root natively, at the cost of the `baseurl` and `raw/` entries staying.
