@@ -4,7 +4,7 @@ description: Bootstraps and operates an agent-maintained knowledge base — a wi
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.4
+  version: 2026.9.5
 ---
 
 # Building a Wiki
