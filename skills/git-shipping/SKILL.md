@@ -51,6 +51,7 @@ Do not move already-started work into a new worktree just to satisfy this workfl
 - Use `## Impact` only for merge behavior changes. Omit unchanged behavior, non-goals, and work not done.
 - Do not add ad hoc `Testing`, `Verification`, `Checklist`, `Related issues`, or `Screenshots`. Never dump local verification commands into the PR body.
 - New PRs default to draft (`gh pr create --draft`); preserve existing PR draft/ready state unless asked.
+- After pushing to a branch with an open PR, reread the title and body against the new diff and edit whatever no longer matches (`gh pr edit`).
 
 ## Common Mistakes
 
@@ -63,3 +64,4 @@ Do not move already-started work into a new worktree just to satisfy this workfl
 | Using a prose PR title | Use Conventional Commit subject format: `type(scope): subject` |
 | Using raw `git worktree` | Use `git wt <branch> origin/<default-branch> --nocd`; check `git wt -h` first |
 | Skipping `cxg lint` | Pipe through `cxg lint` before committing |
+| Pushing follow-up commits and leaving the PR text stale | Update title and body to describe the PR as it now is |
