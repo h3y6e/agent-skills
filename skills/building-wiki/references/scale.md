@@ -1,0 +1,9 @@
+# Failure modes at scale
+
+Invisible at personal scale, fixable at the schema and workflow level.
+
+**Concurrent ingest forks the wiki.** Two parallel ingests plan against the same index snapshot and independently create pages for one concept under slightly different names (`user-id` and `user-identifier`). Reserve target page names in the index as placeholders during planning, before generation, so the next plan sees the placeholder and chooses update over create. Reserve as `{ status: planned, claimed_by: [ingest#0421] }` with `claimed_by` as a set, so an aborted ingest releases only its own claim and leaves the slot. Keep inference outside the lock — putting an LLM call in a critical section holds it far too long and starves everything behind it — and use a conditional write for the name reservation alone.
+
+**One-line index summaries do not reach deep facts.** Index-based navigation works remarkably well up to roughly 100 sources, but a specific figure or niche keyword buried in a page body never surfaces in its one-line summary, so page selection drops the page holding the answer. Add full-text search (BM25 suffices; embeddings are unnecessary) and take the **union** of index-selected pages and the top-k full-text hits. The union matters: being append-only, it cannot make recall worse than it is now.
+
+**Visibility is a build boundary, not a label.** With multiple audiences, tagging pages with `audience` and filtering at read time leaks or forks on a single derivation bug: one mislabelled page vanishes from the planning stage, the agent "helpfully" creates a parallel copy, and that copy contradicts the original. If some knowledge must not be seen, the only real guarantee is never compiling it into that audience's bundle — build a second bundle, in its own repository, from the publishable sources alone. Repository access is the boundary; a sibling directory is not one.
