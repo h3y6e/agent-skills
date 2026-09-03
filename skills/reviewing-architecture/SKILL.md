@@ -4,7 +4,7 @@ description: Use when reviewing code structure for architecture friction such as
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.2
+  version: 2026.9.3
 ---
 
 # Reviewing Architecture
