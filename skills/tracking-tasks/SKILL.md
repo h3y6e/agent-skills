@@ -1,6 +1,6 @@
 ---
 name: tracking-tasks
-description: Use when starting multi-step work, resuming an existing task, switching direction mid-task, wrapping up, or capturing cross-session task context in Obsidian.
+description: Tracks task state and findings as Obsidian task/daily notes so work survives across sessions. Use when starting any multi-step task, resuming or continuing prior work (including phrases like "continue", "last time", "where were we", or a reference to an earlier task/issue/PR), switching direction or scope mid-task, wrapping up or reporting task status, or hitting a TIL, workaround, env/tooling quirk, or cross-cutting decision worth recording — even in a single-response task with no task note yet.
 compatibility: Requires Obsidian with CLI enabled, vault "log", and anna recall configured.
 allowed-tools: Bash(obsidian:*) Bash(anna recall:*) Bash(ghq get log) Read Edit Write
 license: MIT
