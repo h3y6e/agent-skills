@@ -27,7 +27,7 @@ const NOT_A_PAGE = new Set(["log.md", "AGENTS.md"]);
 const RAW_DIR = "raw";
 
 const captures = (text, regex) => [...text.matchAll(regex)].map((m) => m[1]);
-const isIndex = (page) => basename(page.file) === "index.md";
+const isIndex = (page) => basename(page.file) === "README.md";
 
 function pageFiles(bundle) {
   return readdirSync(bundle, { recursive: true })
@@ -73,7 +73,7 @@ function parsePage(file, report) {
   return { file, ...split, fmBlocks, block, keys: fmBlocks.map((b) => b.key).filter(Boolean), type: block("type")?.value ?? "" };
 }
 
-// index.md is one per directory, so it has no majority to compare against.
+// README.md is one per directory, so it has no majority to compare against.
 function checkConventions(pages, report) {
   const byType = Map.groupBy(pages.filter((p) => p.type && !isIndex(p)), (p) => p.type);
   for (const [type, group] of byType) {
