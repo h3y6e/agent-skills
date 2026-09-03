@@ -4,7 +4,7 @@ description: Bootstraps a knowledge base an agent builds and maintains — an ag
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.2
+  version: 2026.9.3
 ---
 
 # Building a Wiki
