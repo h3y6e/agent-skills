@@ -1,6 +1,6 @@
 ---
 name: git-shipping
-description: Guides the git workflow for shipping code changes — branch, commit, push, PR. Use whenever asked to `commit` (inspect diff, stage coherent chunks, then commit — not just format a message), `push`, `pr`, or manage branches, or when making code changes in a git repo. Use before starting implementation to confirm you're on the right branch.
+description: Guides the git workflow for shipping code changes — branch, commit, push, PR. Use whenever asked to `commit` (inspect diff, stage coherent chunks, then commit — not just format a message), `push`, `pr`/`ship`/`open a PR`/`merge this`, or manage branches, and whenever about to make code changes in a git repo (to confirm you're on the right branch before implementation starts) — even if the user only described the change and never said the word "git".
 compatibility: Requires git, gh, cxg, and git-wt. Do not use raw git worktree.
 license: MIT
 metadata:
