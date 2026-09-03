@@ -4,7 +4,7 @@ description: Creates draft content for new issues as a single issue or dependenc
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.3
+  version: 2026.9.4
 ---
 
 # Creating Issues
