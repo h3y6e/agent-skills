@@ -4,7 +4,7 @@ description: Use when revising Japanese book chapters or technical prose whose a
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.3
+  version: 2026.9.4
   ref: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d?permalink_comment_id=6201959#gistcomment-6201959
 ---
 
