@@ -4,9 +4,7 @@ The smallest Jekyll setup that renders the bundle as a site. Set the Pages publi
 
 ```yaml
 title: <repository name>
-url: https://<owner>.github.io
-baseurl: /<repository name>
-theme: jekyll-theme-minimal
+theme: jekyll-theme-primer
 
 plugins:
   - jekyll-optional-front-matter   # log.md has no frontmatter
@@ -20,7 +18,9 @@ exclude:
   - raw                            # mirrored sources are not for publishing
 ```
 
-All three plugins are on the GitHub Pages allowlist, so this builds with the default Pages workflow and no `Gemfile`. `docs/README.md` is the site root without any plugin; `jekyll-readme-index` is for the subdirectories.
+All three plugins ship with GitHub Pages, so this builds with the default Pages workflow and no `Gemfile`. `docs/README.md` is the site root without any plugin.
+
+Leave `url` and `baseurl` unset. A private or internal repository serves at the root of a generated `*.pages.github.io` host, not at `<owner>.github.io/<repository>`, and that host changes on republish or a visibility change.
 
 ## What the frontmatter does on the site
 
@@ -29,5 +29,6 @@ All three plugins are on the GitHub Pages allowlist, so this builds with the def
 ## What breaks
 
 - **Liquid runs over every page body.** A `{{ job.id }}` or `{% ... %}` in a code sample is interpreted at build time. GitHub Pages runs Jekyll 3.10, which has no `render_with_liquid` switch, so wrap such samples in `{% raw %}` … `{% endraw %}`.
+- **Links that climb out of the site root 404.** `../CONTEXT.md` resolves on GitHub's file view, so this only shows up on the site; such links need a `github.com/<owner>/<repository>/blob/<default branch>/` URL. Links within `docs/` stay relative.
 - **Paths starting with `_` are not published.** Keep subdirectory names free of a leading underscore.
 - **kramdown differs from GitHub's renderer.** Task-list checkboxes (`- [ ]`) render as literal text; tables and fenced code are fine.
