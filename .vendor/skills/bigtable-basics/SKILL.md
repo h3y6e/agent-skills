@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/bigtable-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: bb2f3b9612235ff28a5db85dd92e66e515ff3918
+    github-tree-sha: 907c85e943aa0065e06edeb875f1434094a08544
 name: bigtable-basics
 ---
 # Bigtable Basics
@@ -114,6 +114,6 @@ defined as SQL queries but they must be created using gcloud CLI.
 ## External Resources
 
 *   [Cloud Bigtable Documentation](https://cloud.google.com/bigtable/docs)
-*   [Bigtable SQL Reference](https://cloud.google.com/bigtable/docs/reference/sql)
+*   [Bigtable SQL Reference](https://cloud.google.com/bigtable/docs/googlesql-overview)
 *   [cbt CLI Reference](https://cloud.google.com/bigtable/docs/cbt-reference)
 *   [gcloud bigtable Reference](https://cloud.google.com/sdk/gcloud/reference/bigtable)

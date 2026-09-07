@@ -1,10 +1,10 @@
 ---
-description: Manages deprecation and migration. Use when removing old systems, APIs, or features. Use when migrating users from one implementation to another. Use when deciding whether to maintain or sunset existing code.
+description: Manages deprecation and migration. Use when removing old systems, APIs, or features. Use when migrating users from one implementation to another. Use when migrating a database schema in production, such as renaming or dropping a column without downtime (expand/contract). Use when deciding whether to maintain or sunset existing code.
 metadata:
     github-path: skills/deprecation-and-migration
-    github-ref: refs/tags/0.6.4
+    github-ref: refs/tags/0.6.9
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: f710bd017dedb2615d78b4ce6ab42ce9f5a542f2
+    github-tree-sha: 452a130309afc52a26beceb21f1467936e53a37c
 name: deprecation-and-migration
 ---
 # Deprecation and Migration

@@ -4,7 +4,7 @@ metadata:
     github-path: skills/install-anti-slop
     github-ref: refs/heads/main
     github-repo: https://github.com/dmmulroy/anti-slop
-    github-tree-sha: 31c294c983ea89bc585041cb43ec651b2df684a1
+    github-tree-sha: 44a970ae13bc32ef7391b681208a384e1aae669b
 name: install-anti-slop
 ---
 # Install anti-slop
@@ -29,8 +29,8 @@ Install the bundled Oxlint plugin into the current repository and integrate it w
    This creates `tools/oxlint/anti-slop/`. Pass another relative destination as the first argument when the repository has an established tooling layout. The script refuses to replace an existing destination; only use `--force` after backing up and reviewing existing files.
 
 3. Install current compatible dependencies rather than trusting versions remembered by the agent:
-   - Query `npm view oxlint version` and `npm view @oxlint/plugins version`.
-   - Install the same current version of both packages with the repository's package manager.
+   - If the repository already depends on `oxlint`, read its installed version from the package manager or lockfile and install `@oxlint/plugins` at exactly that version. Pin it exactly rather than by range so future upgrades move both packages together.
+   - Only when the repository has no `oxlint` dependency, query `npm view oxlint version` and `npm view @oxlint/plugins version`, then install the same current version of both packages.
    - `oxlint` is a development dependency. The copied source imports `@oxlint/plugins`, so install it as a development dependency for a local-only plugin.
    - Do not replace the package manager or rewrite unrelated dependency ranges.
 

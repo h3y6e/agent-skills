@@ -12,9 +12,9 @@ description: |
 license: MIT
 metadata:
     github-path: skills/kamae
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v1.4.0
     github-repo: https://github.com/iwasa-kosui/kamae-ts
-    github-tree-sha: 693779de5e9244a54b0a89e167ad894c3ec89523
+    github-tree-sha: 8f461146029b214ceb0dbb00daa368364fbda10c
 name: kamae
 ---
 # Kamae — Functional Domain Modeling in TypeScript
@@ -58,13 +58,20 @@ Each topic below is one file. Read it lazily — only the file(s) you need for t
 
 Represent states with discriminated unions using `kind` as the unified discriminant. Use `type` (not `interface`), Companion Object pattern, branded types via the project's validation library, `Readonly<>`, function property notation, and one-concept-per-file structure.
 
+Separate read contracts (resolvers) from write contracts (stores), and prefer one method per contract. Give each consumer only the operations it needs; an event store does not require a resolver or a CRUD repository. Keep I/O at workflow edges and pass values into pure domain decisions.
+
+Place these domain-facing ports beside the concepts they serve in the domain layer. Do not introduce a dedicated `port/` or `ports/` directory, including inside `domain/`. Keep concrete I/O adapters outside the domain; use cases and adapters import the domain-owned contracts. Read the domain-modeling guide when defining dependency contracts or choosing their file locations.
+
 ### State Transitions — [state-modeling.md](./state-modeling.md)
 
 Express transitions with pure functions. Argument types constrain valid source states; return types make targets explicit. Invalid transitions become compile errors. Use `assertNever` for exhaustiveness.
 
 ### Error Handling — [error-handling.md](./error-handling.md)
 
-Treat errors as values via `Result`. Define error types as discriminated unions so callers branch exhaustively. Do not throw exceptions in domain code.
+- Model expected business failures as use-case-specific `Result` error unions.
+- Include an external failure in the domain `Result` error union only when the workflow has a documented recovery decision.
+- Let unexpected infrastructure failures and contract/invariant violations reach the application error boundary. Preserve library contracts: fp-ts uses a separate execution failure channel inside `TaskEither` and rethrows unexpected faults at a native `Promise` boundary; see the [fp-ts guide](./result-libraries/fp-ts.md).
+- A private control-flow sentinel is allowed when its associated boundary catches only that sentinel and rethrows all other errors.
 
 ### Boundary Defense — [boundary-defense.md](./boundary-defense.md)
 

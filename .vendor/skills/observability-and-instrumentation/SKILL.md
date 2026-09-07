@@ -2,9 +2,9 @@
 description: Instruments code so production behavior is visible and diagnosable. Use when adding logging, metrics, tracing, or alerting. Use when shipping any feature that runs in production and you need evidence it works. Use when production issues are reported but you can't tell what happened from the available data.
 metadata:
     github-path: skills/observability-and-instrumentation
-    github-ref: refs/tags/0.6.7
+    github-ref: refs/tags/0.6.9
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 04c46139d6ee4c845e9d8d4e064fb615ac9af18e
+    github-tree-sha: 6fc52117cbeb28c0f2eb56c54fd24a101a873263
 name: observability-and-instrumentation
 ---
 # Observability and Instrumentation
@@ -91,6 +91,21 @@ app.use((req, res, next) => {
   next();
 });
 ```
+
+**When several entry points write to one log, name the entry point.** A correlation ID identifies a run; it does not say which code path started it. The same job reached by a scheduler, by a replay endpoint, and by a manual CLI run produces interchangeable lines in one sink, so attributing a line falls back to elimination — cross-reading the scheduler's history, the process table, a deploy log — and that argument holds only as long as those external records happen to still exist. Stamp the entry point where the run starts, next to the correlation ID, and propagate both the same way:
+
+```typescript
+// One helper for every entry point: the run's own logger carries both fields.
+// `entryPoint`, not `source` — ECS reserves `source.*` for network fields.
+export const runLog = (entryPoint: 'scheduler' | 'replay_endpoint' | 'cli', runId: string) =>
+  logger.child({ entryPoint, requestId: runId });
+
+// scheduler tick        -> runLog('scheduler', crypto.randomUUID())
+// POST /jobs/:id/replay -> runLog('replay_endpoint', req.id)
+// CLI invocation        -> runLog('cli', process.env.RUN_ID ?? crypto.randomUUID())
+```
+
+Both fields have to cross the same boundaries as the correlation ID — queue metadata, HTTP headers — or a worker re-derives the entry point and guesses. A field that merely correlates with an entry point is a hint, not an attribution: anything that can invoke the job can reproduce it.
 
 **Never log secrets, tokens, passwords, or full PII.** This is a hard rule from the `security-and-hardening` skill — telemetry pipelines are a classic data-leak path. Allowlist fields; don't log whole request bodies.
 
@@ -184,6 +199,7 @@ Instrumentation is code; it can be wrong. Before calling the work done, trigger 
 - A feature PR with retries, queues, or external calls and zero new telemetry
 - Log lines built by string interpolation instead of structured fields
 - No correlation/request ID — each log line is an orphan
+- One log stream fed by a scheduler, a webhook, and manual runs, with no field naming which one produced the line
 - Metrics labeled with user IDs, raw URLs, or error message text (cardinality bomb)
 - Latency tracked as an average with no percentiles
 - Alerts that fire daily and get acknowledged without action
@@ -197,6 +213,7 @@ After instrumenting a feature, confirm:
 
 - [ ] The on-call questions for this feature are written down, and each signal maps to one
 - [ ] All log output is structured (JSON), with stable event names and a correlation ID on every line
+- [ ] Every log sink written by more than one entry point carries an entry-point field, set where the run starts and propagated with the correlation ID rather than inferred downstream
 - [ ] No secrets, tokens, or unredacted PII in any log line (spot-check actual output)
 - [ ] RED metrics exist for every new endpoint and every external dependency, with bounded label sets
 - [ ] Latency is a histogram; p95/p99 are queryable

@@ -5,7 +5,7 @@ metadata:
     github-path: skills/cloud/agent-platform-deploy
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 6449bac79ae2cb82d29888ba6e1b6c4a4260056f
+    github-tree-sha: 120a92dd9b861bdbafee33e7e1df9795b54ef5b0
 name: agent-platform-deploy
 ---
 # Agent Platform Model Garden Deploy Skill
@@ -186,7 +186,6 @@ Interpret the probe result and act:
     underlying cause in plain language (e.g. "your account doesn't have access
     to this project's Vertex AI API — enable it in the console or switch
     projects") and the concrete next action.
-
 
 ## 3. Deploying a Model
 
