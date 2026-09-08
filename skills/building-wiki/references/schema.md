@@ -10,6 +10,7 @@
 - [ ] What a subdirectory means in this domain, if anything. The layout itself is `page-format.md`'s; redrawing it as a tree here restates the skill and then drifts from it.
 - [ ] The internal profile — permitted `type` values and the fields each one requires. See below.
 - [ ] Link convention, chosen after deciding which tool the wiki is read in.
+- [ ] **A pointer to the bundle's CONTEXT section for terminology**, read before writing or reviewing a page. The schema names where the vocabulary is; a copy of the terms here is the copy that drifts.
 - [ ] Language convention (if mixing languages: which language the prose is in, and what stays in the original — proper nouns, API names).
 - [ ] Where this domain's operations deviate from the definitions in `operations.md` — nothing, if they don't.
 - [ ] **Named failure modes for this domain.** For example: "do not settle an owner from the roster alone, confirm it inside the document itself"; "abbreviations are sometimes reassigned each year"; "add abbreviations that collide with ordinary words to the exclusion list."

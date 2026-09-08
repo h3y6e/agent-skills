@@ -23,6 +23,7 @@ const FOOTNOTE_REF = /\[\^([^\]]+)\](?!:)/g;
 const MD_LINK = /\[[^\]]*\]\(([^)\s]+)\)/g;
 const EXTERNAL_URL = /^[a-z][a-z0-9+.-]*:\/\//i;
 const SOURCE_ID = /\bid:\s*"?([^\s,}"]+)/g;
+const CONTEXT_SECTION = /^## CONTEXT\s*$/m;
 const NOT_A_PAGE = new Set(["log.md", "AGENTS.md"]);
 const RAW_DIR = "raw";
 
@@ -138,6 +139,16 @@ function checkPage(page, bundleRoot, now, report) {
   if (isIndex(page) && RESERVATION.test(page.body)) report("info", page.file, "open page-name reservation — clear it once the page is written");
 }
 
+// Which words a page should have used is a judgement; whether the vocabulary
+// has a home at all is not.
+function checkContext(bundle, report) {
+  const index = join(bundle, "README.md");
+  if (!existsSync(index)) return;
+  if (!CONTEXT_SECTION.test(readFileSync(index, "utf8"))) {
+    report("warn", index, "no CONTEXT section — the domain's vocabulary has no home");
+  }
+}
+
 function checkLog(bundle, report) {
   const log = join(bundle, "log.md");
   if (!existsSync(log)) {
@@ -184,6 +195,7 @@ function lint(bundle, { fix }) {
   checkConventions(pages, report);
   for (const page of pages) checkPage(page, bundleRoot, now, report);
   if (fix) fixKeyOrder(pages, report);
+  checkContext(bundle, report);
   checkLog(bundle, report);
   return { pages: pages.length, issues };
 }
