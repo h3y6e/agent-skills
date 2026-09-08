@@ -10,7 +10,7 @@ The bundle is `docs/` in the repository the knowledge is about. The schema is a 
 repo/
   AGENTS.md             # project instructions, with the domain schema as a section
   docs/                 # the bundle
-    README.md           # optional directory listing, for progressive disclosure
+    README.md           # the entry point: the CONTEXT vocabulary, plus whatever navigation the viewer does not render itself
     log.md              # optional chronological update history
     raw/                # immutable mirror of the sources that can be committed
     <subdir>/           # one group of pages, typically one type
@@ -21,12 +21,24 @@ repo/
 - **`raw/` is read by agents and never written**, and holds only the sources that can be committed. Credentials, confidential material under a retention policy, and licensed text cannot be. For those the wiki holds every claim's `sources[].resource` URI as the only handle on its origin, and fidelity checks re-fetch instead of diffing against a local copy — a source that later disappears takes its verifiability with it, so decide per source which risk to take. A bundle can be mixed; the schema records which sources are mirrored.
 - **One concept, one file.** The path from the bundle root, minus `.md`, is that concept's id — independent of where the bundle sits in the repository.
 - **`README.md`, `log.md`, and `raw/` are the only reserved names.** Date headings in `log.md` are `## YYYY-MM-DD`, so `grep '^## ' log.md | head -5` returns the latest entries.
-- **Links are ordinary markdown links.** `[[wikilinks]]` resolve only in the editors that implement them, so choose them only when every viewer in play does. Relative paths resolve everywhere; absolute paths survive file moves but only where the viewer resolves `/` against a known root (commonly the repository root, so `/docs/reference/apple.md`). Confirm the choice against the actual viewer before the first ingest. The resulting graph carries far more than the directory tree does.
+- **Links are ordinary markdown links.** `[[wikilinks]]` resolve only in the editors that implement them, so choose them only when every viewer in play does. Relative paths resolve in every viewer; absolute paths survive file moves, but each viewer resolves `/` against its own root — the repository root on GitHub's file view, the bundle root on a Pages site built from `docs/`, so one absolute path cannot satisfy both. Relative is the default; confirm the choice against the actual viewer before the first ingest. The resulting graph carries far more than the directory tree does.
 - **Broken links are legal.** A link to a page that does not exist marks knowledge not yet written, and it is the only record of who wanted it. A bare list of planned names in `README.md` carries the intent without the demand, so no page ever contradicts it and it ages quietly — link from the page that needs the concept instead. The `status: planned` reservations in `scale.md` are for concurrent ingest, not for a backlog.
+
+## CONTEXT
+
+The bundle root `README.md` carries a `## CONTEXT` section: the domain's vocabulary, one entry per term — what the term means here, and the words not to use for it with the reason each is wrong.
+
+```markdown
+**Report bucket**:
+The bucket the vendor provisions per contracting entity, and exports every report into.
+_Avoid_: GCS bucket (too generic), export bucket
+```
+
+It lives in the bundle rather than in a `CONTEXT.md` beside it, so the terms sit with the pages that use them and a reader reaches them by opening the wiki. Every ingest that introduces a term adds an entry, and lint reports terms a page uses that CONTEXT does not define. The avoided words are what makes it work: without them the agent picks a plausible synonym per page, and the wiki describes one thing under three names.
 
 ## Frontmatter
 
-`type` is the only required key; `title`, `description`, `resource`, and `tags` are recommended. There is no central registry of `type` values — the domain profile defines them.
+`type` is the only required key, on every page including each `README.md` — an index is a page, and `Index` is the conventional value. `title`, `description`, `resource`, and `tags` are recommended. There is no central registry of `type` values — the domain profile defines them.
 
 ```yaml
 ---

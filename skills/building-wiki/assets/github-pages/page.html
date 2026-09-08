@@ -1,0 +1,19 @@
+---
+layout: default
+---
+{% if page.type %}
+<p class="fs-2 text-grey-dk-000">
+  <span class="label {% if page.status == 'draft' %}label-yellow{% elsif page.status == 'deprecated' %}label-red{% else %}label-blue{% endif %}" title="{{ page.status }}">{{ page.type }}</span>
+  {% for tag in page.tags %}#{{ tag }} {% endfor %}
+  {% if page.stale_after %}<span class="float-right">stale after {{ page.stale_after | date: "%Y-%m-%d" }}</span>{% endif %}
+</p>
+{% endif %}
+{% if page.sources %}
+<details class="fs-2 mb-4">
+  <summary>sources({{ page.sources | size }})</summary>
+  <ul>
+    {% for s in page.sources %}<li><a href="{{ s.resource }}">{{ s.title | default: s.id }}</a>{% if s.author %} ({{ s.author }}){% endif %}</li>{% endfor %}
+  </ul>
+</details>
+{% endif %}
+{{ content }}
