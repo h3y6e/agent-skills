@@ -23,6 +23,8 @@ The theme renders the page listing, so a `README.md` body carries the domain's o
 
 `title` and `description` become the page `<title>` and meta description through the theme's `jekyll-seo-tag`. `type`, `status`, `stale_after`, `sources`, `generated`, and `verified` are ordinary page variables that no plugin reads, so the bundle's own metadata is invisible until a layout prints it. Printing them is the whole job of `page.html`.
 
+`status` tints the `type` label rather than adding a second one — a label whose own text is the status reads as the page's classification and buries the `type`. It is the one field the layout carries as colour, which is what its weight is worth: an advisory signal, not something an answer turns on.
+
 `jekyll-default-layout`, on by default with Pages, applies `page` to every page that declares no `layout` of its own.
 
 ## What breaks

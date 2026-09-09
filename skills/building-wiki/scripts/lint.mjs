@@ -24,7 +24,9 @@ const MD_LINK = /\[[^\]]*\]\(([^)\s]+)\)/g;
 const EXTERNAL_URL = /^[a-z][a-z0-9+.-]*:\/\//i;
 const SOURCE_ID = /\bid:\s*"?([^\s,}"]+)/g;
 const CONTEXT_SECTION = /^## CONTEXT\s*$/m;
-const NOT_A_PAGE = new Set(["log.md", "AGENTS.md"]);
+const BACKTICKED = /`([^`\n]+)`/g;
+const SCHEMA_FILE = "AGENTS.md";
+const NOT_A_PAGE = new Set(["log.md", SCHEMA_FILE]);
 const RAW_DIR = "raw";
 
 const captures = (text, regex) => [...text.matchAll(regex)].map((m) => m[1]);
@@ -74,11 +76,23 @@ function parsePage(file, report) {
   return { file, ...split, fmBlocks, block, keys: fmBlocks.map((b) => b.key).filter(Boolean), type: block("type")?.value ?? "" };
 }
 
+// The schema declares the permitted type values, so a type named there in
+// backticks is deliberate — that declaration is how a domain records the
+// exception, and the only one the script needs.
+function declaredTypes(bundle) {
+  return new Set(
+    [bundle, dirname(resolve(bundle))]
+      .map((dir) => join(dir, SCHEMA_FILE))
+      .filter(existsSync)
+      .flatMap((file) => captures(readFileSync(file, "utf8"), BACKTICKED)),
+  );
+}
+
 // README.md is one per directory, so it has no majority to compare against.
-function checkConventions(pages, report) {
+function checkConventions(pages, declared, report) {
   const byType = Map.groupBy(pages.filter((p) => p.type && !isIndex(p)), (p) => p.type);
   for (const [type, group] of byType) {
-    if (group.length === 1) report("warn", group[0].file, `type "${type}" is used by this page alone — a new page type, or a typo`);
+    if (group.length === 1 && !declared.has(type)) report("warn", group[0].file, `type "${type}" is used by this page alone and the schema does not declare it — a new page type, or a typo`);
     if (group.length < MIN_PAGES_FOR_MAJORITY) continue;
     const counts = new Map();
     for (const page of group) for (const key of page.keys) counts.set(key, (counts.get(key) ?? 0) + 1);
@@ -143,9 +157,12 @@ function checkPage(page, bundleRoot, now, report) {
 // has a home at all is not.
 function checkContext(bundle, report) {
   const index = join(bundle, "README.md");
-  if (!existsSync(index)) return;
+  if (!existsSync(index)) {
+    report("error", index, "no README.md at the bundle root — the bundle has no entry point");
+    return;
+  }
   if (!CONTEXT_SECTION.test(readFileSync(index, "utf8"))) {
-    report("warn", index, "no CONTEXT section — the domain's vocabulary has no home");
+    report("error", index, "no CONTEXT section — the domain's vocabulary has no home");
   }
 }
 
@@ -192,7 +209,7 @@ function lint(bundle, { fix }) {
   const pages = pageFiles(bundle).map((file) => parsePage(file, report)).filter(Boolean);
   const bundleRoot = resolve(bundle);
   const now = Date.now();
-  checkConventions(pages, report);
+  checkConventions(pages, declaredTypes(bundle), report);
   for (const page of pages) checkPage(page, bundleRoot, now, report);
   if (fix) fixKeyOrder(pages, report);
   checkContext(bundle, report);
