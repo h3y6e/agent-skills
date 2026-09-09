@@ -19,7 +19,7 @@
 
 OKF conformance is deliberately near-trivial, so "conformant" guarantees nothing about quality. The spec defines an interoperability surface, not a design discipline. The profile layered on top is the actual defence:
 
-- The permitted set of `type` values.
+- The permitted set of `type` values, as a bare list of names in backticks and nothing else — that list is also how the linter separates a declared type with one page so far from a typo. What a type means is carried by its pages; a gloss per type here is the copy that drifts.
 - Extra fields required per `type` — for example `generated` and `status` on every concept, `verified` on anything carrying numbers. A field required only under a condition is invisible to convention inference: the linter sees `verified` on one page in seven and reports the compliant page as the outlier. Make the condition its own `type` instead of writing the expected noise down.
 - Validation of **this profile**, not of format conformance.
 - Rules for assigning `stale_after` per `type` — including which types omit it because they describe a fixed past and cannot go stale — and what happens to expired concepts.
