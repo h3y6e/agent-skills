@@ -26,4 +26,4 @@ Then walk the pages for what it cannot decide: contradictions between pages, cla
 
 ## Update
 
-For a changed source: refresh `raw/` or re-read it, show the user what changed, record it in `log.md`, then ingest.
+For a changed source: the human refreshes its mirror in `raw/`; otherwise re-read it. Show the user what changed, record it in `log.md`, then ingest.
