@@ -4,7 +4,7 @@ description: Bootstraps and operates a wiki — cited pages compiled from source
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.10
+  version: 2026.9.11
 ---
 
 # Building a Wiki
