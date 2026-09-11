@@ -16,8 +16,7 @@ const MIN_PAGES_FOR_MAJORITY = 3;
 const ISO_UTC = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
 const LOG_HEADING = /^## \d{4}-\d{2}-\d{2}$/;
 const KEY_LINE = /^([A-Za-z_][\w-]*):/;
-const RESERVATION = /status:\s*planned\b/;
-const STAMP = /(?:^|[\s{,])(at|stale_after):\s*([^,}\n]+)/g;
+const STAMP = /(?:^|[\s{,])(at):\s*([^,}\n]+)/g;
 const FOOTNOTE_DEF = /^\[\^([^\]]+)\]:/gm;
 const FOOTNOTE_REF = /\[\^([^\]]+)\](?!:)/g;
 const MD_LINK = /\[[^\]]*\]\(([^)\s]+)\)/g;
@@ -112,13 +111,12 @@ function checkConventions(pages, declared, report) {
   }
 }
 
-function checkTimestamps(page, now, report) {
+function checkTimestamps(page, report) {
   for (const [, key, raw] of page.frontmatter.matchAll(STAMP)) {
     const value = raw.trim();
     const parsed = Date.parse(value);
     const exact = ISO_UTC.test(value) && !Number.isNaN(parsed) && new Date(parsed).toISOString() === value.replace("Z", ".000Z");
     if (!exact) report("error", page.file, `${key} must be an absolute UTC timestamp (YYYY-MM-DDTHH:MM:SSZ), got ${value}`);
-    else if (key === "stale_after" && parsed < now) report("warn", page.file, `stale_after passed on ${value} — re-read this page against its sources`);
   }
 }
 
@@ -135,22 +133,19 @@ function checkFootnotes(page, report) {
   }
 }
 
-// Viewers resolve `/` against either the bundle root or the repository root.
-function checkLinks(page, bundleRoot, report) {
+function checkLinks(page, report) {
   for (const href of captures(page.body, MD_LINK)) {
     const target = href.split("#")[0];
     if (EXTERNAL_URL.test(href) || !target.endsWith(".md")) continue;
-    const candidates = target.startsWith("/") ? [join(bundleRoot, target), join(process.cwd(), target)] : [resolve(dirname(page.file), target)];
-    if (!candidates.some(existsSync)) report("info", page.file, `link target ${target} does not exist — unwritten knowledge, or a typo`);
+    if (!existsSync(resolve(dirname(page.file), target))) report("info", page.file, `link target ${target} does not exist — unwritten knowledge, or a typo`);
   }
 }
 
-function checkPage(page, bundleRoot, now, report) {
+function checkPage(page, report) {
   if (!page.type) report("error", page.file, "no type — every page declares one");
-  checkTimestamps(page, now, report);
+  checkTimestamps(page, report);
   checkFootnotes(page, report);
-  checkLinks(page, bundleRoot, report);
-  if (isIndex(page) && RESERVATION.test(page.body)) report("info", page.file, "open page-name reservation — clear it once the page is written");
+  checkLinks(page, report);
 }
 
 // Which words a page should have used is a judgement; whether the vocabulary
@@ -207,10 +202,8 @@ function lint(bundle, { fix }) {
   const issues = [];
   const report = (level, file, msg) => issues.push({ level, file, msg });
   const pages = pageFiles(bundle).map((file) => parsePage(file, report)).filter(Boolean);
-  const bundleRoot = resolve(bundle);
-  const now = Date.now();
   checkConventions(pages, declaredTypes(bundle), report);
-  for (const page of pages) checkPage(page, bundleRoot, now, report);
+  for (const page of pages) checkPage(page, report);
   if (fix) fixKeyOrder(pages, report);
   checkContext(bundle, report);
   checkLog(bundle, report);
