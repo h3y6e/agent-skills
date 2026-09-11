@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-// Usage: lint.mjs <bundle-dir> [--fix]
+// Usage: lint.mjs <bundle-dir>
 //
-// Type conventions and key order are inferred from the pages that exist, so no
-// spec file can drift from them. Frontmatter is parsed textually rather than as
+// Type conventions are inferred from the pages that exist, so no spec file can
+// drift from them. Frontmatter is parsed textually rather than as
 // YAML so that a date-only timestamp cannot be silently defaulted to midnight.
 
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { basename, dirname, join, resolve, sep } from "node:path";
 
 const CONVENTION_RATE = 0.8;
@@ -45,7 +45,6 @@ function splitFrontmatter(text) {
   return { frontmatter: text.slice(4, end + 1), body: text.slice(end + 5) };
 }
 
-// Comments attach to the key that follows them, so they move with it on --fix.
 function blocks(frontmatter) {
   const out = [];
   let pending = "";
@@ -72,7 +71,7 @@ function parsePage(file, report) {
   }
   const fmBlocks = blocks(split.frontmatter);
   const block = (key) => fmBlocks.find((b) => b.key === key);
-  return { file, ...split, fmBlocks, block, keys: fmBlocks.map((b) => b.key).filter(Boolean), type: block("type")?.value ?? "" };
+  return { file, ...split, block, keys: fmBlocks.map((b) => b.key).filter(Boolean), type: block("type")?.value ?? "" };
 }
 
 // The schema declares the permitted type values, so a type named there in
@@ -172,52 +171,24 @@ function checkLog(bundle, report) {
   }
 }
 
-function keyRanks(pages) {
-  const positions = new Map();
-  for (const { keys } of pages) keys.forEach((key, i) => positions.set(key, [...(positions.get(key) ?? []), i]));
-  const mean = (xs) => xs.reduce((a, b) => a + b) / xs.length;
-  return new Map([...positions].sort(([, a], [, b]) => mean(a) - mean(b)).map(([key], rank) => [key, rank]));
-}
-
-function reordered(page, ranks) {
-  const rank = (block) => ranks.get(block.key) ?? ranks.size;
-  return page.fmBlocks
-    .map((block, index) => ({ block, index }))
-    .sort((a, b) => rank(a.block) - rank(b.block) || a.index - b.index)
-    .map(({ block }) => block.text)
-    .join("");
-}
-
-function fixKeyOrder(pages, report) {
-  const ranks = keyRanks(pages);
-  for (const page of pages) {
-    const frontmatter = reordered(page, ranks);
-    if (frontmatter === page.frontmatter) continue;
-    writeFileSync(page.file, `---\n${frontmatter}---\n${page.body}`);
-    report("info", page.file, "frontmatter keys reordered to the bundle's prevailing order");
-  }
-}
-
-function lint(bundle, { fix }) {
+function lint(bundle) {
   const issues = [];
   const report = (level, file, msg) => issues.push({ level, file, msg });
   const pages = pageFiles(bundle).map((file) => parsePage(file, report)).filter(Boolean);
   checkConventions(pages, declaredTypes(bundle), report);
   for (const page of pages) checkPage(page, report);
-  if (fix) fixKeyOrder(pages, report);
   checkContext(bundle, report);
   checkLog(bundle, report);
   return { pages: pages.length, issues };
 }
 
 function main(argv) {
-  const fix = argv.includes("--fix");
   const bundle = argv.find((a) => !a.startsWith("--"))?.replace(/\/$/, "");
   if (!bundle) {
-    console.error("usage: lint.mjs <bundle-dir> [--fix]");
+    console.error("usage: lint.mjs <bundle-dir>");
     return 2;
   }
-  const { pages, issues } = lint(bundle, { fix });
+  const { pages, issues } = lint(bundle);
   const errors = issues.filter(({ level }) => level === "error").length;
   const lines = issues.map(({ level, file, msg }) => `${level.toUpperCase().padEnd(5)} ${file}: ${msg}`);
   console.log([...lines, "", `${pages} page(s), ${issues.length} issue(s), ${errors} error(s)`].join("\n"));
