@@ -5,7 +5,7 @@ The default viewer for a bundle. Two files, copied as they are:
 - [`assets/github-pages/config.yml`](../assets/github-pages/config.yml) → `docs/_config.yml`, with `title` and `description` filled in.
 - [`assets/github-pages/page.html`](../assets/github-pages/page.html) → `docs/_layouts/page.html`.
 
-Set the Pages source to `/docs`. The site's visibility follows the repository's.
+Set the Pages source to `/docs`, and set the site visibility to match the repository's — the default is public even for a private or internal repository.
 
 Navigation keys in each page's frontmatter:
 
