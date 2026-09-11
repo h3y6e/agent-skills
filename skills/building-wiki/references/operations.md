@@ -1,53 +1,29 @@
 # Operations
 
-What ingest, query, lint, and update mean for any bundle. A domain records only where it deviates from these, in its `AGENTS.md`.
+Read the repository's `AGENTS.md` first. Pages follow [`page-format.md`](page-format.md). Cite every claim by page or source. Every operation ends with one line in `log.md`.
 
 ## Ingest
 
-1. Pick the target. Grep the index for related passages and their sources.
-2. Read the relevant source material — the `raw/` sections, or fetch the sources not mirrored there.
-3. **Discuss the takeaways with the user.** Skipping this turns the base into a black box that rewrites notes behind their back.
-4. Write the summary page, update `README.md` — including a CONTEXT entry for every term the source introduces — and update related existing pages across the wiki.
-5. Append one line to `log.md`.
+One source at a time. Grep the index for related pages and read the source — from `raw/` where it is mirrored, otherwise fetched.
 
-Done when the new page, every existing page the source confirms or contradicts, a CONTEXT entry per term it introduces, and the `log.md` line all land together — an ingest that writes one page and leaves the rest for later is the one that plants a contradiction.
+State the takeaways to the user before writing. Then write the pages the takeaways need — an entity or concept worth returning to, not one per source heading. A concept referred to from one place stays a paragraph on the page that uses it.
 
-One source can touch 10–15 pages. Default to one source at a time with the user involved; batch low-supervision runs only deliberately. When the material arrives in bulk (a whole archive at once), parsing everything up front exhausts the context — ask first for structure discovery and scaffolding only, then ingest topic by topic.
+Update the index and every existing page the source confirms or contradicts in the same change; deferring the rest plants a contradiction. Add a CONTEXT entry only when a second name for a term has actually appeared, or the source uses a term more narrowly than its general meaning.
+
+When material arrives in bulk, ask for structure discovery first — which pages and types the archive implies — and ingest topic by topic afterwards.
 
 ## Query
 
-1. Descend `README.md` → related pages → their `README.md` → the sources behind them.
-2. Cite sources in every answer.
-3. **Good answers belong back in the wiki.** A requested comparison, a discovered connection, a re-organized understanding is worth keeping rather than losing to chat history — that is how exploration compounds too.
-4. Ask before adding: "should this become a page?"
+Descend from the index to pages to the sources behind them, and cite in the answer.
 
-Done when every claim in the answer names the page or source it came from, and the user has answered that question.
+When an answer synthesizes something the wiki does not yet say, ask "should this become a page?" and file it only on a yes.
 
 ## Lint
 
-Cover both sides. The mechanical half takes no configuration, because the bundle is its own specification:
+Run [`scripts/lint.mjs`](../scripts/lint.mjs) on the bundle directory. It infers each type's fields from the pages that exist, so a deliberate exception is answered in the schema's type list, never by editing the script.
 
-```bash
-.agents/skills/building-wiki/scripts/lint.mjs <bundle-dir> [--fix]
-```
-
-It infers each type's field convention and the prevailing frontmatter key order from the pages that exist, then reports what deviates — a field the rest of that type carries, a key only one page has — alongside what is decidable outright: absolute timestamps, expired `stale_after`, footnote labels resolving to a `sources[].id`, link targets, open page-name reservations, a bundle root `README.md` carrying a CONTEXT section, `log.md` heading format. `--fix` reorders frontmatter keys to the prevailing order, moving each key's lines verbatim. Inference keeps the schema the one place the convention is stated; a rule it cannot infer belongs in the repository's own check beside it, and a report on a deliberate exception is answered by the type list in [`schema.md`](schema.md)'s internal profile — never by editing the script. Everything below is what no script can decide.
-
-**Internal consistency** (wiki only): contradictions between pages; old claims overturned by newer sources; orphan pages with no inbound links and missing reciprocal links; important concepts mentioned but page-less; terms a page body uses that the CONTEXT section does not define, and words CONTEXT tells the wiki to avoid; open questions left unresolved; one-sided metadata that should exist on both ends (group membership, for instance).
-
-**Fidelity to sources**: inspect with the intent of finding errors, and treat the source as truth when fixing. Against `raw/` this is a diff; against an unmirrored source it means re-fetching, so the check is only as reliable as the source's own stability — a page whose source has moved or vanished is a finding, not a pass. The domain's named failure modes tell the linter where to look hardest.
-
-Done when the script reports zero errors and both judgement halves have been walked page by page, each reported with its findings or with "none found" — a lint that only ran the script has checked the frontmatter and none of the knowledge.
+Then walk the pages for what it cannot decide: contradictions between pages, claims overturned by a newer source, orphan pages, drift from the source. Report every finding or "none found"; the source is the truth when fixing. A finding is a defect in a page, not a demand for a new one.
 
 ## Update
 
-1. Note the pre-sync pointer.
-2. Update `raw/`. Without one, re-read the source and compare against what the wiki already claims — the pages are the only prior state there is.
-3. **Show the diff** — summarize what arrived. This is what ingest and summarize work from next; syncing without it halves the point.
-4. Record it in `log.md`.
-
-Done when the user has seen what changed in the source and `log.md` says what arrived.
-
-## Others
-
-Add per domain — a `Summarise` for recurring material, a `Families` that bundles related concepts (details stay on the individual pages; the bundling page links rather than copies, to avoid double maintenance).
+For a changed source: refresh `raw/` or re-read it, show the user what changed, record it in `log.md`, then ingest.
