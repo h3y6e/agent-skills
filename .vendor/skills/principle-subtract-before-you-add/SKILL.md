@@ -1,18 +1,18 @@
 ---
-description: Apply when sequencing an addition, refactor, or rewrite. Remove dead weight, redundant validators, and stub references first, then build on the simpler base.
+description: Apply when sequencing an addition, refactor, or rewrite. Remove dead code, redundant validators, and stub references first, then build on the simpler base.
 disable-model-invocation: true
 metadata:
     github-path: pstack/skills/principle-subtract-before-you-add
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: dcd8d09a19fc6c4795d5a4799c50db4108ae59ab
+    github-tree-sha: ea107acd74b874b27ec52983384d2ec7d4b8088a
 name: principle-subtract-before-you-add
 ---
 # Subtract Before You Add
 
-When evolving a system, remove complexity first, then build. Deletion gives you a simpler base, which makes the next addition smaller and less brittle.
+When evolving a system, remove complexity first, then build.
 
-**Why:** Adding to a complex system compounds complexity. Removing first cuts the surface area, reveals the essential structure, and usually makes the next design obvious. Default to subtraction.
+**Why:** Adding to a complex system compounds complexity. Removing first leaves less code, reveals the essential structure, and usually makes the next design obvious. Default to subtraction.
 
 Make simplification a continual investment. Leave the design slightly simpler and more capable behind the same or smaller surface than you found it.
 
@@ -21,6 +21,5 @@ Make simplification a continual investment. Leave the design slightly simpler an
 - Cut before you polish (get to the minimum before investing in quality)
 - Design for observed usage, not speculative edge cases
 - No speculative validators, parsers, or guards beyond what the spec demands
-- Out-of-spec features drag validators behind them. Persistence, retry-on-startup, and schema migration each need guards to defend their inputs.
 - Simplify prompts (remove redundant instructions, excessive templates)
 - When a reference has no novel content, delete it rather than leaving a stub

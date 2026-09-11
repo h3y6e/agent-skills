@@ -5,14 +5,14 @@ metadata:
     github-path: pstack/skills/principle-guard-the-context-window
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: 160097c93ba42dd955907f5c02ac38a5975f1518
+    github-tree-sha: e301f9b96fd9b42899159beb919538eacb18e3a0
 name: principle-guard-the-context-window
 ---
 # Guard the Context Window
 
-The context window is finite and non-renewable within a session. Every token that enters should earn its place.
+The context window is finite and non-renewable within a session. Every token should be worth its cost.
 
-**Why:** Context overflow degrades reasoning quality, creates compression artifacts, and halts progress. Unlike compute or time, context spent inside a session cannot be reclaimed.
+**Why:** Context overflow degrades reasoning quality, creates compression artifacts, and halts progress.
 
 **Pattern:**
 - **Isolate large payloads.** Route verbose outputs, screenshots, and large documents to subagents. The main context gets summaries, not raw data.

@@ -5,7 +5,7 @@ metadata:
     github-path: pstack/skills/principle-migrate-callers-then-delete-legacy-apis
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: 2604f87c7ebe4dd2ff8eb9093eb4da938526b13d
+    github-tree-sha: 7b49b9000c86ea1ae142af47d0ff5f9f95199c34
 name: principle-migrate-callers-then-delete-legacy-apis
 ---
 # Migrate Callers Then Delete Legacy APIs
@@ -13,7 +13,7 @@ name: principle-migrate-callers-then-delete-legacy-apis
 When we decide a new API is the right design, migrate callers and remove the old API in the same refactor wave instead of preserving compatibility layers.
 
 **Rule:**
-- Do not keep legacy API paths alive only because internal callers still exist
+- Do not keep legacy API paths only because internal callers still exist
 - Inventory callers, migrate them, and delete the old API immediately
 - Treat temporary adapters as exceptional and time-boxed, not default architecture
 - Update tests to assert the new contract, and delete tests that only protect pre-refactor implementation details
