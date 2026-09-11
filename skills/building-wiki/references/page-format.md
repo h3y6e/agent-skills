@@ -39,15 +39,15 @@ An entry with nothing to avoid does not belong here.
 ```yaml
 ---
 type: Meeting Summary
-title: 2026-05 plenary day 1
-description: One-line summary, used for the index and search snippets
+title: "2026-05 plenary day 1"
+description: "One-line summary, used for the index and search snippets"
 resource: https://...          # canonical URI of the thing described, if it exists
 tags: [billing, 2026]          # never restate `type`
 generated: { by: agent-name/model-id, at: 2026-06-20T22:53:05Z }
 sources:
   - id: policy-doc
     resource: https://wiki.example/policy
-    title: Source document
+    title: "Source document"
     last_modified: 2026-04-02T00:00:00Z
 ---
 ```
