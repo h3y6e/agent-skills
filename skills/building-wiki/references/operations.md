@@ -20,11 +20,7 @@ When an answer synthesizes something the wiki does not yet say, ask "should this
 
 ## Lint
 
-The script checks what is mechanical, inferring each type's fields and the frontmatter key order from the pages that exist; `--fix` reorders keys to the prevailing order. A report on a deliberate exception is answered in the schema's type list, never by editing the script.
-
-```bash
-.agents/skills/building-wiki/scripts/lint.mjs <bundle-dir> [--fix]
-```
+Run [`scripts/lint.mjs`](../scripts/lint.mjs) on the bundle directory; `--fix` reorders frontmatter keys to the prevailing order. It infers each type's fields from the pages that exist, so a deliberate exception is answered in the schema's type list, never by editing the script.
 
 Then walk the pages for what it cannot decide: contradictions between pages, claims overturned by a newer source, orphan pages, drift from the source. Report every finding or "none found"; the source is the truth when fixing. A finding is a defect in a page, not a demand for a new one.
 
