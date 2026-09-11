@@ -1,15 +1,12 @@
 title: <repository name>
 description: <the one line that describes the bundle>
 remote_theme: just-the-docs/just-the-docs
-search_enabled: true              # client-side full-text search, no index to build
-
+search_enabled: true
 plugins:
-  - jekyll-remote-theme            # just-the-docs is not one of the built-in Pages themes
-  - jekyll-relative-links          # ../reference/apple.md → the rendered page
-  - jekyll-readme-index            # README.md serves as each subdirectory's index
-
+  - jekyll-remote-theme
+  - jekyll-relative-links
+  - jekyll-readme-index
 readme_index:
-  with_frontmatter: true           # default false skips every README that has frontmatter — all of ours do
-
+  with_frontmatter: true
 exclude:
-  - raw                            # mirrored sources are not for publishing
+  - raw
