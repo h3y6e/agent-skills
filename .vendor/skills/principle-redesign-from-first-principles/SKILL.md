@@ -5,16 +5,16 @@ metadata:
     github-path: pstack/skills/principle-redesign-from-first-principles
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: 2f9ce6649070033606242178ce56903bab0fe643
+    github-tree-sha: 7d6b29659ee81f3e4ce5475b868bf891a8041e7c
 name: principle-redesign-from-first-principles
 ---
 # Redesign From First Principles
 
-When integrating a change, don't bolt it onto the existing design. Redesign as if the requirement had been there from the start. The result should look like what we would have built if we'd known on day one.
+When integrating a change, don't bolt it onto the existing design. Redesign as if the requirement had been there from the start.
 
-- Read all affected files and understand the current design holistically
+- Read all affected files and understand the current design
 - Ask: "if we were writing this from scratch with this new requirement, what would we build?"
 - Propagate the change through every reference: types, docs, examples, rationale sections
-- Think about the redesign holistically, then deliver it incrementally
+- Think about the whole redesign, then deliver it incrementally
 
 This is the method for preserving option value when integrating changes into an existing design.

@@ -5,7 +5,7 @@ metadata:
     github-path: pstack/skills/typescript-best-practices
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: b50554bb7119f369f17273c9654c3619ef3e3b4d
+    github-tree-sha: 924cb1d5fee20dc4028a10bf98b26dec8cbdfd83
 name: typescript-best-practices
 paths:
     - '**/*.ts'
@@ -13,7 +13,7 @@ paths:
 ---
 # TypeScript best practices
 
-Apply the **type-system-discipline** principle skill first; this skill grounds it in TypeScript syntax.
+Apply the **type-system-discipline** principle skill first.
 
 | Rule | Summary |
 |------|---------|
@@ -21,7 +21,7 @@ Apply the **type-system-discipline** principle skill first; this skill grounds i
 | Branded types | Brand primitives with `& { readonly __brand: "X" }` so they can't be mixed up. Validate once at the boundary. |
 | Constructive modeling | Build the shape so the illegal value can't be constructed. `[T, ...T[]]` for non-empty, `[T, T][]` for even length, `start` plus `duration` for a range. Not a runtime guard, not a wish for refinement types. |
 | Simplest total type | Keep `T[]` while every operation on it stays total. Strengthen to `NonEmpty<T>` only where the loose type forces `!`, a cast, or a "should never happen" throw. |
-| `unknown` over `any` | External data is `unknown`. `any` disables type checking everywhere it touches. |
+| `unknown` over `any` | External data is `unknown`. |
 | Schemas before guards | Before hand-writing a property-by-property type guard, use the repository's runtime schema library and infer the type from the schema, such as `z.infer`. |
 | No `as` casts | Every `as` is a runtime crash waiting. Cast only after validation. |
 | Narrowing hierarchy | Discriminant switch > `in` operator > `typeof`/`instanceof` > user-defined type guard > `as`. |

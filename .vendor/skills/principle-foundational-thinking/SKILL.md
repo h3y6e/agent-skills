@@ -5,14 +5,14 @@ metadata:
     github-path: pstack/skills/principle-foundational-thinking
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: 75d8010f2ebe173b9ad72035f1790a5e5005d198
+    github-tree-sha: 5880f6577956b14ee4ee89cb72c03fd8bd82a5ac
 name: principle-foundational-thinking
 ---
 # Foundational Thinking
 
-**Structural decisions** protect option value. **Code-level decisions** protect simplicity. Over-engineering is often a premature decision that closes doors. The right foundational data structure keeps doors open.
+**Structural decisions** protect option value. **Code-level decisions** protect simplicity.
 
-**Data structures first.** Get the data shape right before writing logic. The right shape makes downstream code obvious. Define core types early, trace every access pattern, and choose structures that match the dominant paths. A data-structure change late is a rewrite. Early, it is often a one-line diff.
+**Data structures first.** Get the data shape right before writing logic. Define core types early, trace every access pattern, and choose structures that match the dominant paths.
 
 At code level, DRY the structure, not every line. Types and data models should converge. Three similar statements still beat a premature abstraction. Prefer explicit over clever. Test behavior and edge cases, not line counts.
 
@@ -22,4 +22,4 @@ At code level, DRY the structure, not every line. Types and data models should c
 
 Each increment should land a coherent abstraction or deepen one that exists. Do not spread a new capability across callers as special-case coordination.
 
-Subtraction comes before scaffolding: remove dead weight first, then lay foundations.
+Subtraction comes before scaffolding. Remove dead code first, then lay foundations.
