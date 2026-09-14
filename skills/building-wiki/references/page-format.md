@@ -10,12 +10,12 @@ repo/
   docs/                 # the bundle
     README.md           # the index: CONTEXT vocabulary, then one line per page
     log.md              # append-only history, one line per operation under `## YYYY-MM-DD`
-    raw/                # immutable mirror of the sources that can be committed
+    raw/                # immutable mirror of the sources, gitignored by default
     <subdir>/           # a group of pages, typically one type; has its own README.md
       <concept>.md      # one concept per file
 ```
 
-- **`raw/` is read by agents and never written.** Credentials, licensed text, and material under a retention policy stay out; for those the page's `sources[].resource` URI is the only handle on the origin.
+- **`raw/` is read by agents and never written, and `.gitignore` excludes it.** Committing a mirror is the user's call, source by source; credentials, licensed text, and material under a retention policy never qualify. Wherever a mirror is absent, the page's `sources[].resource` URI is the only handle on the origin.
 - **One concept, one file.** The path from the bundle root, minus `.md`, is the concept's id. A concept earns a file when it is referred to from more than one place or asked about more than once.
 - **`README.md`, `log.md`, and `raw/` are the only reserved names.**
 - **Links are ordinary relative markdown links.** A link to a page that does not exist is legal and is not by itself a reason to write the page.
