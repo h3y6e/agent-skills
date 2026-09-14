@@ -6,10 +6,11 @@ metadata:
     github-path: skills/cloud/gemini-api
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 6ea29d11c287ad1a4b71f563330bb68bb7f7693e
+    github-tree-sha: f9ba7dbac9e997260e2ac0b6372afd8743cfb6af
 name: gemini-api
 ---
-IMPORTANT: Agent Platform (full name Gemini Enterprise Agent Platform) was previously named "Vertex AI" and many web resources use the legacy branding.
+> [!IMPORTANT]
+> Agent Platform (full name Gemini Enterprise Agent Platform) was previously named "Vertex AI" and many web resources use the legacy branding.
 
 # Gemini API in Agent Platform
 
@@ -64,7 +65,7 @@ Provide these key capabilities:
 Prefer environment variables over hard-coding parameters when creating the client. Initialize the client without parameters to automatically pick up these values.
 
 ### Application Default Credentials (ADC)
-Set these variables for standard [Google Cloud authentication](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/start/gcp-auth.md.txt):
+Set these variables for standard [Google Cloud authentication](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/start/gcp-auth.md.txt):
 
 ```bash
 export GOOGLE_CLOUD_PROJECT='your-project-id'
@@ -106,8 +107,8 @@ client = genai.Client(
 
 ## Models
 
+- Use `gemini-3.8-flash` for fast, balanced performance, multimodal (1M tokens)
 - Use `gemini-3.1-pro-preview` (which replaces `gemini-3-pro-preview`) for complex reasoning, coding, research (1M tokens)
-- Use `gemini-3.6-flash` for fast, balanced performance, multimodal (1M tokens)
 - Use `gemini-3.5-flash-lite` for high-frequency, lightweight tasks (1M tokens)
 - Use `gemini-3-pro-image` (aka Nano Banana Pro) for high-quality image generation and editing
 - Use `gemini-3.1-flash-image` (aka Nano Banana 2) for medium-quality image generation and editing
@@ -116,6 +117,8 @@ client = genai.Client(
 
 Use the following models only if explicitly requested:
 
+- `gemini-3.7-flash`
+- `gemini-3.6-flash`
 - `gemini-3.5-flash`
 - `gemini-3.1-flash-lite`
 - `gemini-2.5-flash-image`
@@ -125,7 +128,7 @@ Use the following models only if explicitly requested:
 
 > [!IMPORTANT]
 > Models like `gemini-2.0-*`, `gemini-1.5-*`, `gemini-1.0-*`, `gemini-pro` are legacy and deprecated. Use the new models above. Your knowledge is outdated.
-> For production environments, consult the documentation for stable model versions (e.g. `gemini-3.6-flash`).
+> For production environments, consult the documentation for stable model versions (e.g. `gemini-3.8-flash`).
 
 ## Quick Start
 
@@ -136,7 +139,7 @@ from google import genai
 
 client = genai.Client()
 response = client.models.generate_content(
-    model="gemini-3.6-flash",
+    model="gemini-3.8-flash",
     contents="Explain quantum computing",
 )
 print(response.text)
@@ -148,7 +151,7 @@ print(response.text)
 import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({ enterprise: { project: "your-project-id", location: "global" } });
 const response = await ai.models.generateContent({
-    model: "gemini-3.6-flash",
+    model: "gemini-3.8-flash",
     contents: "Explain quantum computing"
 });
 console.log(response.text);
@@ -177,7 +180,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	resp, err := client.Models.GenerateContent(ctx, "gemini-3.6-flash", genai.Text("Explain quantum computing"), nil)
+	resp, err := client.Models.GenerateContent(ctx, "gemini-3.8-flash", genai.Text("Explain quantum computing"), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -197,7 +200,7 @@ public class GenerateTextFromTextInput {
     Client client = Client.builder().enterprise(true).project("your-project-id").location("global").build();
     GenerateContentResponse response =
         client.models.generateContent(
-            "gemini-3.6-flash",
+            "gemini-3.8-flash",
             "Explain quantum computing",
             null);
 
@@ -218,7 +221,7 @@ var client = new Client(
 );
 
 var response = await client.Models.GenerateContent(
-    "gemini-3.6-flash",
+    "gemini-3.8-flash",
     "Explain quantum computing"
 );
 
