@@ -1,6 +1,6 @@
 ---
 name: building-wiki
-description: Bootstraps and operates a wiki — cited pages compiled from sources by an agent, plus a short `AGENTS.md` schema for one domain. Use when asked to set up a knowledge base or wiki so findings compound instead of being re-derived per question, to write or audit its schema, or to ingest a source into an existing one, answer a question from it, lint it, or refresh it after a source changed.
+description: Bootstraps and operates a wiki — cited pages compiled from sources by an agent, plus a short `AGENTS.md` schema for one domain. Use when asked to set up a knowledge base or wiki, to write or audit its schema, or to ingest a source into an existing one, answer a question from it, lint it, or refresh it after a source changed.
 license: MIT
 metadata:
   author: h3y6e

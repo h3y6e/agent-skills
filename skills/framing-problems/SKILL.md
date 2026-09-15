@@ -1,6 +1,6 @@
 ---
 name: framing-problems
-description: Use when a request starts from vague pain, a solution idea, product idea, or "what should I build?" and the real problem, priority, or success criteria are unclear.
+description: Interviews the user to turn vague pain or a solution idea into a prioritized problem map. Use when a request starts from a pain, a product or solution idea, or "what should I build?", and the real problem, priority, or success criteria are unclear.
 license: MIT
 metadata:
   author: h3y6e
@@ -48,7 +48,7 @@ Do not judge the solution idea or propose alternatives. Use it only as evidence 
 
 ## Stop Conditions
 
-Move to the output when at least one problem has a concrete scene, current workaround, impact, and priority reason. If multiple independent problems appear, stop with a decomposition recommendation. If key facts are still unknown after three focused questions, summarize the uncertainty instead of continuing indefinitely.
+Move to the output when at least one problem has a concrete scene, current workaround, impact, and priority reason. If multiple independent problems appear, stop with a decomposition recommendation. When focused questions stop yielding new facts, summarize the remaining uncertainty rather than continuing indefinitely.
 
 ## Output
 
@@ -70,8 +70,8 @@ End with a problem map:
 - Priority reason: <why this ranks here>
 
 ## Priority
-| Rank | Problem | Frequency | Impact | Confidence |
-| --- | --- | --- | --- | --- |
+| Rank | Problem | Frequency | Impact | Spread | Urgency |
+| --- | --- | --- | --- | --- | --- |
 
 ## Material Uncertainties
 - <unknown that would change priority, scope, or success criteria>
@@ -79,11 +79,3 @@ End with a problem map:
 ## Next Step
 <research, hypothesis, spec, prototype, or no action>
 ```
-
-## Common Mistakes
-
-- Letting a proposed app, tool, or feature define the problem.
-- Asking leading questions that smuggle in your theory.
-- Asking broad surveys instead of grounding in a recent episode.
-- Turning the interview into advice.
-- Prioritizing by excitement instead of frequency, impact, spread, and urgency.

@@ -1,6 +1,6 @@
 ---
 name: repairing-argument-gaps
-description: Use when revising Japanese book chapters or technical prose whose argument breaks across paragraphs, especially abrupt topic jumps, unsupported theory/citations, A-B-A interruptions, empty columns, or claims that examples do not prove.
+description: Diagnoses and repairs a broken argumentative chain in Japanese prose by paragraph role, evidence, and handoff. Use when revising a Japanese book chapter or technical draft whose argument breaks across paragraphs — abrupt topic jumps, unsupported theory or citations, A-B-A interruptions, empty columns, or claims its examples do not prove.
 license: MIT
 metadata:
   author: h3y6e
