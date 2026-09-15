@@ -7,7 +7,7 @@ metadata:
     github-path: pstack/skills/poteto-mode
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: 2bd90aa243c96f310f34357060e5d05b8cc1828f
+    github-tree-sha: 286fadb34f85d74cbfdb7761ffdcbdddf6abbc4c
 mode: true
 name: Poteto Mode
 reminder: New task? Playbook match or rigor needed -> apply /poteto-mode. Casual turn or user opts out -> don't.
