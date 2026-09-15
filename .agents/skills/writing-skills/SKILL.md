@@ -12,9 +12,9 @@ Create skills that make execution reproducible. Under identical conditions, requ
 
 ## Contracts
 
-Before writing, define observable **process invariants**. Classify research as checked, not applicable, or unavailable; evaluate branches; require artifact fields; and stop when work or verification is incomplete.
+Before writing, define observable **process invariants**. Classify research as checked, not applicable, or unavailable; evaluate branches; require artifact fields; and stop when work or verification is incomplete. State how far work extends — whether a first working result ends it, or iteration continues.
 
-Follow the [Agent Skills specification](https://agentskills.io/specification): require `name` and `description`; make `name` match its directory and contain at most 64 lowercase letters, digits, or single hyphens; keep `description` within 1-500 characters and state capability and triggers.
+Follow the [Agent Skills specification](https://agentskills.io/specification); the validator enforces its mechanical constraints.
 
 Repository rules:
 
@@ -38,12 +38,12 @@ Treat loading tier and information role independently. Keep required procedures,
 
 1. Record capability, triggers, evaluated near-misses, artifacts, and process invariants. Connect requirements to examples.
 2. Search `.vendor/skills/` for skills related to the target capability, domain, and triggers, then read relevant candidates before design. Treat them only as authoring evidence: incorporate applicable guidance so the new skill stands alone, without naming or linking any consulted skill, directory, or path in any resulting file.
-3. Design evaluation first. Discovery cases cover direct triggers, paraphrases, near-misses, competing skills, and multi-skill use. Execution cases make required research, branches, artifacts, and verification scorable. Baseline behavior-constraining skills without the skill.
-4. Write the minimum skill. Format a model-invoked `description` as "capability. `Use when` triggers."; an explicitly invoked skill states capability alone. Give important steps input, decisions, evidence, completion criteria, and incomplete transitions as needed.
+3. Design evaluation first. Discovery cases cover direct triggers, paraphrases, near-misses, competing skills, and multi-skill use. Execution cases make required research, branches, artifacts, and verification scorable.
+4. Write the minimum skill. Format a model-invoked `description` as "capability. `Use when` triggers."; an explicitly invoked skill states capability alone. Name triggers as the occasions calling for the skill, not the domains it touches: "adding or changing a migration", not "working with databases". Give important steps input, decisions, evidence, completion criteria, and incomplete transitions as needed.
 5. Distribute information by loading design. Never hide universally required instructions in references.
 6. Pass mechanical validation before evaluation.
-7. Evaluate discovery and execution separately. Measure activation, misses, and false activations; then requirement satisfaction, validator success, premature completion, and unnecessary tools. Repeat important skills across intended models. Follow `.vendor/skills/writing-skills/testing-skills-with-subagents.md`.
-8. Prune statements that do not change default behavior. Keep each rule once per loading tier. Prefer established terms over invented shorthand. State expected behavior positively; reserve prohibitions for dangerous boundaries or observed failures, with an alternative and reason.
+7. Evaluate discovery and execution separately. Measure activation, misses, and false activations; then requirement satisfaction, premature completion, and unnecessary tools. Follow `.vendor/skills/writing-skills/testing-skills-with-subagents.md`.
+8. Prune statements that do not change the current model's default behavior; those defaults move, so re-check surviving rules on every revision. Keep each rule once per loading tier. Prefer established terms over invented shorthand. State expected behavior positively; reserve prohibitions for dangerous boundaries or observed failures, with an alternative and reason. Over-constraint costs as much as under-constraint: a prohibition aimed at one model's overreach reads to a stronger one as license to stop early.
 
 Before applying TDD to skill authoring, read `.vendor/skills/writing-skills/SKILL.md`. When iterative comparison is needed, use `.vendor/skills/empirical-prompt-tuning/SKILL.md`.
 
@@ -59,4 +59,4 @@ For scenario evaluation, record model/version, environment/tools, skill commit/h
 
 When codifying experience, record the initial failure, final solution, and connecting insight; then use `.vendor/skills/retrospective-codify/SKILL.md` to choose between automation, project instructions, extending a skill, creating a skill, or no persistence.
 
-Before completion, confirm validator and `rumdl` success, evidence for every process invariant, separate discovery and execution evaluation, and no claim beyond the evidence produced.
+Before completion, confirm evidence for every process invariant and no claim beyond the evidence produced.

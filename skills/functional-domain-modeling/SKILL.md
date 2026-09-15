@@ -1,6 +1,6 @@
 ---
 name: functional-domain-modeling
-description: Functional domain modeling for server-side TypeScript with better-result and valibot — discriminated unions, pure state transitions, TaggedError-based Result handling, schema-validated boundaries, and PII protection. Use when writing TypeScript domain models, use cases, repositories, state transitions, error handling, boundary validation, or PII handling on the server side, or designing types for business logic. Skip for frontend components, build tooling, and code unrelated to domain logic.
+description: Functional domain modeling for server-side TypeScript with better-result and valibot — discriminated unions, pure state transitions, TaggedError-based Result handling, schema-validated boundaries, and PII protection. Use when adding or changing a server-side domain type, state transition, repository, or boundary parser, or when deciding how a failure is represented. Skip frontend components, build tooling, and code unrelated to domain logic.
 license: MIT
 metadata:
   author: h3y6e

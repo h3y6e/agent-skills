@@ -1,6 +1,6 @@
 ---
 name: git-shipping
-description: Guides the git workflow for shipping code changes — branch, commit, push, PR. Use whenever asked to `commit` (inspect diff, stage coherent chunks, then commit — not just format a message), `push`, `pr`/`ship`/`open a PR`/`merge this`, or manage branches, and whenever about to make code changes in a git repo (to confirm you're on the right branch before implementation starts) — even if the user only described the change and never said the word "git".
+description: Guides the git workflow for shipping code changes — branch, commit, push, PR. Use whenever asked to `commit`, `push`, `pr`/`ship`/`open a PR`/`merge this`, or manage branches, and whenever about to make code changes in a git repo, to confirm the branch is right before implementation starts — even if the user only described the change and never said the word "git".
 compatibility: Requires git, gh, cxg, and git-wt. Do not use raw git worktree.
 license: MIT
 metadata:
@@ -37,11 +37,13 @@ Start new feature work in a clean worktree from the remote default branch, not i
 Before creating it, check `git wt -h`, then use `git wt <branch> origin/<default-branch> --nocd`.
 Never call raw `git worktree`.
 
+New worktrees start clean; transfer in-progress changes only on request.
+
 Do not move already-started work into a new worktree just to satisfy this workflow. If files are already being edited in the current checkout, keep working there and create or switch to the appropriate branch in place when safe.
 
 ## Commit
 
-**REQUIRED SUB-SKILL:** Use `cxg` skill for commit message format.
+**REQUIRED SUB-SKILL:** Use `cxg` skill for commit message format. Pipe the message through `cxg lint` before committing.
 
 ## Pull Request
 
@@ -53,17 +55,3 @@ Do not move already-started work into a new worktree just to satisfy this workfl
 - Write the body to a `mktemp` file under `$TMPDIR`, never a fixed path — `gh pr create`/`gh pr edit` can reuse stale content, and plain `mktemp` can fail in a sandboxed shell.
 - New PRs default to draft (`gh pr create --draft`); preserve existing PR draft/ready state unless asked.
 - After pushing to a branch with an open PR, reread the title and body against the new diff and edit whatever no longer matches (`gh pr edit`).
-
-## Common Mistakes
-
-| Mistake | Fix |
-|---------|-----|
-| Starting new work on the default branch | Create a clean feature worktree |
-| Moving already-started work just to satisfy this workflow | Keep the current checkout; branch in place when safe |
-| Copying modified or untracked files into new worktrees by default | Create clean worktrees; transfer in-progress changes only on request |
-| Treating `push` / `commit` as one git command | Follow Intent Expansion |
-| Using a prose PR title | Use Conventional Commit subject format: `type(scope): subject` |
-| Using raw `git worktree` | Use `git wt <branch> origin/<default-branch> --nocd`; check `git wt -h` first |
-| Skipping `cxg lint` | Pipe through `cxg lint` before committing |
-| Pushing follow-up commits and leaving the PR text stale | Update title and body to describe the PR as it now is |
-| Reusing a fixed path for the PR body | `mktemp` a fresh file under `$TMPDIR` for every run |
