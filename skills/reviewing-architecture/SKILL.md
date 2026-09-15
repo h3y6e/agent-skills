@@ -4,7 +4,7 @@ description: Surfaces architectural friction as evidence-backed refactoring cand
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.11
+  version: 2026.9.12
 ---
 
 # Reviewing Architecture

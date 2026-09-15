@@ -4,7 +4,7 @@ description: Interviews the user to turn vague pain or a solution idea into a pr
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.11
+  version: 2026.9.12
 ---
 
 # Framing Problems
