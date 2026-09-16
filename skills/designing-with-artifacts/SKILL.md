@@ -4,7 +4,7 @@ description: Stress-tests a plan or design against the repository's code, issues
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.11
+  version: 2026.9.12
 ---
 
 # Designing With Artifacts
