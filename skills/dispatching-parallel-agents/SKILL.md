@@ -4,7 +4,7 @@ description: Dispatches independent work across parallel subagents with explicit
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.12
+  version: 2026.9.13
 ---
 
 # Dispatching Parallel Agents
