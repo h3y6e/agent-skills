@@ -1,0 +1,4 @@
+interface:
+  display_name: "English Writing"
+  short_description: "Polish English without changing meaning or voice"
+  default_prompt: "Use $english-writing to polish this English prose while preserving its meaning, voice, citations, links, and structure."

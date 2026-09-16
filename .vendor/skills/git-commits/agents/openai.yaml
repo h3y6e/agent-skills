@@ -1,0 +1,4 @@
+interface:
+  display_name: "Conventional Commits"
+  short_description: "Draft Conventional Commit messages from the staged diff"
+  default_prompt: "Use $git-commits to draft a commit message from the staged diff."
