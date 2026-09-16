@@ -5,6 +5,7 @@ license: MIT
 metadata:
   author: h3y6e
   version: 2026.9.12
+  refs: https://github.com/obra/superpowers/tree/v6.2.0/skills/receiving-code-review
 ---
 
 # Receiving Code Review
