@@ -9,6 +9,8 @@ metadata:
 
 # Building a Wiki
 
+This is the [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) pattern, instantiated for one repository's domain.
+
 Three layers: immutable **sources** the human picks, **pages** the agent writes and maintains, and a **schema** section in the repository's root `AGENTS.md` holding only what is specific to this domain. The human sources, explores, and asks; the agent does the bookkeeping — cross-references, freshness, contradictions.
 
 The format is fixed; the amount of structure is not. Start with the least that answers the questions asked so far; add a page, a type, or a schema line only when its absence caused a wrong answer or a repeated lookup.
