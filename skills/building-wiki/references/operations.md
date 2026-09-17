@@ -4,7 +4,7 @@ Read the repository's `AGENTS.md` first. Pages follow [`page-format.md`](page-fo
 
 ## Ingest
 
-One source at a time. Grep the index for related pages and read the source — from `raw/` where it is mirrored, otherwise fetched.
+One source at a time. Grep the index for related pages and read the source from `raw/`, or from its URI where no mirror is possible.
 
 State the takeaways to the user before writing. A question the sources leave open stays open on the page; an answer the agent supplied reads exactly like a sourced one. Then write the pages the takeaways need — an entity or concept worth returning to, not one per source heading. A concept referred to from one place stays a paragraph on the page that uses it.
 
@@ -28,4 +28,4 @@ Close by reporting what the pages already say about themselves: concepts that ha
 
 ## Update
 
-For a changed source: the human refreshes its mirror in `raw/`; otherwise re-read it. Show the user what changed, record it in `log.md`, then ingest.
+For a changed source: refresh its mirror in `raw/`. Show the user what changed, record it in `log.md`, then ingest.
