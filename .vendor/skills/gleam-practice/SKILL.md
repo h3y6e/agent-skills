@@ -1,10 +1,11 @@
 ---
-description: Best practices for building and reviewing Gleam projects on the Erlang target, especially Wisp plus Mist web services, OTP processes, justfile workflows, testing, formatting, CI, and performance measurement.
+description: Use when writing or reviewing Gleam code on the Erlang target — especially Wisp + Mist HTTP services, OTP-based processes (gen_server / supervisor analogues), justfile workflows, gleeunit testing, `gleam format`, GitHub Actions CI, and performance measurement. Trigger on `gleam.toml`, `.gleam` files, or Erlang/BEAM-related symptoms even if the user does not say "Gleam" by name.
 metadata:
     github-path: gleam-practice
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: d1bf69ea30c6275a90e72b0d1f92482ee35319d2
+    github-tree-sha: 31af21ecc602e15cf34f646aae7524277718cdfd
 name: gleam-practice
 ---
 # Gleam Practice

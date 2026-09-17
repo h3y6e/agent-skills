@@ -1,10 +1,11 @@
 ---
-description: 'On task completion, pair "what failed first" with "what finally worked" and codify the should-have-known-it insight as an ast-grep rule, skill, or CLAUDE.md rule. Use after trial-and-error solutions to spare future-you (or another agent) the same trap. Trigger phrases: "codify today''s lessons," "make it a skill," "drop it into lint."'
+description: 'Pair "what failed first" with "what finally worked" and codify the should-have-known-it insight as an ast-grep rule, a skill, or a CLAUDE.md rule. Meta-skill: invoke ONLY when the user explicitly says "codify today''s lessons," "make it a skill," "drop it into lint," or asks to extract a reusable rule from a trial-and-error fix. Do NOT auto-invoke at every task completion. Spares future-you (or another agent) the same trap.'
 metadata:
     github-path: retrospective-codify
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: f01cc7c309d6b99c39407176c72582da8f21ff89
+    github-tree-sha: fe25ad3efcdd185eb17babac7e6911f02f63619e
 name: retrospective-codify
 ---
 # Retrospective Codify

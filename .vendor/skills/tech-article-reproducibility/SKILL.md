@@ -2,9 +2,10 @@
 description: Evaluate the reproducibility of technical articles. Dispatch a subagent to simulate a first-time reader reproducing the work locally and list missing information. Use as the final check on a draft before publication.
 metadata:
     github-path: tech-article-reproducibility
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 2f38731088a4fdab59fa77eb57ece8164f569779
+    github-tree-sha: 0cb512e16384bc64c45ce554c96345258af07db9
 name: tech-article-reproducibility
 ---
 # Tech Article Reproducibility

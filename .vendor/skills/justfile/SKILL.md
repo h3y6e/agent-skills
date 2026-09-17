@@ -1,10 +1,11 @@
 ---
-description: Reference for just command runner. Provides justfile syntax and GitHub Actions examples.
+description: Reference for the `just` command runner — justfile syntax and GitHub Actions integration. Use when an existing repo already has a `justfile` and tasks must be added, modified, or audited. For new mizchi-owned repos, prefer the `pkfire` skill (`Taskfile.pkl` + `pkf`) instead; justfile is kept only for compatibility with existing repos.
 metadata:
     github-path: justfile
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: c61143c71bb8a0e78335f4d32bf5e3ff02b93e72
+    github-tree-sha: 3cc2b80c8a02824857e41ccd5c830d29f7f46d9c
 name: justfile
 ---
 # justfile Skill
@@ -111,15 +112,15 @@ just --fmt        # Format justfile
 
 ## GitHub Actions
 
-Use `extractions/setup-just@v3`. See `assets/gh_action_example.yaml` for full example.
+Use `extractions/setup-just@v4`. See `assets/gh_action_example.yaml` for full example.
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v7
 
-  - uses: extractions/setup-just@v3
+  - uses: extractions/setup-just@v4
     # with:
-    #   just-version: '1.40.0'  # Optional version
+    #   just-version: '1.58.0'  # Optional pin (latest as of 2026-09)
 
   - run: just build
   - run: just test

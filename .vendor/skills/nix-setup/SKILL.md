@@ -2,9 +2,10 @@
 description: Set up reproducible dev environments via devbox (Nix-backed) or pure Nix flakes. Templates for MoonBit, Rust, TypeScript+pnpm, Python+uv, Haskell, OCaml, OxCaml preloaded with just / ast-grep / apm. Covers devbox.json, buildNpmPackage, direnv, GitHub Actions, and bootstrapping in sandboxed envs (Claude Code web). Use when starting, adding, or troubleshooting a Nix or devbox setup.
 metadata:
     github-path: nix-setup
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 46301d9c4c86ee349f96627f84f7ce5e4973a945
+    github-tree-sha: ef0918f72d948dab8131c32890fdee09e3011bd0
 name: nix-setup
 ---
 # Nix Setup Skill
@@ -140,8 +141,8 @@ Use `jetify-com/devbox-install-action`. A complete workflow lives in `assets/dev
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-  - uses: jetify-com/devbox-install-action@v0.12.0
+  - uses: actions/checkout@v7
+  - uses: jetify-com/devbox-install-action@v0.15.0
     # with:
     #   enable-cache: true   # caches the Nix store
   - run: devbox run test
@@ -446,7 +447,7 @@ If `pnpm-lock.yaml` conflicts during rebase, **don't fix it by hand** — regene
 Rewrite existing ci.yml Node-related steps with the Nix-ification diff:
 
 ```diff
--      - uses: actions/setup-node@v4
+-      - uses: actions/setup-node@v7
 -        with:
 -          node-version: 24
 -          cache: pnpm
@@ -507,7 +508,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
@@ -542,6 +543,11 @@ The Determinate installer is recommended. Doing it manually on Apple Silicon req
 ### autoPatchelfHook failure (`libstdc++.so.6 not found`)
 
 Add `stdenv.cc.cc.lib` to `buildInputs`. The same fix used in `apm.nix`.
+
+For PyInstaller-bundled binaries (like apm), the embedded CPython `_ssl` /
+`_hashlib` modules also link `libssl.so.3` / `libcrypto.so.3` — add
+`pkgs.openssl` to `buildInputs` too. macOS skips `autoPatchelfHook`, so this
+gap only surfaces on Linux (e.g. in CI).
 
 ### Updating flake inputs
 

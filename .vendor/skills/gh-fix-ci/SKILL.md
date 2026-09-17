@@ -1,10 +1,11 @@
 ---
-description: 'Debug or fix failing GitHub PR checks running in GitHub Actions. Inspects checks/logs via `gh`, drafts a fix plan, and implements only after explicit approval. Out of scope: external CI (e.g. Buildkite) — report only the details URL.'
+description: 'Use when GitHub Actions PR checks are failing on a pull request and need to be diagnosed or fixed. Inspects checks / logs via `gh`, drafts a fix plan, and implements only after explicit approval. Trigger on red checks, failing workflow runs, `pr is failing CI` reports — even if the user does not name a specific check. Out of scope: external CI (e.g. Buildkite) — report only the details URL.'
 metadata:
     github-path: gh-fix-ci
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 96c94a9a38cdc1c5892078b148394e88d8994ac1
+    github-tree-sha: 8e7e4bb9735aa0dd59c5672fab92cb6b3adce28f
 name: gh-fix-ci
 ---
 # Gh Pr Checks Plan Fix

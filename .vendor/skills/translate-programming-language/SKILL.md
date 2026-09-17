@@ -2,9 +2,10 @@
 description: Plan and execute language-to-language server or application migrations with behavior parity. Use when porting modules, services, APIs, or runtimes between programming languages; generating source-runtime oracles and fixtures; generating migrated parity tests; detecting runtime, standard-library, serialization, numeric, encoding, time, regex, or protocol differences; building temporary compatibility layers; accumulating migration knowledge; benchmarking; shadow testing; canarying; or planning cutover and rollback.
 metadata:
     github-path: translate-programming-language
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: eac1a2950d466ca1ce0e8c1afb934024761639a5
+    github-tree-sha: f8e1107183fa6d8e1ed65102665f85032322036a
 name: translate-programming-language
 ---
 # Translate Programming Language

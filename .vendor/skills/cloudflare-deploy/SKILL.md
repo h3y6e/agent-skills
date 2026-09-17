@@ -2,9 +2,10 @@
 description: Deploy applications and infrastructure to Cloudflare using Workers, Pages, and related platform services. Use when the user asks to deploy, host, publish, or set up a project on Cloudflare.
 metadata:
     github-path: cloudflare-deploy
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 2c6782c5f0f800293c899a731f334ab36254994b
+    github-tree-sha: 413ec50d96272a01f90788faeca37000438cc930
 name: cloudflare-deploy
 ---
 # Cloudflare Deploy
@@ -49,7 +50,7 @@ For a Hello-world Worker with one KV binding and one secret, you don't need to r
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "my-worker",
   "main": "src/index.ts",
-  "compatibility_date": "2026-04-01",
+  "compatibility_date": "2026-09-01",   // use today's date for a new Worker
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true },
   "kv_namespaces": [

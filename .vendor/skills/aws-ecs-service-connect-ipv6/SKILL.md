@@ -1,10 +1,11 @@
 ---
-description: ECS Service Connect の DNS alias が IPv6 アドレスを返して、IPv4-only の Fargate task から `network is unreachable` で接続できない問題の回避策。OTel Collector → Tempo の OTLP gRPC で頻出。
+description: Use when ECS Service Connect の DNS alias が IPv6 アドレスを返し、 IPv4-only の Fargate task から `network is unreachable` / `EAI_AGAIN` 等で接続できない問題に遭遇したとき。 OTel Collector → Tempo の OTLP gRPC、 Fargate → Service Connect の HTTP/gRPC 通信が突然失敗する症状が典型。 ECS / Fargate / Service Connect / OTLP / IPv6 dual-stack 関連の接続障害から起動して良い (user が原因を IPv6 と特定していなくても OK)。
 metadata:
     github-path: aws-ecs-service-connect-ipv6
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: b8f87ecebb0efdd4723aa63b94059320c6089293
+    github-tree-sha: 9149277493c7a636af072d3794590b7bc541d915
 name: aws-ecs-service-connect-ipv6
 ---
 # ECS Service Connect の IPv6 alias で詰まったとき

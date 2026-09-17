@@ -2,9 +2,10 @@
 description: 'Use when iterating on a skill''s prompt with the waxa CLI (https://github.com/mizchi/skills/tree/main/tools/waxa) — authoring scenarios, choosing graders, interpreting unclear-points, advancing a ledger, and judging convergence. Encodes the four-stage iteration pattern observed in real iter loops (structural fix → grader breadth → surface-form coverage → residual unclear) and the scenario-design pitfalls (blank-slate executor''s network limit, prompt expectation explicitness, regex coverage of Japanese/English surface forms). Meta-skill: do NOT auto-invoke for routine skill edits; fires only when the user explicitly runs waxa or asks for a skill-quality eval.'
 metadata:
     github-path: waxa-eval
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 1e01a2c88f28c3f15d2d38d7fab14c785e8e9308
+    github-tree-sha: 5585692b1067d545f16baaaa8426fc0c8b86c78b
 name: waxa-eval
 ---
 # waxa-eval
@@ -178,22 +179,60 @@ convergence:
     Residual <name> is <reason it does not block adoption>.
 ```
 
+## Test layout convention
+
+From waxa 0.2.0, eval files live **inside the skill directory**, mirroring [agentskills.io's evaluating-skills layout](https://agentskills.io/skill-creation/evaluating-skills). This lets a single skill repo carry its own eval suite and ship as a self-contained unit:
+
+```
+<skill>/                                # the target skill (distribution unit)
+├── SKILL.md
+└── evals/
+    ├── eval.yaml                       # config + top-level graders + task glob
+    ├── ledger.yaml                     # iter history (created on first `iterate` run)
+    └── tasks/
+        ├── scenario-typical.yaml       # median — passes at convergence
+        └── scenario-edge.yaml          # known failure mode — exercises the rule
+```
+
+Workspace (per-iteration runs) lands outside the skill at `<workspace-root>/results/<skill>/iteration-N/<task-id>/<with_skill|without_skill>/{output-trial-*.txt, timing.json, grading.json}` plus `benchmark.json`. `<workspace-root>` is the `.waxa.yaml` / `.waza.yaml` directory when present, otherwise the skill directory's parent. Add `results/` to `.gitignore`.
+
+`waxa init` scaffolds eval.yaml and the two task templates with TODO markers; ledger.yaml is generated when iteration starts.
+
+The pre-0.2.0 monorepo layout (`<repo-root>/evals/<skill>/eval.yaml` + `<repo-root>/<skill>/SKILL.md`) is still auto-detected, so old evals keep working; new ones should use skill-local.
+
 ## Running the loop
 
 Bare minimum:
 
 ```bash
-# Single eval pass
-deno run -A tools/waxa/src/cli.ts evals/<skill>/eval.yaml
+# Scaffold the eval skeleton (run inside the skill's own dir).
+npx @mizchi/waxa init [--skill <name>] [--force]
 
-# Single task
-deno run -A tools/waxa/src/cli.ts evals/<skill>/eval.yaml --task <task-id>
+# Single eval pass.
+npx @mizchi/waxa <skill>/evals/eval.yaml
 
-# Iteration loop (auto re-runs while pass rate improves)
-deno run -A tools/waxa/src/cli.ts iterate evals/<skill>/eval.yaml --max 4
+# Single task.
+npx @mizchi/waxa <skill>/evals/eval.yaml --task <task-id>
+
+# Single eval with baseline (with_skill vs without_skill, reports Delta).
+npx @mizchi/waxa <skill>/evals/eval.yaml --baseline
+
+# Iteration loop (auto re-runs while pass rate improves; writes ledger.yaml).
+npx @mizchi/waxa iterate <skill>/evals/eval.yaml --max 4
+
+# Audit a skill directory (apm audit hidden-Unicode scan + waxa native
+# quality checks: frontmatter, body length, When-NOT-to-use, suspicious
+# scripts, LICENSE).
+npx @mizchi/waxa audit <skill>/ [--no-apm] [--json]
 ```
 
-Per-iteration cost (claude-sonnet-4-6, 3 scenarios × 2 trials): ~3-5 minutes wall time. Run iterations sequentially; do not launch parallel `waxa` processes against the same eval (they fight for the API and the lockfile). Single-task runs (`--task <id>`) are useful for confirming a small change without re-running the whole suite.
+The npm package bundles `references/empirical-prompt-tuning.md` so the methodology is on disk wherever waxa is installed. After `npx @mizchi/waxa` first runs, the file lives at `<node_modules>/@mizchi/waxa/references/empirical-prompt-tuning.md`.
+
+### `--baseline` — is the skill earning its keep?
+
+`--baseline` runs every task twice per trial (with_skill and without_skill), then prints a Delta line and writes both configs into `iteration-N/<task-id>/`. This is the agentskills.io-style "does the skill body actually improve over a blank-slate model?" check. Skills that add tokens / latency without moving pass rate are visible here in a way they aren't in single-config runs.
+
+Per-iteration cost (claude-opus-4-8, 3 scenarios × 2 trials): ~3-5 minutes wall time. Run iterations sequentially; do not launch parallel `waxa` processes against the same eval (they fight for the API and the lockfile). Single-task runs (`--task <id>`) are useful for confirming a small change without re-running the whole suite.
 
 `trials_per_task: 2` is the floor — a single trial cannot distinguish "the skill is unstable" from "the LLM had a bad sample." Bump to 3 only if you suspect non-determinism on a critical axis.
 

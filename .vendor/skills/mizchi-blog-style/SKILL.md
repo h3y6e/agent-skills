@@ -2,9 +2,10 @@
 description: Japanese-language style guide and AI-tone detection rubric for mizchi-authored blog posts (zenn / dev.to). Includes a subagent dispatch procedure that scores a draft on two axes — looks-like-mizchi vs sounds-AI-generated. Use after drafting an article during the style-matching revision loop.
 metadata:
     github-path: mizchi-blog-style
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: caad7efa1913cbe02a102cdd34de6a4f776e9392
+    github-tree-sha: dca2262df86ee60984bf203d14077336c3b4038c
 name: mizchi-blog-style
 ---
 # mizchi Blog Style

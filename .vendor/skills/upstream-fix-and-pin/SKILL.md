@@ -2,9 +2,10 @@
 description: 自分の依存ライブラリにバグや欠けている機能があり、上流に PR を出して取り込まれるまで下流プロジェクトを動かしたいときの運用。git ref pin（branch HEAD SHA → merge SHA）、`link:` への退避判断、SHA 取り扱い、pnpm v10 の build script gating まで含む。
 metadata:
     github-path: upstream-fix-and-pin
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: b73e548602d646def7509e5832498c890031d317
+    github-tree-sha: 6069b05eff99914ebccc1b0d1a799ded36a3845d
 name: upstream-fix-and-pin
 ---
 # Upstream Fix and Pin

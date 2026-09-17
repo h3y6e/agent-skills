@@ -2,9 +2,10 @@
 description: Use when running Playwright via terminal CLI — `npx playwright test` (test runner), `codegen` (interactive recording), `screenshot` / `pdf` (one-off captures), and CI sharding. NOT for agent-driven real-time browser control (use `claude-in-chrome` MCP tools for that).
 metadata:
     github-path: playwright-cli
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 1b9caf2b78a460f58b53a3124a805d00182d9d39
+    github-tree-sha: c11815850b89b06dc17e2530e419d81160e0c30e
 name: playwright-cli
 ---
 # Playwright CLI

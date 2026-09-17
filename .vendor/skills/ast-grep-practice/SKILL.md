@@ -2,9 +2,10 @@
 description: Operate ast-grep as a project lint tool. Covers sgconfig.yml, fix/rewrite rules, constraints, transform, testing, and CI. Use when writing rules ast-grep can express but general-purpose linters cannot.
 metadata:
     github-path: ast-grep-practice
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 749e7ba255487603bb8eba0fa234cdfea3db2b05
+    github-tree-sha: 390a01a6ee32fa2a79c68e7e92ec2cc117a09076
 name: ast-grep-practice
 ---
 # ast-grep Practice
@@ -443,8 +444,8 @@ check: format-check typecheck ast-grep-lint test
 Align tools with the dev environment (use pnpm in CI if the project uses pnpm, npm if it uses npm):
 
 ```yaml
-- uses: actions/setup-node@v4
-  with: { node-version: 24, cache: npm }   # for pnpm projects: pnpm/action-setup@v4 + cache: pnpm
+- uses: actions/setup-node@v7
+  with: { node-version: 24, cache: npm }   # for pnpm projects: pnpm/action-setup@v6 + cache: pnpm
 
 - run: npm ci   # for pnpm: pnpm install --frozen-lockfile
 

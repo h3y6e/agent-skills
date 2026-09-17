@@ -2,9 +2,10 @@
 description: Best practices and reference for Playwright Test (E2E). Covers how to write tests, avoiding fixed waits, network triggers, DnD, shard/retry setup on GitHub Actions, and more. Use when writing, reviewing, or configuring CI for Playwright tests.
 metadata:
     github-path: playwright-test
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: f26aa9b6d649f9d4722afe4523e88ec591d0f0e6
+    github-tree-sha: 00a7c768282c5038abd735750f18423852484c64
 name: playwright-test
 ---
 # Playwright Test
@@ -77,14 +78,14 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 24 }
       - run: npm ci
       - run: npx playwright install chromium --with-deps
       - run: sudo apt-get install -y fonts-noto-cjk fonts-noto-color-emoji
       - run: npx playwright test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
@@ -108,13 +109,13 @@ jobs:
       matrix:
         shard: [1/4, 2/4, 3/4, 4/4]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 24 }
       - run: npm ci
       - run: npx playwright install chromium --with-deps
       - run: npx playwright test --shard=${{ matrix.shard }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: blob-report-${{ strategy.job-index }}
@@ -126,17 +127,17 @@ jobs:
     needs: e2e
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 24 }
       - run: npm ci
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: all-blob-reports
           pattern: blob-report-*
           merge-multiple: true
       - run: npx playwright merge-reports --reporter html ./all-blob-reports
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: playwright-report/
@@ -165,14 +166,14 @@ jobs:
         browser: [chromium, firefox, webkit]
         shard: [1/4, 2/4, 3/4, 4/4]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 24 }
       - run: npm ci
       - run: npx playwright install ${{ matrix.browser }} --with-deps
       - run: sudo apt-get install -y fonts-noto-cjk fonts-noto-color-emoji
       - run: npx playwright test --project=${{ matrix.browser }} --shard=${{ matrix.shard }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: blob-${{ matrix.browser }}-${{ strategy.job-index }}
@@ -188,17 +189,17 @@ The merge job consolidates all blobs into a single HTML. Since the artifact name
     needs: e2e
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 24 }
       - run: npm ci
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: all-blob-reports
           pattern: blob-*             # Collect across browsers
           merge-multiple: true
       - run: npx playwright merge-reports --reporter html ./all-blob-reports
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: playwright-report/

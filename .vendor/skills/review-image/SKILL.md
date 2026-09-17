@@ -2,9 +2,10 @@
 description: Review screenshots or other images with OpenRouter vision models via bundled Deno scripts. Use for quick VRT sanity checks, invalid-image screening, or CI gates. `scripts/review-image.ts` returns freeform feedback; `scripts/review-image-ci.ts` returns strict `pass|fail` JSON and exits non-zero on fail.
 metadata:
     github-path: review-image
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 626ccfbf980c95ad0d767e09c63bb67a5a73fde1
+    github-tree-sha: 227c7e3497cf61a75e859675b3b92ecdcc269143
 name: review-image
 ---
 # review-image

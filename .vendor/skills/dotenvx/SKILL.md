@@ -1,10 +1,11 @@
 ---
-description: Reference for the dotenvx environment variable management tool. Covers encryption, multi-environment support, and GitHub Actions usage examples.
+description: Use when working with the `dotenvx` env-var management tool — encrypting .env files, juggling multiple environments (.env.production / .env.staging / .env.ci), committing encrypted secrets to git with `.env.vault` / `.env.keys` / `.env.encrypted`, or wiring dotenvx into GitHub Actions. Trigger on `.env.vault` / `.env.keys` / `dotenvx` commands or symptoms (env-var leak risk, env per-stage management, encrypted secrets workflow) even if the user does not say "dotenvx" by name.
 metadata:
     github-path: dotenvx
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 08028445bd5a44a1c6aec41ce43f6a536389cb7e
+    github-tree-sha: 50f9676a6df5b5dacec4c089332d110edf862292
 name: dotenvx
 ---
 # dotenvx Skill
@@ -138,7 +139,7 @@ Install via curl. See `assets/gh_action_example.yaml` for a complete example.
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v7
 
   - name: Install dotenvx
     run: curl -sfS https://dotenvx.sh | sh

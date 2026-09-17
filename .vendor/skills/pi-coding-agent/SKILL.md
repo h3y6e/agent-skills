@@ -1,10 +1,11 @@
 ---
-description: Embed `@mariozechner/pi-coding-agent` as a coding-agent runtime in Node scripts, write pi extensions (plugins) with `pi.registerTool` / `pi.registerCommand` / `pi.on`, package and `pi install` from npm/git, and pick between the SDK and `pi --mode rpc` for non-Node hosts. Covers session setup, the cwd × tools factory trap, TypeBox tool schemas, and the `peerDependencies` rule.
+description: Use when embedding `@mariozechner/pi-coding-agent` as a coding-agent runtime in Node scripts, writing pi extensions (plugins) with `pi.registerTool` / `pi.registerCommand` / `pi.on`, packaging and `pi install` from npm/git, or picking between the SDK and `pi --mode rpc` for non-Node hosts. Covers session setup, the cwd × tools factory trap, TypeBox tool schemas, and the `peerDependencies` rule. Trigger on `pi-coding-agent`, `pi.registerTool`, `pi install`, or "embed a coding agent into Node" descriptions even when pi is not named.
 metadata:
     github-path: pi-coding-agent
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 2c0320616266198bab72045e1da34ea30f04ee78
+    github-tree-sha: 571707ea3fa800a8650bbd2e5f9e78a5b60b48f9
 name: pi-coding-agent
 ---
 # pi-coding-agent

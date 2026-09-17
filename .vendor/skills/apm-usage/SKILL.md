@@ -2,9 +2,10 @@
 description: Reference for APM (Agent Package Manager) — apm.yml syntax, install / uninstall / update commands, target detection, lockfile workflow. Read when you need exact field names, but do NOT auto-invoke on every apm-related task; user prompts about projects with installed skills can be handled with general APM knowledge. Invoke explicitly when the user mentions APM by name, asks to author or audit an apm.yml, or runs into an unfamiliar APM command / error.
 metadata:
     github-path: apm-usage
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: a8121b14a43e91b00c0abaa1422e611be74c1e69
+    github-tree-sha: 2e6b2a69ec83c77df7dd3226a969505301b2611d
 name: apm-usage
 ---
 # APM (Agent Package Manager)

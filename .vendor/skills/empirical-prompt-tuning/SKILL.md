@@ -1,10 +1,11 @@
 ---
-description: Methodology for iteratively improving agent-facing instructions (skills / slash commands / CLAUDE.md / code-gen prompts) by having a bias-free executor run them and evaluating two-sidedly (executor self-report + instruction-side metrics) until improvements plateau. Use after creating or revising a prompt or skill.
+description: Methodology for iteratively improving agent-facing instructions (skills / slash commands / CLAUDE.md / code-gen prompts) via bias-free executor + two-sided evaluation (self-report + instruction-side metrics). Meta-skill, invoke ONLY when the user explicitly asks for an "empirical" eval of a prompt or skill, or for the Iter-0 description / body consistency check. Do NOT auto-invoke after every skill edit; this loop is operator-triggered by name.
 metadata:
     github-path: empirical-prompt-tuning
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 566d7bb28074bc32e51bdcd99c97335ea838f0a4
+    github-tree-sha: f77c32a428257ee43bbcdd7de08b14f57fe38bb4
 name: empirical-prompt-tuning
 ---
 # Empirical Prompt Tuning

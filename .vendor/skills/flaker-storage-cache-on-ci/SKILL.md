@@ -2,14 +2,15 @@
 description: Persist flaker's DuckDB storage across GitHub Actions runs and feed it from multiple sources (vitest reports, custom adapter reports, etc.). Use when wiring `@mizchi/flaker` into a new repo's CI, adding a new ingest source to an existing flaker setup, or debugging why `flaker apply` / `flaker run --gate ...` "lost its history" between runs. Encodes the cache key shape, fetch-depth requirements, `--changed` derivation, and the import-step placement that internal flaker users converged on.
 metadata:
     github-path: flaker-storage-cache-on-ci
-    github-ref: refs/tags/waxa-v0.1.1
+    github-pinned: main
+    github-ref: refs/heads/main
     github-repo: https://github.com/mizchi/skills
-    github-tree-sha: 1ae026f3b2e449ff0f01a59dd1ea8ba5286b76f6
+    github-tree-sha: 5344cf852f178bc5a71ec35605fde87664a6cd68
 name: flaker-storage-cache-on-ci
 ---
 # flaker storage cache on GitHub Actions
 
-`flaker` keeps its data in a DuckDB file at the path declared by `flaker.toml` `[storage] path` (default `.flaker/data`). For flaky detection / KPI / quarantine to work, that file must persist between CI runs. GitHub Actions has no first-class runtime storage, so the convention is **`actions/cache@v4` with a sliding key**.
+`flaker` keeps its data in a DuckDB file at the path declared by `flaker.toml` `[storage] path` (default `.flaker/data`). For flaky detection / KPI / quarantine to work, that file must persist between CI runs. GitHub Actions has no first-class runtime storage, so the convention is **`actions/cache@v6` with a sliding key**.
 
 ## When this skill applies
 
@@ -23,7 +24,7 @@ name: flaker-storage-cache-on-ci
 ```yaml
 - name: Cache flaker data
   if: always()
-  uses: actions/cache@v4
+  uses: actions/cache@v6
   with:
     path: .flaker/data
     key: flaker-data-${{ github.run_id }}
@@ -41,14 +42,14 @@ The `path` MUST equal `flaker.toml`'s `[storage] path`. Default is `.flaker/data
 
 ## Triggering writes
 
-`actions/cache@v4` saves automatically in its post-step. Callers don't `cache save` explicitly. The save key is the run-id, so duplicate writes never collide.
+`actions/cache@v6` saves automatically in its post-step. Callers don't `cache save` explicitly. The save key is the run-id, so duplicate writes never collide.
 
 ## fetch-depth for `--changed` derivation
 
 Any flaker invocation that uses the **hybrid / affected** strategy (`flaker run --gate merge` in CI profile, by default) needs `--changed <files,...>`. Without it: `Error: hybrid mode requires resolver and changedFiles`.
 
 ```yaml
-- uses: actions/checkout@v4
+- uses: actions/checkout@v7
   with:
     fetch-depth: 0  # need history for `git diff` against the PR base
 ```
