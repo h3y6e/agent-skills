@@ -2,7 +2,7 @@
 name: writing-japanese
 description: Norms for Japanese technical prose — paragraph logic, argument rigor, reader load, restrained rhetoric, and non-LLM phrasing. Use when writing, editing, or reviewing a Japanese book chapter, article, draft, or explanation.
 metadata:
-  version: 2026.9.15
+  version: 2026.9.16
   refs: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d, https://gist.github.com/k16shikano/eb2929f13ed19c97188393d297be8432
 ---
 
