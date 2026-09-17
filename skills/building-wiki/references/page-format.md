@@ -52,7 +52,7 @@ sources:
 ---
 ```
 
-Attach a source to a claim with a footnote labelled by `sources[].id`: `This table is sharded daily.[^policy-doc]`.
+Attach a source to a claim with a footnote labelled by `sources[].id`: `This table is sharded daily.[^policy-doc]`. Footnote what a source states, never what it implies — an inference belongs in the prose as an inference.
 
 ## Rewrite safety
 

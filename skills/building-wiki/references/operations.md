@@ -6,7 +6,7 @@ Read the repository's `AGENTS.md` first. Pages follow [`page-format.md`](page-fo
 
 One source at a time. Grep the index for related pages and read the source — from `raw/` where it is mirrored, otherwise fetched.
 
-State the takeaways to the user before writing. Then write the pages the takeaways need — an entity or concept worth returning to, not one per source heading. A concept referred to from one place stays a paragraph on the page that uses it.
+State the takeaways to the user before writing. A question the sources leave open stays open on the page; an answer the agent supplied reads exactly like a sourced one. Then write the pages the takeaways need — an entity or concept worth returning to, not one per source heading. A concept referred to from one place stays a paragraph on the page that uses it.
 
 Update the index and every existing page the source confirms or contradicts in the same change; deferring the rest plants a contradiction. Add a CONTEXT entry only when a second name for a term has actually appeared, or the source uses a term more narrowly than its general meaning.
 
