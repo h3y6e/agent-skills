@@ -24,6 +24,8 @@ Run [`scripts/lint.mjs`](../scripts/lint.mjs) on the bundle directory. It infers
 
 Then walk the pages for what it cannot decide: contradictions between pages, claims overturned by a newer source, orphan pages, drift from the source. Report every finding or "none found"; the source is the truth when fixing. A finding is a defect in a page, not a demand for a new one.
 
+Close by reporting what the pages already say about themselves: concepts that have met the bar in [`page-format.md`](page-format.md) for a file of their own, and the questions left open, gathered into one list. Neither is a finding, and neither is the agent's to settle.
+
 ## Update
 
 For a changed source: the human refreshes its mirror in `raw/`; otherwise re-read it. Show the user what changed, record it in `log.md`, then ingest.
