@@ -1,10 +1,9 @@
-This skill is derived from kamae-ts v1.1.0
-(https://github.com/iwasa-kosui/kamae-ts), adapted with the library stack
-fixed to better-result and valibot.
+This skill is derived from the functional-domain-modeling skill in iwasa-kosui/kamae-ts,
+adapted with the library stack fixed to better-result and valibot.
 
 MIT License
 
-Copyright (c) 2025 Kosui Iwasa (kamae-ts)
+Copyright (c) 2025 Kosui Iwasa
 Copyright (c) 2026 heyhoe
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
