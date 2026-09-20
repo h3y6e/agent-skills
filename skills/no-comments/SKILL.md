@@ -5,7 +5,7 @@ disable-model-invocation: true
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.16
+  version: 2026.9.17
   refs: https://github.com/cursor/plugins/blob/032be146865d973682535de75f2287da438550bf/pstack/skills/no-comments/SKILL.md
 ---
 
