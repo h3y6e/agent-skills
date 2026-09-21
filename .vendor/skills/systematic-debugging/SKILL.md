@@ -2,9 +2,9 @@
 description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
 metadata:
     github-path: skills/systematic-debugging
-    github-ref: refs/tags/v6.2.0
+    github-ref: refs/tags/v6.4.1
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: ab83fc82f82582e047d96fc516bac9bc03095ee0
+    github-tree-sha: 9a48dfda84bf339cba4b03fd803ba0dca2e158e3
 name: systematic-debugging
 ---
 # Systematic Debugging

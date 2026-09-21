@@ -1,10 +1,10 @@
 ---
-description: Subjects every non-trivial decision to a fresh-context adversarial review before it stands. Use when correctness matters more than speed, when working in unfamiliar code, when stakes are high (production, security-sensitive logic, irreversible operations), or any time a confident output would be cheaper to verify now than to debug later.
+description: Subjects every non-trivial decision to a fresh-context adversarial review before it stands. Use when you want every assumption cross-examined before proceeding, when stress-testing a plan for hidden failure modes, when correctness matters more than speed, when working in unfamiliar code, when stakes are high (production auth, security-sensitive logic, a high-stakes migration, irreversible operations), or any time a confident output would be cheaper to verify now than to debug later.
 metadata:
     github-path: skills/doubt-driven-development
-    github-ref: refs/tags/0.6.7
+    github-ref: refs/tags/0.6.10
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 385c1dbda7db05fac824808e18239ee9d29cfce7
+    github-tree-sha: 2a25398c4f73f715c1fe5110ca789fdb7de30983
 name: doubt-driven-development
 ---
 # Doubt-Driven Development

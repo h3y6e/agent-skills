@@ -1,10 +1,10 @@
 ---
-description: Creates specs before coding. Use when starting a new project, feature, or significant change and no specification exists yet. Use when requirements are unclear, ambiguous, or only exist as a vague idea. Use when a single requirement spans several independently testable capabilities and needs decomposing into a capability map of modules before specifying.
+description: Creates specs before coding. Use when starting a new project, feature, or significant change and no specification exists yet. Use when drafting a PRD or requirements document with objectives and scope, or when requirements are unclear, ambiguous, or only exist as a vague idea. Use when a single requirement spans several independently testable capabilities and needs decomposing into a capability map of modules before specifying.
 metadata:
     github-path: skills/spec-driven-development
-    github-ref: refs/tags/0.6.7
+    github-ref: refs/tags/0.6.10
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 3f7ea0883fced84b5338688c915ce6e0435e35f3
+    github-tree-sha: 3c412780068d7faf9f504a9fac10b8137fcd5faa
 name: spec-driven-development
 ---
 # Spec-Driven Development
@@ -150,6 +150,12 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 ## Open Questions
 [Anything unresolved that needs human input]
 ```
+
+**External spec tools:** This workflow is format-agnostic. If the project
+already uses OpenSpec or another specification system, keep that system's
+artifact format and storage conventions instead of creating a duplicate
+`SPEC.md`. This skill owns the clarification, content, and approval gates; the
+external tool owns how the approved spec is represented.
 
 **Reframe instructions as success criteria.** When receiving vague requirements, translate them into concrete conditions:
 

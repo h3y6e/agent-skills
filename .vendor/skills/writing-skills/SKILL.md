@@ -2,9 +2,9 @@
 description: Use when creating new skills, editing existing skills, or verifying skills work before deployment
 metadata:
     github-path: skills/writing-skills
-    github-ref: refs/tags/v6.3.0
+    github-ref: refs/tags/v6.4.1
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: 1768f7552ec98fc6b06aeea747a0c4ef6bde0473
+    github-tree-sha: f761162236b19330da62b22ad0da20f5dac7c6ab
 name: writing-skills
 ---
 # Writing Skills
@@ -321,8 +321,8 @@ See `graphviz-conventions.dot` in this directory for graphviz style rules.
 
 **Visualizing for your human partner:** Use `render-graphs.js` in this directory to render a skill's flowcharts to SVG:
 ```bash
-./render-graphs.js ../some-skill           # Each diagram separately
-./render-graphs.js ../some-skill --combine # All diagrams in one SVG
+node ./render-graphs.js ../some-skill           # Each diagram separately
+node ./render-graphs.js ../some-skill --combine # All diagrams in one SVG
 ```
 
 ## Code Examples
@@ -374,6 +374,8 @@ pptx/
   scripts/       # Executable tools
 ```
 When: Reference material too large for inline
+
+Invoke bundled scripts through their interpreter in the prose (`bash scripts/tool.sh`, `node scripts/tool.js`), never by bare path: some harness plugin packagers strip executable bits, and a bare `scripts/tool.sh` fails there with `Permission denied`.
 
 ## The Iron Law (Same as TDD)
 

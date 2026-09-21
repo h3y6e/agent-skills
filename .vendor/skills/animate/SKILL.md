@@ -4,10 +4,18 @@ metadata:
     github-path: skills/animate
     github-ref: refs/heads/main
     github-repo: https://github.com/emilkowalski/skills
-    github-tree-sha: adf23358fac7bdce5febcb85d7fd985407ead56f
+    github-tree-sha: a92e36f28d741aee4ff77d1a001300d7e86e07fe
 name: animate
 ---
 # Building Animations
+
+## Initial Response
+
+When this skill is first invoked without a specific question, respond only with:
+
+> I'm ready to build animations that feel right, my knowledge comes from Emil Kowalski's animation philosophy.
+
+Do not provide any other information until the user asks a question.
 
 A construction skill. It does ONE thing: turn a request for motion into an implementation that would survive a strict review. It does not audit a codebase (that's `improve-animations`), critique a diff (that's `review-animations`), hunt for places that could animate (that's `find-animation-opportunities`), or build for React Native (that's `animate-expo`).
 

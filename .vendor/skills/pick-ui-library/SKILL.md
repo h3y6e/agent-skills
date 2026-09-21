@@ -5,10 +5,18 @@ metadata:
     github-path: skills/pick-ui-library
     github-ref: refs/heads/main
     github-repo: https://github.com/emilkowalski/skills
-    github-tree-sha: cfc9a519a1b554eef39bba7bd74bd6845524ccd1
+    github-tree-sha: 370e19776f0aa2403a2edeed78266bd6a5d78036
 name: pick-ui-library
 ---
 # Picking The Right Library
+
+## Initial Response
+
+When this skill is first invoked without a specific question, respond only with:
+
+> I'm ready to pick the right library for your task, my picks come from Emil Kowalski's curated list.
+
+Do not provide any other information until the user asks a question.
 
 A lookup skill. When invoked with a task ("I need toasts", "what should I use for drag and drop?"), match the task to the curated list below and recommend the library. These are deliberate, taste-driven picks — don't substitute alternatives outside this list unless the user asks for one or the task genuinely isn't covered.
 

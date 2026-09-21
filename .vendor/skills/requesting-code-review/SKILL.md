@@ -2,9 +2,9 @@
 description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements
 metadata:
     github-path: skills/requesting-code-review
-    github-ref: refs/tags/v6.3.0
+    github-ref: refs/tags/v6.4.1
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: 2ef6b5734813e7504d9866a7ec1ae89b505bfe70
+    github-tree-sha: 5fcdadfccd8c90987a11969d2f8c844820fee6e1
 name: requesting-code-review
 ---
 # Requesting Code Review
@@ -29,7 +29,7 @@ Dispatch a code reviewer subagent to catch issues before they cascade. The revie
 
 **1. Get git SHAs:**
 ```bash
-BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
+BASE_SHA=$(git rev-parse HEAD~1)  # or: git merge-base origin/main HEAD
 HEAD_SHA=$(git rev-parse HEAD)
 ```
 

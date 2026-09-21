@@ -1,10 +1,11 @@
 ---
 description: Help the user understand the current topic visually with concise diagrams, code-shape sketches, and focused HTML artifacts.
+disable-model-invocation: true
 metadata:
     github-path: plugins/show-me/skills/show-me
     github-ref: refs/heads/main
     github-repo: https://github.com/humanlayer/skills
-    github-tree-sha: 0bdb821a21e793a4f6f82a7078c052154447e5cc
+    github-tree-sha: 362200ac2fb3c17b765049444e88de73767e6d08
 name: show-me
 ---
 Help the user understand the current topic of conversation visually. Skip the preamble and keep prose brief. Pick the smallest view that makes the key point clear.

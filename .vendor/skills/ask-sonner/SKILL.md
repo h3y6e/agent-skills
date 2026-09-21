@@ -4,10 +4,18 @@ metadata:
     github-path: skills/ask-sonner
     github-ref: refs/heads/main
     github-repo: https://github.com/emilkowalski/skills
-    github-tree-sha: 591cfb58ec1eb38a7ca04f3b6453a75a4fcf9fc8
+    github-tree-sha: aeca3dba0eb0415fa5a310cd6823b824fe60323d
 name: ask-sonner
 ---
 # Working With Sonner
+
+## Initial Response
+
+When this skill is first invoked without a specific question, respond only with:
+
+> I'm ready to help you set up, style, and troubleshoot Sonner, my knowledge comes from its author, Emil Kowalski.
+
+Do not provide any other information until the user asks a question.
 
 A guide skill for [Sonner](https://sonner.emilkowal.ski), the toast library. When a task involves Sonner — wiring it up, rendering toasts, styling them, or fixing them — answer from this file first. Full prop tables for `<Toaster />` and `toast()` live in [API.md](API.md); read it when you need an exact prop name, type, or default.
 

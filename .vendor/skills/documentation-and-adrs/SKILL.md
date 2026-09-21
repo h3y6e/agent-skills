@@ -1,10 +1,10 @@
 ---
-description: Records decisions and documentation. Use when making architectural decisions, changing public APIs, shipping features, or when you need to record context that future engineers and agents will need to understand the codebase.
+description: Records decisions and documentation. Use when you need to document an architecture decision (ADR) or the reasoning behind a design choice, when changing public APIs, shipping features, or when you need to record context that future engineers and agents will need to understand the codebase.
 metadata:
     github-path: skills/documentation-and-adrs
-    github-ref: refs/tags/0.6.5
+    github-ref: refs/tags/0.6.10
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 85f57bdd7dcddaa589c6f36e8ac87423005c3de0
+    github-tree-sha: eeff83d93dd39454d0b9d193ba3ea5c85f681530
 name: documentation-and-adrs
 ---
 # Documentation and ADRs

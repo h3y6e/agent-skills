@@ -4,10 +4,18 @@ metadata:
     github-path: skills/improve-animations
     github-ref: refs/heads/main
     github-repo: https://github.com/emilkowalski/skills
-    github-tree-sha: 2ff93ddb9833df45f5e83080de838bb668530820
+    github-tree-sha: cf1f7aabac34c08f2cf833f039fa99af2f415183
 name: improve-animations
 ---
 # Improving Animations
+
+## Initial Response
+
+When this skill is first invoked without a specific question, respond only with:
+
+> I'm ready to audit your animations and plan the fixes, my knowledge comes from Emil Kowalski's animation philosophy.
+
+Do not provide any other information until the user asks a question.
 
 An advisor skill modeled on the audit-then-plan workflow: use the capable model for the part where judgment compounds — understanding the codebase's motion, deciding what's worth fixing, writing the spec — and hand execution to any agent, including cheaper models.
 
