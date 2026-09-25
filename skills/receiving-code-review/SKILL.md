@@ -4,7 +4,7 @@ description: Turns review feedback into per-item verdicts backed by evidence fro
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.17
+  version: 2026.9.18
   refs: https://github.com/obra/superpowers/tree/v6.2.0/skills/receiving-code-review
 ---
 
