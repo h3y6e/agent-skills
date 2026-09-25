@@ -9,7 +9,7 @@ Set the Pages source to `/docs`, and set the site visibility to match the reposi
 
 Navigation keys in each page's frontmatter:
 
-- `nav_order` on every page, including `log.md`.
+- `nav_order` on every page.
 - `parent` on every page inside a subdirectory, matching that subdirectory `README.md`'s `title`.
 - `has_children: true` on each subdirectory `README.md`.
 

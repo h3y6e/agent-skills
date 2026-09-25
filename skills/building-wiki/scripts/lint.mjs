@@ -14,7 +14,6 @@ const OUTLIER_RATE = 0.2;
 const MIN_PAGES_FOR_MAJORITY = 3;
 
 const ISO_UTC = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
-const LOG_HEADING = /^## \d{4}-\d{2}-\d{2}$/;
 const KEY_LINE = /^([A-Za-z_][\w-]*):/;
 const STAMP = /(?:^|[\s{,])(at):\s*([^,}\n]+)/g;
 const FOOTNOTE_DEF = /^\[\^([^\]]+)\]:/gm;
@@ -25,7 +24,7 @@ const SOURCE_ID = /\bid:\s*"?([^\s,}"]+)/g;
 const CONTEXT_SECTION = /^## CONTEXT\s*$/m;
 const BACKTICKED = /`([^`\n]+)`/g;
 const SCHEMA_FILE = "AGENTS.md";
-const NOT_A_PAGE = new Set(["log.md", SCHEMA_FILE]);
+const NOT_A_PAGE = new Set([SCHEMA_FILE]);
 const RAW_DIR = "raw";
 
 const captures = (text, regex) => [...text.matchAll(regex)].map((m) => m[1]);
@@ -160,17 +159,6 @@ function checkContext(bundle, report) {
   }
 }
 
-function checkLog(bundle, report) {
-  const log = join(bundle, "log.md");
-  if (!existsSync(log)) {
-    report("warn", log, "no log.md at the bundle root — nothing records what happened");
-    return;
-  }
-  for (const line of readFileSync(log, "utf8").split("\n")) {
-    if (line.startsWith("## ") && !LOG_HEADING.test(line)) report("error", log, `log heading must be "## YYYY-MM-DD", got ${line}`);
-  }
-}
-
 function lint(bundle) {
   const issues = [];
   const report = (level, file, msg) => issues.push({ level, file, msg });
@@ -178,7 +166,6 @@ function lint(bundle) {
   checkConventions(pages, declaredTypes(bundle), report);
   for (const page of pages) checkPage(page, report);
   checkContext(bundle, report);
-  checkLog(bundle, report);
   return { pages: pages.length, issues };
 }
 
