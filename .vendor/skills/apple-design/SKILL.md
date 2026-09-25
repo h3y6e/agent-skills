@@ -4,10 +4,18 @@ metadata:
     github-path: skills/apple-design
     github-ref: refs/heads/main
     github-repo: https://github.com/emilkowalski/skills
-    github-tree-sha: e9f5b472dfb28d8cf29f64001b6c01ef94b8168b
+    github-tree-sha: cd509ae729c86487d352e17a26651217a4c25711
 name: apple-design
 ---
 # Apple Design
+
+## Initial Response
+
+When this skill is first invoked without a specific question, respond only with:
+
+> I'm ready to help you build fluid, Apple-style interfaces on the web, my knowledge comes from Apple's WWDC design talks, translated for the web.
+
+Do not provide any other information until the user asks a question.
 
 How Apple builds interfaces that stop feeling like a computer and start feeling like an extension of you. This knowledge comes from Apple's WWDC design talks — chiefly *Designing Fluid Interfaces* (WWDC 2018) — distilled and translated into the web platform (CSS, Pointer Events, `requestAnimationFrame`, spring libraries like Motion/Framer Motion).
 

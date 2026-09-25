@@ -1,10 +1,10 @@
 ---
-description: Prepares production launches. Use when preparing to deploy to production. Use when you need a pre-launch checklist, when setting up monitoring, when planning a staged rollout, or when you need a rollback strategy.
+description: Prepares production launches. Use when preparing to deploy to production, or when asking what needs to be in place before shipping. Use when you need a pre-launch checklist, when setting up monitoring, when planning a staged rollout, or when you need a rollback strategy.
 metadata:
     github-path: skills/shipping-and-launch
-    github-ref: refs/tags/0.6.7
+    github-ref: refs/tags/0.6.10
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 01cc4700a30c507b4406d98c428d02b3df7671ec
+    github-tree-sha: 48677fb7727e6cdb9be1713ace4837aaaa37aed9
 name: shipping-and-launch
 ---
 # Shipping and Launch
@@ -239,6 +239,19 @@ In the first hour after launch:
 6. Confirm rollback mechanism works (dry run if possible)
 ```
 
+## Error Budget Release Gate
+
+Your service's error budget — the fraction of requests or time your SLO allows to fail — determines whether it's safe to ship. Use it as an objective gate — not a negotiation:
+
+```
+Budget remaining > 20%  →  Ship normally; monitor closely
+Budget remaining 0–20%  →  Slow rollouts only; no high-risk changes
+Budget exhausted        →  Freeze feature work; focus entirely on reliability
+Budget resets           →  Resume normal pace; bake in the fix that recovered it
+```
+
+A high burn rate during a canary (consuming budget faster than the baseline pace) is a **hold** signal in the rollout thresholds table above — treat it the same as an elevated error rate.
+
 ## Rollback Strategy
 
 Every deployment needs a rollback plan before it happens:
@@ -273,6 +286,7 @@ Every deployment needs a rollback plan before it happens:
 - For security pre-launch checks, see `../../references/security-checklist.md`
 - For performance pre-launch checklist, see `../../references/performance-checklist.md`
 - For accessibility verification before launch, see `../../references/accessibility-checklist.md`
+- For the alerting rules and SLO-tied thresholds, see `observability-and-instrumentation`
 
 ## Common Rationalizations
 
@@ -283,6 +297,7 @@ Every deployment needs a rollback plan before it happens:
 | "Monitoring is overhead" | Not having monitoring means you discover problems from user complaints instead of dashboards. |
 | "We'll add monitoring later" | Add it before launch. You can't debug what you can't see. |
 | "Rolling back is admitting failure" | Rolling back is responsible engineering. Shipping a broken feature is the failure. |
+| "The error rate looks fine, let's keep shipping" | Check the burn rate, not just the current error rate. Consuming budget faster than baseline is a hold signal even when individual thresholds are green. |
 
 ## Red Flags
 
@@ -293,6 +308,7 @@ Every deployment needs a rollback plan before it happens:
 - No one monitoring the deploy for the first hour
 - Production environment configuration done by memory, not code
 - "It's Friday afternoon, let's ship it"
+- Error budget exhausted but feature work continues unchanged
 
 ## Verification
 
@@ -312,3 +328,7 @@ After deploying:
 - [ ] Critical user flow works
 - [ ] Logs are flowing
 - [ ] Rollback tested or verified ready
+
+For every shipped service:
+
+- [ ] Error budget policy in place: know what action to take when budget drops below 20% and when it's exhausted

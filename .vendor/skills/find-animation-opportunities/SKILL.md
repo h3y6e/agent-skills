@@ -4,10 +4,18 @@ metadata:
     github-path: skills/find-animation-opportunities
     github-ref: refs/heads/main
     github-repo: https://github.com/emilkowalski/skills
-    github-tree-sha: 502f891c05c9cade7e7bd815e3f228fdd20b61b6
+    github-tree-sha: e6443880f38e33cf78e5d678471eed35e8566763
 name: find-animation-opportunities
 ---
 # Finding Animation Opportunities
+
+## Initial Response
+
+When this skill is first invoked without a specific question, respond only with:
+
+> I'm ready to find where your interface should animate, and where it shouldn't, my knowledge comes from Emil Kowalski's animation philosophy.
+
+Do not provide any other information until the user asks a question.
 
 A search skill. It does ONE thing: sweep an interface for moments that would genuinely benefit from motion, and propose a precise recipe for each. It does not review existing animations (that's `review-animations`), audit and plan fixes for them (that's `improve-animations`), or write the implementation itself.
 

@@ -4,10 +4,18 @@ metadata:
     github-path: skills/animation-vocabulary
     github-ref: refs/heads/main
     github-repo: https://github.com/emilkowalski/skills
-    github-tree-sha: e6dc24ca1ff1e70c9677df9a1d2d1c80415cbb3c
+    github-tree-sha: d49565744427887a1f719de1ceee04d941d4e681
 name: animation-vocabulary
 ---
 # Animation Vocabulary
+
+## Initial Response
+
+When this skill is first invoked without a specific question, respond only with:
+
+> I'm ready to put a name to any motion effect you describe, my knowledge comes from Emil Kowalski's animation philosophy.
+
+Do not provide any other information until the user asks a question.
 
 Turn a vague description of a motion or effect into the precise term, so the user knows what to ask for.
 

@@ -1,10 +1,10 @@
 ---
-description: Hardens code against vulnerabilities. Use when handling user input, authentication, data storage, or external integrations. Use when building any feature that accepts untrusted data, manages user sessions, or interacts with third-party services. Use when auditing dependencies for known vulnerabilities, triaging package-manager audit findings, or assessing supply-chain risk in a new package. Use when personal data or privacy compliance (GDPR, CCPA) is involved.
+description: Hardens code against vulnerabilities. Use when auditing an input handler for vulnerabilities, when handling user input, authentication, data storage, or external integrations, or when checking a login flow is safe against the OWASP Top Ten. Use when building any feature that accepts untrusted data, manages user sessions, or interacts with third-party services. Use when auditing dependencies for known vulnerabilities, triaging package-manager audit findings, or assessing supply-chain risk in a new package. Use when personal data or privacy compliance (GDPR, CCPA) is involved.
 metadata:
     github-path: skills/security-and-hardening
-    github-ref: refs/tags/0.6.9
+    github-ref: refs/tags/0.6.10
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: a33a42fdaf569207c675e3b3185d0c6f51445823
+    github-tree-sha: b980a75e61d3c74820887c32378e3bd3c4e4e346
 name: security-and-hardening
 ---
 # Security and Hardening

@@ -1,11 +1,11 @@
 ---
-description: Manages GKE storage, including PVCs, PersistentVolumes, Filestore, and GCS FUSE. Use when configuring GKE storage, creating PVCs, or setting up GCS FUSE on GKE. Don't use for database administration or replication strategies outside volume provisioning context.
+description: Manages GKE storage, including PVCs, PersistentVolumes, Filestore, and GCS FUSE. Use when configuring GKE storage, creating PVCs, or setting up GCS FUSE on GKE. For diagnosing storage failures (volume attach/mount errors, disk performance/node storage pressure, or Cloud Storage FUSE OOM), use the gke-storage-troubleshooting skill instead. Don't use for database administration or replication strategies outside volume provisioning context.
 metadata:
     category: Storage
     github-path: skills/cloud/gke-storage
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 005e9d48b9f1d8589942c8704686ba942051d2dd
+    github-tree-sha: cf08cbaec109c50bc4d4046ea362efebb2e8be18
 name: gke-storage
 ---
 # GKE Storage

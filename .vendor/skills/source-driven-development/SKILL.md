@@ -1,10 +1,10 @@
 ---
-description: Grounds every implementation decision in official documentation. Use when you want authoritative, source-cited code free from outdated patterns. Use when building with any framework or library where correctness matters.
+description: Grounds every implementation decision in official documentation. Use when you want to verify an approach against the official docs before implementing it, or when you want authoritative, source-cited code free from outdated patterns. Use when building with any framework or library where correctness matters.
 metadata:
     github-path: skills/source-driven-development
-    github-ref: refs/tags/0.6.7
+    github-ref: refs/tags/0.6.10
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: d88d094056a158b53859e29181b15a56a6acd910
+    github-tree-sha: 29e1dcc180d54898aa7c5f4c466864c59ac2ee41
 name: source-driven-development
 ---
 # Source-Driven Development

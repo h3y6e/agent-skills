@@ -1,10 +1,10 @@
 ---
-description: Guides systematic root-cause debugging. Use when tests fail, builds break, behavior doesn't match expectations, or you encounter any unexpected error. Use when you need a systematic approach to finding and fixing the root cause rather than guessing.
+description: Guides systematic root-cause debugging. Use when tests fail, builds break, something that worked yesterday broke, behavior doesn't match expectations, or you encounter any unexpected error. Use when you need to figure out what broke and why — a systematic approach to finding and fixing the root cause rather than guessing.
 metadata:
     github-path: skills/debugging-and-error-recovery
-    github-ref: refs/tags/0.6.7
+    github-ref: refs/tags/0.6.10
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 97a66b4d4750b1b5108da8633104bb1e020275ab
+    github-tree-sha: c3b5c340bae3ac952733213b40035820acfb48a3
 name: debugging-and-error-recovery
 ---
 # Debugging and Error Recovery

@@ -4,7 +4,7 @@ metadata:
     github-path: skills/emil-design-eng
     github-ref: refs/heads/main
     github-repo: https://github.com/emilkowalski/skills
-    github-tree-sha: 175725745e70946d891b93a1694d7c9ebb71b69d
+    github-tree-sha: db7a20dc1d8ad26a0307dcb45ebc79fc372f5c69
 name: emil-design-eng
 ---
 # Design Engineering
@@ -13,7 +13,7 @@ name: emil-design-eng
 
 When this skill is first invoked without a specific question, respond only with:
 
-> I'm ready to help you build interfaces that feel right, my knowledge comes from Emil Kowalski's design engineering philosophy. If you want to dive even deeper, check out Emil’s course: [animations.dev](https://animations.dev/).
+> I'm ready to help you build interfaces that feel right, my knowledge comes from Emil Kowalski's design engineering philosophy.
 
 Do not provide any other information until the user asks a question.
 
