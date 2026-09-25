@@ -11,4 +11,4 @@
 
 Add a line only for a mistake that keeps recurring; fix a one-off in the page. Delete a line that has stopped preventing anything.
 
-Not in the schema: the source list (`raw/`, `sources[].resource`, and `log.md` already carry it), the repository's own code and pull requests (downstream of the wiki, never a source), and any convention the pages already show — link style, prose language — which the linter infers.
+Not in the schema: the source list (`raw/` and `sources[].resource` already carry it), the repository's own code and pull requests (downstream of the wiki, never a source), and any convention the pages already show — link style, prose language — which the linter infers.

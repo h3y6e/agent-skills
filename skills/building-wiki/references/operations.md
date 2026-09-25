@@ -1,6 +1,6 @@
 # Operations
 
-Read the repository's `AGENTS.md` first. Pages follow [`page-format.md`](page-format.md). Cite every claim by page or source. Every operation ends with one line in `log.md`.
+Read the repository's `AGENTS.md` first. Pages follow [`page-format.md`](page-format.md). Cite every claim by page or source.
 
 ## Ingest
 
@@ -28,4 +28,4 @@ Close by reporting what the pages already say about themselves: concepts that ha
 
 ## Update
 
-For a changed source: refresh its mirror in `raw/`. Show the user what changed, record it in `log.md`, then ingest.
+For a changed source: refresh its mirror in `raw/`. Show the user what changed, then ingest.

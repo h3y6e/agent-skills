@@ -9,7 +9,6 @@ repo/
   AGENTS.md             # project instructions, with the domain schema as a section
   docs/                 # the bundle
     README.md           # the index: CONTEXT vocabulary, then one line per page
-    log.md              # append-only history, one line per operation under `## YYYY-MM-DD`
     raw/                # immutable mirror of the sources
     <subdir>/           # a group of pages, typically one type; has its own README.md
       <concept>.md      # one concept per file
@@ -17,7 +16,7 @@ repo/
 
 - **`raw/` holds copies of the sources, never edits.** The agent mirrors and refreshes whatever `sources[].resource` lets it reach; what it cannot reach is the human's to place. Paths, content, and which mirrors are committed follow [`raw.md`](raw.md).
 - **One concept, one file.** The path from the bundle root, minus `.md`, is the concept's id. A concept earns a file when it is referred to from more than one place or asked about more than once.
-- **`README.md`, `log.md`, and `raw/` are the only reserved names.**
+- **`README.md` and `raw/` are the only reserved names.**
 - **Links are ordinary relative markdown links.** A link to a page that does not exist is legal and is not by itself a reason to write the page.
 
 ## CONTEXT
