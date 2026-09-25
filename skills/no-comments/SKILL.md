@@ -1,7 +1,6 @@
 ---
 name: no-comments
-description: Remove bad comments in the given files or diff, and fix the root cause behind the workarounds they hide.
-disable-model-invocation: true
+description: Removes bad comments in the given files or diff and fixes the root cause behind the workarounds they hide. Use when asked to remove, clean up, or audit code comments, or when a comment or lint suppression justifies a workaround the code should make obvious itself.
 license: MIT
 metadata:
   author: h3y6e
