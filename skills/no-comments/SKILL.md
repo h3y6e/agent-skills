@@ -4,7 +4,7 @@ description: Removes bad comments in the given files or diff and fixes the root 
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.9.19
+  version: 2026.9.20
   refs: https://github.com/cursor/plugins/blob/032be146865d973682535de75f2287da438550bf/pstack/skills/no-comments/SKILL.md
 ---
 
