@@ -51,7 +51,7 @@ sources:
 ---
 ```
 
-Attach a source to a claim with a footnote labelled by `sources[].id`: `This table is sharded daily.[^policy-doc]`. Footnote what a source states, never what it implies — an inference belongs in the prose as an inference.
+Attach a source to a claim with a footnote labelled by `sources[].id`: `This table is sharded daily.[^policy-doc]`. Footnote what a source states, never what it implies. Infer only where the page's question needs it, marked by the predicate ("so X is likely"), not an appended label.
 
 ## Rewrite safety
 
