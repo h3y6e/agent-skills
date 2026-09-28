@@ -5,16 +5,16 @@ metadata:
     github-path: skills/pinia
     github-ref: refs/heads/main
     github-repo: https://github.com/antfu/skills
-    github-tree-sha: 39d25e6812ea8ec3361fd18c2551629bd1afa344
+    github-tree-sha: 43859b58fbef122b18eb62689f6c2f6a082ca443
     source: Generated from https://github.com/vuejs/pinia, scripts located at https://github.com/antfu/skills
-    version: 2026.1.28
+    version: 2026.9.25
 name: pinia
 ---
 # Pinia
 
 Pinia is the official state management library for Vue, designed to be intuitive and type-safe. It supports both Options API and Composition API styles, with first-class TypeScript support and devtools integration.
 
-> The skill is based on Pinia v3.0.4, generated at 2026-01-28.
+> The skill is based on Pinia v4.0.3, generated at 2026-09-25.
 
 ## Core References
 

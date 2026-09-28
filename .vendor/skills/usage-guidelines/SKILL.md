@@ -1,18 +1,24 @@
 ---
-description: 'Write usage guidelines for a specific, named component — covering when to use it, when not to, edge cases, and anti-patterns for that one component. This documents HOW to use a component you have already chosen, NOT how to choose between components. Trigger when someone says: write usage guidelines for [component], do''s and don''ts for [component], how should [component] be used, usage rules, write the guidelines for [component], or anything about creating prescriptive guidance for a single named component. Do NOT trigger for choosing between components — use component-decision-tree for that. Do NOT trigger for documenting multi-component patterns — use pattern-documentation for that.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*)
+description: 'Write usage guidelines for one named component: when to use, when not to, edge cases, anti-patterns, a11y, quick-reference card. Triggers: usage guidelines for X, do''s and don''ts for X. Choosing between components: component-decision-tree. Multi-component patterns: pattern-documentation.'
 metadata:
     github-path: skills/usage-guidelines
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 6cdec7552bece6db7cc2246f49537d17eb06ddcb
+    github-tree-sha: d4367b016f34cd9409826de79938e91b62a5ca5d
 name: usage-guidelines
 references:
     - ../../knowledge-notes/ai-readiness.md
     - ../../knowledge-notes/component-bestiary-reference.md
+    - ../../knowledge-notes/output-discipline.md
 ---
 # Usage guidelines
 
 A skill for writing component usage guidelines that cover the full usage contract: when to use, when not to, edge cases, anti-patterns, and accessibility guidance integrated throughout. Output reads as guidance a designer or developer can act on immediately, not a style guide entry that restates what is already visible in the component.
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Context
 
@@ -22,9 +28,20 @@ The goal here is the second kind. Guidelines that are worth writing are guidelin
 
 ---
 
+## Step 0: Read the component
+
+Before asking the user anything, read what's available:
+- `.ai/metadata/<Component>.metadata.json`, if `metadata-schema-generator` has run: props, states and the accessibility contract, each with a provenance marker. Take them from there and don't re-derive them; carry the markers through
+- the component's source (variants, rendered element, ARIA attributes, key handlers, focus calls), its stories, existing docs, and the Figma component when a Figma MCP is connected
+- the system's voice and tone guide: `system.content_guidelines_path` in config, or `CONTENT.md`, `VOICE.md`, `writing-guidelines.md` or similar, so the content guidelines section uses the team's rules from the start rather than generic UX writing advice
+
+Much of Step 1 is answered there. If the component can't be found in source, stories, docs, metadata or Figma, stop and ask where it lives; guidelines for a component you haven't seen are generic by construction.
+
+**Provenance rule.** Every behaviour the guidelines state as fact (variants, keyboard interaction, focus, announcements, contrast) traces to source, stories, docs, Figma or the user. Anything you can't confirm is marked "unverified"; misuse you haven't seen evidence of is marked "anticipated". See "Every figure and fact needs a source" in the output-discipline knowledge note.
+
 ## Step 1: Gather component information
 
-Ask for or confirm:
+Confirm from Step 0, and ask the user for the rest:
 - Component name and the system it belongs to
 - Available variants or configurations
 - Any existing documentation to build on or replace
@@ -39,7 +56,7 @@ The known misuse patterns are critical. Guidelines written from abstract princip
 
 ### [Component name] usage guidelines
 
-**Version:** [design system version]
+**Version:** [design system version: ask; don't infer]
 **Last updated:** [date]
 
 ---
@@ -59,7 +76,7 @@ Cover the primary use case first, then secondary use cases. Three to five condit
 Format:
 "Use [component name] when [specific condition]."
 
-Examples (Button):
+Examples (illustrative Button):
 - Use a primary button for the single most important action in a context. There should be at most one primary button in any given view.
 - Use a secondary button for an action that is available but not the expected next step. Secondary buttons often appear alongside primary buttons to give users an alternative.
 - Use a ghost button when the action is available but should not visually compete with other actions or content on the page.
@@ -73,7 +90,7 @@ As important as the above, and often more valuable. Each entry should name a spe
 Format:
 "Do not use [component name] for [misuse condition]. Use [alternative] instead."
 
-Examples (Button):
+Examples (illustrative Button):
 - Do not use a button for navigation to another page. Use a link. Buttons trigger actions; links navigate. Using a button for navigation misrepresents the interaction to screen readers and keyboard users.
 - Do not use more than one primary button in the same context. If two actions feel equally important, reconsider the information hierarchy.
 - Do not use a button when no action occurs. If the element is decorative or informational, it is not a button.
@@ -107,14 +124,14 @@ Not every component has every type of edge case. Only document the edge cases th
 
 Do not relegate accessibility to a separate section or an afterthought. For each point in the usage guidelines where an accessibility concern is relevant, integrate it in context.
 
-Additionally, provide a consolidated accessibility reference covering:
+Additionally, provide a consolidated accessibility reference covering the items below. Each line ends with its source in brackets: a file and line, a story id, a metadata provenance marker, a computed ratio, a Figma node, or `user`. Anything with no source is marked "unverified" rather than described from what components like this usually do.
 - Keyboard interaction: which keys, in which order, with which outcomes
 - Focus behaviour: where focus sits in default state, how it changes on interaction
 - Screen reader: what gets announced, when, and how that announcement is produced
 - Minimum touch target: if relevant, state the minimum size and how the component handles it
-- Colour contrast: which colour combinations are confirmed compliant and under which WCAG level
+- Colour contrast: which colour combinations have been checked, by what, and against which level. The baseline is WCAG 2.2 AA. Some legal baselines (e.g. EN 301 549) still reference WCAG 2.1 AA; use that if it's the team's obligation.
 
-Accessibility guidance should be specific to this component. Do not reference WCAG 2.1 as guidance — say what the component does.
+Accessibility guidance should be specific to this component. Do not cite WCAG criteria as the guidance itself — say what the component does.
 
 ---
 
@@ -122,10 +139,7 @@ Accessibility guidance should be specific to this component. Do not reference WC
 
 Name the three to five most common ways this component is misused, each as a clear statement with a reason and a correction.
 
-Write these based on observed misuse patterns where possible. Anti-patterns derived from production experience are consistently more useful than anti-patterns derived from abstract reasoning.
-
-Format:
-"Anti-pattern: [description of the misuse]. This creates [specific problem]. Instead: [correct approach]."
+Write these based on observed misuse patterns where possible. Anti-patterns derived from production experience are consistently more useful than anti-patterns derived from abstract reasoning. Where you have no evidence of the misuse (from the user, reviews, drift findings or code), mark the anti-pattern "anticipated" in its heading.
 
 **Anti-pattern template:**
 
@@ -139,7 +153,7 @@ What to do instead: [One sentence with the correct approach]
 How to detect: [One sentence on how to spot this in a review — what to look for in code, design, or Storybook]
 ```
 
-Example:
+Example (illustrative):
 ```
 **Anti-pattern: Navigation button**
 What happens: A Button component is used to navigate to another page.
@@ -174,13 +188,9 @@ Cross-references to components that are commonly confused with this one, or comm
 
 ---
 
-## Step 3: Integrate accessibility throughout
+## Step 3: Review pass
 
-Review the completed guidelines and confirm that accessibility considerations appear in context throughout — not only in the dedicated accessibility section. The edge cases section should address accessibility edge cases. The anti-patterns section should include accessibility anti-patterns. The "when not to use" section should include accessible alternative recommendations.
-
-## Step 4: Write for both designers and developers
-
-Usage guidelines often default to designer language. Confirm the guidelines are useful for developers implementing the component too — the edge cases section and anti-patterns section are particularly important here. A developer implementing usage guidelines in code benefits from specific, conditional language rather than general principles.
+Read the draft once for two things: accessibility appears in context (edge cases, anti-patterns and "when not to use" each carry it, not only the dedicated section), and every conditional is specific enough for a developer to implement, not only for a designer to recognise.
 
 ## Step 5: Generate the quick-reference card
 
@@ -211,22 +221,17 @@ Deliver both the full guidelines and the quick-reference card as separate sectio
 
 ---
 
-## Step 6: System-specific voice and tone adaptation
+## Step 6: Voice and tone
 
-If the design system has documented voice and tone guidelines, content principles, or a writing style guide, the content guidelines section of the usage guidelines should reflect the system's specific standards — not generic UX writing advice.
+The content guidelines section uses the system's own voice and tone guide, found in Step 0. Quote its rules (sentence case, verb-led labels, error message shape) with a component-specific example each. If no guide exists, use general UX writing principles and add one line: "These content guidelines use general principles; document the system's voice and tone and reference it here."
 
-**How to adapt:**
+## Step 7: Summarise in chat
 
-1. **Check for voice/tone documentation.** Look for files like `CONTENT.md`, `VOICE.md`, `writing-guidelines.md`, `brand/tone.md`, or equivalent in the documentation or knowledge notes. If `.ds-ops-config.yml` specifies `system.content_guidelines_path`, load that file.
-
-2. **If system voice/tone is available:** Rewrite the content guidelines section to use the system's specific principles. For example, if the system says "Use sentence case for all UI text," include that rule directly. If the system says "Error messages should explain what went wrong and what to do next," include that pattern with a component-specific example.
-
-3. **If system voice/tone is NOT available:** Use the generic content guidelines but add a note: "These content guidelines use general UX writing principles. For stronger consistency, document your system's voice and tone and reference it here."
-
-4. **Specific adaptation examples:**
-   - Generic: "Button labels should be action-oriented."
-   - AGDS-adapted: "Button labels should be action-oriented and use sentence case. Use the active voice. Prefer 'Save changes' over 'Changes saved' or 'Submit'."
-   - Polaris-adapted: "Button labels should use sentence case and start with a strong verb. Keep labels to 1–3 words. Use 'Add product' not 'Add a new product'."
+End with a short chat summary:
+- **Headline:** the component and what the guidelines cover
+- **Written:** file path if saved, otherwise "in chat"
+- **Marked:** each "unverified" accessibility claim and each "anticipated" anti-pattern, so the team knows what to confirm
+- **Scope:** the block from the output-discipline knowledge note, naming the source, stories, docs and Figma actually read
 
 ---
 
@@ -237,8 +242,9 @@ If the design system has documented voice and tone guidelines, content principle
 - Edge cases are real for this component, not generic
 - Accessibility is integrated throughout, not siloed at the end
 - Anti-patterns are derived from observed misuse, or clearly noted as anticipated misuse if observed examples are not available
-- Content guidelines are included for text-bearing components and adapted to system voice/tone if available
+- Content guidelines are included for text-bearing components and use the system's own voice/tone when documented, not just generic UX writing advice
+- Keyboard, focus, announcement and contrast claims each cite their source in brackets; the rest is marked "unverified"
+- Where `.ai/metadata/` exists, props and the accessibility contract came from it with their provenance markers
 - Guidelines work for both designers and developers
 - Nothing in the guidelines restates what is already visible in the component — every line adds usage judgment, not description
 - A quick-reference card (~150 words) is included alongside the full guidelines
-- Content guidelines use system-specific voice/tone when available, not just generic UX writing advice

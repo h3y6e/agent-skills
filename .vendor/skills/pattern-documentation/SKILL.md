@@ -1,18 +1,24 @@
 ---
-description: 'Write documentation for a design system pattern — a multi-component recipe covering use cases, anti-patterns, composition, and related patterns. Patterns span multiple components working together (e.g. a form pattern, a data table pattern). Trigger when someone says: document this pattern, write the pattern page, usage pattern, when to use this, pattern guidelines, document how this works, or anything about creating documentation for a reusable UI pattern rather than a single component. Do NOT trigger for writing usage guidelines for a single named component — use usage-guidelines for that.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(grep:*), Bash(rg:*)
+description: 'Document a multi-component pattern (form validation, empty states, error handling): when to use, composition, states, a11y, anti-patterns. Triggers: document this pattern, write the pattern page. One named component: use usage-guidelines. Choosing a component: component-decision-tree.'
 metadata:
     github-path: skills/pattern-documentation
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 63995a28c18f0343191115ad53a63d6b47c7bd60
+    github-tree-sha: eff5b4df4352fabb7ae1ff2ce00cbc24d16ef5ff
 name: pattern-documentation
 references:
     - ../../knowledge-notes/ai-readiness.md
     - ../../knowledge-notes/component-bestiary-reference.md
+    - ../../knowledge-notes/output-discipline.md
 ---
 # Pattern documentation
 
 A skill for writing documentation for design system patterns. Patterns are distinct from components: a component is a discrete, reusable UI element; a pattern is a recurring solution composed from multiple components that addresses a specific user or product problem. Form validation, empty states, error handling, progressive disclosure — these are patterns.
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Context
 
@@ -27,7 +33,7 @@ Good pattern documentation does two things. It explains the pattern clearly enou
 Before documenting a pattern, confirm it is worth documenting. Not every recurring UI solution is a pattern — some are conventions, some are coincidences, and some are too specific to generalise.
 
 **A UI solution is a documentable pattern if:**
-- [ ] It appears in three or more distinct product contexts (not just three instances in the same product)
+- [ ] It appears in three or more distinct product contexts (not just three instances in the same product), each located in code or Figma and cited by path or URL, or named by the user
 - [ ] It solves a user-facing problem, not just a layout convenience
 - [ ] It composes two or more design system components in a specific relationship
 - [ ] Teams have independently arrived at similar solutions (convergent evolution is the strongest signal)
@@ -38,11 +44,15 @@ Before documenting a pattern, confirm it is worth documenting. Not every recurri
 - It is a single component used in a standard way (that belongs in the component's usage guidelines)
 - It varies so much between instances that no shared structure can be extracted
 
+**If the bar isn't met**, say which criteria failed and what to write instead: a single component used in a standard way belongs in `usage-guidelines`; a one-product solution is a local convention note in that product's docs; instances too varied to share a structure need a conversation, not a page. Then stop; don't write a pattern page for something that isn't one.
+
 **Where to find undocumented patterns:**
 1. Look at drift-detection findings classified as E (system gap) — these often reveal patterns teams are building independently
 2. Review support channel questions — recurring "how do I..." questions about multi-component interactions signal undocumented patterns
 3. Ask product teams: "What do you build most often that is not a single component?" The answers are pattern candidates
 4. Review design file reuse — Figma frames that appear across multiple files without being components are likely patterns
+
+**Provenance rule.** Product contexts, instances, states and accessibility behaviour in the documentation come from code, Figma, the team's docs or the user, and are cited by path or URL where they come from files. If you can't locate instances, ask the user; never invent product or team names. Rules you propose rather than observe are marked "proposed". See "Every figure and fact needs a source" in the output-discipline knowledge note.
 
 ## Step 1: Establish the pattern scope
 
@@ -50,7 +60,7 @@ Ask for or confirm:
 - Pattern name (clear, descriptive, not jargon)
 - The user problem or product need this pattern addresses
 - Which components from the design system are involved
-- Any known product contexts where this pattern is already in use
+- Product contexts where this pattern is already in use: search the codebase and Figma for instances first, then ask the user to confirm or add to them
 - Any known edge cases or exceptions the documentation should address
 
 If the pattern does not yet have a name, propose one before writing the documentation. Pattern names should describe the interaction or function, not the visual treatment: "confirmation dialog" not "modal with two buttons."
@@ -111,9 +121,15 @@ If the pattern has multiple variants (e.g. an inline form validation and a summa
 
 ---
 
+#### How it works
+
+The interaction, step by step, from the user's side: what they see first, what they do, what the system does in response, where it ends. Five to eight numbered steps. This is the section a new designer reads to understand the pattern before the composition or the states make sense; the public pattern libraries that people trust (GOV.UK, USWDS) all have one.
+
+---
+
 #### State coverage
 
-Document every state the pattern can be in. AI agents cannot build what they do not understand, and patterns fail most often at state boundaries — the transitions between states, not the states themselves.
+Document every state the pattern can be in. Patterns fail most often at state boundaries — the transitions between states, not the states themselves — and a reader (or an agent) building from the page needs each transition spelled out.
 
 For each state the pattern can occupy:
 - Name the state clearly (e.g. Empty, Loading, Populated, Error, Submitting, Success)
@@ -122,6 +138,13 @@ For each state the pattern can occupy:
 - Identify which components are visible, hidden, or change variant in this state
 
 Common states to check for: default/resting, loading/pending, empty/no data, populated/active, error/invalid, success/complete, disabled/locked, partially complete.
+
+Put the transitions in a table so nothing is implied:
+
+| From | Trigger | To | What changes |
+|---|---|---|---|
+| Populated | user submits with an invalid field | Error | field gets `aria-invalid`, message appears below it, focus moves to the first invalid field |
+| Error | user corrects the field and blurs | Populated | message removed, `aria-invalid` cleared |
 
 If a state is not applicable, say so explicitly — "This pattern does not have an error state because [reason]." Silence is ambiguity. Ambiguity is drift.
 
@@ -138,6 +161,12 @@ Cover:
 - Focus management: where focus goes when the pattern opens, changes state, or resolves
 - Screen reader announcements: what gets announced and when
 - Any ARIA attributes that the pattern adds at the composition level (not the component level)
+
+---
+
+#### Content
+
+If the pattern carries copy that product teams write (validation messages, empty-state text, confirmation wording), give the shape of it with one real example each, in the system's voice and tone if a guide exists: what an error message must say (what went wrong, what to do), what an empty state offers (the next action), what a destructive confirmation names (the thing being deleted). Skip this section for patterns with no copy.
 
 ---
 
@@ -159,9 +188,21 @@ Cross-references to other patterns that are closely related, commonly confused w
 
 #### Examples in production
 
-If available: two to three named product contexts where this pattern is in use. This grounds the pattern in reality and gives teams a reference point for correct application.
+Two to three instances of the pattern in use, each cited by file path or Figma URL, or named by the user. This grounds the pattern in reality and gives teams a reference point for correct application.
 
-If no production examples are available, note that and invite consuming teams to contribute examples after the documentation is published.
+If none were found or supplied, say so, and invite consuming teams to contribute examples after the documentation is published. Do not fill this section with plausible product names.
+
+---
+
+#### Reference implementation
+
+A link to the story, sandbox or code path that shows the pattern assembled correctly, if one exists; if not, "none yet" and a note that one is the pattern's most useful next artefact. Don't write the implementation here.
+
+---
+
+#### Evidence
+
+What is known about how this pattern performs: usability research, analytics, support-ticket themes, an accessibility audit, each cited (a doc path, a ticket link, `user`). If nothing is known, write "no evidence gathered yet" rather than leaving the section out; a pattern page that admits it is unresearched is more trustworthy than one that implies it isn't.
 
 ---
 
@@ -174,18 +215,17 @@ Before delivering the documentation, verify:
 - Anti-patterns are specific to this pattern, not recycled from a generic design principles page
 - Related patterns include at least one "often confused with" to disambiguate
 
-#### Documentation impact measurement
-
-After publishing pattern documentation, note the expected impact and how to measure it:
-- **Reduced drift:** If this pattern was identified through drift-detection, monitor whether new instances of that drift decrease after documentation is published.
-- **Reduced support questions:** Track whether the pattern-specific questions in support channels decrease.
-- **Increased consistency:** In the next drift-detection run, check whether implementations of this pattern are more consistent.
-
-If none of these signals improve within two quarters of publishing, the documentation may not be discoverable enough — review its placement and promotion.
-
 ## Step 4: Flag for the `ai-component-description` skill
 
 If the pattern involves a primary component that does not yet have an AI-optimised description, flag that. Pattern-level documentation and component-level AI descriptions work together: the pattern documentation explains the composition, and the AI description explains each component's contract within it.
+
+## Step 5: Summarise in chat
+
+End with a short chat summary:
+- **Headline:** the pattern and whether it met the Step 0 bar
+- **Written:** file path if saved, otherwise "in chat"
+- **Marked:** anything "proposed", and any section left open for the team (for example, no production instances found)
+- **Scope:** the block from the output-discipline knowledge note, naming the code paths, Figma files and docs searched for instances
 
 ## Quality checks
 
@@ -197,3 +237,6 @@ If the pattern involves a primary component that does not yet have an AI-optimis
 - Anti-patterns are specific, not generic
 - Related patterns include disambiguation for commonly confused alternatives
 - Document works as a standalone reference — does not require additional context to follow
+- Every production instance is cited by path, URL or the user; no invented product names
+- The page has "How it works", a transition table, and Evidence and Reference implementation sections that say "none yet" rather than being omitted
+- If the Step 0 bar wasn't met, the run stopped and said what to write instead

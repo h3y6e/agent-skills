@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/agent-platform-prompt-management
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: f8ab7c9cd5a9355e065d71349f9c32753e7ff7dc
+    github-tree-sha: 42eda1c6cd2d5fa0949331bc1c43c003a8b4fc38
+    version: 1.0.0
 name: agent-platform-prompt-management
 ---
 ## Usage Guide

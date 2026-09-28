@@ -5,7 +5,8 @@ metadata:
     github-path: skills/analytics/google-analytics-data-api-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 24d33d7d3fb1b86966ea85e3ce9a5f717a75f1bb
+    github-tree-sha: ef34a306ac108dc9be2236c07e8386d86a163969
+    version: 1.0.0
 name: google-analytics-data-api-basics
 ---
 # Getting Started with Google Analytics Data API

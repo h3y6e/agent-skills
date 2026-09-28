@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/cloud-run-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 088d9fb03e5140375823f49da4dc3ef2b6b24cc9
+    github-tree-sha: 490652ced633152ecd1b0584be93cbc1ef86c8e2
+    version: 1.0.0
 name: cloud-run-basics
 ---
 # Cloud Run Basics

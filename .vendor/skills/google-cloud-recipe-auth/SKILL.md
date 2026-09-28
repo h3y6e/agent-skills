@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-recipe-auth
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a42449bc4dc3d411321e9aa63b8ea12c1e5eaa89
+    github-tree-sha: 377e20398ff37189e0c8779b034114d68c74351a
+    version: 1.0.0
 name: google-cloud-recipe-auth
 ---
 # Authenticating to Google Cloud

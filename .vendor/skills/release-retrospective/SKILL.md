@@ -1,14 +1,22 @@
 ---
-description: 'Produce a structured look-back after a major release or deprecation — capturing what the plan got right, what it missed, and what to do differently. Trigger when someone says: release retrospective, post-release review, what went wrong with the release, how did the deprecation go, release post-mortem, retro on the migration, or anything about reviewing how a release or deprecation actually went compared to the plan.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(ls:*), Bash(git log:*), Bash(git tag:*), Bash(git diff:*), Bash(rg:*), Bash(grep:*)
+description: 'Review how a shipped release, migration or deprecation went against its plan: blast radius, comms, migration, timeline, support load, each gap classed. Triggers: release retro, post-mortem, how did the deprecation go. Planning a new deprecation: deprecation-process.'
 metadata:
     github-path: skills/release-retrospective
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: cdb6088c24a52ffe8a773098b1878336b40596fe
+    github-tree-sha: 55f35765d7628c4f049a8d0c0cbd40c54fe1c6b1
 name: release-retrospective
 references:
     - ../../knowledge-notes/component-governance.md
+    - ../../knowledge-notes/output-discipline.md
 ---
+# Release retrospective
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
+
 ## Context
 
 Governance currently looks forward: plan the deprecation, estimate the blast radius, write the migration guide. There's no structured skill for reviewing how it actually went. Did the blast radius estimate hold? What did the communication miss? Where did teams get stuck despite the migration guide? A release retrospective completes the governance loop and builds institutional knowledge that keeps a system from repeating the same mistakes across team transitions.
@@ -17,9 +25,11 @@ The retrospective is not a blame exercise. It's a learning artifact. The goal is
 
 ## Key principles
 
-**From component-governance:** Governance owns the release plan: who's affected, when they're affected, what they need to succeed. The plan is a hypothesis. The retrospective tests it. Blast radius, communication, migration path quality, timeline, and support burden are the five surfaces where plans often break. Each surface has a classification: was this predictable with better analysis, or genuinely novel?
+The release plan is a hypothesis; the retrospective tests it. Plans usually break on five dimensions: blast radius, communication, migration path, timeline and support burden. For each gap, the useful question is whether better analysis would have caught it or whether it was genuinely novel.
 
-**Key principle for retrospectives:** The plan was made with incomplete information. The retrospective reveals what information was missing. That gap is the insight — not a failure, a discovery.
+The plan was made with incomplete information. The retrospective reveals what was missing. That gap is the insight, not a failure.
+
+Every figure in the retrospective comes from the plan, a tool result or the user. Where a dimension has no data, write "not measured" rather than estimating it. Never estimate reach or completion percentages.
 
 ## Configuration
 
@@ -38,144 +48,56 @@ Before writing the retrospective, gather these inputs:
 
 **Step 1: Gather inputs**
 
-Collect the original plan (pull it directly, don't reconstruct from memory). Ask system owners and team leads: what actually happened? If you find disparities between the plan and what people remember, note them — that's a communication gap.
+Request the original plan (deprecation plan, migration guide, communication package or decision record) and the execution data listed above. Don't reconstruct the plan from memory or from what you think it probably said; if the user can't supply it, say the comparison is against their recollection and label it that way.
 
-Output: A folder or Slack thread with the original plan, timeline notes, and team feedback.
+**Step 1b: Measure what the repository can tell you**
 
-**Step 2: Extract the blast radius dimension**
+Before asking for figures, take the ones git and a search can give:
+- **Timeline:** `git tag --list --format='%(refname:short) %(creatordate:short)'` for when the release actually shipped, against the plan's dates
+- **Migration completion:** the deprecation plan's usage commands (`rg` for the old component, token or prop) run now over the consumers in reach give the count of references still on the old API; run the same over the plan's baseline commit (`git log -1 --before=<announcement>`) for the starting count. "Completion" is those two counts, not a percentage estimate
+- **Consumer activity:** `git log --since=<announcement> --oneline -- <consumer paths>` shows when each consumer migrated, and whether anyone touched the codemod's output by hand
 
-Compare estimate vs actual.
+Anything the repository can't show (support load, who read the announcement) comes from the user or is "not measured".
 
-```
-**Blast radius accuracy**
+**Step 2: Compare plan and reality, dimension by dimension**
 
-Planned: [X affected consumers, Y estimated instances]
-Actual: [A affected consumers, B actual instances]
-Gap: [Describe variance — larger, smaller, different teams]
-
-Gap classification: 
-  - [ ] Foreseeable — more thorough analysis would have caught this
-  - [ ] Unforeseeable — novel circumstance (team reorganization, platform change)
-  - [ ] Process — analysis was right, execution diverged (e.g., team didn't update)
-
-Specific gaps:
-- [List 1-3 unexpected impacts]
-
-Insight: [One sentence — what should we have known or asked?]
-```
-
-**Step 3: Extract the communication dimension**
-
-Assess message clarity and reach.
+For each dimension where you have data, fill this template once:
 
 ```
-**Communication effectiveness**
+**[Dimension]**
 
-Planned channels: [Slack #channel, email, async standup, office hours, etc.]
-Actual reach: [% of teams knew before migration deadline, evidence: emoji reactions, replies, etc.]
-
-Gap: [Did teams miss the message? Was it unclear? Did timing matter?]
-
-Gap classification:
-  - [ ] Foreseeable — communication plan was incomplete
-  - [ ] Unforeseeable — novel (email landed in spam, team lead OOO at critical moment)
-  - [ ] Process — communication was sent but not read or acted on
-
-Specific gaps:
-- [List examples: "Team X didn't see the Slack message", "Question about X appeared 10 times"]
-
-Insight: [What communication lever do we need next time?]
+Planned: [from the plan]
+Actual: [from execution data, or "not measured"]
+Gap: [what differed]
+Class: Foreseeable / Unforeseeable / Process
+Specific gaps: [1–3 items, each with its evidence]
+Insight: [one sentence: what should we have known, asked or done?]
 ```
 
-**Step 4: Extract the migration path dimension**
+Prompts per dimension:
+- **Blast radius:** consumers and instances affected, planned vs actual; unexpected impacts
+- **Communication:** channels planned vs used; evidence teams saw it before the deadline (replies, questions that show they didn't); unclear or badly timed messages
+- **Migration path:** codemod and manual steps planned vs what teams actually did; edge cases the guide or codemod missed
+- **Timeline:** planned milestone dates vs actual; cause of each slip or acceleration
+- **Support burden:** support approach planned vs actual load; question patterns by category, not just totals
 
-Where did teams get stuck despite the guide?
+Gap classes (defined once, used everywhere):
+- **Foreseeable:** the analysis was incomplete. Better consumer interviews, codemod testing, platform validation or edge-case exploration would have caught it.
+- **Unforeseeable:** a genuinely novel circumstance: reorganisation, platform release, urgent security incident, an unexpected architectural pattern in a consumer.
+- **Process:** the analysis was sound but execution faltered: message sent but not read, guide clear but not followed, capacity not available.
 
-```
-**Migration path quality**
+**Step 3: Write the retrospective report**
 
-Planned: [Codemod available? Manual steps? Estimated time to update per team?]
-Actual: [Did teams run the codemod? Manual updates? Time to complete?]
-
-Gap: [Missing edge cases? Codemod incomplete? Guide unclear?]
-
-Gap classification:
-  - [ ] Foreseeable — guide could have covered this
-  - [ ] Unforeseeable — novel usage pattern not in our control
-  - [ ] Process — guide was clear but not followed
-
-Specific gaps:
-- [List 1-3 edge cases or friction points]
-  Example: "Teams with custom webpack configs couldn't run the codemod"
-  Example: "Migration guide didn't explain how to handle the breaking prop change in unit tests"
-
-Insight: [What process or documentation change prevents this next time?]
-```
-
-**Step 5: Extract the timeline dimension**
-
-Did the release stay on schedule?
-
-```
-**Timeline adherence**
-
-Planned: [Deprecation announcement date, migration deadline, breaking change date]
-Actual: [When did each milestone happen? What caused delays?]
-
-Gap: [Slipped? Accelerated? Why?]
-
-Gap classification:
-  - [ ] Foreseeable — dependencies or risks we should have planned for
-  - [ ] Unforeseeable — external event (platform outage, urgent security issue)
-  - [ ] Process — team capacity or prioritization shifted
-
-Specific gaps:
-- [List delays or accelerations with cause]
-
-Insight: [What buffer or dependency should we build into next timelines?]
-```
-
-**Step 6: Extract the support burden dimension**
-
-What patterns emerged in questions or escalations?
-
-```
-**Support burden**
-
-Planned support: [Proactive FAQ, office hours, Slack monitoring, etc.]
-Actual support: [Support tickets count, Slack threads count, time invested by system team]
-
-Question patterns:
-- [Category A: X instances — e.g., "How do I update imports?"]
-- [Category B: Y instances — e.g., "Does this break our custom theme?"]
-
-Gap: [Were FAQs prepared for these? Escalations that shouldn't have happened?]
-
-Gap classification:
-  - [ ] Foreseeable — expected questions not in the FAQ
-  - [ ] Unforeseeable — novel question type
-  - [ ] Process — FAQ existed but wasn't linked in communication
-
-Specific gaps:
-- [List 1-2 unaddressed question categories]
-
-Insight: [What specific FAQ entry or escalation path do we add?]
-```
-
-**Step 7: Classify each gap**
-
-For every gap found, mark it foreseeable/unforeseeable/process:
-
-- **Foreseeable:** The analysis was incomplete. Better consumer interviews, more thorough codemod testing, broader platform validation, or edge case exploration would have caught this.
-- **Unforeseeable:** A genuinely novel circumstance. Team reorganization, platform release, urgent security incident, or unexpected architectural pattern in a consumer.
-- **Process:** The analysis was sound but execution faltered. Communication sent but not read. Migration guide clear but not followed. Timeline understood but capacity wasn't available.
-
-**Step 8: Write the retrospective report**
+Open with a one-line headline: did it go to plan, and what's the one change that matters most next time. Examples below are illustrative; never carry their figures into real output.
 
 Use this structure:
 
 ```markdown
 # Release Retrospective: [Release name]
+
+[Headline: one sentence on whether it went to plan and the change that matters most next time]
+
+**Open placeholders:** [list any `[needs data: …]` gaps left in this report, or "none"]
 
 **Release:** [What shipped — component deprecation, token refactor, major version, etc.]
 **Date:** [Announcement → Migration deadline → Completion]
@@ -186,9 +108,9 @@ Use this structure:
 [1 paragraph: What was released, when, what actually happened. 
 Overall assessment: did it go as planned?]
 
-Example: "We deprecated the legacy Button component on Jan 15. 
-The migration deadline was Feb 28. All discovered consumers completed migration by Feb 25 — 
-three days early. Communication reached 85% of likely consumers before the deadline. 
+Example: "We deprecated the legacy Button component on [date]. 
+The migration deadline was [date]. All discovered consumers completed migration [n] days early. 
+Communication reach: not measured. 
 We found two unplanned edge cases in webpack configurations and one incomplete codemod scenario."
 
 ## Plan vs Reality
@@ -196,55 +118,39 @@ We found two unplanned edge cases in webpack configurations and one incomplete c
 | Dimension | Planned | Actual | Gap | Class |
 |---|---|---|---|---|
 | **Blast radius** | X teams, Y instances | A teams, B instances | [Describe] | Foreseeable / Unforeseeable / Process |
-| **Communication** | [Channels, timing] | [Actual reach %] | [Describe] | Foreseeable / Unforeseeable / Process |
+| **Communication** | [Channels, timing] | [Evidenced reach, or "not measured"] | [Describe] | Foreseeable / Unforeseeable / Process |
 | **Migration path** | [Codemod + manual steps, est. time] | [Actual approach, time] | [Describe] | Foreseeable / Unforeseeable / Process |
 | **Timeline** | [Key dates] | [Actual dates] | [Describe] | Foreseeable / Unforeseeable / Process |
 | **Support burden** | [Planned support approach] | [Actual load, patterns] | [Describe] | Foreseeable / Unforeseeable / Process |
 
 ## What worked well
 
-[2-5 items. Keep doing these next time.]
+[Items the evidence supports. Keep doing these next time. If nothing clearly worked, say so.]
 
 Example:
-- The codemod was complete and handled 95% of cases automatically
+- The codemod handled [n] of [n] call sites automatically
 - Phased rollout meant we could respond to early feedback before the hard deadline
 - Daily office hours during week 1 of migration prevented escalations
 - Pre-migration dry-run period (2 weeks) let teams test in their own repos first
 
 ## What didn't work
 
-[2-5 items. Stop or change these next time.]
+[Items the evidence supports. Stop or change these next time.]
 
 Example:
 - FAQ didn't mention webpack configuration workarounds — caused three escalations
-- Slack announcement only reached 60% of consumers; email distribution list was outdated
+- Two teams said they missed the Slack announcement; the email distribution list was outdated
 - Migration guide showed code examples for React/Vue but not Svelte consumers
 - Support burden on one person created a bottleneck in week 2
 
 ## Recommendations for next release
 
-[Specific, actionable changes to governance or process. Each one solves a gap from above.]
+[Specific, actionable changes to governance or process. Each one solves a gap from above and has an owner and a date, or `[needs data: owner]`.]
 
-Example recommendations:
-
-1. **Add platform-specific migration testing before release announcement.**
-   Currently, we test the codemod in our CI. Next time, test in representative consumer 
-   repos with webpack, custom Rollup, and other non-standard configs. 
-   (Solves: foreseeable gap in webpack compatibility)
-
-2. **Maintain an up-to-date consumer distribution list.**
-   Create a process to update email list quarterly (tie to quarterly business review). 
-   Test distribution in a dry run before major announcements. 
-   (Solves: process gap in communication reach)
-
-3. **Expand FAQ during migration window.**
-   Compile new FAQ entries from first-week support questions. 
-   Publish mid-migration (day 3-5) for fast-moving teams. 
-   (Solves: foreseeable gap in anticipating questions)
-
-4. **Assign dedicated support person + backup.**
-   No single point of failure in support. Rotating backup prevents burnout and ensures coverage. 
-   (Solves: process gap in support load management)
+| Recommendation | Solves | Owner | By |
+|---|---|---|---|
+| Test the codemod in representative consumer repos (webpack, custom Rollup) before the announcement | foreseeable gap in webpack compatibility | [name] | [date or next release] |
+| Refresh the consumer distribution list before each major announcement | process gap in communication reach | [name] | [date] |
 
 ## Decision record update
 
@@ -261,22 +167,28 @@ Link to updated decision record or create one.
 **Retrospective completed:** [Date]  
 **Prepared by:** [Your name/team]  
 **Reviewed by:** [System team lead, key consumer representative]
+
+**Scope**
+- **Inspected:** [plan documents, execution data and feedback actually provided]
+- **Not inspected:** [dimensions with no data, marked "not measured" above]
+- **Assumptions:** [anything taken as given rather than verified]
 ```
 
 ## Quality Checks
 
 1. **Every gap is classified:** No gaps listed without foreseeable/unforeseeable/process mark. Classification is clear.
-2. **Recommendations are implementation-ready:** Each recommendation can be turned into a task without additional context. Not "communicate better" but "add platform-specific migration testing to CI before release announcement."
+2. **Recommendations are implementation-ready and owned:** Each recommendation can be turned into a task without additional context, and has an owner and a date or an explicit `[needs data: owner]`. Not "communicate better" but "add platform-specific migration testing to CI before release announcement."
+7. **Measured before asked:** timeline and migration completion came from git and the usage search where a repository was in reach; the Scope block says which figures came from the user.
 3. **Plan vs reality references original plan:** Not reconstructed from memory. Links to or quotes from the actual plan document.
-4. **At least one "what worked" finding:** Retros that are entirely negative are incomplete and demoralizing. Even a problematic release had something worth repeating.
+4. **Findings are evidenced, not balanced for tone:** Include what worked where the evidence shows it; don't invent a positive to soften the report. Missing data is "not measured"; reach and completion percentages appear only if measured.
 5. **Support burden identifies patterns, not just totals:** "5 questions about X" is better than "20 total support questions." Patterns drive recommendations.
-6. **Shareable with stakeholders:** Report is complete enough to send to leadership and consumer leads without additional editing or context.
+6. **Gaps are visible:** Fill what's known; list open placeholders at the top; never invent dates, links, owners, rationale or percentages. Opens with a headline and ends with the Scope block.
 
 ## Small-system note
 
 For very small system releases (single component deprecation, single token rename):
 
-- Compress the report to a single page: one-line summary per dimension, one "what worked", one "what didn't", one recommendation.
+- Compress the report to a single page: one-line summary per dimension, what worked and what didn't (if evidenced), one recommendation.
 - Skip the table format if there's only one or two gaps total; use prose instead.
 - Tie the recommendation directly to the next release (e.g., "next time we deprecate a component, use this checklist").
 - Focus on process: small releases have small blast radii, so insights are mostly about governance efficiency, not breadth.

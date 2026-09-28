@@ -1,43 +1,41 @@
 ---
-description: 'Generate a pre-computed component index from a design system codebase — YAML infrastructure files containing a component inventory, relationship graph, and summary statistics that AI agents and MCP servers consume. This produces machine-readable index files in .ai/index/, NOT a health report or quality assessment. Trigger when someone says: index my codebase, build a relationship graph, create a component map, codebase index, what depends on what, dependency graph, map component relationships, or anything about producing queryable infrastructure files for AI agents or developer tooling. Do NOT trigger for component health assessments, quality scores, or audit reports — use component-audit for those.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(sort:*), Bash(tail:*), Bash(wc:*), Bash(git diff:*), Bash(git log:*), Bash(git rev-parse:*)
+description: 'Generate machine-readable index files in .ai/index/ (component inventory, uses/usedBy graph, stats) for AI agents. Triggers: index my codebase, build a relationship graph, what depends on what. Not an assessment; for library health use component-audit.'
 metadata:
     github-path: skills/codebase-index
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 15fe8b50a8693414b85fa5e551e1f9825e4bea92
+    github-tree-sha: 696002cf5c15d0e334bee8e0faaf39c8d893b42f
 name: codebase-index
 references:
     - ../../knowledge-notes/ai-readiness.md
     - ../../knowledge-notes/component-governance.md
+    - ../../knowledge-notes/output-discipline.md
 ---
 # Codebase index
 
 A skill for generating a pre-computed, machine-readable index of a design system's codebase. The index contains three pieces: a component inventory, a relationship graph, and summary statistics. Together they form a queryable map that eliminates the need for AI agents or developers to explore the codebase from scratch every time they need to understand the system.
 
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
+
 ## Context
 
-When an AI agent needs to work with a design system codebase, it has two options: explore or navigate. Exploration means scanning directories, grepping for imports, reading files one by one. Navigation means loading a pre-computed index and reasoning over cached data.
-
-The difference matters. Exploration is slow, incomplete, and non-deterministic. An agent scanning `src/components` might miss components in `src/layouts`, `src/pages`, or utility directories that don't follow naming conventions. It might report a deeply-nested component as "unused" because it can't trace the dependency chain. It might recreate an existing component because it didn't find it.
-
-A pre-computed index front-loads this cost. The agent loads the index once — typically a few thousand tokens — and gets a complete picture of what exists, where things live, and how they relate. Follow-up questions become cheap because the agent reasons over cached data instead of triggering new file reads.
-
-This skill generates that index. Run it after adding or removing components, and commit the output alongside the code.
+An agent exploring a codebase from scratch is slow and misses things; an agent loading a pre-computed index gets the whole picture in a few thousand tokens. This skill writes that index, and it is the pack's single producer of the component inventory and dependency graph: `token-audit`, `component-audit`, `docs-coverage`, `component-decision-tree` and `agent-instructions` read `.ai/index/` rather than building their own. Run it after adding or removing components, and commit the output alongside the code.
 
 ---
 
 ## Configuration
 
-Before producing output, check for a `.ds-ops-config.yml` file in the project root. If present, load:
-- `system.framework` — pre-selects framework detection (React, Vue, Svelte, Astro, Angular, etc.)
+If `.ds-ops-config.yml` exists, follow the configuration-and-recurring knowledge note (`../../knowledge-notes/configuration-and-recurring.md`) for loading, integration fallbacks and recurring runs. This skill reads:
+- `system.framework` — pre-selects framework detection
 - `system.component_paths` — overrides default component directory scanning
 - `system.category_model` — atomic design, functional, or custom categorisation
-- `integrations.*` — enables auto-pull for component data
-- `recurring.*` — enables comparison with previous index
+- `integrations.*` — component data sources (see below)
+- `recurring.*` — delta against the previous index (see Recurring workflow)
 
 ## Auto-pull integrations
-
-If integrations are configured in `.ds-ops-config.yml`, pull data automatically:
 
 **Figma MCP** (`integrations.figma.enabled: true`):
 - Read the published library from `integrations.figma.file_key`
@@ -50,10 +48,7 @@ If integrations are configured in `.ds-ops-config.yml`, pull data automatically:
 - Use as a secondary source for component discovery
 
 **GitHub** (`integrations.github.enabled: true`):
-- Use `gh api search/code` to count import references across consuming repositories
 - Pull PR activity for recency signals
-
-If an integration fails, log it and proceed with manual scanning.
 
 ---
 
@@ -64,6 +59,8 @@ Scan the project root to determine:
 - **Component directories**: Where components live — scan common locations: `src/components/`, `src/lib/`, `components/`, `packages/`, and any paths in `tsconfig.json` or framework config
 - **Category model**: How components are organised — atomic design (`atoms/`, `molecules/`, `organisms/`), functional (`forms/`, `navigation/`, `feedback/`), flat, or monorepo packages
 - **Styling approach**: CSS modules, CSS-in-JS, Tailwind, SCSS, or design tokens — this determines how to trace token dependencies
+
+If no component files are found under any candidate root, stop and ask where they live; don't write an empty index.
 
 Ask for or confirm (skip questions already answered by config or detection):
 - The component source root if auto-detection finds multiple candidates
@@ -91,6 +88,7 @@ For every component file found, extract:
 - **Category**: Based on the category model (atom, molecule, organism, etc.) or functional category (navigation, form, feedback, layout, data display)
 - **Metadata status**: Whether the component has structured metadata (a `.metadata.ts`, `.metadata.json`, description in Storybook, JSDoc/TSDoc block, or Figma description)
 - **Export type**: Default export, named export, or re-exported through a barrel file
+- **Token bindings**: the design tokens the component's styles reference (`var(--color-action-primary)`, `$space-gap`, `theme.colors.primary`, Tailwind utilities that map to configured tokens). Record the token names as the codebase writes them. This is the token-to-component edge that `token-audit` and `component-audit` read for blast radius, so they don't each build a second graph
 
 **What counts as a component:**
 - Files that export a renderable element (JSX, template, render function)
@@ -112,6 +110,7 @@ components:
     path: src/components/atoms/Button/Button.tsx
     category: atoms
     metadata: true
+    tokens: [--color-action-primary, --color-on-action, --space-inset-md]
   Card:
     path: src/components/molecules/Card/Card.tsx
     category: molecules
@@ -131,18 +130,21 @@ For every component in the inventory, trace two relationships:
 
 **How to trace relationships:**
 1. Parse import statements in each component file
-2. Filter to imports that reference other components in the inventory (ignore external package imports, utility imports, type imports)
+2. Resolve each import specifier before filtering. In a monorepo, `@acme/button` is a workspace package, not an external dependency — map workspace package names (from `package.json` `workspaces`, `pnpm-workspace.yaml`, or equivalent) and `tsconfig.json` `paths` aliases (`@/components/*`) to their source directories. Then filter to imports that resolve to components in the inventory, and drop genuine third-party packages, utility imports and type-only imports
 3. For each import, verify it's actually rendered in the template/JSX (an unused import is not a relationship)
 4. Record the relationship bidirectionally — if Card imports Button, then Card `uses` Button and Button `usedBy` Card
 
 **Deep tracing rules:**
 - Follow dependency chains to their leaves. If a page imports a layout, and the layout imports a nav, and the nav imports a link and an icon — the full chain matters for understanding which atoms actually appear on that page.
 - Components with `uses: []` (empty) are leaf nodes — they have no internal dependencies on other system components. These are the terminal nodes in the graph.
-- Components with `usedBy: []` (empty) are root nodes — nothing else in the system depends on them. If they're also not used directly in pages, they're orphan candidates.
+- Components with `usedBy: []` (empty) are root nodes — nothing else in the scanned repo renders them. Label these "no in-repo consumers", not orphans or unused: a public component exported from the package entry point is meant to be consumed by product repos this index doesn't scan. Only non-exported components with no in-repo consumers are worth flagging, and even then as candidates.
+- Before recording any "no in-repo consumers" result, run a positive control: confirm the import and render matching finds a component you know is used (e.g. Icon inside Button). If it doesn't, the matching is wrong for this codebase — fix it before writing the graph.
 
 **Instance counting:**
 Import count and instance count are different metrics. A page might import Button once but render it five times. Instance counting requires parsing templates, not just import statements.
-- Count `<ComponentName` tags in templates/JSX for instance counts
+- Count tags matching `<Name[\s/>]` — the trailing space, `/` or `>` stops `<Button` from also matching `<ButtonGroup`. Resolve import aliases first (`import { Button as Btn }` means count `<Btn`)
+- Namespace imports render as `<UI.Button` — match `<Namespace\.Name[\s/>]` (escape the dot) for each namespace import
+- In Vue templates, components can be written in kebab-case: match `<button-group[\s/>]` as well as `<ButtonGroup[\s/>]`
 - Detect slot/children components: if Button contains a `<slot />` and someone writes `<Button><Icon /></Button>`, the Icon instance belongs to the parent scope, not to Button's internals. Don't recurse into slot content for instance counting.
 
 ### Relationship graph format
@@ -170,7 +172,7 @@ This format makes dependency chains explicit. An agent reading this graph knows 
 
 ## Step 4: Generate summary statistics
 
-Compute aggregate metrics that give an at-a-glance picture of system health:
+Compute aggregate metrics that give an at-a-glance picture of the system's shape (figures below are illustrative):
 
 ```yaml
 summary:
@@ -183,7 +185,9 @@ summary:
     organisms: 12
     templates: 4
     pages: 6
-  orphanedComponents: 2
+  noInRepoConsumers:
+    exported: 14    # public components; consumed by product repos, not a finding
+    internal: 2     # not exported and not rendered in-repo; candidates for review
   mostDependedOn:
     - name: Icon
       fanIn: 14
@@ -205,7 +209,7 @@ summary:
 - **componentsWithMetadata**: Count of components with structured metadata files or descriptions
 - **relationshipsMapped**: Total number of relationship edges in the graph (sum of all `uses` arrays)
 - **categories**: Breakdown by category model
-- **orphanedComponents**: Components with both `uses: []` and `usedBy: []` — these are standalone and may be unused
+- **noInRepoConsumers**: Components with `usedBy: []` and no direct use in pages or layouts, split into public exports (expected) and internal components (candidates for review). Never label these "unused" — consumers outside the repo weren't checked
 - **mostDependedOn**: Top components by fan-in count (usedBy length). These are foundation components — changes propagate widely
 - **highestFanOut**: Top components by fan-out count (uses length). These are integration points — fragile to upstream changes
 - **metadataCoverage**: Percentage of components with structured metadata
@@ -213,13 +217,22 @@ summary:
 
 ## Step 5: Produce the index output
 
-Generate three output files to be committed alongside the codebase:
+Generate three output files to be committed alongside the codebase. Both YAML files start with the same generation metadata, so any reader can tell whether the index is current:
+
+```yaml
+meta:
+  generatedAt: 2026-03-10T14:22:05Z
+  commit: 3f9c2ab            # git rev-parse --short HEAD at generation time
+  dirtyWorkingTree: false    # true if uncommitted changes were scanned
+  scannedPaths: [packages/*/src, src/components]
+  excludedPaths: ["**/*.stories.tsx", "**/*.test.tsx"]
+```
 
 ### File 1: `component-inventory.yml`
-The full component inventory from Step 2.
+The generation metadata plus the full component inventory from Step 2.
 
 ### File 2: `component-relationships.yml`
-The full relationship graph from Step 3 plus the summary statistics from Step 4.
+The generation metadata plus the full relationship graph from Step 3 and the summary statistics from Step 4.
 
 ### File 3: `query-protocols.md`
 A markdown file with instructions for how to use the index. This file teaches AI agents (or developers) how to read the map:
@@ -229,13 +242,18 @@ A markdown file with instructions for how to use the index. This file teaches AI
 
 When answering questions about the design system codebase:
 
-1. Check the index first. Before reading any source file, check whether the
+1. Check freshness first. Compare meta.commit with `git rev-parse --short HEAD`.
+   If they differ, run `git diff --name-only <meta.commit> HEAD` against
+   meta.scannedPaths. If component files changed, treat the index as stale
+   for those components: read the source for them, and suggest regenerating.
+
+2. Check the index next. Before reading any source file, check whether the
    answer exists in component-inventory.yml or component-relationships.yml.
 
-2. Never re-read relationship files. If the relationship graph has already
-   been loaded in this session, reason over the cached data.
+3. Don't re-read an index that's current. If the relationship graph has
+   already been loaded in this session and HEAD hasn't moved, reason over it.
 
-3. Follow-up questions should be cheap. After the initial index load,
+4. Follow-up questions should be cheap. After the initial index load,
    subsequent questions should require zero or minimal file reads.
 
 ## Common query patterns
@@ -250,12 +268,20 @@ When answering questions about the design system codebase:
 → Check component-relationships.yml → relationships → [Component] → uses.
 
 ### "Is [Component] actually used?"
-→ Check usedBy. If usedBy is non-empty, it's used. If usedBy is empty,
-  check whether it appears in any page or layout file directly.
+→ Check usedBy. If usedBy is non-empty, it's used in this repo. If usedBy is
+  empty, check whether it appears in any page or layout file directly. If it
+  still has no in-repo consumers, say exactly that: product repos outside
+  meta.scannedPaths weren't checked, so it isn't evidence of "unused".
 
-### "What atoms appear on [Page]?"
-→ Trace the dependency chain: Page → imports → their imports → ...
-  until you reach components with uses: []. Those are the atoms.
+### "What atoms appear on [Page]?" (application repos only)
+→ Pages and layouts exist in application repos, not in a design system
+  package. If meta.scannedPaths holds an app, trace Page → imports → their
+  imports → ... until you reach components with uses: []. In a system repo,
+  say there are no pages to trace.
+
+### "Which components bind [token]?"
+→ Search component-inventory.yml for the token name under tokens:. The
+  list is the in-repo blast radius of a token change.
 
 ### "If I change [Component], what breaks?"
 → Follow the usedBy chain recursively. Direct consumers are in usedBy.
@@ -284,18 +310,18 @@ When answering questions about the design system codebase:
 - Commit these files to version control alongside the code
 - Re-run the index after adding, removing, or significantly restructuring components
 - Add an npm script or CI step to regenerate the index on changes to the component directories
-- Reference the query-protocols.md in any AI agent configuration or system prompt that interacts with the codebase
+- Link `.ai/index/` from `AGENTS.md` (`agent-instructions` does this) so agents find the index before exploring
 
 ## Recurring workflow
 
-If `recurring.enabled: true` in config, compare the new index against the previous one and produce a delta report:
+Follows the recurring-run procedure in the configuration-and-recurring note. Specific to this skill: compare the new index against the previous one and produce a delta report:
 
 - **Added components**: Components in the new index that were not in the previous one
 - **Removed components**: Components in the previous index that are no longer present
 - **New relationships**: Dependency edges that did not exist before
 - **Broken relationships**: Dependency edges that existed before but are now gone
 - **Metadata coverage change**: Did coverage go up or down?
-- **New orphans**: Components that became orphaned since last index
+- **Newly without in-repo consumers**: Components whose usedBy became empty since the last index
 
 This delta is valuable for tracking system evolution over time and catching unintentional structural changes.
 
@@ -306,6 +332,9 @@ This delta is valuable for tracking system evolution over time and catching unin
 - Every component file in the scanned directories is accounted for in the inventory — no files are silently skipped
 - Relationship graph is bidirectional — if A uses B, then B's usedBy includes A
 - Summary statistics are consistent with the inventory and graph data (totals match, percentages are accurate)
+- Both YAML files carry generation metadata (generatedAt, commit, scanned paths)
+- Nothing is labelled "unused" or "orphan"; empty usedBy is reported as "no in-repo consumers", with the positive control passed
 - Category assignment is based on the detected or configured model, not assumed
 - Internal/private components are either included or excluded consistently based on user preference
-- The query-protocols.md is tailored to the specific project's structure, not generic
+- The query-protocols.md is tailored to the specific project's structure, not generic, and page-level queries appear only when an application was scanned
+- Every component carries its token bindings, so downstream skills can read the token graph from the index

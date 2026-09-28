@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gcloud
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: faaeadea169886088811f78c600c131be7f1ebf5
+    github-tree-sha: e79ad07a482cd3a10e63d1225b6166a8a5a674ca
+    version: 1.0.0
 name: gcloud
 ---
 # gcloud CLI Skill for AI Agents

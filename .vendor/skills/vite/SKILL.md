@@ -5,14 +5,14 @@ metadata:
     github-path: skills/vite
     github-ref: refs/heads/main
     github-repo: https://github.com/antfu/skills
-    github-tree-sha: 3c0dc60ce4ffc34fca02aaa7eb21130ae48c8dff
+    github-tree-sha: 9007774626884249324c5acce3537355a51e937d
     source: Generated from https://github.com/vitejs/vite, scripts at https://github.com/antfu/skills
-    version: 2026.1.31
+    version: 2026.9.25
 name: vite
 ---
 # Vite
 
-> Based on Vite 8 beta (Rolldown-powered). Vite 8 uses Rolldown bundler and Oxc transformer.
+> Based on Vite v8.3.1 (Rolldown-powered), generated at 2026-09-25. Vite 8 uses the Rolldown bundler and the Oxc transformer instead of esbuild + Rollup.
 
 Vite is a next-generation frontend build tool with fast dev server (native ESM + HMR) and optimized production builds.
 

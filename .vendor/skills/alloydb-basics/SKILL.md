@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/alloydb-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: d51a89f243b4c3f8b1ff2bc14f7ecdac5f86070b
+    github-tree-sha: bb764a070495a9d938b74a464410ac24903804b3
+    version: 1.0.0
 name: alloydb-basics
 ---
 # AlloyDB Basics

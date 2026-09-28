@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-cluster-creation
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 3b2fe04c819e61d41f189a336f33549017f4e181
+    github-tree-sha: 239c0b29cc910471c59c57ddffc8515ba1683eab
+    version: 1.0.0
 name: gke-cluster-creation
 ---
 # GKE Cluster Creation

@@ -8,7 +8,8 @@ metadata:
     github-path: skills/cloud/cloud-sql-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 8f1465994b22a632dd70b44025b7f2339720532c
+    github-tree-sha: dbd40824068ec5220e8ff3f2099fab0536a087a0
+    version: 1.0.0
 name: cloud-sql-basics
 ---
 # Cloud SQL Basics

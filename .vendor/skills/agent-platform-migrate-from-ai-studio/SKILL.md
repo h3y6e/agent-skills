@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/agent-platform-migrate-from-ai-studio
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: c618af97310447f5d036a5ce6255979dffac6397
+    github-tree-sha: 131725c1ef9f1ac400bcbf3b5ed0c30692e0cdea
+    version: 1.0.0
 name: agent-platform-migrate-from-ai-studio
 ---
 # Migrating from Gemini API in AI Studio to Agent Platform

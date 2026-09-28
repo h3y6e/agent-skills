@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gemini-agents-api
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: c4d09f7fbaf86ea2165780b3688a7cb7dc2ff124
+    github-tree-sha: f638b712a67ec7700c14f97f55c60f88d5f4f903
+    version: 1.0.0
 name: gemini-agents-api
 ---
 # Gemini Enterprise Agent Platform - Managed Agents API Skill

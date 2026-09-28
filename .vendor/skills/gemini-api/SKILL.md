@@ -6,7 +6,8 @@ metadata:
     github-path: skills/cloud/gemini-api
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: f9ba7dbac9e997260e2ac0b6372afd8743cfb6af
+    github-tree-sha: b40c9fc9b374cd3e33074876607746088c56bba0
+    version: 1.0.0
 name: gemini-api
 ---
 > [!IMPORTANT]

@@ -1,17 +1,23 @@
 ---
-description: 'Create a structured narrative record documenting why a design system decision was made — the context, options considered, trade-offs, and rationale. This produces a human-readable decision document, NOT machine-executable rules or constraint files. Trigger when someone says: document this decision, record why we chose, ADR, architecture decision record, capture this decision, why did we pick, what was the reasoning, or anything about preserving the narrative behind a specific design system choice. Do NOT trigger for encoding governance policies as machine-checkable rules — use governance-encoder for that.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(grep:*), Bash(rg:*)
+description: 'Write a narrative decision record (ADR) for a design system choice: context, options, trade-offs, consequences, including declined proposals. Triggers: document this decision, ADR, why did we choose, capture the reasoning. Machine-checkable rules: governance-encoder.'
 metadata:
     github-path: skills/decision-record
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: ff9f08a6dee373b84ecd2b48626952adadf6d2c0
+    github-tree-sha: 9dfafba076cab23e6c59aef70333a40d9a1b47a8
 name: decision-record
 references:
     - ../../knowledge-notes/component-governance.md
+    - ../../knowledge-notes/output-discipline.md
 ---
 # Decision record
 
 A skill for creating structured decision records for design system choices. Covers component decisions, token architecture choices, tooling selections, governance policies, and any other decision worth recording so future contributors do not have to reverse-engineer the reasoning.
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Context
 
@@ -20,16 +26,6 @@ Design systems accumulate decisions faster than they accumulate documentation. T
 A decision record does not need to be formal. It needs to be findable and honest. The format below is lightweight enough to write in under twenty minutes and structured enough to be useful when someone reads it twelve months later.
 
 ---
-
-## Step 1: Clarify the decision
-
-Ask for or confirm:
-- What was decided? (One clear sentence)
-- When was this decided?
-- Who was involved in making the decision?
-- Is this decision already made, or is it still in progress?
-
-If the decision is in progress, the record still gets written — just with an open status. Decision records for in-progress decisions are often the most valuable, because they capture the thinking before it is lost in the gap between discussion and resolution.
 
 ## Step 0: Decision trigger checklist
 
@@ -51,18 +47,38 @@ Before writing a record, confirm this decision warrants one. Not every choice ne
 
 When in doubt, write the record. A twenty-minute investment in documentation saves hours of re-discovery and re-debate.
 
+## Step 0b: Find the team's existing records
+
+Before writing, look for where decisions already live and match it: `docs/adr/`, `docs/decisions/`, `adr/`, `decisions/`, an `.adr-dir` file (adr-tools), a MADR template (`template.md` with "Decision Drivers" and "Considered Options"), a log4brains config, or a docs-platform section the user names. If records exist, use their template's section names and their numbering (sequential `NNNN-` prefixes are the norm; take the next number). If none exist, use `docs/decisions/NNNN-<kebab-title>.md` starting at `0001`, and say so. Don't invent a date-based id scheme: two decisions in one month would collide.
+
+## Step 1: Clarify the decision
+
+Ask for or confirm:
+- What was decided? (One clear sentence)
+- When was this decided?
+- Who was involved in making the decision?
+- Is this decision already made, or is it still in progress?
+- What options were considered, and why was each rejected? Get these from the user or from linked sources (meeting notes, PR threads, RFCs)
+
+If the decision is in progress, the record still gets written — just with an open status. Decision records for in-progress decisions are often the most valuable, because they capture the thinking before it is lost in the gap between discussion and resolution.
+
 ## Step 2: Write the record
 
-Use the following six-section structure.
+Use the following structure. Impact assessment is conditional; every other section appears in every record.
+
+Record only options, reasons and trade-offs the user supplied or that appear in the sources you were given. Where something is missing, write `[unknown — ask X]` naming who would know. Never infer rationale: a plausible reason that nobody actually gave is worse than a visible gap, because future readers will treat it as fact.
 
 ---
 
 ### Decision record: [title]
 
-**ID:** DR-[number or date-based ID, e.g. DR-2026-03]
+**ID:** [sequential, matching the team's existing records, e.g. 0007]
 **Date:** [when the decision was made or this record was created]
-**Status:** Accepted / Proposed / Superseded / Deprecated
-**Authors:** [who made or documented this decision]
+**Status:** Proposed / Accepted / Declined / Superseded / Deprecated
+**Deciders:** [who made the decision]
+**Author:** [who wrote this record, if different]
+
+Use Declined for proposals that were turned down (for example, rejection records from `contribution-workflow`); the record then explains which criteria weren't met and under what conditions it could be revisited.
 
 ---
 
@@ -73,6 +89,10 @@ What was the situation that made this decision necessary? What problem was being
 Write this as a factual description of the state of the world at the time of the decision. Include any constraints that shaped the decision space — technical, organisational, time-based, or otherwise. Do not frame the context to make the eventual decision look inevitable. Future readers need to understand the real landscape, including the pressures that influenced the outcome.
 
 Two to four sentences is usually enough.
+
+#### Decision drivers
+
+The three to five forces that decided it: a constraint, a requirement, a cost, a deadline, a team preference. Each from the user or a source; none inferred. This is the section future readers use to tell whether the decision still holds when the forces change.
 
 #### Options considered
 
@@ -91,23 +111,23 @@ State the decision in one sentence. Then explain the primary reasoning in two to
 
 Be honest about trade-offs. If the chosen option had weaknesses that were accepted, name them. If the decision was influenced by non-technical factors — timelines, team preferences, tooling constraints — include that. Decision records that paper over trade-offs are records of what was decided, not why, which makes them significantly less useful.
 
-#### Impact assessment
+#### Impact assessment (API, token or breaking changes only)
 
-Quantify the impact of this decision. Numbers make a decision record actionable instead of archival.
+Include this section when the decision changes a component API, token names or values, or anything consumers must migrate. Skip it for conventions, tooling and process decisions with no migration cost.
 
 | Impact dimension | Measurement |
 |---|---|
 | Files affected | [count — from grep/search if available] |
 | Components affected | [count and names] |
 | Consuming teams affected | [count and names] |
-| Estimated migration effort | [range in hours, with assumptions] |
+| Migration effort | [user-supplied estimate, or "not measured"] |
 | Token/API changes required | [count] |
 | Breaking changes | [yes/no — if yes, list them] |
-| Timeline to full adoption | [estimate] |
+| Timeline to full adoption | [user-supplied, or "not measured"] |
 
-If codebase access is available, run searches to populate these numbers rather than estimating. For example, if the decision is to adopt DTCG token format, count how many token files need restructuring, how many consuming files reference tokens, and how many teams own those files.
+If codebase access is available, run searches to populate the counts. For example, if the decision is to adopt DTCG token format, count how many token files need restructuring, how many consuming files reference tokens, and how many teams own those files.
 
-If quantitative data is not available, state what would need to be measured and recommend running the appropriate audit skill before committing to a timeline.
+Where a row wasn't measured, write "not measured" and name the audit skill that would measure it. Don't fill rows with estimates; effort and timeline only go in if the user supplied them, labelled as theirs.
 
 #### Consequences
 
@@ -124,28 +144,9 @@ If this decision is later superseded, this field gets updated with the reference
 
 Any other decision records relevant to understanding this one. Links or IDs are sufficient.
 
-#### Recommended follow-up skills
+## Step 3: Write the file
 
-Based on the decision's consequences, recommend specific Design System Ops skills that should be run next. This turns a decision record from a static document into a trigger for action.
-
-| If the decision involves... | Run this skill next | Why |
-|---|---|---|
-| Deprecating a component | `deprecation-process` | Produces the full deprecation plan with timeline, migration guidance, and communication |
-| Changing token architecture | `token-audit` | Validates the new architecture and surfaces gaps before migration begins |
-| Changing a component API | `change-communication` | Produces release notes and migration guide for consuming teams |
-| Introducing a new convention | `governance-encoder` | Encodes the convention as a machine-checkable rule |
-| Affecting multiple consumers | `codemod-generator` | Produces automated migration scripts for consuming codebases |
-| Making a large investment | `stakeholder-brief` | Translates the decision into a business-language brief for leadership |
-
-Include only the follow-up skills that are relevant to this specific decision. This cross-linking ensures that decisions lead to action rather than sitting in a decisions directory unacted upon.
-
----
-
-## Step 3: Determine where it lives
-
-Decision records should be stored somewhere contributors will actually look. If the team uses a documentation platform (Zeroheight, Notion, Confluence), the record belongs there alongside the relevant component or system section. If the team uses a code repository, a `/decisions` or `/adr` directory works.
-
-Suggest the appropriate location based on what you know about the team's setup. If unknown, recommend the documentation platform as the default.
+Write the record to the location and with the numbering found in Step 0b, and say the path. If the team keeps decisions on a documentation platform rather than in the repo, produce the record in chat for pasting and say where it belongs. If the location is unknown and the user hasn't said, ask once; don't leave the record only in chat by default.
 
 ## Step 4: Suggest a review trigger
 
@@ -153,10 +154,20 @@ Decision records go stale. Suggest a condition that should prompt this record to
 
 This does not need to be elaborate. One sentence is enough: "Revisit this decision if the team grows beyond ten active contributors or if the token tooling changes."
 
+## Step 5: Summarise in chat
+
+- **Headline:** the decision, its status and the file written
+- **Open:** every `[unknown — ask X]` left in the record
+- **Next:** the skills that follow from the decision's consequences, in chat rather than in the permanent record: `deprecation-process` for a removal, `token-audit` for a token architecture change, `version-bump-advisor` then `change-communication` for an API change, `governance-encoder` for a new convention, `codemod-generator` when many consumers must change, `stakeholder-brief` for a large investment
+- **Scope:** what sources were read (meeting notes, PRs, RFCs) and what the impact counts came from
+
 ## Quality checks
 
+- The record matches the team's existing ADR format and numbering, and was written to the repository or produced for the platform the team uses
+- Decision drivers are present and each traces to the user or a source
 - Context describes the actual situation, not a setup for the conclusion
 - Options considered reflects the real decision space, not a post-hoc list
+- Every option, reason and trade-off traces to the user or a named source; gaps are marked `[unknown — ask X]`
 - Decision section names the trade-offs that were accepted, not just the benefits
 - Consequences covers both intended outcomes and known risks
 - Record is written for someone who was not in the room — no assumed context

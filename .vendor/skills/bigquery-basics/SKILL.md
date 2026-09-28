@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/bigquery-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: bd79b0f698729a6db32a4d2c3fc68d05d17c2a64
+    github-tree-sha: a1453c5822a92128ea71a9f6bdf00b07fd9c6bfb
+    version: 1.0.0
 name: bigquery-basics
 ---
 # BigQuery Basics

@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-upgrades
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 4208fdc92b02ff91985056f7c3f3f3ddd3ca98e1
+    github-tree-sha: 00d1e7b18f521e5032a836bce9a3a00f05fc5c0a
+    version: 1.0.0
 name: gke-upgrades
 ---
 # GKE Upgrades & Maintenance

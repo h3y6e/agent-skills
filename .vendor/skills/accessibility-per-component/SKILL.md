@@ -1,10 +1,11 @@
 ---
-description: 'Run an accessibility audit on a specific design system component. Trigger when someone says: accessibility check, a11y audit, WCAG compliance, is this accessible, check accessibility, does this meet WCAG, screen reader support, keyboard navigation check, or anything about auditing the accessibility of a specific component.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(npx axe:*), Bash(npx test-storybook:*), Bash(npx playwright:*)
+description: 'Audit one design system component''s accessibility against WCAG 2.2 AA: keyboard, screen reader, contrast, focus, ARIA, target size. Trigger: a11y audit, is this accessible, WCAG check, screen reader support, keyboard navigation check. Not for page- or product-wide audits.'
 metadata:
     github-path: skills/accessibility-per-component
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 067278214a4f1e65c4f2df4b5cfe8a07bd3177f1
+    github-tree-sha: 49fafe569b3602b508326c77b253bf03bafeee6b
 name: accessibility-per-component
 references:
     - ../../knowledge-notes/output-discipline.md
@@ -13,11 +14,23 @@ references:
 
 A skill for running a structured accessibility audit on a design system component, covering five dimensions: keyboard navigation, screen reader experience, colour and contrast, focus management, and ARIA implementation. Produces a PASS/FAIL/WARN per criterion with specific remediation guidance.
 
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
+
 ## Context
 
 Accessibility audits at the component level are more valuable than page-level or system-level assessments because they fix the problem at its source. A component with a correct accessibility implementation propagates that correctness to every product that uses it. A component with an accessibility bug propagates that bug at the same scale.
 
-This skill audits against WCAG 2.1 AA as the baseline. Where a criterion is more stringent at AAA and the difference matters practically (particularly around colour contrast and keyboard accessibility), this is noted. The output is not a compliance report — it is a practical guide to what needs to change and why.
+This skill audits against WCAG 2.2 AA as the baseline. Some legal baselines (e.g. EN 301 549) still reference WCAG 2.1 AA; use that if it's the team's obligation. Where a criterion is more stringent at AAA and the difference matters practically (particularly around colour contrast and keyboard accessibility), this is noted. 4.1.1 Parsing is obsolete in WCAG 2.2 — don't cite it. The output is not a compliance report — it is a practical guide to what needs to change and why.
+
+**Evidence rule.** PASS requires evidence from the running component or a computed ratio. Code-only inference is ⚠️ WARN (unverified). Overall status = the worst criterion result.
+
+## Configuration
+
+If `.ds-ops-config.yml` exists, follow the configuration-and-recurring knowledge note (`../../knowledge-notes/configuration-and-recurring.md`) for loading, integration fallbacks and recurring runs. This skill reads:
+- `severity.missing_aria` — severity for missing or incorrect ARIA findings (default: critical)
+- `gates.accessibility.keyboard_blocks_release` and `gates.accessibility.contrast_blocks_release` — whether keyboard and contrast FAILs block release (both default: true). If a gate is set to false, still report the FAIL, and note that it does not block release under the team's config.
 
 ## Boundaries
 
@@ -33,6 +46,8 @@ Ask for or confirm:
 - The component's interactive states (default, hover, focus, active, disabled, error, etc.)
 - Any existing accessibility documentation for the component
 - Whether the component is used in any assistive technology-sensitive contexts (financial, medical, government — these warrant extra rigour)
+
+**Find the runtime evidence before auditing.** PASS needs the running component, so look for what can run it: a Storybook with the test-runner or the a11y addon (`npx test-storybook --url <storybook>` runs axe per story), `jest-axe` or `vitest-axe` tests in the repo, a Playwright setup with `@axe-core/playwright`, or a dev server. If any exists, run it for this component and use its output as evidence. If none exists, ask the user for one of: a Storybook URL, a screen-reader transcript of the primary task, or screenshots of each state. Without any of these, every keyboard, screen-reader and focus criterion is ⚠️ WARN (unverified), the report says so in its first line, and only contrast (computed from the resolved token values) can be PASS or FAIL. Don't run the whole audit from source and present it as verified.
 
 If the component can only be assessed from a design file rather than a live implementation, note that the keyboard and screen reader dimensions are being assessed against the specification rather than the built behaviour. These findings should be verified against the implementation before being marked as passing.
 
@@ -57,10 +72,10 @@ Every interactive component must be fully operable by keyboard alone. Assess:
 **Escape key**
 - For components that open a layer (modal, popover, tooltip, dropdown), does Escape close it and return focus correctly?
 
-**Skip/bypass mechanisms**
-- If the component contains a large block of content (e.g. a data table), is there a mechanism to skip past it?
+**Reaching past large content**
+- If the component contains a large block of focusable content (a data table, a long list), can a keyboard user reach the controls after it without tabbing through every cell? (This is a 2.1.1 usability check at component level; 2.4.1 Bypass Blocks is page-level and isn't cited here.)
 
-Result per criterion: PASS / FAIL / WARN (warn = partially implemented or needs verification in a specific context)
+Result per criterion: PASS / FAIL / WARN (warn = partially implemented, needs verification in a specific context, or inferred from code without running the component)
 
 ### Dimension 2: Screen reader experience
 
@@ -104,7 +119,7 @@ Result per criterion: PASS / FAIL / WARN
 - Active UI component boundaries (input borders, checkbox borders, button outlines where the shape communicates the control) must meet a 3:1 minimum contrast ratio against adjacent colours. (WCAG 1.4.11)
 
 **Focus indicator contrast**
-- The focus indicator must meet 3:1 contrast against adjacent colours. (WCAG 2.4.11 AA)
+- The focus indicator must meet 3:1 contrast against adjacent colours (WCAG 1.4.11 Non-text Contrast) and be visible (2.4.7 Focus Visible). 2.4.13 Focus Appearance (AAA) sets a stricter size and contrast-change bar — note it as an AAA recommendation, not an AA failure.
 
 **Colour as the only means of conveying information**
 - If the component uses colour to convey state or meaning (e.g. a red border for an error, a green icon for success), is colour supplemented by another indicator (icon, text label, pattern)?
@@ -134,34 +149,10 @@ Assess:
 - Is the focus indicator visible at all focusable elements within the component?
 - Is the focus indicator styled in a way that clearly distinguishes it from the hover state?
 
+**Focus not obscured**
+- When an element receives focus, is it at least partly visible — not hidden behind a sticky header, cookie banner, or the component's own overlay? (WCAG 2.4.11 Focus Not Obscured (Minimum), AA)
+
 Result per criterion: PASS / FAIL / WARN
-
-## Step 2b: Screen reader testing guide
-
-For teams new to screen reader testing, provide this practical guide alongside the audit findings. Screen reader testing is the dimension most often skipped because teams do not know how to do it.
-
-**Quick-start screen reader testing (macOS — VoiceOver):**
-1. Enable VoiceOver: Cmd + F5 (or System Settings → Accessibility → VoiceOver)
-2. Navigate with Tab to move through interactive elements
-3. Listen for: role announcement (button, link, checkbox), name (the accessible label), and state (expanded, checked, disabled)
-4. Use VO + Right Arrow to read non-interactive content
-5. Test: Can you complete the component's primary task using only keyboard + screen reader?
-
-**Quick-start screen reader testing (Windows — NVDA):**
-1. Download NVDA (free): nvaccess.org
-2. Navigate with Tab for interactive elements, Arrow keys for content
-3. Listen for the same: role, name, state
-4. Press NVDA + T to read the window title (confirms you are in the right context)
-5. Test: Can you complete the component's primary task?
-
-**What to listen for per component type:**
-- **Buttons:** Should announce "[label], button". If icon-only, should announce the action, not the icon name.
-- **Form inputs:** Should announce "[label], [type] edit". Required fields should announce "required".
-- **Modals/dialogs:** Should announce the dialog title on open. Tab should be trapped inside.
-- **Toggles/checkboxes:** Should announce current state ("checked" / "not checked") and change on toggle.
-- **Dropdowns/selects:** Should announce "[label], combo box, [current value]". Arrow keys should navigate options.
-
-Include this guide in the audit output when Dimension 2 (Screen reader experience) has any FAIL or WARN findings, so teams can verify the fix.
 
 ### Dimension 5: ARIA implementation
 
@@ -183,6 +174,28 @@ Assess the correctness of ARIA usage:
 
 Result per criterion: PASS / FAIL / WARN
 
+### Other component-level criteria
+
+Check these where the component type makes them relevant, and report them under the closest dimension:
+- **2.5.8 Target Size (Minimum):** pointer targets are at least 24×24 CSS px, or have enough spacing to meet the exception. Watch icon buttons, close buttons, chips, and pagination.
+- **2.5.7 Dragging Movements:** anything operated by dragging (sliders, sortable lists, resizable panels) has a single-pointer alternative such as click-to-position or move buttons.
+- **2.5.3 Label in Name:** where a control has a visible label, its accessible name contains that text.
+- **1.4.13 Content on Hover or Focus:** tooltips and popovers can be dismissed without moving pointer or focus (usually Escape), stay open while hovered, and don't vanish until dismissed.
+- **1.4.12 Text Spacing:** content doesn't clip or overlap when line, paragraph, letter, and word spacing are increased. Fixed-height containers are the usual cause.
+- **3.3.7 Redundant Entry:** for multi-step form components, information already entered is auto-filled or selectable rather than re-typed.
+- **4.1.3 Status Messages:** dynamic results (error text appearing, "3 results", "saved") are announced without moving focus, via `aria-live` or `role="status"`/`role="alert"`. This is the criterion behind the live-region check in Dimension 2; cite it.
+- **3.3.1 Error Identification and 3.3.2 Labels or Instructions:** for inputs, an error is described in text (not colour alone) and associated with the field; required fields and formats are stated before the user submits.
+- **1.4.10 Reflow and 1.4.4 Resize Text:** the component still works at 320 CSS px wide (or 400% zoom) without two-dimensional scrolling, and at 200% text size. Fixed widths and heights are the usual failures.
+- **Forced colours (Windows High Contrast):** under `@media (forced-colors: active)` the component's boundaries, focus indicator and state indicators survive, because backgrounds and box-shadows are removed. Check for `forced-color-adjust` and system-colour keywords where a border or outline carries meaning.
+- **Motion:** animations respect `prefers-reduced-motion` (2.3.3 is AAA; note it as a recommendation, and flag any flashing over three times a second as 2.3.1, which is A).
+
+## Step 2b: Screen reader testing guide
+
+When Dimension 2 has any FAIL or WARN, include a short verification guide so the team can confirm the fix:
+- **VoiceOver (macOS):** Cmd + F5 to toggle; Tab through interactive elements, VO + Right Arrow for content.
+- **NVDA (Windows, free from nvaccess.org):** Tab for interactive elements, arrow keys for content.
+- Listen for role, name, and state on every interactive element, then try to complete the component's primary task with keyboard and screen reader alone.
+
 ## Step 3: Produce the audit report
 
 ---
@@ -192,7 +205,7 @@ Result per criterion: PASS / FAIL / WARN
 Open with a headline sentence that tells the reader the overall state and where to focus.
 
 **Audit date:** [date]
-**WCAG level:** 2.1 AA
+**WCAG level:** 2.2 AA (or 2.1 AA where that is the team's legal obligation)
 **Assessment method:** [live component / design specification / Storybook]
 **Additional context:** [e.g. tested with VoiceOver/macOS, NVDA/Windows — if applicable]
 
@@ -200,18 +213,24 @@ Open with a headline sentence that tells the reader the overall state and where 
 
 #### Overall status
 
-✅ PASS / ⚠️ WARN / ❌ FAIL
+✅ PASS / ⚠️ WARN / ❌ FAIL — the worst result across all criteria. Criteria inferred from code alone are ⚠️ WARN (unverified), never PASS.
 
 ---
 
 #### Results by dimension
 
-| Dimension | Criterion | Result | Finding | Remediation |
-|---|---|---|---|---|
-| Keyboard | Tab order | ✅ PASS / ⚠️ WARN / ❌ FAIL | [specific finding] | [specific fix] |
-| ... | | | | |
+| Dimension | Criterion | Result | Severity | Evidence | Finding | Remediation |
+|---|---|---|---|---|---|---|
+| Keyboard | Tab order | ✅ PASS / ⚠️ WARN / ❌ FAIL | 🔴/🟠/🟡/⚪ or — | [file:line, story id, axe rule id, computed ratio, or transcript line] | [specific finding] | [specific fix] |
+| ... | | | | | | |
 
-**Status key:** ✅ PASS / ⚠️ WARN / ❌ FAIL
+**Status key:** ✅ PASS / ⚠️ WARN / ❌ FAIL. Severity applies to FAIL and WARN rows:
+- 🔴 **Critical** — the component can't be operated by keyboard; a control has no accessible name; a modal doesn't trap or return focus; body text below 4.5:1. These block release under the default gates
+- 🟠 **High** — a state isn't announced; the focus indicator is below 3:1 or hidden; a target is under 24 CSS px; a tooltip fails 1.4.13; a role is missing a required attribute
+- 🟡 **Medium** — disabled-state contrast; redundant or conflicting ARIA; clipping under text spacing or reflow
+- ⚪ **Low** — AAA recommendations (focus appearance, reduced motion)
+
+Evidence is where the result came from: the source line, the Storybook story or axe rule, the computed ratio with both colours, or the transcript line. A row with no evidence is WARN, never PASS.
 
 ---
 
@@ -227,9 +246,19 @@ For each FAIL or WARN finding, include the relevant WCAG criterion (e.g. 1.4.3 C
 
 ---
 
+**Scope**
+- **Inspected:** [component source files, Storybook stories, running build, or design file actually examined]
+- **Not inspected:** [e.g. assistive technologies not tested, states or variants not reachable, consuming-product contexts]
+- **How "none found" was checked:** [for any criterion reported as clean, the evidence: screen reader output heard, computed contrast ratio, keyboard walk-through]
+- **Assumptions:** [e.g. token values assumed to match the rendered colours]
+
+If any of these findings are deliberate decisions (for example, a pattern that departs from the APG for a documented reason), tell me and I'll treat them as accepted in future runs.
+
+---
+
 ## Step 3b: Remediation code examples
 
-For every FAIL or WARN finding, include a concrete code example showing the fix. Remediation guidance without code is advice; remediation guidance with code is a pull request waiting to happen.
+For every FAIL or WARN finding, include a concrete code example showing the fix, placed directly under the finding it fixes, before the Scope block. Remediation guidance without code is advice; remediation guidance with code is a pull request waiting to happen. Write the example against the component's own source and stack, not a generic one, and don't replace the consumer's existing handlers: a fix that clones a child element must merge `onFocus`, `onBlur`, `onMouseEnter` and the rest with any the child already had.
 
 **Format for each code example:**
 
@@ -247,18 +276,6 @@ Why this fixes it:
 
 **Examples by dimension:**
 
-Keyboard navigation — missing Enter/Space activation:
-```
-Before:
-  <div className="button" onClick={handleClick}>Submit</div>
-
-After:
-  <button type="button" onClick={handleClick}>Submit</button>
-
-Why: Native <button> provides Enter and Space activation, focus management,
-and correct role announcement without additional ARIA. (WCAG 2.1.1)
-```
-
 Screen reader — missing accessible name on icon button:
 ```
 Before:
@@ -269,58 +286,6 @@ After:
 
 Why: aria-label provides the accessible name. aria-hidden on the icon prevents
 the icon name from being announced alongside the label. (WCAG 4.1.2)
-```
-
-Focus management — focus not returned on close:
-```
-Before:
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
-After:
-  const triggerRef = useRef(null);
-  const handleClose = () => {
-    setIsOpen(false);
-    triggerRef.current?.focus();
-  };
-  // On the trigger: ref={triggerRef}
-
-Why: Focus returns to the element that opened the overlay, maintaining
-the user's position in the page. (WCAG 2.4.3)
-```
-
-ARIA — missing required attributes on disclosure:
-```
-Before:
-  <button onClick={toggle}>FAQ Item</button>
-  <div className={isOpen ? 'visible' : 'hidden'}>Answer text</div>
-
-After:
-  <button
-    onClick={toggle}
-    aria-expanded={isOpen}
-    aria-controls="faq-answer-1"
-  >FAQ Item</button>
-  <div id="faq-answer-1" role="region" aria-labelledby="faq-trigger-1">
-    Answer text
-  </div>
-
-Why: aria-expanded communicates state. aria-controls links trigger to content.
-role="region" with aria-labelledby makes the content a labelled landmark. (WCAG 4.1.2)
-```
-
-Colour contrast — insufficient text contrast:
-```
-Before:
-  .label { color: #999999; background: #FFFFFF; }
-  /* Contrast ratio: 2.85:1 — fails WCAG AA (4.5:1 required) */
-
-After:
-  .label { color: #595959; background: #FFFFFF; }
-  /* Contrast ratio: 7.0:1 — passes WCAG AA and AAA */
-
-Why: Darkening the text colour from #999 to #595959 exceeds the 4.5:1 minimum. (WCAG 1.4.3)
 ```
 
 Include the appropriate code example pattern for every FAIL finding. For WARN findings, include the example if the fix is clear; omit it if the finding requires contextual judgment that code alone cannot resolve.
@@ -334,7 +299,7 @@ Simple components (buttons, badges, basic inputs) tend to pass most checks. The 
 ### Combobox / Autocomplete
 Additional checks beyond the standard five dimensions:
 - Does the listbox open on focus, on typing, or on a specific trigger? Is this consistent with the APG combobox pattern?
-- Are results announced to screen readers as they filter? (aria-live region or aria-activedescendant)
+- Is the filtered result count announced as results change? (a polite live region; `aria-activedescendant` conveys the active option, not the count)
 - Can the user select with Enter without the form submitting prematurely?
 - What happens when no results match? Is this announced?
 - Is the selected value persistent after closing and reopening?
@@ -346,22 +311,21 @@ Additional checks:
 - Does the month/year navigation wrap correctly at boundaries?
 - Are disabled dates announced as disabled, not just visually greyed?
 - Can the user type a date directly into the input field as an alternative to the calendar?
-- Does the date format match the aria-label pattern (e.g., "March 9, 2026" not "03/09/2026")?
+- Is each day's accessible name a spoken-form date in the user's locale (e.g. "Tuesday 9 March 2026"), not a numeric string that reads as digits?
 - Is the calendar grid marked with `role="grid"` with correct row/cell roles?
 
 ### Data table
 Additional checks:
 - Are column headers marked with `scope="col"` or equivalent ARIA?
 - Is sort state announced (aria-sort)?
-- Can the user navigate cell-by-cell with arrow keys?
+- If it is an interactive grid (`role="grid"`), can the user navigate cell-by-cell with arrow keys? A static `<table>` should not add arrow-key cell navigation — screen readers already provide table navigation.
 - Are action buttons within cells reachable without tabbing through every cell?
 - Does pagination announce the new page content?
 - Are row selection checkboxes grouped correctly?
 
 ### Modal / Dialog
 Additional checks:
-- Is `aria-modal="true"` set on the dialog element?
-- Is the inert attribute or aria-hidden applied to background content?
+- Custom dialogs: is `aria-modal="true"` set, and is background content made `inert`? A native `<dialog>` opened with `showModal()` satisfies both — don't flag it for missing `aria-modal`.
 - Can the user reach the close button without tabbing through all dialog content?
 - Does the dialog have a visible, announced title?
 - Are nested modals (dialog within dialog) handled correctly?
@@ -370,9 +334,9 @@ Additional checks:
 Additional checks:
 - Does the implementation use `role="tablist"`, `role="tab"`, `role="tabpanel"` correctly?
 - Are tabs navigable with arrow keys (not Tab)?
-- Does activating a tab move focus to the panel or keep it on the tab?
+- Does focus stay on the tab when it is activated? Per the APG, arrow keys move between tabs and Tab moves into the panel; activation should not move focus to the panel.
 - Is the `aria-selected` state correctly toggled between tabs?
-- Are disabled tabs announced as disabled but still focusable?
+- Disabled tabs: the APG allows either focusable-but-`aria-disabled` or removed from the arrow-key sequence; check the implementation picks one, applies it consistently, and announces the disabled state
 
 For any component matching these types, run both the standard five-dimension audit AND the extended protocol. The extended protocol findings should be interleaved into the main report by dimension, not presented as a separate section.
 
@@ -384,7 +348,10 @@ For any component matching these types, run both the standard five-dimension aud
 - Focus management is assessed for every interactive state, not just the default state
 - ARIA findings reference the APG pattern for the component type where relevant
 - Contrast findings include actual contrast ratio figures, not just pass/fail
+- Every PASS cites evidence from the running component or a computed ratio; code-only inferences are WARN
+- The report ends with the Scope block and the invitation to flag deliberate deviations
 - Every FAIL finding has a specific, actionable remediation with a code example
 - The distinction between specification-level and implementation-level findings is clear
 - Complex components (Combobox, DatePicker, DataTable, Modal, Tabs) receive the extended protocol in addition to the standard audit
-- Code examples show both before (violation) and after (fix) with the specific WCAG criterion referenced
+- Code examples show both before (violation) and after (fix) with the specific WCAG criterion referenced, and preserve the consumer's existing handlers
+- Runtime evidence (test-runner, axe, a transcript, screenshots) was found or asked for before the audit, and its absence is stated in the first line

@@ -1,15 +1,22 @@
 ---
-description: 'Produce a communication package for a design system change — release notes, migration guide, and team announcement. This produces communication artefacts for changes that have already been decided, NOT the deprecation lifecycle itself. Trigger when someone says: communicate this change, breaking change announcement, how do I tell teams about this, release notes, change log, write the announcement, or anything about communicating an update, release, or breaking change to consuming teams. Do NOT trigger for planning or executing a deprecation — use deprecation-process for that, which includes its own communication plan as part of the full lifecycle.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(ls:*), Bash(git log:*), Bash(git tag:*)
+description: 'Write release notes, a migration guide and a team announcement for a design system change that is already decided, scaled to its impact. Triggers: release notes, announce this change, tell teams about a breaking change. Semver call: version-bump-advisor. Deprecation plan: deprecation-process.'
 metadata:
     github-path: skills/change-communication
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: e17055d7d34d511478a640091df41c95380bbc3b
+    github-tree-sha: fa41ea5b3efc407ace1e7fd8c06dc4dc04fb5ba8
 name: change-communication
+references:
+    - ../../knowledge-notes/output-discipline.md
 ---
 # Change communication
 
-A skill for producing a complete change communication package: release notes, migration guidance where needed, and a team announcement ready to send. Calibrated to the change type so a patch note does not read like a major incident, and a breaking change does not get buried in a routine release update.
+A skill for producing a complete change communication package: release notes, migration guidance where needed, and a team announcement with every open gap listed at the top. Calibrated to the change type so a patch note does not read like a major incident, and a breaking change does not get buried in a routine release update.
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Context
 
@@ -19,11 +26,13 @@ The goal is communication proportional to impact. This skill distinguishes betwe
 
 ## Boundaries
 
-This skill communicates changes that have already been decided. It does not decide what to change, plan a deprecation lifecycle, or execute a migration — use `deprecation-process` for deprecation planning and `codemod-generator` for migration execution. If the change has not been finalised, ask the user to confirm the change details before producing communication. If the change affects no consuming teams (internal refactor with no API surface change), a communication package is unnecessary — confirm with the user and stop.
+This skill communicates changes that have already been decided. It does not decide what to change, plan a deprecation lifecycle, or execute a migration — use `deprecation-process` for deprecation planning and `codemod-generator` for migration execution. It is, however, the single owner of the migration guide: `deprecation-process` hands it a mapping table and `version-bump-advisor` a list of breaking changes with before/after rows, and this skill renders the guide once so the announcement, the release notes and the docs all say the same thing. If the change has not been finalised, ask the user to confirm the change details before producing communication. If the change affects no consuming teams (internal refactor with no API surface change), a communication package is unnecessary — confirm with the user and stop.
 
 ---
 
 ## Step 1: Classify the change
+
+Read before asking: `CHANGELOG.md` and `git log <last tag>..HEAD` for the actual change list; `.changeset/` for pending changesets and their summaries; `.ds-ops-config.yml` for `system.name` and `integrations.npm.package_name`, which the notes and announcement name. A package's own change list is the source; the user's description of it fills gaps.
 
 Ask for or confirm:
 - What changed? (component, token, pattern, API, tooling, governance)
@@ -33,19 +42,16 @@ Ask for or confirm:
 
 **Small-system note (fewer than 5 components):** For systems this size, calibrate communication intensity down. The audience is smaller and likely in closer contact — a breaking change to one of four components affects the entire consumer base, but that base may be a single team who you can notify directly in a standup or sync. Release notes are still required (they are the historical record), but the "announcement" may be a Slack message rather than a formal communication package. If the change is significant, a direct conversation replaces the written migration guide — walk through it together.
 
-Classification:
+Classification: take the patch / minor / major call from `version-bump-advisor` output or the user. If neither exists and the change touches a published API or token, run `version-bump-advisor` first rather than classifying here. Map the result to a communication tier:
 
-**Patch** — bug fix, documentation correction, minor visual refinement with no API changes. No consuming team action required.
+- **Patch** → release notes entry only
+- **Minor** → release notes + brief announcement
+- **Major (breaking)** → full package: release notes, migration guide, direct notification
+- **System-level change** (governance, naming convention, architecture, tooling; may not have a semver bump) → announcement, context document, Q&A period
 
-**Minor enhancement** — new prop, new variant, new component, new token. Backward compatible. Consuming teams can adopt at their own pace.
+## Step 1b: Communication tailoring matrix (only with adoption data)
 
-**Breaking change** — removed prop, renamed token, changed component API in a way that breaks existing usage, changed token values in a way that affects visual output. Consuming teams must act.
-
-**System-level change** — governance policy, naming convention, architecture decision, tooling change. Wide blast radius, may not be technically breaking but affects how teams work with the system.
-
-## Step 1b: Communication tailoring matrix
-
-Before producing the communication package, assess the adoption context. The same change needs different messaging depending on how teams are engaging with the system.
+Use this matrix only when `adoption-report` output or the user tells you how each team engages with the system. Without that, skip it and send the same package to every affected team; don't guess a team's adoption level.
 
 **High-adoption teams** (actively using, contributing, engaged):
 - Communication tone: informational. These teams will read release notes proactively.
@@ -88,14 +94,14 @@ No announcement needed. Patch notes accumulate in the release log and are review
 
 ---
 
-### For a minor enhancement:
+### For a minor change:
 
 **Release notes entry + brief announcement**
 
 **Release notes entry:**
 ```
-[Component or token name] — [what was added]
-What's new: [one to two sentences describing the addition and its purpose]
+[Component, token or feature] — [what was added or changed]
+What's new: [one to two sentences describing the addition or change and its purpose]
 How to use it: [one sentence or a link to the documentation]
 Action required: None — existing usage is unaffected
 ```
@@ -192,6 +198,16 @@ For significant system-level changes, offer a defined period for questions — e
 
 ---
 
+### The design side
+
+Half of a design system's consumers never read a changelog: they open Figma. For any change that touches the Figma library, the package includes:
+
+- **Library publish notes:** the description entered when the library is published, in the same shape as the release notes entry (what changed, the replacement, the date, the link to the guide). Designers see this in the library update prompt, which is the only announcement many of them get
+- **In-library signals:** for a deprecation or rename, the component or variable renamed with a `[Deprecated]` prefix or moved to a Deprecated page, with its description pointing at the replacement; new components placed and named where designers will find them
+- **The designers' channel:** the announcement posted where designers are, not only where engineers are, with the Figma-side action stated ("update the library; `OldCard` is now under Deprecated")
+
+Write these alongside the code-side notes; a change communicated only to engineers shows up as design-to-code drift a sprint later.
+
 ## Step 3: Choose the channels
 
 Different communication channels serve different purposes. Calibrate by change type:
@@ -199,12 +215,12 @@ Different communication channels serve different purposes. Calibrate by change t
 | Channel | When to use |
 |---|---|
 | Release notes / changelog | Every change, every time |
-| Slack / team channels | Minor enhancements and above |
+| Figma library publish notes | Every change that touches the library |
+| Slack / team channels (engineers and designers) | Minor changes and above |
 | Direct team notification | Breaking changes and system-level changes |
 | Email | Breaking changes with external or cross-org impact |
 | Meeting / live session | System-level changes with significant workflow impact |
 
-The default is to over-communicate rather than under-communicate. A team that learns about a breaking change from their own bug report will remember it.
 
 ## Step 4: Set a follow-up
 
@@ -217,9 +233,10 @@ Document this follow-up schedule alongside the communication so it does not get 
 
 ## Quality checks
 
-- Change classification is correct — breaking changes are not communicated as minor enhancements
+- Change classification comes from `version-bump-advisor` or the user — breaking changes are not communicated as minor enhancements
 - Migration guide is specific enough to follow without additional context
 - Direct notification for breaking changes names the specific consequence of inaction
-- Channels are appropriate to the change type
+- Channels are appropriate to the change type, and any change that touches the Figma library has publish notes and a designers' announcement
+- The change list came from the CHANGELOG, git history or changesets where a repository was in reach
 - A follow-up schedule exists for breaking and system-level changes
-- Announcement copy can be sent as-is — no placeholders left unfilled
+- Fill what's known; list every unresolved placeholder (dates, links, owners, contacts) at the top for the user. Never invent dates, links, owners, rationale or percentages

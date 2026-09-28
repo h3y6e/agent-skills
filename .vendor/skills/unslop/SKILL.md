@@ -5,7 +5,7 @@ metadata:
     github-path: pstack/skills/unslop
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: e19dcc9c531f4609df38bc86c62cf0e8b6d8f444
+    github-tree-sha: d5baa969e71c4ddb563412b0ec170fa3b05b6d6e
 name: unslop
 ---
 # Unslop
@@ -16,7 +16,6 @@ Edit text to remove AI patterns.
 
 1. Scan for the patterns below.
 2. Rewrite. Preserve meaning, match intended tone.
-3. Self-audit: "What makes this obviously AI generated?" Fix remaining tells.
 
 ## Patterns to detect and fix
 

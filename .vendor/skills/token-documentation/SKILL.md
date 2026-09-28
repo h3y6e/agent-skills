@@ -1,17 +1,23 @@
 ---
-description: 'Write documentation for design tokens — covering semantic intent, usage context, and do/don''t examples. Trigger when someone says: document these tokens, token reference, what does this token mean, token usage guide, write the token docs, token intent, or anything about creating human-readable documentation for design tokens.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(grep:*), Bash(rg:*)
+description: 'Write reference docs for existing design tokens: semantic intent, use/do-not-use, references, used-by, theming contract, misuse list. Triggers: document our tokens, token reference, what is this token for. Token structure/architecture audit: use token-audit; file validation: schema-validator.'
 metadata:
     github-path: skills/token-documentation
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 2fdac0f75a8ad4694071c7c5bf532a7fed47316c
+    github-tree-sha: 4ca9e9bbcf12dddfd99b85226f809a9c1567d520
 name: token-documentation
 references:
     - ../../knowledge-notes/token-architecture.md
+    - ../../knowledge-notes/output-discipline.md
 ---
 # Token documentation
 
 A skill for writing documentation for design tokens that communicates semantic intent, usage context, and application rules across all three tiers. Output is reference documentation that tells consumers what a token means and how to use it correctly — not just what value it resolves to.
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Context
 
@@ -27,14 +33,14 @@ This skill documents existing tokens. It does not create new tokens, redesign th
 
 ## Configuration
 
-Before producing output, check for a `.ds-ops-config.yml` file in the project root. If present, load:
-- `integrations.style_dictionary` — if enabled, parse the token tree automatically
-- `integrations.figma` — if enabled, pull Figma variables to cross-reference
-- `integrations.documentation` — if enabled, check for existing token docs to update rather than rewrite
+If `.ds-ops-config.yml` exists, follow the configuration-and-recurring knowledge note (`../../knowledge-notes/configuration-and-recurring.md`) for loading, integration fallbacks and recurring runs. This skill reads:
+- `integrations.style_dictionary` — the token tree, parsed automatically
+- `integrations.figma` — Figma variables to cross-reference
+- `integrations.documentation` — existing token docs to update rather than rewrite
 
 ## Auto-pull integrations
 
-**Style Dictionary v4** (`integrations.style_dictionary.enabled: true`):
+**Style Dictionary (4 or 5) or Terrazzo** (`integrations.style_dictionary.enabled: true`, or a config in the repo):
 - Parse the config to extract the complete token tree with resolved references
 - Auto-detect tier structure, token names, values, and reference chains
 - This replaces the manual "provide your token files" step
@@ -46,8 +52,6 @@ Before producing output, check for a `.ds-ops-config.yml` file in the project ro
 **Documentation platform** (`integrations.documentation.enabled: true`):
 - Check for existing token documentation to incorporate rather than overwrite
 
-If an integration fails, log it and proceed with manual input.
-
 ## Step 1: Gather the token set
 
 Ask for or confirm (skip questions already answered by auto-pull):
@@ -58,7 +62,9 @@ Ask for or confirm (skip questions already answered by auto-pull):
 
 For CSS custom properties and SCSS variables: infer token hierarchy from naming patterns (e.g. `--color-blue-500` → primitive, `--color-action-primary` → semantic, `--button-bg-default` → component). For Tailwind configs, the `theme` block is the token source. For TypeScript/JavaScript token objects: the exported object hierarchy maps directly to token tiers — nested keys are the path (e.g. `tokens.color.brand.blue[500]` → `color.brand.blue.500`). Include both the object key path and resolved value in the documentation. For `as const` objects, the literal types provide exact values without runtime ambiguity.
 
-If the full system is being documented, suggest starting with the semantic tier. Primitive tokens document themselves — their names and values are sufficient. Semantic tokens are where intent documentation does the most work. If the system uses component tokens, include those after semantics.
+If the full system is being documented, suggest starting with the semantic tier. Semantic tokens are where intent documentation does the most work. If the system uses component tokens, include those after semantics.
+
+**Provenance rule.** Names, values and references come from the token files. Intent comes from token descriptions (`$description` or equivalent), the team's docs, or the user; intent you write from the name alone is marked "proposed". "Used by" and misuse entries follow the rules in Step 2 and Step 4. See "Every figure and fact needs a source" in the output-discipline knowledge note.
 
 ## Step 2: Document by tier
 
@@ -97,7 +103,7 @@ Example: `color.action.primary` — Identifies the primary interactive action in
 
 **Usage constraint:** Where this token should not be used — specific misuse patterns to avoid.
 
-**Component associations:** Which components from the design system use this token by default.
+**Component associations:** Which components reference this token. Build this by searching component source (styles, token bindings, component token files) for each token's name in the forms the codebase uses (e.g. `color.action.primary`, `--color-action-primary`, `tokens.color.action.primary`). Before writing "no components use this token", confirm the search finds a token you know is used; if it can't, write "not determined" instead.
 
 Format per semantic token:
 ```
@@ -110,7 +116,7 @@ References: [primitive token(s)]
 Use on: [list of appropriate surfaces or component types]
 Do not use on: [specific misuse contexts]
 
-Used by: [component names that reference this token by default]
+Used by: [component names found referencing this token, or "not determined"]
 ```
 
 ### Component tokens (include only if the system uses them)
@@ -147,11 +153,11 @@ This documentation is often missing entirely, which means teams learn the themin
 
 ## Step 4: Add the misuse reference
 
-At the end of the documentation, include a brief misuse reference: a list of the most common incorrect token usages the design systems team has seen, with the correct alternative for each.
+At the end of the documentation, include a brief misuse reference: the most common incorrect token usages, with the correct alternative for each. Take entries from `token-compliance` or `drift-detection` findings, or from the user. Anything else is labelled "anticipated" so it isn't read as an observed problem.
 
 Format:
 ```
-Common misuse: Using [wrong token] to achieve [visual outcome]
+Common misuse: Using [wrong token] to achieve [visual outcome] ([source] or anticipated)
 Why it's wrong: [one sentence — what the wrong token communicates that conflicts with the intended use]
 Use instead: [correct token]
 ```
@@ -162,6 +168,8 @@ Five to ten entries is usually enough to cover the most frequent errors.
 
 At the top of the token documentation, include a governance section that answers the question every consumer eventually asks: "Who do I talk to when I need a token that does not exist?"
 
+Ask the user for each field; leave `[TBC]` for anything they don't know rather than naming an owner or cadence yourself.
+
 **Token governance:**
 - **Token owner:** [Named person or team responsible for the token architecture]
 - **Request process:** [How to request a new token — contribution workflow reference, Slack channel, or issue template]
@@ -170,99 +178,53 @@ At the top of the token documentation, include a governance section that answers
 
 This note prevents the common failure mode where token documentation is accurate at publication but becomes stale because no one owns the update process.
 
-## Step 5: DTCG 2025.10 alignment documentation (staff-level)
+## Step 5: Write intent back into the source
 
-If the system uses or is migrating to DTCG 2025.10 format, include a specification alignment section:
+The token file is where intent survives. Docs pages drift; a `$description` travels with the token into Style Dictionary, Terrazzo, Tokens Studio, Figma variable sync and any docs generator. So the machine-readable output of this skill is the source itself, not a parallel file:
 
-**Token type documentation.** For each DTCG token type used in the system, document:
-- The type name (e.g., `color`, `dimension`, `typography`, `shadow`)
-- How the system uses it (which tokens carry this type)
-- For composite types: the sub-value structure and which sub-values are required vs optional
+- **DTCG files:** put the one-sentence intent in each semantic (and component) token's `$description`. Put the use/do-not-use guidance under `$extensions` with a reverse-domain key the team chooses, for example `"com.<org>.usage": { "useOn": [...], "doNotUseOn": [...] }`, so tools that don't know it preserve it. Group-level `$description` covers a scale.
+- **Style Dictionary 3 files:** the `comment` property.
+- **CSS, Sass, TypeScript token sources:** a comment above the declaration in the file's own comment syntax.
+- **Figma variables** (Console MCP connected): write the same sentence to the variable description with `figma_update_variable`, so designers read what engineers read.
 
-**Resolver and set documentation.** If the system uses DTCG resolvers:
-- Document each token set: its purpose, which tokens it contains, and which files it references
-- Document each mode: its name, purpose, and which sets it activates
-- Document the composition order: when multiple sets are active, which takes precedence?
-- Include a visual map of sets and modes if the resolver is complex (3+ sets or modes)
+Show the diff and write only after the user confirms. Intent marked "proposed" is written as `[proposed] …` so nobody mistakes a guess for a decision. A separate JSON reference is a copy that drifts: produce `.ai/tokens/token-reference.json` only if the user asks for it, and then generate it from the source after the write-back, never by hand.
 
-**Migration status.** For systems partially migrated to DTCG:
-- Which token categories are DTCG-compliant and which are not?
-- What are the known gaps (missing `$type` annotations, non-standard composite structures)?
-- What is the migration path for each gap?
+**DTCG alignment (only if the system uses or is migrating to DTCG).** One short section: the token types in use and any composite sub-value conventions; for resolvers, each set's purpose and files, each modifier and its contexts, and the resolution order (a diagram if there are more than three sets or contexts); and, if partly migrated, which categories are done and what remains.
 
-## Step 5b: Machine-readable token reference (staff-level)
+## Step 6: Write the documentation files
 
-Produce a supplementary JSON reference that AI tools and build pipelines can consume directly:
+Unless `integrations.documentation` names a platform, write markdown the docs site can ingest:
 
-```json
-{
-  "tokenArchitecture": {
-    "tiers": ["primitive", "semantic", "component"],
-    "format": "dtcg-2025.10|style-dictionary|custom",
-    "totalTokenCount": 0,
-    "themeSupport": true|false,
-    "themes": ["light", "dark"]
-  },
-  "semanticTokens": [
-    {
-      "name": "color.action.primary",
-      "type": "color",
-      "intent": "Primary interactive action colour",
-      "references": "color.blue.500",
-      "themes": {
-        "light": "#0066CC",
-        "dark": "#66AAFF"
-      },
-      "usedBy": ["button.background.default", "link.color.default"],
-      "useOn": ["primary actions", "interactive elements"],
-      "doNotUseOn": ["decorative surfaces", "text body"]
-    }
-  ]
-}
+```
+docs/tokens/
+  README.md            index: tiers explained, governance note (Step 4b), theming contract (Step 3), links
+  primitives.md        per group: scale, source, "reference via semantic tokens only"
+  semantic.md          grouped by function (actions, feedback, text roles, surfaces, spacing roles), the Step 2 format per token
+  components.md        only if the system uses component tokens; grouped by component
+  quick-reference.md   Step 6b
+  misuse.md            Step 4
 ```
 
-This reference complements the human-readable documentation. Keep both in sync — changes to the documentation should be reflected in the JSON, and vice versa.
-
-## Step 6: Format for the documentation platform
-
-Token documentation needs to be findable, not just accurate. Recommend the following structure for the documentation platform:
-
-- Index page: overview of the token architecture with tier explanations and links to each tier's reference
-- Primitive reference: grouped by category (colour, spacing, typography, etc.)
-- Semantic reference: grouped by function (actions, feedback states, text roles, surfaces, etc.)
-- Component token reference: grouped by component, linked from each component's documentation page
-
-The semantic reference is the most-used section. Make sure it is the easiest to find and navigate.
+If token docs already exist, update them in place and say what changed; don't leave two sets. The semantic reference is the most-used page: it comes first in the index and its groups are the jobs consumers do, not the token categories.
 
 ## Step 6b: Quick reference by semantic function
 
 In addition to the full documentation, produce a one-page quick reference organised by what the consumer is trying to do, not by token category:
 
-**"I need a colour for..."**
-- Primary action (buttons, links): `color.action.primary`
-- Secondary action: `color.action.secondary`
-- Destructive action: `color.action.destructive`
-- Success feedback: `color.feedback.success`
-- Error feedback: `color.feedback.error`
-- Warning feedback: `color.feedback.warning`
-- Body text: `color.content.primary`
-- Secondary text: `color.content.secondary`
-- Surface background: `color.surface.primary`
-- Elevated surface: `color.surface.elevated`
+Illustrative lines:
+- **"I need a colour for a primary action":** `color.action.primary`
+- **"I need spacing between sections":** `spacing.lg`
+- **"I need a page heading":** `typography.heading.lg`
 
-**"I need spacing for..."**
-- Between related elements: `spacing.xs` or `spacing.sm`
-- Between sections: `spacing.lg` or `spacing.xl`
-- Page margin: `spacing.page`
-- Component internal padding: `spacing.component.padding`
+Use the system's real token names, grouped by the jobs consumers actually do (colour, spacing, typography). Publish it alongside the full documentation as a fast-lookup tool.
 
-**"I need typography for..."**
-- Page heading: `typography.heading.lg`
-- Section heading: `typography.heading.md`
-- Body text: `typography.body.md`
-- Caption or label: `typography.body.sm`
+## Step 7: Summarise in chat
 
-Adapt this template to the actual tokens in the system. The quick reference should use the real token names and be published alongside the full documentation as a fast-lookup tool.
+End with a short chat summary:
+- **Headline:** how many tokens were documented, by tier
+- **Files written:** doc paths, the token source files whose `$description` (or comments) were updated, and `.ai/tokens/token-reference.json` only if the user asked for it
+- **Marked:** intents marked "proposed", misuse entries marked "anticipated", "Used by" entries left "not determined", and `[TBC]` governance fields
+- **Scope:** the block from the output-discipline knowledge note, including how the "Used by" search was shown to work
 
 ## Quality checks
 
@@ -270,5 +232,7 @@ Adapt this template to the actual tokens in the system. The quick reference shou
 - Usage context and usage constraint are both present — not just "use this for buttons"
 - Component tokens reference their semantic parent and include override guidance
 - The theming contract is documented if theming is supported
-- The misuse reference exists and is specific
+- The misuse reference exists and is specific, with each entry sourced or labelled "anticipated"
+- "Used by" comes from a source search with a positive control, not from token names
 - Format is appropriate for the documentation platform — navigable, not just comprehensive
+- Intent was written back into the token source (with confirmation), so the docs and the files can't disagree; no parallel JSON was produced unasked

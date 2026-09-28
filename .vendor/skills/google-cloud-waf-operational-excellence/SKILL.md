@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-waf-operational-excellence
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: f8ffe15b00415ed462cc374de6db72db7bf2f60e
+    github-tree-sha: 61eb3b7d65cd9848662a8a4d198f8c20ccc020f0
+    version: 1.0.0
 name: google-cloud-waf-operational-excellence
 ---
 # Google Cloud Well-Architected Framework skill for the Operational Excellence pillar

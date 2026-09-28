@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-backup-dr
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 256ae45c80453defcc15df3156477a38a3016677
+    github-tree-sha: e4141767798c587a7f71900fb89b423df5e80121
+    version: 1.0.0
 name: gke-backup-dr
 ---
 # GKE Backup & Disaster Recovery

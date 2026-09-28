@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-networking-observability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 512d03e5a8eb8ce27a5619788bd8219b35ff7d92
+    github-tree-sha: 3caac6e0bd577d3dfd74f54429c7b8fb54182109
+    version: 1.0.0
 name: google-cloud-networking-observability
 ---
 # Google Cloud Networking Observability Expert

@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-multitenancy
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a94d75c1a0969064daa907e9dd38c6e88ee9918a
+    github-tree-sha: 0003bbfcdc6f227295f68423916186dc6494dd30
+    version: 1.0.0
 name: gke-multitenancy
 ---
 # GKE Multi-Tenancy

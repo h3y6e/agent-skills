@@ -1,10 +1,11 @@
 ---
-description: 'Audit whether a design system''s documentation surface keeps pace with its component library — coverage gaps (components with no docs), staleness (docs that predate the component''s last code change), and orphaned docs. Works with zero integration from the codebase and a Storybook build; Zeroheight, Supernova, and custom docs sites are optional layers. Trigger when someone says: docs coverage, documentation audit, are our docs up to date, which components are undocumented, is our documentation keeping pace, stale docs check, documentation health, Storybook coverage, or anything about whether the documentation surface matches the components. Do NOT trigger for WRITING documentation — use usage-guidelines, pattern-documentation, token-documentation, or ai-component-description for that. Do NOT trigger for general system health (use system-health) or for documentation usage/analytics (use adoption-report).'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(sort:*), Bash(tail:*), Bash(wc:*), Bash(git log:*), Bash(git ls-files:*)
+description: 'Audit whether docs keep pace with components: undocumented components, stale docs, orphaned pages, with join confidence. Triggers: docs coverage, which components are undocumented, stale docs check. Not for writing docs (usage-guidelines) or doc analytics (adoption-report).'
 metadata:
     github-path: skills/docs-coverage
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 30ee4e0f1096029efe5d11db23ad36664be934ee
+    github-tree-sha: 4b92f0600918c0483e8e67e9212af9b9f641d585
 name: docs-coverage
 references:
     - ../../knowledge-notes/documentation-coverage.md
@@ -14,6 +15,10 @@ references:
 # Docs coverage
 
 A skill for auditing whether a design system's documentation surface keeps pace with its components. It measures the code (the source of truth for what exists) against each documentation surface and reports three things: **coverage gaps** (components with no documentation), **staleness** (documentation that predates the component's last code change), and **orphaned docs** (pages for components that no longer exist). Produces a severity-rated finding table with per-signal confidence labelling.
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Context
 
@@ -27,26 +32,23 @@ The hard part is trust. Coverage is a join between two lists — components in c
 
 ## Configuration
 
-Before producing output, check for a `.ds-ops-config.yml` file in the project root. If present, load:
+If `.ds-ops-config.yml` exists, follow the configuration-and-recurring knowledge note (`../../knowledge-notes/configuration-and-recurring.md`) for loading, integration fallbacks and recurring runs. This skill reads:
 - `system.framework` — affects how component files are discovered (e.g. `.tsx` / `.vue` / `.twig`)
-- `severity.*` — severity-rating overrides, applied the same way the other audit skills apply them
+- `severity.*` — severity-rating overrides
 - `integrations.storybook.static_path` — local Storybook build directory (e.g. `storybook-static`); the preferred source
 - `integrations.storybook.url` — published Storybook URL for pulling `/index.json` when no local build exists
 - `integrations.documentation` — optional hosted platform: `platform`, `url`, `api_key_env`, plus `styleguide_id` (Zeroheight) or `design_system_id` (Supernova)
-- `integrations.github` — if enabled, used to read change history when the audit runs outside a local clone
+- `integrations.github` — change history when the audit runs outside a local clone
 - `docs_coverage.staleness_threshold_days` — grace window before a doc is flagged stale (default 90)
-- `recurring.*` — if this is a recurring run, load the previous report for trend comparison
-
-If no config file exists, proceed with defaults and codebase discovery.
+- `recurring.*` — trend comparison (see Recurring workflow)
 
 ## Auto-pull integrations
-
-If integrations are configured, pull data automatically before asking the user for manual input.
 
 **Storybook — the primary surface (`integrations.storybook.enabled: true` or a local build):**
 - Prefer a local static build: read the index from `integrations.storybook.static_path` (default `storybook-static/index.json`). No server, no auth.
 - If only a URL is configured, fetch `<url>/index.json`.
-- Branch on the top-level `v` field, which tracks the Storybook version: `v: 3` is the SB 6 `stories.json` (entries under the `stories` key); `v: 4` and `v: 5` are the SB 7+ `index.json` (entries under `entries`), and `v: 5` (SB 8.1+) adds `componentPath`. `componentPath` is opt-in and not guaranteed even on recent Storybook — use it for the Tier A join when present, and **fall back to the Tier B name join whenever it is absent, regardless of `v`**.
+- **No build and no URL:** read the CSF files directly. `*.stories.*` grouped by their `title` (or the default export's `component`) give rung 1; a `tags: ['autodocs']` entry or a sibling MDX file gives a docs page. Say under Scope that the inventory came from story source, not an index, and that `componentPath` joins weren't available.
+- Branch on the top-level `v` field, which tracks the Storybook version: `v: 3` is the SB 6 `stories.json` (entries under the `stories` key); `v: 4` and `v: 5` are the SB 7+ `index.json` (entries under `entries`), and `v: 5` (SB 8.1+) adds `componentPath`. `componentPath` is opt-in and not guaranteed even on recent Storybook — use it for the Tier A join when present, and **fall back to the Tier B name join whenever it is absent, regardless of `v`**. A `v: 3` `stories.json` has no `type: 'docs'` entries at all, so it can't show rung 2: mark rung 2 **unknown** for v3, unless you read the MDX files or each story's `parameters.docs` directly.
 - The official Storybook MCP (`@storybook/addon-mcp`) is **optional** — at the time of writing it needs a running server and is React-only/experimental. Use it only if the tools are already available; never make it a dependency.
 
 **Documentation platform — optional layers (`integrations.documentation.enabled: true`):**
@@ -54,15 +56,14 @@ If integrations are configured, pull data automatically before asking the user f
 - `supernova`: use the MCP "Relay" or `@supernovaio/sdk` — `get_design_system_component_list` vs `get_documentation_page_list` gives a coverage diff (heuristic link, Tier B/C). Per-page staleness timestamps are not reliably exposed — mark staleness unknown unless a page timestamp is actually present.
 - `custom`: crawl the sitemap or rendered HTML for page titles; name-match only (Tier C).
 
-If an integration is configured but fails (auth, rate limit, missing build), log the failure and fall back to the codebase-only baseline. Never block the audit because a platform is unavailable.
-
 ## Step 0: Build the component inventory (the source of truth)
 
 Establish what components exist before looking at any documentation.
 
 1. If a `codebase-index` output exists (`.ai/index/`), use its component list — it is already resolved and classified.
-2. Otherwise glob the components directory. Common roots: `src/components/**`, `packages/*/src/**`, `lib/components/**`, `app/components/**`. Treat each component file/symbol as a candidate (e.g. `Button.tsx`, not `Button.test.tsx`, `Button.stories.tsx`, or `index.ts` barrels).
-3. Record, per component: name, resolved file path (repo-relative, forward-slash), and category if a classification is available.
+2. Otherwise, if the package has a public barrel (`src/index.ts`, or each package's entry point in a monorepo), use its component exports as the inventory — that's what consumers see and what needs docs. Internal building blocks that aren't exported don't need public docs; count them separately if at all.
+3. Only if there's no barrel, glob the components directory. Common roots: `src/components/**`, `packages/*/src/**`, `lib/components/**`, `app/components/**`. Treat each component file/symbol as a candidate (e.g. `Button.tsx`, not `Button.test.tsx`, `Button.stories.tsx`, or `index.ts` barrels), and say the inventory may include internal components.
+4. Record, per component: name, resolved file path (repo-relative, forward-slash), and category if a classification is available.
 
 Produce a brief inventory line before continuing: `N components found across M directories.` If discovery finds nothing, ask the user where components live.
 
@@ -70,17 +71,16 @@ Produce a brief inventory line before continuing: `N components found across M d
 
 For each available surface, list what is documented.
 
-- **Storybook:** parse `index.json`. Group entries by `title`. For each component, record: has a `type: 'story'` entry (rung 1, *exists*), has a `type: 'docs'` entry — autodocs or MDX via `tags` (rung 2, *described*), and the resolved `componentPath` and `importPath`. Optionally parse the CSF file for `argTypes`/`args` and `play` presence (documented controls, interaction tests).
+- **Storybook:** parse `index.json`. Group entries by `title`. For each component, record: has a `type: 'story'` entry (rung 1, *exists*); has a docs page — autodocs or MDX via `tags` (unknown for a v3 `stories.json`, see above); and the resolved `componentPath` and `importPath`. A docs page alone doesn't make a component *described*: the `autodocs` tag generates a page even when no prop has a description. Rung 2 needs the page **and** descriptions on most props, from `argTypes` in the CSF file or JSDoc on the props interface. Record the prop-description ratio per component (described props of total) and report it; a page with 0 of 12 props described is rung 1 with a docs page, not rung 2. Also note `play` presence (interaction tests) where the CSF is read.
+- **Figma component descriptions** (Console MCP `figma_get_component`, or the official MCP's `get_design_context` on the library node): a documentation surface for designers. Record which components have a non-empty description and report it as its own column, not merged into the Storybook rungs.
 - **Hosted platform (if configured):** list documented pages and, where exposed, their `updated_at`/last-modified timestamp.
 - **Usage guidance (rung 3):** if the system documents usage separately (a `usage-guidelines` output, MDX "When to use" sections, a Zeroheight guideline page), record which components reach rung 3.
 
 ## Step 2: Join the inventories
 
-Join code components to documentation entries using the reliability hierarchy from `documentation-coverage.md`, and **record the tier on every match**:
+Join code components to documentation entries using the Tier A / B / C reliability hierarchy in `documentation-coverage.md` (file path, then symbol name, then fuzzy title match), and **record the tier on every match**. Never state a Tier C result as fact.
 
-- **Tier A (high):** Storybook v5 `componentPath`, normalised, matched to the component file path. Exact.
-- **Tier B (medium):** component export name or `title` last segment. Display strings can drift — flag it.
-- **Tier C (low):** fuzzy name match against page titles/headings (hosted platforms, custom sites). Never stated as fact.
+Before reporting anything as undocumented, run a positive control: confirm the join matches a component you can see is documented (open its story or page). If the join misses it, the key doesn't fit this codebase — fix it before reporting gaps.
 
 ## Step 3: Coverage gap analysis
 
@@ -88,18 +88,18 @@ From the join, produce:
 
 - **Undocumented components** — in code, no entry on any surface. Report each with the join tier that found (or failed to find) it. Group by the documentation rung they fall short of.
 - **Rung distribution** — how many components reach *exists* / *described* / *guided*. A high story count with few described/guided components is itself a finding.
-- **Orphaned docs** — pages/stories whose component no longer exists in code. These point the opposite direction and are usually quick removals.
+- **Orphaned docs** — pages/stories whose component no longer exists in code. These point the opposite direction and are usually quick removals. Before calling a page orphaned, search the codebase for the name it documents (including renamed or re-exported symbols) — a Tier B/C "orphan" is often just a title that drifted from the component name.
 
 ## Step 4: Staleness analysis
 
 For each documented component, compare change dates:
 
-- Component last change: `git log -1 --format=%cI -- <component source path>`. "Component change" means the last commit touching the component's source — by default the whole component file or directory.
-- **Be aware this proxy can over-flag.** A commit that only touched a test file, a story, or a comment still moves this date, so a doc can be flagged stale when nothing user-facing changed. This is acceptable for a risk flag (over-inclusion is safer than missing real drift), but when a flagged component's most recent commit looks test-only or cosmetic, inspect what actually changed (`git log -1 --name-only -- <component path>`) and either confirm a substantive change or lower the finding's confidence. Do not hard-exclude file types by pattern — judge the commit.
+- Component last change: `git log -1 --format=%cI -- <component source path>`. If the latest commit looks test-only or cosmetic, check it with `git log -1 --name-only -- <component path>` and lower confidence rather than excluding file types.
 - Doc last change: `git log -1 --format=%cI -- <story/MDX file>`, or the platform timestamp (`updated_at`).
-- Apply the comparison explicitly: flag **stale** when `component_last_change − doc_last_change > staleness_threshold_days` (default 90) — the component changed and the doc has not caught up within the grace window. If the doc is the same age as or newer than the component, it is never stale.
-- `git log` returns **empty output (not an error)** for a file with no commits in the current branch/clone. Treat an empty result as untracked and mark staleness **unknown** — never as fresh. Do the same when a platform exposes no timestamp. (Shallow clones and un-`--follow`ed renames can also produce misleading dates — prefer a full clone when staleness matters.)
-- Frame stale findings as a **risk**, not a defect: "docs predate a code change on [date] — confirm they still match," with both dates shown.
+- Flag **stale** when `component_last_change − doc_last_change > staleness_threshold_days` (default 90). A doc the same age as or newer than the component is never stale.
+- `git log` returns **empty output (not an error)** for a file with no commits in the current branch/clone. Treat an empty result as untracked and mark staleness **unknown** — never as fresh. Do the same when a platform exposes no timestamp. Prefer a full clone: shallow clones and renames without `--follow` give misleading dates.
+
+See `documentation-coverage.md` for why this proxy over-flags, how staleness and join confidence combine, and how to frame stale findings as a risk ("docs predate a code change on [date] — confirm they still match", with both dates shown) rather than a defect.
 
 ## Step 5: Produce the report
 
@@ -129,30 +129,40 @@ One paragraph. Overall state, the most urgent gap, and an explicit note on which
 List each finding with:
 - Finding ID (e.g. DC-01)
 - Severity: 🔴 Critical / 🟠 High / 🟡 Medium / ⚪ Low
+  - 🔴 Critical — a foundational component (Button, Input, Text, Icon, or anything with high fan-in) with no documentation on any surface (rung 0)
+  - 🟠 High — any other public component at rung 0; a foundational component stale on a high-confidence timestamp; any component stale on a high-confidence timestamp where the code change touched its props interface or rendered element (the doc is now wrong, not just old)
+  - 🟡 Medium — a public component stuck at rung 1 (a story but no docs page), or a stale doc on a lower-confidence timestamp
+  - ⚪ Low — orphaned docs, internal components, and Tier C gaps awaiting confirmation
+  - Only weight by traffic or usage if adoption data exists (see the adoption-measurement note); otherwise use foundational status, which the code can show
 - Category: Coverage gap / Staleness / Orphan
 - Confidence: Tier A / B / C (and timestamp source for staleness)
+- Evidence: the component's file path and the docs entry it was joined to (story id, docs page URL) or the surfaces searched when none was found; for staleness, both change dates with their sources
 - Description, affected component(s), and recommended action
 
 **Orphaned documentation**
 List pages/stories with no matching component, with the suggested removal.
 
 **Action list**
-- **Immediate:** undocumented high-traffic or foundational components; orphans
+- **Immediate:** undocumented foundational components (or high-usage ones, where adoption data exists); orphans
 - **Planned:** raising the described/guided layer; resolving staleness risks
 - **Review:** Tier C matches needing manual confirmation
+
+**Scope**
+- **Inspected:** [inventory source (barrel, index, or glob), Storybook index version, platforms queried, git history depth]
+- **Not inspected:** [surfaces out of reach, e.g. a docs platform without API access]
+- **How "none found" was checked:** [the join's positive control, and which rungs were unknown rather than absent — omit if the report makes no absence claims]
+- **Assumptions:** [anything taken as given rather than verified]
+
+End with the closing note below.
 
 ---
 
 ## Recurring workflow
 
-If `recurring` is configured in `.ds-ops-config.yml`:
+Follows the recurring-run procedure in the configuration-and-recurring note. Specific to this skill:
 
-1. Load the previous docs-coverage report from `recurring.output_directory` matching `{skill}-{date}`.
-2. Compare: coverage-by-rung deltas, newly undocumented components (regressions — these are the priority), newly resolved gaps, and staleness count trend.
-3. Add a "Trend since last audit" section to the header: previous date, rung deltas, and one sentence — "Documentation coverage is improving / stable / declining since [date]."
-4. Save the output to `recurring.output_directory` using `recurring.naming_pattern`, and prune beyond `recurring.retain_count`.
-
-If no previous report exists, note "This is the baseline audit. Trend analysis will be available from the next run."
+- Compare coverage-by-rung deltas, newly undocumented components (regressions — these are the priority), newly resolved gaps, and staleness count trend.
+- Add a "Trend since last audit" section to the header: previous date, rung deltas, and one sentence — "Documentation coverage is improving / stable / declining since [date]."
 
 ## Closing note (include in every report)
 
@@ -164,8 +174,9 @@ End the report with:
 
 - Every coverage finding carries a join confidence tier; no Tier C result is stated as fact
 - Staleness findings show both change dates and name the timestamp source; unavailable timestamps are marked unknown, not assumed fresh
-- The report distinguishes the rungs (exists / described / guided, plus the undocumented rung-0 bucket), counted at highest-attained — not a single coverage percentage
+- The report distinguishes the rungs (exists / described / guided, plus the undocumented rung-0 bucket), counted at highest-attained — not a single coverage percentage; "described" rests on prop descriptions, not on the presence of a docs page
 - Orphaned docs are reported separately from coverage gaps — they point the opposite direction
 - The summary states which signals were measured vs estimated or unavailable
 - The audit ran on whatever was available and did not block on a missing integration
-- The closing note about intentional choices is present
+- "Undocumented" claims rest on a join that passed its positive control
+- The Scope block and the closing note about intentional choices are present

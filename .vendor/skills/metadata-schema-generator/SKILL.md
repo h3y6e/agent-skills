@@ -1,18 +1,24 @@
 ---
-description: 'Generate structured JSON metadata schemas for design system components — machine-readable constraint definitions that encode props, behavioural rules, composition constraints, prohibited combinations, and accessibility contracts as programmatic data. This produces JSON files for tooling (MCP servers, linters, code generators, test frameworks), NOT text descriptions for humans or Figma. Trigger when someone says: generate metadata schema, JSON schema for components, component contract as JSON, structured metadata for tooling, prop constraints as data, machine-readable component rules, or anything about producing JSON/structured data that tools consume programmatically. Do NOT trigger for Figma descriptions, component documentation, or AI-readable text — use ai-component-description for those.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(npx react-docgen-typescript:*), Bash(npx custom-elements-manifest:*), Bash(npx vue-component-meta:*), Bash(npx ajv:*)
+description: 'Generate per-component JSON metadata files (.ai/metadata/) from source: props, behaviour, composition, a11y contract, prohibited prop combinations. Triggers: component metadata schema, machine-readable component JSON, manifest for MCP/codegen. Prose for Figma: use ai-component-description.'
 metadata:
     github-path: skills/metadata-schema-generator
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 7eea6e3b56582f555e645536184f521247547c08
+    github-tree-sha: be93c1e6f7da7748d905a202f43f5e54c19965df
 name: metadata-schema-generator
 references:
     - ../../knowledge-notes/ai-readiness.md
     - ../../knowledge-notes/component-bestiary-reference.md
+    - ../../knowledge-notes/output-discipline.md
 ---
 # Metadata schema generator
 
-A skill for generating structured JSON metadata schemas for design system components. These schemas encode everything an AI agent, MCP server, code generator, or testing framework needs to work with a component programmatically — props, behavioural rules, composition constraints, accessibility contracts, and business context — in a format that does not require natural language parsing.
+A skill for generating structured JSON metadata schemas for design system components. These schemas encode everything an AI agent, MCP server, code generator, or testing framework needs to work with a component programmatically — props, behavioural rules, composition constraints, accessibility contracts, and (where the team supplies it) business context — in a format that does not require natural language parsing.
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Context
 
@@ -28,23 +34,21 @@ The `ai-component-description` skill produces text descriptions optimised for LL
 
 ## Boundaries
 
-This skill generates structured JSON metadata schemas for tooling consumption — not human-readable documentation (use `usage-guidelines` or `pattern-documentation` for that) or LLM-facing descriptions (use `ai-component-description`). If the system has no component inventory yet, run `component-audit` or `codebase-index` first. If the team has no current need for machine-readable metadata (no MCP server, no code generation, no linting integration), this skill adds overhead without value — discuss the use case before generating.
+This skill is the pack's one extraction of component facts. It generates structured JSON metadata for tooling — not human-readable documentation (`usage-guidelines`, `pattern-documentation`) or LLM-facing prose (`ai-component-description`); those two read `.ai/metadata/` when it exists and render from it, so the props and accessibility contract are derived once. If the system has no component inventory yet, run `codebase-index` first. If no component source is in reach, stop and ask for it: metadata can't be extracted from a description. If the team has no consumer for the files yet (no `AGENTS.md` pointing at them, no MCP server, no lint integration), say so and suggest `agent-instructions` as the first consumer rather than generating files nothing reads.
 
 ---
 
 ## Configuration
 
-Before producing output, check for a `.ds-ops-config.yml` file in the project root. If present, load:
+If `.ds-ops-config.yml` exists, follow the configuration-and-recurring knowledge note (`../../knowledge-notes/configuration-and-recurring.md`) for loading, integration fallbacks and recurring runs. This skill reads:
 - `system.framework` — determines prop extraction approach (React, Vue, Svelte, etc.)
 - `system.component_paths` — directs scanning to component source files
-- `integrations.*` — enables auto-pull for component data
+- `integrations.*` — component data (see below)
 - `metadata.schema_version` — locks the output schema version for compatibility
 - `metadata.output_directory` — overrides default output location
-- `metadata.include_business_context` — toggles the business intelligence section (default: true)
+- `metadata.include_business_context` — toggles the business context layer (default: false; see Step 4)
 
 ## Auto-pull integrations
-
-If integrations are configured in `.ds-ops-config.yml`, pull data automatically:
 
 **Figma MCP** (`integrations.figma.enabled: true`):
 - Read component properties, variant structures, and descriptions from `integrations.figma.file_key`
@@ -56,12 +60,11 @@ If integrations are configured in `.ds-ops-config.yml`, pull data automatically:
 - Extract documented states and control definitions
 - Pull interaction test definitions if available
 
-**TypeScript/Source** (always attempted):
-- Parse TypeScript interfaces or PropTypes from component source files
-- Extract JSDoc/TSDoc annotations for prop descriptions
-- Identify generic type parameters for polymorphic components
-
-If an integration fails, log it and proceed with available sources.
+**Source** (always attempted, with the tool that fits):
+- **React with TypeScript:** `react-docgen-typescript` gives name, type, required, default and description per prop; hand-read only what it can't resolve (complex generics), and say so
+- **Vue:** `vue-component-meta`
+- **Web Components:** the Custom Elements Manifest (`npx custom-elements-manifest analyze`, or an existing `custom-elements.json`)
+- **Anything else:** read the interfaces, PropTypes and JSDoc by hand, and note under Scope that extraction was manual
 
 ---
 
@@ -92,9 +95,11 @@ Produce a source assessment per component:
 
 For each component, extract the prop layer automatically from TypeScript or equivalent:
 
+Illustrative Button (a real run uses the component's actual source):
+
 ```json
 {
-  "$schema": "https://designsystemops.com/schemas/metadata/v1.json",
+  "$schema": "./schema.json",
   "component": "Button",
   "version": "1.0.0",
   "status": "stable",
@@ -128,6 +133,19 @@ For each component, extract the prop layer automatically from TypeScript or equi
       "description": "Prevents interaction and applies disabled styling"
     },
     {
+      "name": "loading",
+      "type": "boolean",
+      "default": false,
+      "required": false,
+      "description": "Shows a spinner in place of the label and prevents interaction"
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "required": false,
+      "description": "Accessible name when the button has no visible text"
+    },
+    {
       "name": "children",
       "type": "ReactNode",
       "required": true,
@@ -137,18 +155,25 @@ For each component, extract the prop layer automatically from TypeScript or equi
 }
 ```
 
+**Build on the standard, don't invent one.** For Web Components the metadata file *is* the Custom Elements Manifest with a `dsops` object added to each declaration for the semantic layers (CEM allows additional properties, and every CEM consumer keeps reading it). For React and Vue, the `props` array keeps docgen's field names (`name`, `type`, `required`, `defaultValue`, `description`) so anything that reads docgen output reads this too, and the semantic layers sit beside it.
+
 **Extraction rules:**
 - Every prop in the TypeScript interface must appear in the schema
-- Types should be normalised to a standard set: `string`, `number`, `boolean`, `enum`, `ReactNode`, `function`, `object`, `array`
+- Keep the raw type string in `type.raw`; add `type.kind` normalised to `string`, `number`, `boolean`, `enum`, `ReactNode`, `function`, `object`, `array`, so generics and non-literal unions aren't lost
 - Enum values must be listed explicitly, not as a type reference
-- Default values must be the actual defaults, not TypeScript `undefined`
+- Take `default` from the source's declared default. Omit `default` when source declares none
 - If a prop has JSDoc, use it as the description. If not, flag the prop for manual description.
+- Per-value `semantic` text comes from JSDoc or the team's docs. If neither has it, leave `semantic` out and flag the prop rather than writing plausible guidance
 
 ---
 
 ## Step 3: Add the semantic layer
 
-The semantic layer encodes meaning that TypeScript types cannot express. For each component, add:
+The semantic layer encodes meaning that TypeScript types cannot express. For each component, add the three blocks below.
+
+**Provenance rule.** Every `behaviour`, `composition` and `accessibility` block carries a `provenance` value: `source` (read from the component code), `docs` (from the team's documentation or the user), or `proposed` (anything not traced to either). A block that mixes sources takes the weakest. Never present a proposed rule as the system's actual behaviour or policy: tools and agents read this file as ground truth. See "Every figure and fact needs a source" in the output-discipline knowledge note.
+
+The examples below continue the illustrative Button.
 
 ### Behavioural rules
 
@@ -164,13 +189,16 @@ The semantic layer encodes meaning that TypeScript types cannot express. For eac
       }
     },
     "constraints": [
-      "A form must have exactly one primary variant Button",
+      "At most one primary variant Button per form",
       "Loading state must disable all sibling interactive elements",
       "Icon-only buttons must have an aria-label prop"
-    ]
+    ],
+    "provenance": "docs"
   }
 }
 ```
+
+The first two constraints stand in for team rules: record rules like these only when the team's docs or the user state them.
 
 ### Composition rules
 
@@ -190,7 +218,8 @@ The semantic layer encodes meaning that TypeScript types cannot express. For eac
     "common_combinations": [
       { "pattern": "Primary + Secondary pair", "context": "Dialog footer, form actions" },
       { "pattern": "Icon-only in Toolbar", "context": "Dense action bars" }
-    ]
+    ],
+    "provenance": "proposed"
   }
 }
 ```
@@ -219,7 +248,8 @@ The semantic layer encodes meaning that TypeScript types cannot express. For eac
     "screen_reader": {
       "announcement": "Button label + role",
       "state_changes": "Announces disabled state change"
-    }
+    },
+    "provenance": "source"
   }
 }
 ```
@@ -228,44 +258,38 @@ The semantic layer encodes meaning that TypeScript types cannot express. For eac
 
 ## Step 4: Add the business context layer
 
-The business context layer connects the component to product outcomes. This layer is optional but recommended for components that directly influence conversion, engagement, or retention.
+The business context layer connects the component to product outcomes. It is off by default (`metadata.include_business_context: false`). Include it only when the user or the team's docs supply the metrics and rules, and give every entry a `source` (file path, URL, or `user`). Never infer a component's business function, metrics or traffic from its name.
+
+Illustrative shape:
 
 ```json
 {
   "business_context": {
-    "function": "conversion",
-    "metrics": {
-      "primary": "Click-through rate",
-      "secondary": ["Form completion rate"]
-    },
+    "function": { "value": "conversion", "source": "user" },
+    "metrics": [
+      { "name": "Click-through rate", "role": "primary", "source": "docs/analytics/cta-tracking.md" },
+      { "name": "Form completion rate", "role": "secondary", "source": "user" }
+    ],
     "experimentation": {
       "safe_to_test": ["label text", "variant within brand palette"],
       "never_test": ["removing disabled state logic", "removing aria attributes"],
-      "requires_review": ["changing size scale", "adding new variants"]
+      "requires_review": ["changing size scale", "adding new variants"],
+      "source": "user"
     },
     "usage_analytics": {
-      "track_renders": true,
-      "track_interactions": true,
-      "track_errors": true,
       "custom_events": [
-        { "event": "cta_click", "data": ["variant", "page", "position"] }
+        { "event": "cta_click", "data": ["variant", "page", "position"], "source": "src/analytics/events.ts" }
       ]
     }
   }
 }
 ```
 
-**When to include business context:**
-- Always: conversion components (CTAs, forms, checkout elements)
-- Always: high-traffic components (buttons, cards, navigation)
-- Recommended: engagement components (interactive elements, content surfaces)
-- Optional: utility components (spacers, dividers, layout helpers)
-
 ---
 
 ## Step 5: Add prohibited combinations
 
-Encode prop combinations that are technically valid but semantically wrong:
+Encode prop combinations that are technically valid but semantically wrong. Each entry carries a `provenance` value, as in Step 3:
 
 ```json
 {
@@ -273,12 +297,14 @@ Encode prop combinations that are technically valid but semantically wrong:
     {
       "combination": { "variant": "ghost", "size": "lg" },
       "reason": "Ghost buttons at large size create false visual hierarchy — they appear as primary actions despite being tertiary",
-      "severity": "warning"
+      "severity": "warning",
+      "provenance": "proposed"
     },
     {
       "combination": { "disabled": true, "loading": true },
       "reason": "Redundant states — loading already prevents interaction. Use loading alone.",
-      "severity": "error"
+      "severity": "error",
+      "provenance": "docs"
     }
   ]
 }
@@ -307,11 +333,69 @@ Assemble all layers into the complete metadata schema per component.
   manifest.json        # Index of all metadata files
 ```
 
-### Manifest format
+### Base schema (`schema.json`)
+
+Write a JSON Schema alongside the metadata files so validation (Step 7) and CI have something to check against. A minimal version:
 
 ```json
 {
-  "$schema": "https://designsystemops.com/schemas/metadata/v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Component metadata",
+  "type": "object",
+  "required": ["component", "props"],
+  "properties": {
+    "component": { "type": "string" },
+    "version": { "type": "string" },
+    "status": { "enum": ["alpha", "beta", "stable", "deprecated"] },
+    "props": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "required"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "enum": ["string", "number", "boolean", "enum", "ReactNode", "function", "object", "array"] },
+          "values": { "type": "array" },
+          "default": {},
+          "required": { "type": "boolean" },
+          "description": { "type": "string" },
+          "semantic": { "type": "object" }
+        }
+      }
+    },
+    "behaviour": { "$ref": "#/$defs/layer" },
+    "composition": { "$ref": "#/$defs/layer" },
+    "accessibility": { "$ref": "#/$defs/layer" },
+    "business_context": { "type": "object" },
+    "prohibited_combinations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["combination", "reason", "severity", "provenance"],
+        "properties": {
+          "severity": { "enum": ["error", "warning", "info"] },
+          "provenance": { "$ref": "#/$defs/provenance" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "provenance": { "enum": ["source", "docs", "proposed"] },
+    "layer": {
+      "type": "object",
+      "required": ["provenance"],
+      "properties": { "provenance": { "$ref": "#/$defs/provenance" } }
+    }
+  }
+}
+```
+
+### Manifest format
+
+Illustrative values; coverage figures are counted from the files actually generated.
+
+```json
+{
   "generated": "[date]",
   "system": "[design system name]",
   "component_count": 55,
@@ -337,20 +421,21 @@ Run validation checks on the generated schemas:
 
 **Structural validation:**
 - Every schema is valid JSON
-- Every schema conforms to the base schema definition
+- Every schema conforms to `schema.json`: run `npx ajv validate -s .ai/metadata/schema.json -d ".ai/metadata/*.metadata.json"` (ajv-cli) and report its output. If ajv isn't available and can't be installed, say validation wasn't run; don't report the files as valid
+- Every `behaviour`, `composition` and `accessibility` block, and every prohibited combination, has a `provenance` value
 - Every prop in the TypeScript interface appears in the schema (no missing props)
 - Every enum value listed in the schema exists in the TypeScript type (no phantom values)
 
 **Semantic validation:**
 - Every prop has a description (not just a type)
-- Every enum prop has per-value semantic descriptions (not just a list of values)
+- Every enum prop either has per-value semantic descriptions from a source, or is listed under "Needs a human" (never filled with plausible guidance)
 - Composition rules reference components that exist in the system (no broken references)
 - Accessibility contracts are complete for all interactive components
 
 **Cross-reference validation:**
 - Component names in metadata match component names in code
 - Prop names and types match TypeScript interfaces
-- Composition references are bidirectional (if Card lists Button as valid_child, Button lists Card as valid_parent)
+- Where both sides declare composition, they agree (Card lists Button as a child and Button lists Card as a parent); a one-sided declaration is listed for review, not treated as an error
 - Status fields are consistent with the component's actual lifecycle status
 
 **Coverage reporting:**
@@ -361,11 +446,21 @@ Run validation checks on the generated schemas:
 
 ---
 
+## Step 8: Summarise in chat
+
+End with a short chat summary:
+- **Headline:** how many component files were written and how many are complete
+- **Files written:** paths under `.ai/metadata/` (or the configured `metadata.output_directory`), including `schema.json` and `manifest.json`
+- **Needs a human:** props flagged for manual description, and every block or combination marked `proposed`
+- **Scope:** the block from the output-discipline knowledge note, including components and sources not scanned
+
+---
+
 ## Recommend to the user
 
 - Co-locate metadata files with component source files or in a dedicated `.ai/metadata/` directory
 - Automate prop extraction from TypeScript interfaces to keep the base layer in sync
-- Treat semantic, accessibility, and composition layers as manually authored — these encode knowledge that cannot be automatically extracted
+- Treat semantic, accessibility, and composition layers as authored knowledge: entries generated without a source stay `proposed` until someone on the team confirms them
 - Run validation as part of CI to catch metadata drift from source
 - Use the manifest as the entry point for all tooling that consumes component metadata
 - Regenerate after adding components, changing props, or updating accessibility contracts
@@ -374,11 +469,12 @@ Run validation checks on the generated schemas:
 
 ## Quality checks
 
-- Every generated schema is valid JSON and parseable by standard JSON parsers
-- Prop types are normalised to the standard type set, not raw TypeScript types
+- Every generated schema is valid JSON and was validated with ajv, or the summary says validation didn't run
+- Props came from docgen, component-meta or a Custom Elements Manifest where one applies, keep the raw type alongside the normalised kind, and the Scope block names the extraction method
 - Semantic descriptions add information beyond what the prop name and type convey
 - Composition rules form a consistent graph (no contradictions between parent and child declarations)
 - Accessibility contracts cover all interactive components, not just the most common ones
 - Prohibited combinations cite specific reasons, not generic advice
 - The manifest accurately reflects the actual set of generated schema files
-- Business context is included for all conversion-critical components, not arbitrarily omitted
+- Business context appears only where the user or docs supplied it, and every entry has a `source`
+- Nothing traced to neither source nor docs is presented without a `proposed` marker

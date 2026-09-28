@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/google-agents-cli-onboarding
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: c59bb2447cff7de552d994377dcdd4aeb97ceba1
+    github-tree-sha: c129e818a10d3a296ea08397e82e9761a2ddc6eb
+    version: 1.0.0
 name: google-agents-cli-onboarding
 ---
 # Google Agents CLI Onboarding

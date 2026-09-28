@@ -1,10 +1,11 @@
 ---
-description: 'Audit a design system''s token definitions for naming violations, missing semantic tiers, and structural debt. This audits how tokens are defined and organised, NOT how they are consumed in code. Trigger when someone says: audit my tokens, token naming review, are my tokens consistent, token health check, review my token architecture, or anything involving token quality or structure. Do NOT trigger for checking whether code uses tokens correctly — use token-compliance for that.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(sort:*), Bash(tail:*), Bash(wc:*), Bash(npx style-dictionary:*), Bash(npx terrazzo:*)
+description: 'Audit how design tokens are defined: tiers, naming, alias chains, raw values, orphans, DTCG readiness. Triggers: audit my tokens, token architecture review, token health check. Not for code consuming tokens (token-compliance), theme parity (theme-audit) or Figma variables (figma-variable-audit).'
 metadata:
     github-path: skills/token-audit
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 374e58cbd28010a4ab7b36aa1258eba46537b076
+    github-tree-sha: 25863c93edd76a95ea425c6f097386f2448328bb
 name: token-audit
 references:
     - ../../knowledge-notes/token-architecture.md
@@ -13,6 +14,10 @@ references:
 # Token audit
 
 A skill for auditing design token architecture across whichever tiers are in use — typically primitives and semantics, with component tokens where the system uses them. Produces a structured report with severity-rated findings and a prioritised remediation list.
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Context
 
@@ -24,25 +29,21 @@ The audit is not about enforcing a particular naming convention. It's about iden
 
 ## Configuration
 
-Before producing output, check for a `.ds-ops-config.yml` file in the project root. If present, load:
+If `.ds-ops-config.yml` exists, follow the configuration-and-recurring knowledge note (`../../knowledge-notes/configuration-and-recurring.md`) for loading, integration fallbacks and recurring runs. This skill reads:
 - `severity.*` — overrides for finding severity ratings (e.g. `hardcoded_color: critical` instead of the default `high`)
 - `system.theming` — if true, elevate hardcoded colour findings to the severity specified in config
 - `system.styling` — pre-selects the format-specific guidance to apply
-- `integrations.style_dictionary` — if enabled, auto-parse tokens via Style Dictionary v4 (see auto-pull below)
-- `integrations.figma` — if enabled, pull Figma variables as an additional token source
-- `recurring.*` — if this is a recurring run, load the previous report for trend comparison (see recurring workflow below)
-
-If no config file exists, proceed with defaults and manual input as before.
+- `integrations.style_dictionary` — parse tokens via Style Dictionary 4 or 5 (see below)
+- `integrations.figma` — Figma variables as an additional token source
+- `recurring.*` — the previous report, for trend comparison (see recurring workflow below)
 
 ## Auto-pull integrations
 
-If integrations are configured in `.ds-ops-config.yml`, pull data automatically before asking the user for manual input:
-
-**Style Dictionary v4** (`integrations.style_dictionary.enabled: true`):
+**Style Dictionary 4 or 5, or Terrazzo** (`integrations.style_dictionary.enabled: true`, or a config in the repo):
 - Parse the config at `integrations.style_dictionary.config_path`
 - Extract the full token tree with resolved references and tier structure
 - Use this as the primary token source — skip the manual "provide your token files" question
-- If Style Dictionary v4 is installed, run `npx style-dictionary build --config [path] --dry-run` to validate references without writing output
+- Run `npx style-dictionary build --config [path]` into a scratch output directory (or `npx terrazzo build`) to let the tool resolve every alias before you reason about the tree; its errors are findings with the tool named as the source
 
 **Figma variables** (`integrations.figma.enabled: true`):
 - Use the Figma MCP server to read variables from the file at `integrations.figma.file_key`
@@ -50,10 +51,7 @@ If integrations are configured in `.ds-ops-config.yml`, pull data automatically 
 - Cross-reference Figma variables against code token files to detect mismatches (Figma says `--color-primary` is `#0066CC` but the code says `#0064CC` — that is a finding)
 
 **GitHub** (`integrations.github.enabled: true`):
-- Search the repository for hardcoded colour/spacing values using `gh api search/code` to quantify the scope of violations before the detailed audit
 - Pull the token file directly from the default branch if no local file is provided
-
-If an integration is configured but fails (e.g. auth error, rate limit), log the failure and fall back to manual input. Never block the audit because an integration is unavailable.
 
 ## Step 0: Token discovery
 
@@ -71,7 +69,7 @@ Before asking the user for files, search the codebase for token-like patterns. T
 
 **How to search:**
 
-Use file system access (glob patterns, file reads) to scan the project. If GitHub integration is configured, use `gh api search/code` as a secondary source. If Figma integration is configured, pull Figma variables as an additional token source.
+Use file system access (glob patterns, file reads) to scan the project. If GitHub integration is configured and there's no local clone, use `gh api search/code` only to locate candidate files, then read them. If Figma integration is configured, pull Figma variables as an additional token source.
 
 Prioritise by specificity: a dedicated `tokens/` directory is more reliable than scattered CSS files. A Style Dictionary config is more reliable than raw JSON. But collect everything — fragmented token sources are themselves a finding.
 
@@ -96,23 +94,28 @@ Present the discovered sources to the user and ask: "I found these token sources
 
 ## Step 0b: Orphan detection checkpoint
 
-Before running the full audit, do a quick pass to identify token usage:
+Before running the full audit, do one pass to identify token usage. This is the only orphan pass — Step 3c reuses its results.
 
 1. **Declared tokens** — count every token found in Step 0 (or provided manually in Step 1).
-2. **Referenced tokens** — search the codebase for references to each declared token. For CSS custom properties, search for `var(--token-name)`. For SCSS variables, search for `$variable-name` outside their declaration files. For JSON/DTCG tokens, search for alias references (`{token.path}`). For TypeScript objects, search for import and access patterns (`tokens.color.primary`, `theme.spacing.md`).
-3. **Orphaned tokens** — tokens declared but never referenced anywhere in the codebase.
+2. **Referenced tokens** — search for references to each declared token, both from other tokens and from components in this repo. For CSS custom properties, search for `var(--token-name)`. For SCSS variables, search for `$variable-name` outside their declaration files. For JSON/DTCG tokens, search for alias references (`{token.path}`). For TypeScript objects, search for import and access patterns (`tokens.color.primary`, `theme.spacing.md`).
+3. **Positive control** — before trusting the result, pick one token you know is used and confirm each search pattern finds it. If a pattern finds nothing for a known-used token, the pattern doesn't fit this codebase; fix it or report orphans for that format as unconfirmed.
+4. **Orphan candidates** — tokens not referenced by another token or by any component in the scanned repo.
 
-Produce a checkpoint summary:
+In a design system repo, most tokens are consumed by product repos that weren't scanned. An orphan here means "no in-repo consumer", not "unused". Report orphans as unconfirmed for external consumers unless the user has given you access to the consuming repos or usage data.
+
+Produce a checkpoint summary (figures illustrative):
 
 ```
 Orphan detection:
 - 232 tokens declared
-- 189 tokens referenced (at least once)
-- 43 tokens orphaned (declared but unreferenced)
-  Top orphans: --color-legacy-teal, --spacing-xl-deprecated, $font-heading-alt (3 more)
+- 189 tokens referenced in-repo (at least once)
+- 43 orphan candidates (no reference from another token or an in-repo component)
+  Top candidates: --color-legacy-teal, --spacing-xl-deprecated, $font-heading-alt (3 more)
+  Positive control: --color-action-primary found in 14 files by the same patterns
+  Not checked: consuming product repos
 ```
 
-This tells the user the scale of the problem before the full audit begins. Orphaned tokens are maintenance burden without value — they clutter autocomplete, confuse new team members, and inflate the token count. Include orphaned tokens as findings in the main audit (category: Coverage, severity: Low unless count exceeds 20% of total, then Medium).
+This tells the user the scale of the question before the full audit begins. Confirmed orphans are maintenance burden without value — they clutter autocomplete, confuse new team members, and inflate the token count. Include orphan candidates as findings in the main audit (category: Coverage, severity: Low unless count exceeds 20% of total, then Medium), and say which consumers were checked.
 
 If the orphan count is high (>30% of total tokens), flag this prominently: "Over a third of declared tokens are unreferenced. Before auditing token quality, consider whether a cleanup pass would simplify the architecture."
 
@@ -136,7 +139,7 @@ For **CSS custom properties**: treat each `--` prefixed property as a token. Inf
 
 For **SCSS variables**: treat each `$` prefixed variable as a token. SCSS variables that reference other variables (e.g. `$color-primary: $blue-500`) indicate tier relationships. If variables are split across partials (`_colors.scss`, `_spacing.scss`), the file organisation may signal tier structure.
 
-For **TypeScript/JavaScript objects**: treat the exported object's key hierarchy as the token structure. Nested objects map to tiers the same way JSON tokens do. For Emotion or styled-components themes, the theme object is the token source. Common patterns include: flat exports (`export const backgroundColor = { scene: '#FFF', primary: '#206EF6' }`), `as const` typed objects (`const tokens = { ... } as const`), aggregated barrel exports (`export const tokens = { breakpoint, fontSize, spacing }`), and theme-to-CSS-variable mapping functions (`mapThemeToVars()`). Helper functions like `mapSpacing()` or `packs.underline` that resolve to token values are valid token references.
+For **TypeScript/JavaScript objects**: treat the exported object's key hierarchy as the token structure. Nested objects map to tiers the same way JSON tokens do. For Emotion or styled-components themes, the theme object is the token source. Common patterns include: flat exports (`export const backgroundColor = { scene: '#FFF', primary: '#206EF6' }`), `as const` typed objects (`const tokens = { ... } as const`), aggregated barrel exports (`export const tokens = { breakpoint, fontSize, spacing }`), and theme-to-CSS-variable mapping functions (`mapThemeToVars()`). Helper functions like `theme.spacing(4)` or `theme.colors.primary` that resolve to token values are valid token references.
 
 For **Tailwind configurations**: the `theme` block defines primitives, `extend` adds semantic overrides. Tailwind utility classes that reference custom tokens (e.g. `bg-primary`, `text-color-content-default`) are token references, not hardcoded values. Arbitrary values in square brackets (e.g. `h-[12px]`, `bg-[#ff0000]`) are the actual hardcoded violations.
 
@@ -152,11 +155,17 @@ Identify which tiers are present:
 
 **Component tier** — scoped to a specific component context. Examples: `button.background.default`, `card.padding.inner`
 
-Flag if any tier is missing. A system with only primitives has no semantic contract. A system with only semantic tokens has no single source of truth for raw values. Both are structural problems worth naming.
+Flag a missing primitive or semantic tier. A system with only primitives has no semantic contract. A system with only semantic tokens has no single source of truth for raw values. Both are structural problems worth naming. A missing component tier is not a finding — see the token-architecture note.
 
 ## Step 3: Run the audit checks
 
-For each check, produce a PASS, WARN, or FAIL rating with specific examples.
+For each check, produce a PASS, WARN, or FAIL rating with specific examples. Every finding carries evidence: the token path and the file and line where it is defined (`tokens/component.tokens.json:9`, `src/styles/tokens.css:17`).
+
+**Severity rubric** (the `severity.*` config keys override these defaults):
+- 🔴 **Critical** — a token file that isn't the source of truth it claims to be (generated output has drifted from it); tier leakage or a raw value at the semantic or component tier in a system that ships more than one theme, because the theme switch silently misses it
+- 🟠 **High** — tier leakage or a raw value at the semantic or component tier in a single-theme system; an upward reference (semantic → component); a semantic token that names an appearance (`color.semantic.blue`)
+- 🟡 **Medium** — convention inconsistency within a tier; a missing interaction state for a role the components already use; duplicate raw values with no documented distinction; orphan candidates above the 20% threshold
+- ⚪ **Low** — ambiguity flags, platform suffixes, orphan candidates below the threshold, DTCG migration signals
 
 ### Naming checks
 
@@ -171,9 +180,13 @@ Component tokens should reference semantic tokens, not primitives.
 - PASS example: `button.background.default: {color.action.primary}` — correct reference chain
 
 **Ambiguity flags**
-Token names that could mean multiple things or require context to interpret:
-- Examples to flag: `default`, `base`, `normal`, `alt`, `variant`, `misc`, `other`
+Token names that could mean multiple things or require context to interpret (the token-architecture note has the full rule and its exceptions):
+- Examples to flag: `normal`, `alt`, `variant`, `misc`, `other`, and `default` or `base` when they are the entire role (`color.default`)
+- Not flagged: `default`/`base` as a state or level segment beside a role (`color.action.default`, `color.surface.base`), and t-shirt or numeric scale steps (`spacing.sm`, `radius.lg`)
 - Each flagged token should include a suggested rename
+
+**Convention consistency** (this skill owns token naming; `naming-audit` covers components and patterns)
+Within each tier, identify the dominant casing, separator and segment order, and flag the tokens that break from it: `color.blue-500` beside `color.blue.500`, `hover/active` beside `hover/pressed`, `button.background-hover` beside `button.background.hover`. Report the dominant convention in the findings so the team can confirm it's the intended one.
 
 **Platform suffix abuse**
 Token names that encode platform specifics in the name rather than in the transformation layer:
@@ -208,66 +221,25 @@ If the system has adopted component tokens and they exist for some components bu
 
 **Skip this section entirely** if the token source is not DTCG format and the team has not mentioned DTCG migration. Most teams don't need this. Include it when the token source uses DTCG format, when the team asks about DTCG compliance, or when migration planning is the purpose of the audit.
 
-If the token source uses DTCG format, or if the team is considering DTCG migration, run these additional checks:
+If the token source uses DTCG format, or if the team is considering DTCG migration:
 
-**Type declarations.** Check whether tokens include `$type` fields. DTCG 2025.10 requires one of 13 types: color, dimension, fontFamily, fontWeight, duration, cubicBezier, number, strokeStyle, border, transition, shadow, gradient, typography. Flag tokens without type declarations. Flag tokens with `$type` values not in the DTCG type list. Classification: tokens missing `$type` are WARN if the team is pre-DTCG (informational — count for migration estimate), FAIL if the team has declared DTCG adoption (these tokens break tooling interoperability).
+**Structural validation is `schema-validator`'s job.** Type resolution, `$type` values outside the 13 types, 2025.10 value shapes, composite sub-value integrity, broken and circular aliases, and resolver document validity all belong there. If a schema-validator report exists, cite its finding IDs in this section; if not, run it (it's quick and mechanical) rather than re-checking by hand. This section reports what those results *mean* for the architecture, and adds the two checks below that need the tier map.
 
-**Composite token integrity.** For composite types (typography, shadow, border, transition, gradient), validate sub-value compliance. A typography token where `fontSize` is a hardcoded value (`"16px"`) but `fontFamily` is a proper reference (`{font.family.body}`) is a partial violation — the composite is inconsistent. A typography token where all sub-values are hardcoded is a full violation — it cannot participate in theming. Report sub-value compliance rate per composite type. Example finding: `TA-14 | WARN | Composite integrity | typography.body: fontSize hardcoded (16px), fontFamily references {font.family.body} — partial violation. Remap fontSize to {dimension.font.size.body}.`
+**Alias tier in composites.** A composite token whose sub-values mix references and raw values (`typography.body` with `fontFamily: {font.family.body}` but `fontSize: "16px"`) is the composite form of a raw value at the semantic tier: it can't theme. schema-validator reports the shape; this audit rates it. Severity: 🟡 Medium, 🟠 High if the composite is used by a themed component.
 
-**Resolver and set coverage.** If `.resolver.json` files exist, validate that every semantic token has a value in every declared mode. A semantic token declared in a resolver but missing a mode-specific value is a FAIL — the system will fall back to the default mode unpredictably, which may produce incorrect contrast ratios or broken layouts in the missing mode. Map which sets are composed and identify orphaned tokens (declared but not included in any resolver). Severity: missing mode values for colour tokens are FAIL (contrast risk), missing mode values for spacing tokens are WARN (visual inconsistency but not an accessibility failure).
+**Resolver contexts and theming.** If `.resolver.json` files exist, read each modifier's `contexts` and its `resolutionOrder` (the note describes the structure; the spec's term is context, not mode). A context that doesn't redefine a token inherits the earlier value, which is the design, not a gap. What this audit reports: theme-dependent semantic tokens (colour, shadow, border colour) that no non-default context redefines, so the theme silently keeps the default value; and token files that no set includes. Severity: 🟠 High for an inherited colour token in a shipped theme (contrast risk), ⚪ Low for a token file outside every set. `theme-audit` goes deeper on this when the team has more than one theme; cite it rather than duplicating.
 
-**Color space declarations.** DTCG 2025.10 supports modern color spaces. Check whether color tokens declare their color space explicitly or rely on implicit sRGB. Flag tokens using hex values where the system could benefit from wider gamut (P3, Lab, OKLab). Severity: INFO for all color space findings — this is a forward-looking check, not a compliance failure.
-
-**Migration readiness (informational).** For teams not yet on DTCG format, produce a detailed migration assessment:
-
-Migration scope quantification:
-- Count tokens needing `$type` annotations (total and by tier)
-- Count composite tokens needing sub-value restructuring
-- Count naming changes required for DTCG compatibility
-- Estimate total migration effort with the calibrated effort format from the remediation section
-
-Migration sequence — produce a step-by-step migration plan, not just a numbered list:
-
-**Phase 1 — Annotate primitives (lowest risk)**
-Add `$type` fields to all primitive tokens. This is additive — it changes no resolved values and breaks no consumers. Validate with `npx style-dictionary build --dry-run` after each batch.
-Estimated effort: [range] hours for [N] primitive tokens, assuming [assumptions].
-
-**Phase 2 — Restructure composites**
-Convert typography, shadow, border, and transition tokens from flat values to DTCG composite objects. This changes the token file structure but should not change resolved output if the build tool is correctly configured.
-For each composite type, produce a before/after example:
-```
-Before: { "typography-body": { "value": "400 16px/1.5 Inter" } }
-After:  { "typography-body": { "$type": "typography", "$value": { "fontFamily": "{font.family.body}", "fontSize": "{dimension.font.size.body}", "fontWeight": "{font.weight.regular}", "lineHeight": "{dimension.line-height.body}" } } }
-```
-Estimated effort: [range] hours for [N] composite tokens.
-
-**Phase 3 — Add resolver files**
-Create `.resolver.json` files mapping semantic tokens to mode-specific values (light, dark, high-contrast). This is the step that enables multi-theme support.
-Estimated effort: [range] hours, scaling with number of modes × number of semantic tokens.
-
-**Phase 4 — Validate with DTCG-compatible tooling**
-Run the migrated tokens through Style Dictionary v4 or another DTCG-compatible tool. Fix any remaining validation errors. Produce a diff showing resolved output before and after migration — the resolved values should be identical.
-Estimated effort: [range] hours for validation and fix pass.
-
-**Total estimated migration effort:** [sum range] hours, confidence [High/Medium/Low], assumes [key assumptions].
+**Migration signal (informational).** For teams not yet on DTCG 2025.10, give one paragraph: how many tokens would need `$type` (after type resolution), how many composites need restructuring into object values, whether string values need converting to object shapes, and whether resolver files would be needed for theming. Name the lowest-risk first step (usually annotating primitives with `$type`, which changes no resolved values). Then offer the full phased migration plan with effort ranges if they want it — don't produce it unasked.
 
 ## Step 3c: Token dependency map (conditional — include when codebase access is available)
 
 **Skip this section** if there is no codebase access or if the audit is focused on token naming/structure only. Include it when the user has a codebase connected and wants to understand blast radius before making changes.
 
-Build a map of which components depend on which tokens. This is the blast radius view — before changing `color.action.primary`, you need to know every component that binds to it.
-
-- List each semantic token with its consuming component tokens (direct references)
-- List each component token with the component(s) it belongs to
-- Identify high-fan-out tokens (referenced by 10+ components) — these are the most dangerous to change
-- Identify orphaned tokens (declared but not referenced by any component) — these are maintenance burden without value
-- If Figma integration is available, cross-reference: tokens that exist in code but not in Figma (or vice versa) are consistency gaps
-
-Include the dependency map as a section in the report, or as a supplementary output if the map is large.
+The dependency graph has one producer: `codebase-index`, which writes token-to-component edges to `.ai/index/`. If that directory exists, read the token edges from it, mark the orphan candidates from Step 0b on them, and list the high-fan-out tokens (bound by many components in this repo; say how many, and remember consumers outside the repo aren't counted). If it doesn't exist, say the blast-radius view wasn't built and suggest running `codebase-index` first; don't build a second graph here. Token-versus-Figma consistency is `figma-variable-audit` Step 6's job.
 
 ## Step 4: Produce the audit report
 
-Open with a headline sentence that tells the reader the overall state and where to focus. Example: "Your token architecture has three structural issues — two in the semantic tier and a missing component tier. Here's the full breakdown."
+Open with a headline sentence that tells the reader the overall state and where to focus. Example: "Your token architecture has three structural issues — two in the semantic tier and one cross-tier collision. Here's the full breakdown."
 
 Structure the report as follows:
 
@@ -279,9 +251,9 @@ Structure the report as follows:
 One paragraph. What is the overall state of the token architecture? What is the most urgent problem? Write this like a peer review, not a compliance filing.
 
 **Tier structure**
-- Primitive tier: ✅ present / ⚠️ partial / ❌ absent
-- Semantic tier: ✅ present / ⚠️ partial / ❌ absent
-- Component tier: ✅ present / ⚠️ partial / ❌ absent
+- Primitive tier: 🟢 Strong / 🟡 Functional / 🟠 Weak / 🔴 Absent
+- Semantic tier: 🟢 Strong / 🟡 Functional / 🟠 Weak / 🔴 Absent
+- Component tier: 🟢 Strong / 🟡 Functional / 🟠 Weak, or "not used" (not a finding)
 - Tier leakage instances: [count]
 
 **Findings**
@@ -291,8 +263,8 @@ List each finding with:
 - Severity: 🔴 Critical / 🟠 High / 🟡 Medium / ⚪ Low
 - Check category: Naming / Value / Coverage
 - Description: One sentence
-- Example: Specific token or tokens affected
-- Recommended action: Specific and actionable
+- Evidence: the token path(s) and the file and line where each is defined
+- Recommended action: Specific and actionable, naming the replacement
 
 **Remediation priority**
 Group findings into three tiers:
@@ -307,49 +279,31 @@ For each remediation tier, provide calibrated effort estimates with explicit ass
 |---|---|---|---|
 | [Finding ID] | [range, e.g. 4–8 hours] | [what this estimate assumes] | [High/Medium/Low] |
 
-Effort estimation rules:
-- Always provide a range, never a point estimate. "4–8 hours" not "6 hours."
-- State what the estimate assumes: team familiarity with the codebase, no unexpected downstream breakage, tokens are in a single source file vs. scattered, etc.
-- Rate confidence as High (similar work has been done before), Medium (reasonable extrapolation from known scope), or Low (significant unknowns remain — flag what would need scoping before commitment).
-- If the token count exceeds 200 or the codebase has more than 3 consuming applications, note that estimates should be validated with a timeboxed spike before being committed to sprint planning.
-- Never present hours as days without stating the conversion (e.g. "2–3 days assumes 6 productive hours per day").
-- For "Fix first" items affecting downstream consumers, include a dependency note: "This estimate covers the token-side change only. Consumer migration adds [X] hours per consuming team — see blast radius."
+Always give a range ("4–8 hours", not "6 hours"), state what it assumes, and rate confidence High / Medium / Low with what would need scoping for Low. For "Fix first" items, note that the estimate covers the token-side change only and consumer migration is extra. Over 200 tokens or more than 3 consuming apps, suggest a timeboxed spike before committing to sprint planning.
 
 The goal is estimates a project manager can defend in sprint planning, not optimistic targets that erode trust when overrun.
+
+**Scope**
+- **Inspected:** [token files, configs, and directories actually read]
+- **Not inspected:** [what was out of reach, e.g. consuming product repos, Figma]
+- **How "none found" was checked:** [e.g. the orphan search's positive control — omit if the report makes no absence claims]
+- **Assumptions:** [anything taken as given rather than verified]
+
+End with the closing note below.
 
 ---
 
 ## Recurring workflow
 
-If `recurring` is configured in `.ds-ops-config.yml`:
+Follows the recurring-run procedure in the configuration-and-recurring note. Specific to this skill:
 
-1. **Before producing output**, check `recurring.output_directory` for a previous token audit report matching the `{skill}-{date}` naming pattern.
-2. **If a previous report exists**, load it and compare:
-   - Total violation count: increasing, stable, or decreasing?
-   - New findings since last run (findings present now but not before)
-   - Resolved findings (findings present before but not now)
-   - Persistent findings (still present — flag if unaddressed for 2+ cycles)
-3. **Add a "Trend since last audit" section** to the report header:
-   - Date of previous audit
-   - Violation count delta (+/- n)
-   - One sentence: "Token health is improving / stable / declining since [date]"
-   - List of newly introduced violations (these are the priority — they are recent debt)
-4. **Save the output** to `recurring.output_directory` using the `recurring.naming_pattern`.
-5. **Prune old reports** if the count exceeds `recurring.retain_count`.
+- Compare total violation count: increasing, stable, or decreasing?
+- Flag persistent findings left unaddressed for 2+ cycles.
+- Add a "Trend since last audit" section to the report header with the violation count delta (+/- n) and the list of newly introduced violations (these are the priority — they are recent debt).
 
-If no previous report exists, note "This is the baseline audit. Trend analysis will be available from the next run." and save the output for future comparison.
+## Step 5: Figma variables
 
-## Step 5: Sync with Figma variables (when Figma Console MCP is available)
-
-If the Figma Console MCP from Southleft is connected (check for `figma_get_variables` and `figma_create_variable` tool availability), extend the audit to include Figma variable synchronisation.
-
-**Read:** Use `figma_get_variables` to pull the full variable set from Figma, including resolved values and mode data. Compare against the code token files audited in Steps 1–4. Flag discrepancies — tokens that exist in code but not Figma, tokens that exist in Figma but not code, and value mismatches between the two.
-
-**Export:** Use `figma_get_variables` with `export_formats` to export Figma variables as CSS custom properties, Sass variables, Tailwind config, or TypeScript objects. Present these alongside audit findings so the user can see the exact Figma values in their code's format.
-
-**Create missing variables:** If the audit identified missing semantic-tier tokens (Step 3), offer to create them in Figma using `figma_create_variable`. Only create variables that were explicitly identified as gaps — do not speculatively generate new tokens. Confirm with the user before creating: "The audit found 4 missing semantic colour tokens. Want me to create them in Figma?"
-
-**When the standard Figma MCP is connected (read-only):** The read and export steps work, but variable creation does not. Note which tokens would need to be created manually.
+Comparing code tokens with Figma variables, and creating or renaming variables in Figma, is `figma-variable-audit`'s job (its Step 6 does the cross-reference, its Step 10 the writes). If a Figma file is configured or the user mentions Figma, say the code-side audit is done and offer to run figma-variable-audit against the same token source, so the two reports line up by name. Don't compare or write to Figma from here.
 
 ## Closing note (include in every report)
 
@@ -359,10 +313,11 @@ End the report with:
 
 ## Quality checks
 
-- Every finding has a specific example, not a generic description
+- Every finding has a specific example with a file and line, not a generic description, and a severity from the rubric
 - The summary paragraph is honest about severity rather than diplomatic
 - Remediations are specific: "rename `color.semantic.blue` to `color.action.primary`" not "improve naming"
-- The tier structure assessment covers all three tiers
+- The tier structure assessment covers primitive and semantic tiers, and the component tier where the system uses one
 - If values were not available, the report notes which checks were skipped and why they matter
-- If Figma variables were compared, code-vs-Figma discrepancies are listed with specific variable names
-- The closing note about intentional deviations is present
+- Structural DTCG checks, the dependency graph and the Figma comparison are cited from schema-validator, codebase-index and figma-variable-audit, not redone here
+- Orphan claims show their positive control and say which consumers weren't checked
+- The Scope block and the closing note about intentional deviations are present

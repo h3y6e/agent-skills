@@ -5,16 +5,16 @@ metadata:
     github-path: skills/unocss
     github-ref: refs/heads/main
     github-repo: https://github.com/antfu/skills
-    github-tree-sha: 452e862171de4e1b618b6602b8f073375811bca8
+    github-tree-sha: 482bd8e0d0072722c0a62e703cf72fca8de12c26
     source: Generated from https://github.com/unocss/unocss, scripts located at https://github.com/antfu/skills
-    version: 2026.1.28
+    version: 2026.9.25
 name: unocss
 ---
 UnoCSS is an instant atomic CSS engine designed to be flexible and extensible. The core is un-opinionated - all CSS utilities are provided via presets. It's a superset of Tailwind CSS, so you can reuse your Tailwind knowledge for basic syntax usage.
 
 **Important:** Before writing UnoCSS code, agents should check for `uno.config.*` or `unocss.config.*` files in the project root to understand what presets, rules, and shortcuts are available. If the project setup is unclear, avoid using attributify mode and other advanced features - stick to basic `class` usage.
 
-> The skill is based on UnoCSS 66.x, generated at 2026-01-28.
+> The skill is based on UnoCSS v66.10.5, generated at 2026-09-25.
 
 ## Core
 
@@ -28,6 +28,7 @@ UnoCSS is an instant atomic CSS engine designed to be flexible and extensible. T
 | Extracting | How UnoCSS extracts utilities from source code | [core-extracting](references/core-extracting.md) |
 | Safelist & Blocklist | Force include or exclude specific utilities | [core-safelist](references/core-safelist.md) |
 | Layers & Preflights | CSS layer ordering and raw CSS injection | [core-layers](references/core-layers.md) |
+| Processors | Transform generated CSS layers (incl. Lightning CSS) | [core-processors](references/core-processors.md) |
 
 ## Presets
 

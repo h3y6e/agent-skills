@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-batch-hpc
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 0432f235a29c74a6999a05f39e01d0050dcd9ec4
+    github-tree-sha: 4349f1327c69310046ce983f2658ba20805767e2
+    version: 1.0.0
 name: gke-batch-hpc
 ---
 # GKE Batch & HPC Workloads

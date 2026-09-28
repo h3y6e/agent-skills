@@ -5,7 +5,7 @@ metadata:
     github-path: pstack/skills/principle-sequence-verifiable-units
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: 3384d2416b2f6eabe8ddaa510ed3099375cd8f9d
+    github-tree-sha: c1b345dcea21e3d58e7012f8e6547974d295fb3a
 name: principle-sequence-verifiable-units
 ---
 # Sequence work into verifiable units
@@ -17,10 +17,5 @@ Order work as a sequence of small units, each ending in a state you can check, a
 **Execution.** In a sweep, migration, or any run of similar edits, verify each change before starting the next. Each unit is a before/after bracket: known-good state, one change, run the check, then proceed. Rebase onto clean trunk first so every check measures against the real baseline. When a lever does the edits, the per-unit check is nearly free. Run it anyway.
 
 **Delivery.** Stack commits and PRs in the order that proves the work. The canonical shape is the failing test first, then the fix on top. Other story orders are a subtraction before the reshape, a baseline capture before the treatment, the scaffold before the feature. Each commit lands on its own and the sequence reads as an argument.
-
-**Pattern:**
-- Pick the smallest unit that ends in a check: an edit plus its test, or a commit that stands alone.
-- Verify before advancing. Red to green per unit, never deferred to a final batch.
-- Order the units so the sequence builds confidence on its own, for you while executing and for a reviewer reading the stack.
 
 The sequencing complement to the **prove-it-works** principle skill, which keeps each check real, and the **build-the-lever** principle skill, which makes the per-unit check cheap.

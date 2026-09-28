@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gemini-interactions-api
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: dd32c84ba395df31967a15531665b1d8a4f8138d
+    github-tree-sha: 89af53d323643a9ae9419326caedb7e998c5f695
+    version: 1.0.0
 name: gemini-interactions-api
 ---
 # Gemini Interactions API Skill

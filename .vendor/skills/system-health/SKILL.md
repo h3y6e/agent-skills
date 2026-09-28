@@ -1,27 +1,33 @@
 ---
-description: 'Run an overall health assessment across a design system, producing a findings-based summary across seven dimensions. This produces a holistic, cross-cutting health assessment, NOT a deep dive into a single dimension like components or tokens. Trigger when someone says: how healthy is my design system, overall system assessment, system health check, rate my system, design system audit, give me the big picture on my system, or anything asking for a holistic view of system quality rather than a focused audit of one area. Do NOT trigger for a deep component library audit — use component-audit for that.'
+allowed-tools: Read, Write, Grep, Glob, WebFetch, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(sort:*), Bash(tail:*), Bash(wc:*)
+description: 'Holistic health check across tokens, components, docs, adoption, governance, AI readiness, platform maturity, with status labels and an inferred maturity stage. Triggers: how healthy is my system, health check, big picture, how do we compare with public systems. Not for one area (use its audit).'
 metadata:
     github-path: skills/system-health
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 1f35720fd84bb9c9547855e5d053e30e69f3ca22
+    github-tree-sha: 25b251195c445d51635deb657277d759067d3877
 name: system-health
 references:
     - ../../knowledge-notes/component-governance.md
     - ../../knowledge-notes/ai-readiness.md
     - ../../knowledge-notes/design-to-code-contract.md
-    - ../../knowledge-notes/human-oversight-framework.md
-    - ../../knowledge-notes/agent-orchestration-guide.md
-    - ../../knowledge-notes/mcp-setup-guide.md
+    - ../../knowledge-notes/token-architecture.md
+    - ../../knowledge-notes/adoption-measurement.md
+    - ../../knowledge-notes/documentation-coverage.md
+    - ../../knowledge-notes/public-systems-reference.md
     - ../../knowledge-notes/output-discipline.md
 ---
 # System health
 
 A skill for producing a holistic design system health assessment across seven dimensions: tokens, components, documentation, adoption, governance, AI readiness, and platform maturity. Output is a findings-based executive summary with a prioritised action list.
 
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
+
 ## Context
 
-Token audits find naming violations. Component audits find unused variants. Adoption analysis finds coverage gaps. But none of these in isolation tells you whether the system is healthy. Health is a function of how well all five dimensions are working together — a system with excellent tokens and terrible governance is still a fragile system, and a well-adopted system with thin documentation is one team member departure away from collapse.
+Token audits find naming violations. Component audits find unused variants. Adoption analysis finds coverage gaps. But none of these in isolation tells you whether the system is healthy. Health is a function of how well all seven dimensions are working together — a system with excellent tokens and terrible governance is still a fragile system, and a well-adopted system with thin documentation is one team member departure away from collapse.
 
 This assessment is designed to give a snapshot of the whole system, not a deep dive into any single area. It is useful as a starting point for prioritisation, as a quarterly review artefact, or as background for a stakeholder conversation about where investment is needed.
 
@@ -31,15 +37,15 @@ For deeper work on any individual dimension, route to the relevant specialist sk
 
 ## Configuration
 
-Before producing output, check for a `.ds-ops-config.yml` file in the project root. If present, load:
-- `system.*` — pre-populates system size, framework, and theming context
-- `severity.*` — calibrates finding severity thresholds
-- `integrations.*` — enables auto-pull across all five dimensions (see below)
-- `recurring.*` — enables trend tracking across periodic health assessments
+If `.ds-ops-config.yml` exists, follow the configuration-and-recurring knowledge note (`../../knowledge-notes/configuration-and-recurring.md`) for loading, integration fallbacks and recurring runs. This skill reads:
+- `system.*` — system size, framework, and theming context
+- `severity.*` — finding severity overrides
+- `integrations.*` — measured signals across all seven dimensions (see below)
+- `recurring.*` — the Health trend section (see below)
 
 ## Auto-pull integrations
 
-System health benefits from every configured integration — it is the broadest assessment. Pull automatically where available:
+System health is the broadest assessment, so every configured integration feeds at least one dimension:
 
 **Figma MCP** (`integrations.figma.enabled: true`):
 - Pull component count, variant count, and library analytics for the Components and Adoption dimensions
@@ -62,15 +68,10 @@ These signals are supplementary — the dimension assessment still requires the 
 
 ## Recurring workflow
 
-If `recurring` is configured in `.ds-ops-config.yml`:
+Follows the recurring-run procedure in the configuration-and-recurring note. Specific to this skill:
 
-1. **Load the previous health report** from `recurring.output_directory`.
-2. **Compare dimension statuses:** which dimensions improved, held steady, or regressed.
-3. **Add a "Health trend" section** before the action list:
-   - Previous status, current status, and direction for each dimension
-   - One sentence: "System health is improving / stable / declining since [date]"
-   - Highlight any dimension that worsened — this is a regression
-4. **Save output** and prune per `recurring.retain_count`.
+- **Compare dimension statuses:** which dimensions improved, held steady, or regressed.
+- **Add a "Health trend" section** before the action list, with previous status, current status and direction for each dimension. Highlight any dimension that worsened — this is a regression.
 
 ## Step 0: Identify what you're looking at
 
@@ -100,26 +101,20 @@ A system health assessment can be completed at different levels of depth dependi
 
 If access to the system itself is limited, the assessment can be conducted through a structured interview. Note in the output that the assessment is based on reported information rather than direct inspection, and flag which findings would benefit from direct verification.
 
-**Small-system note (fewer than 5 components):** The five-dimension assessment still works at this size, but adjust expectations for the Components dimension. Complexity distribution (foundational vs. compound vs. feature) is not meaningful with 1–4 components — skip it. Focus the Components dimension on API clarity, state coverage, and documentation completeness per component instead. For the Adoption dimension, redefine "active adoption" in terms of what percentage of the team's actual needs the system serves, not raw component count. A system with 3 components that covers 80% of a team's interface needs is healthier than a system with 30 components that covers 20%.
+**Small-system note (fewer than 5 components):** The seven-dimension assessment still works at this size, but adjust expectations for the Components dimension. Complexity distribution (foundational vs. compound vs. feature) is not meaningful with 1–4 components — skip it. Focus the Components dimension on API clarity, state coverage, and documentation completeness per component instead. For the Adoption dimension, redefine "active adoption" in terms of what percentage of the team's actual needs the system serves, not raw component count. A system with 3 components that covers 80% of a team's interface needs is healthier than a system with 30 components that covers 20%.
 
-## Step 1b: Baseline calibration
+## Step 1b: Maturity stage — infer it, don't ask for it
 
-Before assessing any dimension, establish the system's current maturity stage. This calibrates expectations — an ad-hoc system should not be judged for lacking platform-grade capabilities.
+Don't ask the user to place the system and then assess against their answer; the report would just hand their view back to them. Calibrate expectations by library type (Step 0) while assessing, then infer the stage from the Step 2 evidence using the named stages in the component-governance note: Ad-hoc / Managed / Systematic / Measured / Optimised. Place the system at the highest stage whose criteria the evidence meets, and name the dimension that stops it reaching the next.
 
-Ask: "Where would you place this system today?"
+If the user has said where they'd place it, note in the report where the evidence differs and why — that gap is often the most useful conversation.
 
-- **Ad-hoc:** Components exist but are ungoverned.
-- **Managed:** Library exists with some governance.
-- **Systematic:** Consistent processes across the system.
-- **Measured:** Quantitative tracking and recurring reviews.
-- **Optimised:** Platform infrastructure with consumer contracts.
-
-Use the maturity stage when writing the summary — frame findings as "appropriate for this stage" or "below expectations for this stage" rather than against an absolute scale. A managed system with no AI readiness is expected. A measured system with no AI readiness is a significant gap.
+Use the inferred stage when writing the summary — frame findings as "appropriate for this stage" or "below expectations for this stage". A Managed system with no AI readiness is expected. A Measured system with no AI readiness is a significant gap.
 
 ## Step 2: Assess each dimension
 
 For each dimension, assess the current state and assign a status:
-- **Strong:** Meeting or exceeding expectations for this maturity level
+- **Strong:** Meeting or exceeding expectations for this library type
 - **Functional:** Working but with notable gaps
 - **Weak:** Present but causing problems or significantly behind expectations
 - **Absent:** Not addressed or non-functional
@@ -127,7 +122,7 @@ For each dimension, assess the current state and assign a status:
 ### Dimension 1: Tokens
 
 Assess:
-- Are all three tiers present (primitive, semantic, component)?
+- Are primitive and semantic tiers both present? Component tokens are optional (see the token-architecture note), but if the system uses them, are they applied consistently?
 - Do semantic tokens describe intent rather than appearance?
 - Are raw values hardcoded anywhere at the semantic or component tier?
 - Is the token set consistent across platforms or contexts where multiple exist?
@@ -153,7 +148,7 @@ Key questions:
 ### Dimension 3: Documentation
 
 Assess:
-- Does every component have usage guidelines (not just a Storybook entry)?
+- Does every component have usage guidelines (not just a Storybook entry)? For the coverage ladder and staleness rules, see the documentation-coverage note, or run docs-coverage for depth.
 - Are anti-patterns documented alongside recommended usage?
 - Is documentation discoverable — can a new team member find what they need without help?
 - Is documentation maintained after component changes?
@@ -175,7 +170,7 @@ Key questions:
 - Where are teams going when the system does not have what they need?
 - Are there product areas or team contexts where adoption is consistently low?
 
-Note: Adoption is the dimension most commonly assessed by coverage (whether the system is available to teams) rather than actual use. Distinguish clearly between the two.
+Note: keep coverage and adoption separate — see the adoption-measurement note.
 
 ### Dimension 5: Decision-making
 
@@ -225,6 +220,10 @@ Key questions:
 - When was the last breaking change? How was it communicated? Did it include a migration path?
 - Do consuming teams have a way to pin to a specific version?
 
+## Step 2b: External reference points (only when asked)
+
+If the user asks how their system compares with public design systems ("are we behind?", "what does good look like?"), add a short section after the dimension findings. The only source is the public-systems-reference note: quote a practice, the system that does it, the URL and the check date. Compare practices, never maturity: "GOV.UK Frontend publishes a WCAG 2.2 AA claim and a browser-support grading; your system publishes neither" is a reference point; "you are two stages behind Carbon" is not, and the note explains why. If the note doesn't cover what the user wants to compare, offer to fetch the system's current docs and say what you checked and when; don't fill the gap from memory. Never state adoption, team size or component counts for another system. Skip this step entirely when the user hasn't asked.
+
 ## Step 3: Produce the health report
 
 Open with a headline sentence that tells the reader how worried they should be and where to focus — before any tables or structure. Example: "Your system is strong on components and tokens, but governance and documentation are the bottleneck. Here's the dimension-by-dimension picture."
@@ -255,7 +254,7 @@ Open with a headline sentence that tells the reader how worried they should be a
 
 Status key: 🟢 Strong · 🟡 Functional · 🟠 Weak · 🔴 Absent
 
-**Maturity stage:** [Ad-hoc / Managed / Systematic / Measured / Optimised] — [one sentence of evidence]. To reach the next stage, the system needs [specific action].
+**Maturity stage (inferred from evidence):** [Ad-hoc / Managed / Systematic / Measured / Optimised] — [one sentence of evidence]. To reach the next stage, the system needs [specific action]. [If the user placed it differently: one sentence on where the evidence differs.]
 
 ---
 
@@ -268,6 +267,12 @@ Two to three sentences. What is the honest state of this system? What is the mos
 #### Dimension findings
 
 For each dimension: the status emoji, two to four specific findings with evidence, and a one-sentence summary of the most important action. Skip dimensions with no findings — a single line in the summary table ("🟢 Strong — no issues found") is enough.
+
+---
+
+#### External reference points (only if the user asked)
+
+Three to five practices from the public-systems-reference note that bear on this system's weakest dimensions, each as: practice, which public system does it, URL, check date, and what the user's system does instead.
 
 ---
 
@@ -286,6 +291,16 @@ Investments that will pay dividends once the immediate and near-term work is don
 
 ---
 
+**Scope**
+- **Inspected:** [files, directories, or data sources actually read]
+- **Not inspected:** [what was out of reach, and therefore cannot be commented on]
+- **How "none found" was checked:** [for any absence claim, how the search was shown to work — omit if the report makes no absence claims]
+- **Assumptions:** [anything taken as given rather than verified, including anything reported rather than inspected]
+
+End with the closing note below.
+
+---
+
 ## Closing note (include in every report)
 
 End the report with:
@@ -299,4 +314,6 @@ End the report with:
 - The action list is ordered by impact, not by ease
 - If the assessment was conducted without direct system access, this is clearly noted throughout
 - Dimension findings are specific: named problems, not categories of problems
-- The closing note about intentional deviations is present
+- The maturity stage is inferred from the evidence, not taken from the user's self-placement
+- Any external reference point cites the public-systems-reference note's URL and check date, compares a practice rather than a maturity, and appears only because the user asked
+- The Scope block and the closing note about intentional deviations are present

@@ -5,7 +5,7 @@ metadata:
     github-path: pstack/skills/principle-outcome-oriented-execution
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: df70eb76cacab0c2bcbd8df2a5c50e7f664fbf1e
+    github-tree-sha: 8d87411f36c74111e5e54a804dda727e2c034914
 name: principle-outcome-oriented-execution
 ---
 # Outcome-Oriented Execution
@@ -17,7 +17,6 @@ Optimize for the intended, verifiable end state rather than preserving smooth in
 **Core rule:**
 - Prioritize end-state integrity over transitional stability
 - Intermediate breakage is acceptable when it is planned, scoped, and reversible
-- Always run final verification before declaring done
 
 **Guardrails:**
 - Use this for planned rewrites and migrations with explicit phase boundaries

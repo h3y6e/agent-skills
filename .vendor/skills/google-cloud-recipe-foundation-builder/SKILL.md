@@ -7,7 +7,8 @@ metadata:
     github-path: skills/cloud/google-cloud-recipe-foundation-builder
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 3eb8095c122e8d9a78f4360a40221b9d7f2a302e
+    github-tree-sha: df48d0b00ec2a6369b5c5dc0fb576fd6e049656c
+    version: 1.0.0
 name: google-cloud-recipe-foundation-builder
 ---
 # Google Cloud Recipe: Foundation Builder

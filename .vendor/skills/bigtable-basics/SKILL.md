@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/bigtable-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 907c85e943aa0065e06edeb875f1434094a08544
+    github-tree-sha: e0f9fd9c13bb68a3bd4649a0059294411eceb2e4
+    version: 1.0.0
 name: bigtable-basics
 ---
 # Bigtable Basics
