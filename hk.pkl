@@ -1,31 +1,36 @@
-amends "package://github.com/jdx/hk/releases/download/v1.48.0/hk@1.48.0#/Config.pkl"
-import "package://github.com/jdx/hk/releases/download/v1.48.0/hk@1.48.0#/Builtins.pkl"
+amends "package://github.com/jdx/hk/releases/download/v2.4.0/hk@2.4.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.4.0/hk@2.4.0#/Builtins.pkl"
 
-exclude = List(".agents/**", ".vendor/**")
-
-local linters = new Mapping<String, Step> {
-    ["actionlint"] = Builtins.actionlint
-    ["ghalint-workflow"] = Builtins.ghalint_workflow
-    ["mise"] = Builtins.mise
-    ["pinact"] = Builtins.pinact
+local nonVendor = new Mapping<String, Step> {
     ["rumdl"] = Builtins.rumdl
-    ["zizmor"] = Builtins.zizmor
     ["trailing_whitespace"] = Builtins.trailing_whitespace
     ["newlines"] = Builtins.newlines
-    ["detect_private_key"] = Builtins.detect_private_key
+    ["byte_order_marker"] = Builtins.byte_order_marker
+    ["mixed_line_ending"] = Builtins.mixed_line_ending
+    ["fix_smart_quotes"] = Builtins.fix_smart_quotes
+    ["check_shebang_scripts_are_executable"] = Builtins.check_shebang_scripts_are_executable
+    ["python_debug_statements"] = Builtins.python_debug_statements
+    ["deno"] = (Builtins.deno) {
+        glob = List("**/*.ts", "**/*.mjs")
+    }
+    ["deno_check"] = Builtins.deno_check
 }
 
-hooks {
-    ["pre-commit"] {
-        fix = true
-        stash = "git"
-        steps = linters
-    }
-    ["fix"] {
-        fix = true
-        steps = linters
-    }
-    ["check"] {
-        steps = linters
+steps {
+    ["mise"] = Builtins.mise
+    ["pinact"] = Builtins.pinact
+    ["zizmor"] = Builtins.zizmor
+    ["detect_private_key"] = Builtins.detect_private_key
+    ["check_merge_conflict"] = Builtins.check_merge_conflict
+    ["check_symlinks"] = Builtins.check_symlinks
+    ["destroyed_symlinks"] = Builtins.destroyed_symlinks
+    ["check_case_conflict"] = Builtins.check_case_conflict
+    ["check_added_large_files"] = Builtins.check_added_large_files
+    ["check_executables_have_shebangs"] = Builtins.check_executables_have_shebangs
+    ["python_check_ast"] = Builtins.python_check_ast
+    for (name, step in nonVendor) {
+        [name] = (step) {
+            exclude = ".vendor/**"
+        }
     }
 }
