@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-observability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: d3afc4898740f8522cab46c59128a59bf4108734
+    github-tree-sha: dedcf3ba1f9cb33ae8fb7fd7b6ccbe7eb7b0f419
+    version: 1.0.0
 name: gke-observability
 ---
 # GKE Observability

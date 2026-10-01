@@ -1,15 +1,17 @@
 ---
-description: 'Generate CI/CD pipeline configurations that automate design system quality checks — token validation, component linting, visual regression, accessibility scanning, and release gating. Produces ready-to-use pipeline files for GitHub Actions, GitLab CI, CircleCI, or Bitbucket Pipelines, configured to enforce the standards that audit skills check manually. Trigger when someone says: set up CI for the design system, automate these checks, add pipeline for tokens, create GitHub Action for design system, CI/CD for components, automate the release process, continuous integration for design system, how do I automate what the audit found, quality gates in CI, or anything about automating design system quality checks in a pipeline. Do NOT trigger for running a manual audit — use the specific audit skill for that. Do NOT trigger for generating a release checklist — use change-communication for that.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(sort:*), Bash(tail:*), Bash(wc:*), Bash(git diff:*), Bash(npx terrazzo:*), Bash(npx stylelint:*)
+description: 'Generate CI pipeline files and check scripts (GitHub Actions, GitLab, CircleCI, Bitbucket) that automate design system checks: token validation, hardcoded values, a11y scans, visual regression, bundle size. Trigger: set up CI, quality gates, automate these checks. Not for running an audit.'
 metadata:
     github-path: skills/cicd-integration
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: febd961025bbd6ea5e8d70d53cc08f43c3866137
+    github-tree-sha: add804647c1325dba7fbcb18a7284bc143a4500a
 name: cicd-integration
 references:
     - ../../knowledge-notes/component-governance.md
     - ../../knowledge-notes/token-architecture.md
     - ../../knowledge-notes/design-to-code-contract.md
+    - ../../knowledge-notes/output-discipline.md
 ---
 # CI/CD Integration
 
@@ -18,6 +20,10 @@ A skill for generating pipeline configurations that automate the quality checks 
 **Output type:** File creation. This skill produces pipeline configuration files (YAML), scripts, and documentation. It does not execute pipelines — it generates the configuration that teams add to their repository.
 
 ---
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Why this exists
 
@@ -29,13 +35,13 @@ CI/CD Integration converts audit findings into automated pipeline checks. The go
 
 ## Configuration
 
-Check for `.ds-ops-config.yml` in the project root:
+If `.ds-ops-config.yml` exists, follow the configuration-and-recurring knowledge note (`../../knowledge-notes/configuration-and-recurring.md`). This skill reads:
 
 ```yaml
 cicd:
   platform: "github-actions"         # github-actions, gitlab-ci, circleci, bitbucket
   package_manager: "npm"              # npm, yarn, pnpm
-  node_version: "20"                  # Node.js version
+  node_version: "22"                  # Node.js version (22 or 24; both LTS)
   test_framework: "jest"              # jest, vitest, playwright
   component_library_path: "packages/components"
   token_path: "packages/tokens"
@@ -65,7 +71,7 @@ Before generating any pipeline configuration, determine which checks are worth a
 | Token circular references | Yes | Graph traversal — computers are better at this |
 | Hardcoded colour values | Yes | grep/AST — exact match detection |
 | Component prop type checking | Yes | TypeScript/Flow already does this |
-| Accessibility (automated subset) | Yes | axe-core catches 30–40% of WCAG violations |
+| Accessibility (automated subset) | Yes | axe-core catches the machine-detectable subset of WCAG issues; keyboard and screen reader checks stay manual |
 | Visual regression | Yes | Pixel comparison catches unintended changes |
 | Component export completeness | Yes | AST/barrel file check |
 | Bundle size tracking | Yes | Byte comparison — pure measurement |
@@ -91,9 +97,10 @@ For each audit finding category, determine the automated check:
 |---|---|---|
 | Naming violations | Lint token names against convention regex | Custom script or Style Dictionary validator |
 | Circular references | Build-time alias resolution check | Style Dictionary build (fails on circular refs) |
-| Orphaned tokens | Cross-reference token definitions with usage in component files | Custom script: grep token names across component source |
+| Orphaned tokens | Cross-reference token definitions with usage in component files | Custom script: grep token names across component source. Warn only — it can't see tokens consumed outside the repo (product apps, native platforms, Figma), so an "orphan" may be in use |
 | Missing semantic tier | Check that every component token reference resolves through a semantic alias | Custom script or Style Dictionary referencing |
-| DTCG format compliance | Validate token files against DTCG schema | JSON Schema validation |
+| DTCG format compliance | Validate token files against the 2025.10 format | `npx terrazzo lint` (DTCG-native), or a Style Dictionary 4 or 5 build with `usesDtcg`, which fails on broken references and bad shapes. There is no official DTCG JSON Schema to validate against |
+| Hardcoded values in styles | Stylelint on colour, spacing and type properties; ESLint for Tailwind arbitrary values | `stylelint-declaration-strict-value` with the token pattern as `ignoreValues`; `eslint-plugin-tailwindcss` `no-arbitrary-value`. If `governance-encoder` has written this config, the step is `npm run lint` |
 
 ### Component checks
 
@@ -126,69 +133,93 @@ Structure:
 ```yaml
 name: Design System Quality Checks
 
+# No `paths:` filter here: if these jobs are required checks, a PR that
+# doesn't touch the paths would leave them pending forever. The `changes`
+# job decides what to run instead; skipped jobs count as passing.
 on:
   push:
     branches: [main]
-    paths:
-      - 'packages/tokens/**'
-      - 'packages/components/**'
   pull_request:
     branches: [main]
-    paths:
-      - 'packages/tokens/**'
-      - 'packages/components/**'
+
+permissions:
+  contents: read
+  pull-requests: read   # lets the path filter list PR files
 
 concurrency:
   group: ds-checks-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      tokens: ${{ steps.filter.outputs.tokens }}
+      components: ${{ steps.filter.outputs.components }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            tokens:
+              - 'packages/tokens/**'
+            components:
+              - 'packages/components/**'
+              - 'packages/tokens/**'
+
   token-validation:
     name: Token Validation
+    needs: changes
+    if: needs.changes.outputs.tokens == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
       - name: Validate token naming
         run: node scripts/ds-checks/validate-token-names.js
-      - name: Check for circular references
-        run: npx style-dictionary build --config tokens.config.js
-      - name: Detect orphaned tokens
+      - name: Validate DTCG format and references
+        run: npx terrazzo lint            # or: npx style-dictionary build --config tokens.config.js
+      - name: Detect orphaned tokens (warn only)
         run: node scripts/ds-checks/find-orphaned-tokens.js
-      - name: Validate DTCG format
-        run: node scripts/ds-checks/validate-dtcg-schema.js
 
   component-validation:
     name: Component Validation
+    needs: [changes, token-validation]
+    if: ${{ !failure() && !cancelled() && needs.changes.outputs.components == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
       - name: TypeScript compilation
         run: npx tsc --noEmit
+      - name: Hardcoded values in styles
+        run: npx stylelint "**/*.{css,scss}" --ignore-path .gitignore   # declaration-strict-value config from governance-encoder
       - name: Check export completeness
         run: node scripts/ds-checks/verify-exports.js
       - name: Accessibility scan
-        run: npm run test:a11y
+        run: npm run test:a11y      # prerequisite — see Step 3
       - name: Bundle size check
-        run: npx size-limit
+        run: npx size-limit         # prerequisite — see Step 3
 
   documentation-validation:
     name: Documentation Validation
+    needs: changes
+    if: needs.changes.outputs.components == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
       - name: Check component docs exist
@@ -198,44 +229,36 @@ jobs:
 
   visual-regression:
     name: Visual Regression
+    needs: changes
+    if: github.event_name == 'pull_request' && needs.changes.outputs.components == 'true'
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
+          fetch-depth: 0          # Chromatic needs git history for baselines
+      - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
       - name: Build Storybook
-        run: npx storybook build
+        run: npx storybook build --output-dir storybook-static
       - name: Run visual regression
-        run: npx chromatic --project-token=${{ secrets.CHROMATIC_TOKEN }}
+        # Reuse the build above rather than letting Chromatic build Storybook again
+        run: npx chromatic --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }} --storybook-build-dir=storybook-static
 ```
 
-### GitLab CI
+Pin each action to its current major when you generate the file; the majors above were current when this skill was written. Use the Node version from `cicd.node_version` (22 or 24). `dorny/paths-filter` is a third-party action; if the team's policy disallows those, replace the `changes` job with a `git diff --name-only` step that sets the same outputs.
 
-Produce `.gitlab-ci.yml` with equivalent stages:
+**Blocking merges needs branch protection.** A failing job only blocks a merge if the repository requires it. Tell the user to add the job names as required status checks under branch protection or a ruleset on `main`; the pipeline can't enforce this itself.
 
-```yaml
-stages:
-  - validate-tokens
-  - validate-components
-  - validate-docs
-  - visual-regression
+### GitLab CI, CircleCI, Bitbucket Pipelines
 
-# [equivalent job definitions]
-```
+Generate the same job list as the GitHub workflow (token validation, component validation with the Stylelint step, documentation validation, visual regression on pull requests) in the platform's syntax; don't reduce the check list to fit a shorter template. Platform notes:
 
-### CircleCI
-
-Produce `.circleci/config.yml` with orbs and workflows.
-
-### Bitbucket Pipelines
-
-Produce `bitbucket-pipelines.yml` with pipeline definitions.
+- **GitLab CI** (`.gitlab-ci.yml`): `default.image: node:22`, an npm cache keyed on `package-lock.json`, `stages: [validate, visual]`, and `rules` with `changes:` on the token and component paths for merge-request pipelines. Set `CHROMATIC_PROJECT_TOKEN` as a masked variable. To block merges, enable "Pipelines must succeed" in the merge request settings.
+- **CircleCI** (`.circleci/config.yml`): a `node` executor on `cimg/node:22.x`, an `install` command with `restore_cache`/`save_cache` on `package-lock.json`, `component-validation` requiring `token-validation`. CircleCI has no built-in path filtering; add the path-filtering orb only if run time matters. Block merges with required status checks in the git host.
+- **Bitbucket Pipelines** (`bitbucket-pipelines.yml`): `image: node:22`, step definitions reused under `pipelines.pull-requests` and `pipelines.branches.main`, `condition: changesets: includePaths:` to scope by path. Blocking merges needs a merge check requiring passing builds (a Premium feature on Bitbucket Cloud).
 
 ---
 
@@ -257,35 +280,57 @@ const fs = require('fs');
 const path = require('path');
 
 // Configuration — adjust these to match your conventions
-const CONVENTIONS = {
-  primitives: /^[a-z]+\.[a-z]+\.\d+$/,         // e.g., color.blue.500
-  semantic: /^[a-z]+\.[a-z]+\.[a-z]+$/,          // e.g., color.action.primary
-  component: /^[a-z]+\.[a-z]+\.[a-z]+\.[a-z]+$/, // e.g., button.background.default
+// A segment is lowercase letters and digits, optionally hyphenated:
+// spacing.4, font-size.base, color.blue.500, color.action.primary-hover,
+// button.background.hover all pass. 2–5 segments.
+const SEGMENT = '[a-z0-9]+(?:-[a-z0-9]+)*';
+const TOKEN_NAME = new RegExp(`^${SEGMENT}(?:\\.${SEGMENT}){1,4}$`);
+
+// Tier comes from where a token is defined (file or set), not from how many
+// segments its name has — spacing.4 and button.background.default can't be
+// told apart by shape alone.
+const TIER_BY_PATH = {
+  primitive: 'primitives/',
+  semantic: 'semantic/',
+  component: 'component/',
 };
 
 // Token file path — adjust to your project
 const TOKEN_DIR = process.env.TOKEN_DIR || 'packages/tokens/src';
 
-// [Full implementation: recursively read token files, validate each
-//  token name against the appropriate convention regex, collect
-//  violations, output them, exit with appropriate code]
+// [Full implementation: recursively read token files, assign each token
+//  a tier from TIER_BY_PATH, validate its name against TOKEN_NAME and any
+//  tier-specific rules, collect violations, read the threshold for
+//  `token-naming` from .ds-ops/quality-gates.yml, output violations, and
+//  exit 1 only if the count exceeds the threshold and block_merge is true]
 ```
 
-Provide complete, working implementations for each script. Include:
+The block above is the header and configuration only; the generated file contains the implementation its comment describes. Provide complete, working implementations for each script. Include:
 - Clear comments explaining what the script checks
 - Configurable paths and patterns at the top of each file
-- Exit codes: 0 for pass, 1 for fail
+- Thresholds read from `.ds-ops/quality-gates.yml` (Step 4) via a shared helper, not hardcoded
+- Exit codes: 1 only when a gate with `block_merge: true` is exceeded; otherwise 0, printing warnings (on GitHub, as `::warning::` lines so they show on the PR)
 - Human-readable output: which files, which violations, what to fix
 - Provenance comment: "Generated by Design System Ops — cicd-integration"
 
 ### Scripts to generate
 
-1. `validate-token-names.js` — Regex-based token name validation
+1. `validate-token-names.js` — Regex-based token name validation (Style Dictionary doesn't validate names; Terrazzo's lint rules can, if the team is on Terrazzo, in which case skip this script)
 2. `find-orphaned-tokens.js` — Cross-reference token definitions with component usage
-3. `validate-dtcg-schema.js` — JSON Schema validation for DTCG format
-4. `verify-exports.js` — Compare directory listing with barrel file exports
-5. `check-docs-exist.js` — Verify documentation files exist for each component
-6. `check-stories-exist.js` — Verify Storybook story files exist for each component
+3. `verify-exports.js` — Compare directory listing with barrel file exports
+4. `check-docs-exist.js` — Verify documentation files exist for each component
+5. `check-stories-exist.js` — Verify Storybook story files exist for each component
+6. `read-gates.js` — Shared helper that loads `.ds-ops/quality-gates.yml` and returns the threshold and `block_merge` flag for a gate
+
+DTCG validation and the hardcoded-value check are not scripts: they run Terrazzo or Style Dictionary, and Stylelint or ESLint, with the config the team has (or `governance-encoder` writes). Don't reimplement a linter in `scripts/ds-checks/`.
+
+### Prerequisites the pipeline assumes
+
+Two steps call tools the scripts above don't create. Generate them, or list them as prerequisites the team must add before the pipeline goes green:
+
+- **Stylelint config** with `stylelint-declaration-strict-value` on the token-backed properties (and `eslint-plugin-tailwindcss` for Tailwind). Run `governance-encoder` to write it from the team's rules, or generate a minimal one here and say it's a starting point.
+- **`test:a11y` script** in `package.json` — for example `"test:a11y": "vitest run --project a11y"` with `jest-axe`/`vitest-axe` tests, or `"test:a11y": "test-storybook"` with the Storybook test-runner and axe. Generate one example test per component type found.
+- **`size-limit` config** — a `.size-limit.json` listing each entry point with a `limit`, plus `size-limit` and its preset (e.g. `@size-limit/preset-small-lib`) as dev dependencies.
 
 ---
 
@@ -293,9 +338,11 @@ Provide complete, working implementations for each script. Include:
 
 Produce a quality gate definition that the pipeline enforces on pull requests:
 
+The `scripts/ds-checks/` scripts read this file through `read-gates.js`. Checks run by other tools (Style Dictionary, axe, size-limit, Chromatic) are gated by their own exit codes and config — set their thresholds there, and say so in `PIPELINE.md`.
+
 ```yaml
 # .ds-ops/quality-gates.yml
-# Quality gates for design system pull requests
+# Quality gates for design system pull requests, read by scripts/ds-checks/
 # Adjust thresholds based on your system's maturity
 
 gates:
@@ -304,30 +351,20 @@ gates:
     block_merge: true
     message: "Token naming violations must be fixed before merge"
 
-  circular-references:
-    threshold: 0
-    block_merge: true
-    message: "Circular token references are not allowed"
-
   orphaned-tokens:
     threshold: 5          # Allow some orphans during migration periods
-    block_merge: false     # Warn but don't block
-    message: "New orphaned tokens detected — consider cleanup"
+    block_merge: false    # Warn only: tokens consumed outside this repo look orphaned
+    message: "Possibly orphaned tokens — check external consumers before removing"
 
-  accessibility:
-    threshold: 0          # Zero critical/serious axe violations
+  exports:
+    threshold: 0
     block_merge: true
-    message: "Accessibility violations must be resolved"
+    message: "Every component directory must be exported from the package entry point"
 
-  bundle-size:
-    max_increase_kb: 5    # Allow up to 5KB increase per component
-    block_merge: true
-    message: "Component bundle size increased beyond threshold"
-
-  visual-regression:
-    max_changed_stories: 0 # Any visual change requires review
-    block_merge: false      # Require manual approval, don't auto-block
-    message: "Visual changes detected — review required"
+  docs-and-stories:
+    threshold: 0
+    block_merge: false
+    message: "Components without docs or stories detected"
 ```
 
 ---
@@ -349,21 +386,23 @@ Produce a `PIPELINE.md` file that explains:
 ### For teams using Figma MCP
 Add a step that auto-pulls Figma variable values and compares them against token file definitions. This catches design-code drift at the CI level.
 
-### For teams using Style Dictionary
-The token validation steps should use Style Dictionary's built-in validation rather than custom scripts. Generate a Style Dictionary config that enforces naming conventions and reference integrity.
+### For teams using Style Dictionary or Terrazzo
+Style Dictionary's build catches broken and circular references and, with `usesDtcg`, bad value shapes; it does not validate names, so `validate-token-names.js` stays. Terrazzo's `lint` covers DTCG validation and has configurable lint rules that can replace the naming script. Use the tool the repo has; don't add a second token toolchain for CI.
 
 ### For teams using Storybook
 Integrate the visual regression step with Storybook's built-in visual testing or Chromatic. Generate test-runner configuration for accessibility checks within stories.
 
 ### For monorepo projects
-Add path-scoped triggers so that token changes only run token checks, and component changes only run component checks. Use job dependencies so that token validation runs before component validation (since components depend on tokens).
+Scope jobs by changed paths inside the pipeline (the `changes` job above), not with workflow-level `paths:` filters, so required checks never sit pending. Token changes run token checks; component changes run component checks. Use job dependencies so that token validation runs before component validation (since components depend on tokens).
 
 ---
 
 ## Quality checks
 
 - Pipeline configuration is valid YAML that passes the platform's schema validation
-- All referenced scripts exist and are executable
+- All referenced scripts exist and are executable, and every tool a step calls (`test:a11y`, `size-limit`) is either generated or listed as a prerequisite
+- Actions are pinned to current majors and Node is 22 or 24
+- Gate thresholds come from `.ds-ops/quality-gates.yml`, and the user is told to enable branch protection for blocking checks
 - Scripts have clear error messages that explain what went wrong and how to fix it
 - Quality gate thresholds are reasonable defaults (not so strict they block everything, not so loose they catch nothing)
 - Documentation explains every check in language a non-engineer can understand

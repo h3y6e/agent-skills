@@ -5,7 +5,7 @@ metadata:
     github-path: pstack/skills/principle-guard-the-context-window
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: e301f9b96fd9b42899159beb919538eacb18e3a0
+    github-tree-sha: 8c132ce80504b04cb2c04070b9ca8c6932807037
 name: principle-guard-the-context-window
 ---
 # Guard the Context Window
@@ -16,6 +16,5 @@ The context window is finite and non-renewable within a session. Every token sho
 
 **Pattern:**
 - **Isolate large payloads.** Route verbose outputs, screenshots, and large documents to subagents. The main context gets summaries, not raw data.
-- **Don't read what you won't use.** Read selectively based on relevance. If a file isn't needed for the current task, skip it.
 - **Keep frequently used content inline.** Templates and references used on every invocation belong in the skill file, not in separate files that cost a read each time.
 - **Size phases and cap scope.** Limit files per phase, set turn budgets, account for mechanism costs.

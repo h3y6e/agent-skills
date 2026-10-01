@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-waf-security
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 4f529bccf7830823c0f50af38db5078b2559e4a8
+    github-tree-sha: 27decf24aa128cfca8540a47257d5b46db58a406
+    version: 1.0.0
 name: google-cloud-waf-security
 ---
 # Google Cloud Well-Architected Framework skill for the Security pillar

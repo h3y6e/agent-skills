@@ -5,7 +5,7 @@ metadata:
     github-path: pstack/skills/principle-never-block-on-the-human
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: bca187615a8acdea2696fe4fdc52711652c49387
+    github-tree-sha: bbdf25e9f8197253a44342e6e7793324a10965fb
 name: principle-never-block-on-the-human
 ---
 # Never Block on the Human
@@ -16,9 +16,7 @@ The human supervises asynchronously. Agents must stay unblocked. Make reasonable
 
 **Pattern:**
 - **Proceed, then present.** Do the work, show the result. Don't ask "should I do X?" Do X, explain why.
-- **Reserve questions for genuine ambiguity.** Ask only when you cannot infer intent from context.
 - **Make the system self-healing.** When you notice a problem, log it and fix it in the next round.
-- **Supervision is async.** Design workflows for review-after-the-fact.
 
 **Boundaries:**
 - **Irreversible actions** (force-push, delete production data, send external messages) still require confirmation.

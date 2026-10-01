@@ -1,11 +1,12 @@
 ---
-description: Leverages BigQuery's built-in machine learning and GenAI capabilities for advanced data analytics. Use when you need to write SQL queries that perform time-series forecasting, predict values, detect outliers or anomalies, find key drivers, perform semantic search or vector search, classify text, calculate similarity, summarize content, translate language, evaluate models, filter by semantic conditions, or leverage generative AI capabilities in BigQuery. Do not use for general BigQuery dataset, table, or job management requests.
+description: Leverages BigQuery's built-in machine learning and GenAI capabilities for advanced data analytics. Use when you need to write SQL queries that perform time-series forecasting, predict values, detect outliers or anomalies, find key drivers, perform semantic search or vector search, classify text, calculate similarity, summarize content, translate language, evaluate models, filter by semantic conditions, measure the causal effect of an intervention, compute correlations between columns, detect change points or structural breaks, extract trend or seasonality components, or leverage generative AI capabilities in BigQuery. Do not use for general BigQuery dataset, table, or job management requests.
 metadata:
     category: AiAndMachineLearning
     github-path: skills/cloud/bigquery-ai-ml
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: bd2b826978a424ee736200e7879206b050986ff9
+    github-tree-sha: ec8df4adf51b1da1ca810032aedee7229e387b35
+    version: 1.1.0
 name: bigquery-ai-ml
 ---
 # BigQuery AI & ML
@@ -20,6 +21,9 @@ like `AI.FORECAST`, `AI.KEY_DRIVERS`, `AI.DETECT_ANOMALIES`, and `AI.GENERATE`.
 
     -   **AI.AGG**: [ai_agg.md](references/ai_agg.md) - Multi-row semantic
         aggregation and summarization.
+    -   **AI.CAUSAL_EFFECT**:
+        [ai_causal_effect.md](references/ai_causal_effect.md) - Quantifies the
+        impact of an intervention on a time series.
     -   **AI.CLASSIFY**: [ai_classify.md](references/ai_classify.md) - Classify
         text.
     -   **AI.DETECT_ANOMALIES**:
@@ -52,6 +56,15 @@ like `AI.FORECAST`, `AI.KEY_DRIVERS`, `AI.DETECT_ANOMALIES`, and `AI.GENERATE`.
         [ml_contribution_analysis.md](references/ml_contribution_analysis.md)
         -   Finds contributing factors, key drivers of change. Requires creating
             a MODEL entity.
+    -   **ML.CORRELATION**: [ml_correlation.md](references/ml_correlation.md) -
+        Calculates correlation between columns, optionally sliced by dimensions.
+    -   **ML.DETECT_CHANGE_POINTS**:
+        [ml_detect_change_points.md](references/ml_detect_change_points.md) -
+        Detects structural breaks or sustained shifts in a time series.
+    -   **ML.SEASONALITY**: [ml_seasonality.md](references/ml_seasonality.md) -
+        Extracts seasonal components from a time series.
+    -   **ML.TREND**: [ml_trend.md](references/ml_trend.md) - Extracts the
+        long-term trend component from a time series.
     -   **VECTOR_SEARCH**: [vector_search.md](references/vector_search.md) -
         Vector search best practices.
 

@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-waf-reliability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 41d2ffe437eee60c61154ad5b35799855a99522a
+    github-tree-sha: c195cc3a89ee81c822d5e7a98277847d045b8032
+    version: 1.0.0
 name: google-cloud-waf-reliability
 ---
 # Google Cloud Well-Architected Framework skill for the Reliability pillar

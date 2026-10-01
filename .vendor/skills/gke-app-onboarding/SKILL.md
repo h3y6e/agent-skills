@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-app-onboarding
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a41b5c5471a0b08af9e869944631500ab1be10b5
+    github-tree-sha: 05a05bd621f04103689b7d2ef88c6accc66bc787
+    version: 1.0.0
 name: gke-app-onboarding
 ---
 # GKE App Onboarding

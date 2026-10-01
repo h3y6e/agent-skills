@@ -1,17 +1,23 @@
 ---
-description: 'Plan and execute the full deprecation lifecycle for a design system component, token, or pattern — including timeline, migration paths, communication plan, and multi-phase removal. Trigger when someone says: deprecate a component, remove a component, sunset this pattern, phase out these tokens, retire this variant, replace this with, or anything involving removing or replacing something from the design system. Do NOT trigger for communicating non-deprecation changes like new releases or feature updates — use change-communication for those.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(find:*), Bash(head:*), Bash(ls:*), Bash(sort:*), Bash(tail:*), Bash(wc:*), Bash(grep:*), Bash(rg:*)
+description: 'Plan a deprecation end to end for a component, token, variant or pattern: usage audit, migration path, timeline to a major-version removal, notices. Triggers: deprecate, sunset, phase out, retire, remove, replace X with Y. Announcing non-deprecation changes: change-communication.'
 metadata:
     github-path: skills/deprecation-process
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 811cf5edaf910d71166981c21c178a46b61087db
+    github-tree-sha: a3dce88c808ca6116b934ab27119e811bbe6d551
 name: deprecation-process
 references:
     - ../../knowledge-notes/component-governance.md
+    - ../../knowledge-notes/output-discipline.md
 ---
 # Deprecation process
 
 A skill for planning and executing the deprecation of components, tokens, or patterns in a design system. Produces a deprecation plan with timeline, consumer communication, and migration guidance.
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Context
 
@@ -29,7 +35,7 @@ Clarify:
 - What is being deprecated? (component, token, pattern, variant, API)
 - Why is it being deprecated? (superseded by a better option, unused, causing maintenance burden, design direction change, accessibility non-compliance, etc.)
 - What replaces it, if anything?
-- Is there a hard removal date in mind, or is this open-ended?
+- Is there a removal date in mind, or is this open-ended?
 
 If nothing replaces it: the deprecation plan needs an extra step addressing why the use case should no longer be served and what teams who relied on it should do instead.
 
@@ -39,38 +45,48 @@ Before writing the plan, understand the exposure. Do not estimate when you can m
 
 **Automated usage counting (if codebase access is available):**
 
-Run these searches to produce a concrete usage count, not an estimate:
+Run these searches to produce a measured count rather than an estimate. Search every package root that consumes the system (apps, packages, monorepo workspaces), not just `src/`. Before trusting any count, run the pattern against one file you know uses the item and confirm it matches; if it doesn't, fix the pattern before reporting anything.
+
+The patterns use whole-word matching so `Button` doesn't match `ButtonGroup`, and ripgrep's multiline mode so imports split across lines are caught. Even so, treat every count as a lower bound: dynamic imports, string-built class names and usage in other repositories won't show up. Say so in the summary.
 
 For component deprecation:
 ```bash
-# Count import statements
-grep -r "import.*{.*ComponentName" --include="*.tsx" --include="*.ts" --include="*.jsx" --include="*.js" src/ | wc -l
+ROOTS="apps packages src"   # every consuming package root in this repo
+GLOBS=(-g '*.{ts,tsx,js,jsx}')
 
-# Count JSX usage (may exceed imports if used multiple times per file)
-grep -r "<ComponentName" --include="*.tsx" --include="*.jsx" src/ | wc -l
+# Files that import or re-export it, including multiline and aliased imports
+rg -l -U "${GLOBS[@]}" '(import|export)\s+(type\s+)?\{[^}]*\bComponentName\b[^}]*\}\s*from' $ROOTS | wc -l
 
-# List files with usage (for blast radius mapping)
-grep -rl "import.*ComponentName\|<ComponentName" --include="*.tsx" --include="*.ts" --include="*.jsx" --include="*.js" src/
+# Local aliases (`ComponentName as Foo`) — search for each alias's JSX usage too
+rg -o -U --no-filename "${GLOBS[@]}" '\bComponentName\s+as\s+\w+' $ROOTS | sort -u
+
+# JSX instances (occurrences, not lines; may exceed files if used several times per file)
+rg -o "${GLOBS[@]}" '<ComponentName\b' $ROOTS | wc -l
+
+# Files with any usage (for blast radius mapping)
+rg -l -U "${GLOBS[@]}" '\bComponentName\b' $ROOTS
 ```
 
 For token deprecation:
 ```bash
-# CSS custom properties
-grep -r "var(--token-name)" --include="*.css" --include="*.scss" --include="*.tsx" src/ | wc -l
+# CSS custom properties, including var(--token-name, fallback)
+rg -o -g '*.{css,scss,less,ts,tsx,js,jsx}' 'var\(\s*--token-name\s*[,)]' $ROOTS | wc -l
 
-# SCSS variables
-grep -r "\$token-name" --include="*.scss" src/ | wc -l
+# SCSS variables, without matching $token-name-light
+rg -o -g '*.scss' '\$token-name(?:[^\w-]|$)' $ROOTS | wc -l
 
-# JS/TS token references
-grep -r "tokens\.path\.to\.token\|theme\.path\.to\.token" --include="*.ts" --include="*.tsx" src/ | wc -l
+# JS/TS token references (adjust the path to your token object)
+rg -o -g '*.{ts,tsx,js,jsx}' '\b(tokens|theme)\.path\.to\.token\b' $ROOTS | wc -l
 ```
 
-**Present the usage count as a structured summary:**
+Use `rg -l … | wc -l` when you mean files and `rg -o … | wc -l` when you mean occurrences, and label the result accordingly. If ripgrep isn't available, `grep -rlE` works for single-line patterns but misses multiline imports; note that in the summary.
+
+**Present the usage count as a structured summary** (numbers below are illustrative):
 
 ```
 Usage audit: DatePicker
 ─────────────────────────
-Import statements:    23 files
+Files importing:      23 files
 JSX instances:        47 usages
 Unique consuming apps: 4 (checkout, dashboard, settings, admin)
 Critical paths:       2 (checkout date selection, appointment booking)
@@ -78,21 +94,31 @@ Test files with refs: 12
 Storybook stories:    3
 Documentation refs:   5
 ─────────────────────────
-Total blast radius:   47 instances across 23 files in 4 applications
+Total blast radius:   at least 47 instances across 23 files in 4 applications
+Searched:             apps/, packages/ (pattern confirmed against a known usage)
 ```
 
-If codebase access is not available, ask the user to run the grep commands and provide the output. If neither is possible, flag the usage audit as outstanding and required before soft removal.
+**Consumers in other repositories.** The searches above count only what's checked out. To find consumers elsewhere: `gh search code "ComponentName" --owner <org>` locates candidate repositories (approximate, default branch only); then clone or fetch each and count with the same `rg` patterns. List the repositories searched and the ones not reached under Scope, and treat the total as a lower bound.
 
-**Per-consumer breakdown:** For each consuming application, produce a row showing:
+If codebase access is not available, ask the user to run the search commands and provide the output. If neither is possible, flag the usage audit as outstanding and required before the warnings stage.
 
-| Consumer | Instances | Critical path? | Estimated migration effort | Contact |
+**Per-consumer breakdown:** For each consuming application, produce a row showing (illustrative values):
+
+| Consumer | Instances (evidence) | Critical path? | Estimated migration effort | Contact |
 |---|---|---|---|---|
-| Checkout | 12 | Yes (date selection) | Medium (1–3 days) | [team/person] |
-| Dashboard | 18 | No | Low (<1 day) | [team/person] |
-| Settings | 8 | No | Low (<1 day) | [team/person] |
-| Admin | 9 | No | Medium (prop differences) | [team/person] |
+| Checkout | 12 (`rg` over `apps/checkout`, 2026-09-24) | Yes (date selection, per the team) | Medium (1–3 days) | [team/person] |
+| Dashboard | 18 (`apps/dashboard`) | No | Low (<1 day) | [team/person] |
+| Settings | 8 (`apps/settings`) | No | Low (<1 day) | [team/person] |
+| Admin | 9 (`apps/admin`) | No | Medium (prop differences) | [team/person] |
+
+Critical-path status comes from the team, not from a directory name.
 
 This table is the deprecation plan's most operationally useful artifact. It tells the deprecation owner exactly who to contact, how much work each team faces, and where the blockers will be.
+
+Effort tiers, estimated from the prop mapping and any behavioural differences (label them as estimates):
+- **Low (< 1 day):** simple find-and-replace, props map 1:1, no behavioural differences
+- **Medium (1–3 days):** some prop changes, minor behavioural differences needing targeted testing
+- **High (3+ days):** significant API or composition differences; consuming code needs refactoring
 
 **Small-system note (fewer than 5 components):** Deprecating one component when you only have four is removing 25% of the system. The usage audit (this step) becomes mandatory, not optional — the blast radius is proportionally much larger. Consider whether the component should be archived or hidden rather than fully deprecated, since small systems have fewer alternatives and consumers may have no migration path. The communication step should be a direct conversation with every affected team, not a written announcement — with a system this size, you know who is using what.
 
@@ -112,7 +138,7 @@ This table is the deprecation plan's most operationally useful artifact. It tell
 
 #### Why this is being deprecated
 
-One to three sentences. Be direct. "This component has a lower-quality replacement that covers all existing use cases and is more accessible" is more useful than "this component has reached the end of its lifecycle."
+One to three sentences. Be direct. "This component has a higher-quality replacement that covers all existing use cases and is more accessible" is more useful than "this component has reached the end of its lifecycle."
 
 Include the decision record reference if one exists.
 
@@ -133,39 +159,51 @@ Not every deprecation has a clean 1:1 replacement. When the replacement does not
    - No → Go to step 2.
 
 2. **Are the uncovered use cases still valid needs?**
-   - Yes → The deprecation is premature. Either extend the replacement to cover the gap, or maintain both items until the replacement is complete.
+   - Yes → Go to step 3.
    - No → Proceed with deprecation. Document why the uncovered use cases are no longer supported and what teams should do instead.
 
 3. **Can the uncovered use cases be served by a composition of existing components?**
-   - Yes → Document the composition pattern as part of the migration guide. Consider whether the composition should become a documented pattern (use the `pattern-documentation` skill).
-   - No → The gap needs a new solution. Pause the deprecation timeline until the solution is available, or extend the deprecation window to give teams time to build local solutions.
+   - Yes → Proceed, and document the composition pattern as part of the migration guide. Consider whether the composition should become a documented pattern (use the `pattern-documentation` skill).
+   - No → The deprecation is premature. Extend the replacement to cover the gap, or keep both items until it does; pause the timeline rather than leave teams to build local solutions.
 
 The key principle: never deprecate without a path. A deprecation that leaves teams with no alternative is not a deprecation — it is an abandonment.
 
-#### Migration guidance
+#### Migration inputs
 
-Provide step-by-step migration instructions at a level of specificity that a developer can follow without additional context.
+The migration guide itself is written once, by `change-communication`, as part of the breaking-change package; this plan supplies what that guide needs, so the two never disagree. Record here:
 
-For a component migration:
-1. Find all instances of [deprecated component] in your codebase
-2. Replace with [replacement component]
-3. Map the deprecated props to replacement props: [prop mapping table]
-4. Check for [specific behavioural differences that need testing]
-5. Remove any local overrides that compensated for [deprecated component's known weaknesses]
+- **Replacement:** [component, token or pattern], and the cases it doesn't cover (from the decision tree above)
+- **Mapping table:** every deprecated prop or token against its replacement, with `[no equivalent]` where there is none
 
-For a token migration:
-1. Find all references to [deprecated token name]
-2. Replace with [replacement token name]
-3. Verify the computed value matches expectations — [deprecated token] resolved to [value], [replacement token] resolves to [value]. [Note any differences and why they exist.]
+  | Deprecated | Replacement | Note |
+  |---|---|---|
+  | `<Old size="compact">` | `<New size="sm">` | value rename only |
+  | `--color-legacy-teal` | `--color-action-secondary` | resolved values differ: `#0f766e` → `#0d9488` |
 
-If the migration is complex, note where to find additional help: a migration script, a specific Slack channel, a pairing offer from the design systems team.
+- **Behavioural differences to test:** [what changes at runtime, from the source of both]
+- **Local overrides to remove:** [known workarounds consumers added for the deprecated item's weaknesses]
+- **Help:** a codemod (Step 3, below), a channel, a pairing offer
+
+Then run `change-communication` with this plan; its migration guide goes in the announcement and the docs.
 
 #### Timeline
 
-**Deprecation notice date:** [date]
+**Deprecation notice date:** [date] — the warnings below ship in a minor release on this date; the item keeps working
 **Migration support window:** [start – end] — during this period, the design systems team will actively support migration
-**Soft removal date:** [date] — deprecated item will generate warnings but remain functional
-**Hard removal date:** [date] — deprecated item is removed from the system
+**Removal date:** [date] — the item is removed, in a major release
+
+Removal ships in a major release; use `version-bump-advisor` for the call. The deprecation notice and its warnings ship in a minor. There is no separate "soft removal" stage: deprecated-with-warnings *is* the state between notice and removal.
+
+#### Deprecation mechanics
+
+Say exactly how the deprecation shows up, in code and in Figma, so it isn't only a message in a channel:
+
+- **Code, at the declaration:** a `@deprecated` JSDoc tag on the export ("Use `NewThing`. Removed in v4.") so IDEs strike it through; for tokens in DTCG files, `"$deprecated": "Use {new.path}"`; for CSS custom properties, the old name aliased to the new one and listed in a Stylelint `declaration-property-value-disallowed-list`; for Sass, `@warn` in the variable's partial
+- **Code, at runtime:** a dev-only `console.warn`, once per session, naming the replacement; never in production builds
+- **Lint:** `@typescript-eslint/no-deprecated` (or `eslint-plugin-deprecation`) fails new uses; after removal, `no-restricted-imports` names the removed path with the replacement. `governance-encoder` writes both
+- **Figma:** rename the component or variable with a `[Deprecated]` prefix (or move it to a Deprecated page), set its description to the replacement and the removal date, and unpublish it at removal. Do this in the same window as the code notice so designers and engineers see the same state
+
+Each of these is a line item in the plan with an owner; a deprecation that exists only in an announcement is invisible three weeks later.
 
 The minimum deprecation window should be proportional to the usage footprint. A rarely-used internal component might have a four-week window. A foundational component used across dozens of products needs at least one full release cycle, possibly two.
 
@@ -185,25 +223,14 @@ gantt
 
     section Migration
     Migration support window        :active, migrate, after notify, [duration]
-    Reminder: 2 weeks to soft removal :milestone, m2, [date], 0d
 
-    section Soft removal
-    Warnings enabled, still functional :crit, soft, [date], [duration]
-    Reminder: 2 weeks to hard removal  :milestone, m3, [date], 0d
+    Reminder: 2 weeks to removal      :milestone, m3, [date], 0d
 
-    section Hard removal
-    Component removed               :milestone, m4, [date], 0d
+    section Removal
+    Component removed (major)       :milestone, m4, [date], 0d
 ```
 
-Replace the bracketed values with the actual dates and durations from the timeline above. If the team's documentation platform does not render Mermaid, provide the same information as an ASCII timeline:
-
-```
-[Notice date] ──── Migration support ──── [Soft removal] ──── [Hard removal]
-    │                    │                      │                    │
-    ▼                    ▼                      ▼                    ▼
- Announced        Teams migrate         Warnings enabled      Fully removed
- [date]           [date range]          [date]                [date]
-```
+Replace the bracketed values with the actual dates and durations from the timeline above; where a date isn't agreed yet, leave `[needs data: date]` rather than inventing one. If the team's documentation platform does not render Mermaid, add a one-line text fallback: `Notice and warnings [date, minor] → migration support [range] → removal [date, major]`.
 
 The visual timeline should be included in both the deprecation plan document and the communication announcement. It is the single most referenced artifact in a deprecation — teams pin it, share it, and check it weekly.
 
@@ -213,9 +240,9 @@ Who needs to know, and how will they be told?
 
 - **Immediate notice:** [channels — e.g. Slack #design-system, release notes, direct outreach to high-usage teams]
 - **In-system warning:** Add deprecation notice to the component's documentation and, if possible, a code-level deprecation warning in the component itself
-- **Follow-up reminders:** Two weeks before soft removal, two weeks before hard removal
+- **Follow-up reminders:** at the midpoint of the migration window, and two weeks before removal
 
-Write the communication announcement as a draft ready to send. See the `change-communication` skill if a full change communication package is needed.
+The announcement and migration guide are `change-communication`'s output; hand it this plan rather than drafting a second announcement here. This section fixes the channels and the reminder dates that the announcement will carry.
 
 #### Exceptions and edge cases
 
@@ -223,37 +250,24 @@ Are there any known uses that cannot follow the standard migration path? Documen
 
 ---
 
-#### Blast radius analysis (staff-level)
+#### Indirect blast radius
 
-Before committing to a deprecation timeline, model the blast radius:
-
-**Direct impact:**
-- How many consuming applications import or reference the deprecated item?
-- How many instances of usage exist across all consumers? (A single application might use the deprecated component 50 times.)
-- Are any critical paths (checkout, authentication, core navigation) affected?
-
-**Indirect impact:**
+Step 2 covers direct usage. Before committing to a timeline, also check:
 - Does any other system component compose the deprecated component? Those components need migration too, and they block consumer migration.
 - Do any token aliases or theme configurations reference the deprecated item?
 - Are there third-party integrations, design tool configurations, or CI pipelines that reference it?
 
-**Migration effort estimation:**
-For each consuming application, estimate migration effort:
-- **Low (< 1 day):** Simple find-and-replace. Props map 1:1. No behavioural differences.
-- **Medium (1–3 days):** Some prop changes. Minor behavioural differences requiring targeted testing.
-- **High (3+ days):** Significant API differences. Composition changes. Requires refactoring consuming code.
-
 **Codemod recommendation:**
-If the migration is a mechanical transformation (rename a prop, swap one component for another with predictable prop mapping), recommend producing a codemod. For JavaScript/TypeScript projects, jscodeshift or ts-morph scripts can automate the migration. A codemod that handles 80% of cases and flags the remaining 20% for manual review is worth producing when the blast radius exceeds 50 instances.
+If the migration is a mechanical transformation (rename a prop, swap one component for another with predictable prop mapping), recommend running the `codemod-generator` skill. A codemod that handles most cases and flags the rest for manual review is usually worth producing once usage runs to dozens of instances.
 
-Include the blast radius analysis in the deprecation plan. The timeline should be proportional to the blast radius — not just the usage footprint, but the migration effort.
+The timeline should be proportional to the blast radius: not just the usage count, but the migration effort in the per-consumer table.
 
 #### Rollback contingency
 
 Document what happens if the deprecation fails:
 - Under what conditions would the deprecation be reversed? (e.g., migration proves impossible for a critical consumer within the timeline)
 - Can the deprecated item be un-deprecated without data loss or version confusion?
-- Is there a version pinning strategy that allows consumers to stay on the old version beyond the hard removal date if needed?
+- Is there a version pinning strategy that allows consumers to stay on the old version beyond the removal date if needed?
 
 This is not an invitation to avoid deprecations. It is an acknowledgement that infrastructure changes sometimes fail and having a rollback plan is responsible engineering.
 
@@ -265,7 +279,7 @@ The deprecated item's documentation page should be updated immediately with:
 - The planned removal date
 - A link to this deprecation plan
 
-Do not remove the documentation page until hard removal. Teams often discover deprecations through documentation during unrelated work, and the page needs to be there when they look.
+Do not remove the documentation page until removal. Teams often discover deprecations through documentation during unrelated work, and the page needs to be there when they look.
 
 ## Quality checks
 

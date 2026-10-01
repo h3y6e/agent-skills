@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-waf-cost-optimization
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 8d1c1ce958e572008abf13acf12aac302b93d0fc
+    github-tree-sha: e60dc5e2681b3b7460a91a80ca19dd266fe9d219
+    version: 1.0.0
 name: google-cloud-waf-cost-optimization
 ---
 # Google Cloud Well-Architected Framework skill for the Cost Optimization pillar

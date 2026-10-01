@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/agent-platform-endpoint-management
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: dea7a9506e1701a676703506eea529d0d1da6c9b
+    github-tree-sha: d75a4f1774e8080e9fc4a1756fa9a154b31a795e
+    version: 1.0.0
 name: agent-platform-endpoint-management
 ---
 # Agent Platform Endpoint Management

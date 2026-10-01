@@ -5,14 +5,14 @@ metadata:
     github-path: skills/vue
     github-ref: refs/heads/main
     github-repo: https://github.com/antfu/skills
-    github-tree-sha: cff239de1fa9a889b40166c85d13157b8ae5408c
+    github-tree-sha: d7f66ce480e7a1985f326651859564ef4d010757
     source: Generated from https://github.com/vuejs/docs, scripts at https://github.com/antfu/skills
-    version: 2026.1.31
+    version: 2026.9.25
 name: vue
 ---
 # Vue
 
-> Based on Vue 3.5. Always use Composition API with `<script setup lang="ts">`.
+> Based on Vue 3.5, generated at 2026-09-25. Always use Composition API with `<script setup lang="ts">`.
 
 ## Preferences
 

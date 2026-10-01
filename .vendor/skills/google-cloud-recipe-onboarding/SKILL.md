@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-recipe-onboarding
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 7ce8c912f9c7b7cc7f0697309b6b385d28b2a293
+    github-tree-sha: 1684b4e81265d2d965f1e315ee447391accffad5
+    version: 1.0.0
 name: google-cloud-recipe-onboarding
 ---
 # Onboarding to Google Cloud

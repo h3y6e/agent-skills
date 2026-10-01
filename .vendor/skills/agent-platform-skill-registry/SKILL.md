@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/agent-platform-skill-registry
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a27bdae590f8e33560f87c9c0f2522c7d8a4cfe1
+    github-tree-sha: 71e676f15b18e579bbc0c03b22fbf661d0a5a954
+    version: 1.0.0
 name: agent-platform-skill-registry
 ---
 # Skill Registry

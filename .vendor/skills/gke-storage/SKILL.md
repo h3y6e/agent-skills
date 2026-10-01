@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-storage
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: cf08cbaec109c50bc4d4046ea362efebb2e8be18
+    github-tree-sha: 2dc3cf05cd8e62c74854496ec821c6632f67cc0c
+    version: 1.0.0
 name: gke-storage
 ---
 # GKE Storage

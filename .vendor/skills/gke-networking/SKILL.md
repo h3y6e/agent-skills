@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-networking
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 0ad9a5d02aafe11d308b1d804ff466dbcd041e35
+    github-tree-sha: 38bd286e618389fe54ff8d313e3ef223e88696fb
+    version: 1.0.0
 name: gke-networking
 ---
 # GKE Networking

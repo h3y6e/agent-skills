@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-compute-classes
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 421176248db77f7ab54d6de92a4379b66ae27d74
+    github-tree-sha: 55e1e3abc2eba779b28a3605e1c87b41efed80d4
+    version: 1.0.0
 name: gke-compute-classes
 ---
 <!-- disableFinding(LINE_OVER_80) -->

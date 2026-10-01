@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-reliability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 5c997cfba034fee38bdc71367fe909c3029570ee
+    github-tree-sha: d38db817a1d1d3285c923645a4b2304d3a6b0d0b
+    version: 1.0.0
 name: gke-reliability
 ---
 # GKE Reliability

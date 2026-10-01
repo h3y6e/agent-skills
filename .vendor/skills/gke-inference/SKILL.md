@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-inference
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 671ca22fab0531dd167927a1c2cd5718e7f8ae9e
+    github-tree-sha: 085295774d7611f3f80a39dc7f8a74f1de2a0fce
+    version: 1.0.0
 name: gke-inference
 ---
 # GKE AI/ML Inference

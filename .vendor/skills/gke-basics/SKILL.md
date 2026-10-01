@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 9ed35f22ac9572316b7927796439755627c1dcf0
+    github-tree-sha: 2cfec3be58f98a494a83c326259740249ad93ec1
+    version: 1.1.0
 name: gke-basics
 ---
 # GKE Basics & Critical Gotchas

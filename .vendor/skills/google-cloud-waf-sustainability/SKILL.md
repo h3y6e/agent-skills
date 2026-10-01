@@ -1,11 +1,12 @@
 ---
-description: Generates sustainability-focused guidance for Google Cloud workloads based on the design principles and recommendations in the Google Cloud Well-Architected Framework (WAF). Use this skill to evaluate a workload, identify environmental impact requirements, and provide actionable recommendations to build, deploy, and manage the workload sustainably in Google Cloud.
+description: Provides recommendations for environmental sustainability, carbon footprint reduction, and energy efficiency based on the Sustainability pillar of the Google Cloud Well-Architected Framework (WAF). Use when the user asks to assess, design, or optimize Google Cloud workloads for sustainability—including the shared responsibility model, selecting low-carbon regions (CFE%), reducing resource and AI/ML energy waste, designing efficient software and storage lifecycles, or measuring and tracking emissions using Google Cloud Carbon Footprint. Don't use for financial cost reduction (use google-cloud-waf-cost-optimization), latency and throughput tuning (use google-cloud-waf-performance-optimization), or high availability and disaster recovery (use google-cloud-waf-reliability).
 metadata:
     category: WellArchitectedFramework
     github-path: skills/cloud/google-cloud-waf-sustainability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: fd7ed477c4f5acb4ca98910b85cf90dc3ffa31f0
+    github-tree-sha: 3261743ff32499200686b240a70518efec97d7cf
+    version: 1.0.1
 name: google-cloud-waf-sustainability
 ---
 # Google Cloud Well-Architected Framework skill for the Sustainability pillar

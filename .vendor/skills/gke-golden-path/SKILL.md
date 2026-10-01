@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/gke-golden-path
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 15fbc31b0bc6fa6b2cf931ed397ee642ddd33fbe
+    github-tree-sha: 2b0a88b49f7789a4472bc6b1f3c5052d6bef7d3e
+    version: 1.0.0
 name: gke-golden-path
 ---
 # GKE Golden Path Configuration

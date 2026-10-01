@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/workload-manager-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 6441065afcbe34aa926e0cd90f98ba9a559034f5
+    github-tree-sha: c410636a2b3f4003b1fff129bf30f6f3e58ae307
+    version: 1.0.0
 name: workload-manager-basics
 ---
 # Workload Manager Basics

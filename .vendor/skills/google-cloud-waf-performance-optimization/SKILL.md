@@ -5,7 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-waf-performance-optimization
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a19f683a13ef83832572512253e986fe2f04adc2
+    github-tree-sha: d195751277e0fe9b8bdc969e5b60aff078a886bc
+    version: 1.0.0
 name: google-cloud-waf-performance-optimization
 ---
 # Google Cloud Well-Architected Framework skill for the Performance Optimization pillar

@@ -1,17 +1,24 @@
 ---
-description: 'Write a one-page stakeholder brief translating design system health or status into business language. Trigger when someone says: stakeholder update, exec brief, leadership summary, status report for leadership, system status for non-designers, write a brief for the business, or anything about communicating design system status to an audience that does not have a design systems background.'
+allowed-tools: Read, Write, Grep, Glob, Bash(cat:*), Bash(ls:*)
+description: 'Turns design system status or a recommendation into a one-page brief in business language. Use it whenever someone wants an update, summary or note on the system for a VP, exec or stakeholder, however short. Investment case: system-pitch. Charts: visual-report.'
 metadata:
     github-path: skills/stakeholder-brief
-    github-ref: refs/tags/v1.2.0
+    github-ref: refs/tags/v2.0.0
     github-repo: https://github.com/murphytrueman/design-system-ops
-    github-tree-sha: 1a107dc2cce36f06a8cacc655a071604130d802e
+    github-tree-sha: a673e9db90bb6fc0cf15e2a8dee34e0f105dc9b0
 name: stakeholder-brief
 references:
+    - ../../knowledge-notes/component-governance.md
+    - ../../knowledge-notes/executive-communication.md
     - ../../knowledge-notes/output-discipline.md
 ---
 # Stakeholder brief
 
 A skill for writing a one-page stakeholder brief that translates design system health, status, or a specific recommendation into business language. Output requires no design systems knowledge to read, leads with business impact, and ends with a clear ask.
+
+## Before you begin: verify references
+
+Confirm that every path in this skill's frontmatter `references:` exists relative to this SKILL.md. If any is missing, stop: the install is incomplete, usually because a flattening installer (for example `npx skills install`) dropped the repo-root `knowledge-notes/` directory. Tell the user to reinstall by a method in `1-INSTALL.md` and run `verify-install.sh` from the install root. Proceed without the references only if the user explicitly says to, and then say in the output that it was produced without the pack's reference material.
 
 ## Context
 
@@ -19,30 +26,31 @@ Design systems teams are often better at building systems than at communicating 
 
 A stakeholder brief is not a technical report with a summary at the top. It is a business communication that happens to be about design systems work. The reader should be able to understand the situation, the recommendation, and the ask without any prior knowledge of what a design system is or how it works. If a term requires explanation, the explanation belongs in the brief, not in a separate glossary.
 
+Audience calibration, framing patterns, metric translation, anti-patterns and the numbers-honesty rules are shared with system-pitch and live in the executive-communication note.
+
 ## Workflow overview
 
-The stakeholder brief workflow follows five distinct steps:
-
-1. **Establish the brief's purpose** — Confirm the context and the single ask
-2. **Structure and write the brief** — Build the five-part template with business framing
-3. **Calibrate tone by audience** — Adjust language and emphasis for the specific stakeholder group
-4. **Apply framing patterns** — Lead with the insight that resonates most
-5. **Review for clarity and quality** — Ensure no jargon, verify the one-page constraint
+1. **Establish the brief's purpose** — Confirm the context, the sources and the single ask
+2. **Write the brief** — The five-part template with business framing
+3. **Calibrate to the audience and choose the frame** — From the executive-communication note
+4. **Frame maturity (staff-level)** — Named stages and the next transition, when an assessment exists
+5. **Quality checks** — No jargon, one page, every figure sourced
 
 ---
 
 ## Step 1: Establish the brief's purpose
 
 Ask for or confirm:
-- What is this brief for? (Status update / investment ask / specific recommendation / incident summary / launch announcement)
+- What is this brief for? (Status update / specific recommendation / incident summary / launch announcement). A full investment case with cost of current state and ROI is a pitch, not a brief — use system-pitch.
 - Who is the primary audience? (VP, C-suite, product director, budget owner — this determines the level of business abstraction)
 - What is the one thing the reader should do or believe after reading it?
 - What is the underlying situation? (Health report findings, a specific blocker, a proposed investment, a recent achievement)
 - Is there a deadline or decision this brief is feeding into?
+- What are the sources? If system-health, adoption-report or other skill output exists, use its figures and cite it. Facts about the system come from those outputs, inspected files, or the user; anything else stays as `[needs data: …]`.
 
 The brief should have a single primary purpose. A brief that tries to deliver a status update and make an investment ask and announce a new feature is three briefs, and it will not do any of them well.
 
-**Small-system note (fewer than 5 components):** For systems with fewer than 5 components, the brief needs to frame the system as a deliberate, focused investment rather than something that is small because it is under-resourced. Use "specialised system" or "targeted component library" framing. The ROI argument shifts from scale efficiency ("20 teams reuse the same components") to quality consistency ("every customer-facing surface uses the same interaction patterns") and speed ("new features compose from proven components instead of starting from scratch"). Avoid metrics that make a small system look weak by enterprise standards — "3 components" sounds unimpressive without context. Instead, lead with what those components cover: "Our component library handles 80% of our interface patterns, ensuring consistent experience across all product surfaces."
+**Small-system note (fewer than 5 components):** For systems with fewer than 5 components, the brief needs to frame the system as a deliberate, focused investment rather than something that is small because it is under-resourced. Use "specialised system" or "targeted component library" framing. The ROI argument shifts from scale efficiency ("20 teams reuse the same components") to quality consistency ("every customer-facing surface uses the same interaction patterns") and speed ("new features compose from proven components instead of starting from scratch"). Give the size plainly and give it context in the same sentence: "three components, covering [share of interface patterns, from an inventory or audit]". Choosing which true figures to show is framing; leaving out a figure because it sounds small is the "only good news" anti-pattern in the executive-communication note, and a reader who later learns the number stops trusting the brief.
 
 ---
 
@@ -56,6 +64,7 @@ The brief should have a single primary purpose. A brief that tries to deliver a 
 **Prepared by:** [name]
 **For:** [audience]
 **Regarding:** [one-sentence description of the subject]
+**Open placeholders:** [every `[needs data: …]` left in the brief, or "none"]
 
 ---
 
@@ -76,7 +85,7 @@ Two to three sentences. What is the business consequence of the situation? Trans
 
 Avoid design system metrics as the evidence of impact. "Low token adoption" is not a business problem. "Inconsistent interfaces are generating support tickets and reducing customer trust" is a business problem. Find the business translation.
 
-If you have data, use it. If you do not, be honest about what is estimated and why the estimate is reasonable.
+If you have data, use it and name its source. If you do not, label the figure as estimated and show why the estimate is reasonable, or leave `[needs data: …]`. Derived figures (FTE equivalents, totals) are recomputed from the inputs shown.
 
 ---
 
@@ -111,250 +120,34 @@ Be honest about timelines and realistic about what the investment will and will 
 
 ---
 
-## Step 3: Calibrate tone and framing by audience
-
-Different stakeholders care about different things. Adjust the brief's emphasis and language based on who is reading:
-
-### Engineering leadership
-
-**What matters:** Technical debt, team velocity, engineering productivity, maintenance burden, system reliability.
-
-**How to frame it:**
-- Lead with efficiency: "The current approach costs [n] engineering weeks per quarter in duplicated work."
-- Emphasise technical sustainability: "Consolidating parallel implementations reduces our maintenance surface and makes the system a stable platform for growth."
-- Reference system health/maturity: "We are at Level 2 (Managed). Moving to Level 3 (Systematic) requires [specific actions] and will enable [technical benefit]."
-- Use infrastructure language: "The design system is platform infrastructure for the engineering organisation."
-
-**Specific language to use:**
-- "Engineering velocity" (not "design consistency")
-- "Technical debt" (don't hide the cost)
-- "System reliability" or "system stability"
-- "Maintenance burden"
-- "Platform dependency" (frame the system as critical infrastructure)
-
-**What to avoid:**
-- Design-specific terminology without translation
-- Aesthetic arguments without engineering benefit
-- Vague efficiency claims without numbers
-
-### Product leadership
-
-**What matters:** User experience, feature velocity, customer satisfaction, time-to-market, competitive positioning.
-
-**How to frame it:**
-- Lead with customer experience: "Customers encounter [n] distinct interface patterns for the same interaction across our products, creating confusion."
-- Emphasise speed: "Teams building from shared components ship features [n] weeks faster than teams building custom."
-- Reference competitive positioning: "Consistency and polish in the interface are competitive differentiators in our market."
-- Quantify the benefit: "Faster feature shipping + consistent customer experience = improved market position."
-
-**Specific language to use:**
-- "Customer experience" (not "visual consistency")
-- "Feature velocity"
-- "Time-to-market"
-- "Competitive positioning"
-- "Customer confidence" or "customer trust"
-
-**What to avoid:**
-- Technical implementation details
-- Component counts or metrics that mean nothing outside the design world
-- Process-focused arguments without customer impact
-
-### Design leadership
-
-**What matters:** Design quality, design team autonomy, consistency, scalability of design work.
-
-**How to frame it:**
-- Lead with design quality: "Inconsistent interface patterns create a fragmented user experience that undermines our design intent."
-- Emphasise design leverage: "A well-maintained system allows designers to focus on novel problems instead of recreating standard patterns."
-- Reference design standards: "The system enforces [n] core design standards, which we currently enforce per-team instead of at the platform level."
-- Language around design maturity: "We are currently at Level 2 (Managed design) — components exist but are not consistently governed. Level 3 (Systematic) requires documented design standards and contribution processes."
-
-**Specific language to use:**
-- "Design consistency"
-- "Design quality"
-- "Design scalability"
-- "Design leverage"
-- "Design standards"
-
-**What to avoid:**
-- Engineering-only arguments without design framing
-- Numbers without context (component counts)
-- Technical implementation choices as the main point
-
-### Executive/C-level
-
-**What matters:** Strategic alignment, risk mitigation, financial impact, competitive positioning, organisational efficiency.
-
-**How to frame it:**
-- Lead with strategic impact: "Design system investment is foundational to [strategic goal — e.g., 'scaling to [n] products' or 'competing on user experience']."
-- Emphasise risk: "The current approach creates [specific risk — inconsistent user experience, compliance gaps, developer onboarding friction] that undermines [strategic priority]."
-- Quantify financial impact: "Eliminating duplicated work is worth [estimated cost savings or engineer-weeks recovered per year]."
-- Frame as infrastructure: "This is infrastructure investment, not a design initiative — it is the shared platform that all products depend on."
-
-**Specific language to use:**
-- "Strategic alignment"
-- "Risk mitigation" or "risk exposure"
-- "Operational efficiency"
-- "Competitive positioning"
-- "Return on investment"
-- "Platform infrastructure"
-- "Scalability"
-
-**What to avoid:**
-- Design and engineering jargon equally
-- Discussions of specific components or design patterns
-- Implementation details
-- Assume any prior knowledge of what a design system is
+Close with one line: `Based on: [sources, with dates]` — for example, "Based on: system-health assessment, 10 March 2026; adoption figures reported by the design systems team."
 
 ---
 
-## Step 4: Framing patterns — choose how to lead
+## Step 3: Calibrate to the audience and choose the frame
 
-The same situation can be framed three ways. Choose the frame that will resonate most with the audience and the context:
-
-### Lead with growth
-
-Use this framing when the situation is about enabling scale or speed.
-
-**Pattern:** "We are currently [current state]. To [strategic goal], we need [investment]. This investment will [specific speed/scale benefit]."
-
-**Example:** "We are currently building features through per-product design cycles. To scale to [n] products without proportionally scaling the design team, we need to formalize the design system. This investment will let us ship [n] new products using [n]% of the design effort currently required."
-
-**Works best for:**
-- Product leadership (competitive positioning, speed)
-- Growth-stage organisations
-- Situations where the system enables new products or markets
-
-### Lead with risk
-
-Use this framing when the situation involves technical or user-facing risk.
-
-**Pattern:** "We are currently [current state], which creates [specific risk]. The cost of this risk is [impact]. We can eliminate this risk by [investment]."
-
-**Example:** "We are currently using [n] accessibility implementations across [n] teams, each implemented differently. This creates legal compliance risk and excludes users with disabilities. We can eliminate this risk by centralizing accessibility implementation in the design system."
-
-**Works best for:**
-- Executive/C-level (risk mitigation, compliance)
-- Situations with measurable compliance or security gaps
-- Preventing incidents from happening again
-
-### Lead with cost
-
-Use this framing when the situation involves efficiency or waste.
-
-**Pattern:** "We are currently [current state], which costs us [specific financial or effort metric]. We can recover this cost by [investment]."
-
-**Example:** "We are currently estimating [n] engineering weeks per quarter spent on duplicated component work across [n] teams. We can recover this cost by consolidating implementations, freeing up [effort or FTE] for product work."
-
-**Works best for:**
-- Engineering leadership (velocity, technical debt)
-- Finance-conscious organisations
-- Situations where the cost is quantifiable
-
-**Choose the frame that matches the audience's priorities:**
-- Growth frame → Product, executive
-- Risk frame → Executive, compliance-conscious organisations
-- Cost frame → Engineering, finance-conscious organisations
+Use the executive-communication note for this step:
+- **Audience calibration** — what engineering, product, design and executive readers care about, what to lead with, the language that lands, and what to avoid
+- **Framing patterns** — lead with growth, risk or cost, matched to the reader's priorities
+- **Translating system metrics** — choose the one or two business translations most relevant to the reader for "Why this matters"
 
 ---
 
-## Step 5: Business metrics translation guide
+## Step 4: Maturity-stage framing (staff-level)
 
-Design system health metrics do not land with stakeholders unless they are translated into business consequences. Use this reference when writing the "Why this matters" section:
+At the staff level, frame the design system as infrastructure, not as a design convenience (the infrastructure language is in the executive-communication note).
 
-| Design system metric | Business translation |
-|---|---|
-| Low token adoption | "Visual inconsistency across products is creating a fragmented brand experience" |
-| High component drift | "Teams are maintaining separate versions of the same interface elements, duplicating engineering effort" |
-| Poor documentation coverage | "New team members take longer to become productive because system knowledge is tribal, not documented" |
-| Low accessibility scores | "We have measurable compliance gaps that create legal exposure and exclude users with disabilities" |
-| Declining adoption | "Teams are choosing to build independently rather than use shared infrastructure — the system is not serving their needs" |
-| No AI-readiness | "Our component library cannot be consumed by AI development tools, which means we are not benefiting from AI-assisted coding workflows" |
-| Version lag across teams | "Multiple teams are running outdated versions, which means bug fixes and improvements are not reaching users" |
-| Missing governance process | "There is no defined process for how the system evolves, which creates unpredictability for teams that depend on it" |
+If a system-health assessment has been completed, use the maturity stage it gave, by name: Ad-hoc, Managed, Systematic, Measured or Optimised. Never numbered levels. Explain the stage in one plain sentence, cite the assessment, and frame the recommendation as the transition to the next stage. If no assessment exists, don't infer a stage for the brief; leave maturity out or ask the user.
 
-When writing the brief, choose the 1–2 translations most relevant to the audience's priorities. Do not list all of them — a brief with eight business consequences reads as a list of complaints, not a focused argument.
+What the next stage requires comes from the evidence checklist in the component-governance note; quote the one or two items the system is missing, not the whole list.
+
+Example: "We are currently at the Managed stage — the system exists and is used, but governance is informal and documentation is inconsistent (Q1 system-health assessment). The recommendation moves us to Systematic, which requires documented contribution and deprecation processes."
+
+**AI readiness:** mention it only if the reader has asked about AI tooling, and only with the system-health AI-readiness status as the source, in one plain sentence about what it enables (coding agents that pick the right component and use the right tokens). Don't add it as an unprompted selling point; it reads as a pitch in a status brief.
 
 ---
 
-## Step 6: Maturity-level framing (staff-level)
-
-At the staff level, stakeholder briefs should frame the design system as infrastructure, not as a design convenience. This changes how the situation, recommendation, and outcome are written.
-
-If a system-health assessment has been completed, reference the maturity level in the brief. Frame the recommendation as moving from the current level to the next:
-
-**Infrastructure language:**
-- Instead of "the design system needs investment" → "our component infrastructure has reliability gaps that are creating downstream production cost"
-- Instead of "teams are building outside the system" → "teams are creating parallel infrastructure because the shared platform doesn't cover their needs — each parallel implementation costs [X] and creates a maintenance liability"
-- Instead of "we need a dedicated team" → "the infrastructure needs a defined SLA: expected response time for bug reports, predictable release cadence, and documented API contracts"
-
-**Maturity level context:**
-- "We are currently at Level 2 (Managed) — the system exists and is used, but governance is informal and documentation is inconsistent. The recommendation moves us to Level 3 (Systematic), which requires [specific actions]."
-- Stakeholders respond to clear progression frameworks. Maturity levels make the investment concrete and the progress measurable.
-
-**Mapping maturity to investment:**
-- L1 → L2: "Establish governance. Formalise contribution and deprecation processes."
-- L2 → L3: "Standardise token architecture. Enforce documentation standards. Create predictable release cadence."
-- L3 → L4: "Implement adoption tracking. Establish system health metrics. Conduct recurring reviews."
-- L4 → L5: "Make system machine-readable. Implement consumer contract testing. Optimise for AI consumption."
-
----
-
-## Step 7: Common anti-patterns in stakeholder communication
-
-Avoid these mistakes — they erode credibility faster than almost anything else:
-
-### Anti-pattern 1: Reporting only good news
-
-**The mistake:** "The design system shipped 5 new components this quarter. Teams love the new Button variant. Component adoption is up 2%."
-
-**Why it fails:** Readers detect cherry-picking. If you only mention wins, they wonder what you are hiding.
-
-**The fix:** Lead with the honest situation — what is working and what is not. "The design system shipped 5 new components this quarter, bringing core coverage to 85%. However, adoption of the new components is only 40% in the first month, well below our target of 80%. This suggests the components are not meeting team needs or there is friction in the adoption process."
-
-### Anti-pattern 2: Design system jargon without translation
-
-**The mistake:** "The component library has low token adoption and declining API consistency. We need to improve the design-to-code contract and implement automated drift detection."
-
-**Why it fails:** Non-design audience stops reading and dismisses it as design-specific. You lose them in the first sentence.
-
-**The fix:** Translate everything. "Teams are not using the shared design tokens consistently, which means interfaces look different across products even when they should look the same. We need to clarify how components should be built and automated tools to detect when they drift from the standard."
-
-### Anti-pattern 3: Asking for resources without business justification
-
-**The mistake:** "We need a dedicated design systems team. Please allocate 1 FTE."
-
-**Why it fails:** Readers have no context for whether 1 FTE is reasonable. You are asking them to trust your judgment, but you have not given them the information to make the decision.
-
-**The fix:** Show the math. "Teams are spending an estimated [n] weeks per quarter on duplicated work. Dedicating 1 FTE ([cost]) to system maintenance will recover [n] weeks of duplicated effort, paying for itself in [timeline]. Without this investment, the duplicated work continues to compound."
-
-### Anti-pattern 4: Presenting data without interpretation
-
-**The mistake:** "The design system has 92 components. 34% of teams are using it. Average component adoption time is 3.2 weeks."
-
-**Why it fails:** Raw metrics mean nothing without context. Is 34% adoption good or bad? Is 3.2 weeks fast or slow? The reader has to guess your conclusion.
-
-**The fix:** Interpret the data. "The design system has 92 components covering the core patterns most teams need. However, only 34% of teams are actively using the system — the rest are either unaware it exists or finding it difficult to adopt. The average adoption time of 3.2 weeks is longer than target, suggesting we need better documentation or training."
-
-### Anti-pattern 5: Mixing the ask with the situation
-
-**The mistake:** Throughout the brief, references to multiple things being asked for — "We need governance," "We need a dedicated team," "We need better documentation," "We need tool investment."
-
-**Why it fails:** A brief with six asks dilutes each one. The reader remembers none of them.
-
-**The fix:** State three asks or fewer, and state them explicitly in the "What we need" section. Everything else in the brief should build the case for those three asks specifically.
-
-### Anti-pattern 6: Overpromising outcomes
-
-**The mistake:** "This investment will eliminate all design inconsistencies, reduce feature shipping time by 50%, and solve all accessibility compliance gaps."
-
-**Why it fails:** Unrealistic promises create expectation debt. When you ship and the promised outcomes do not fully materialise, you lose trust permanently.
-
-**The fix:** Be honest and specific. "This investment will establish consistent interface standards that new teams can use as their baseline, reducing the time to design consistency for new products from [current] weeks to [new] weeks. It will not eliminate legacy inconsistencies — addressing those is a separate effort. It will prevent new inconsistencies from accumulating."
-
----
-
-## Step 8: Quality checks
+## Step 5: Quality checks
 
 Before delivering the brief, verify all of these:
 
@@ -365,56 +158,19 @@ Before delivering the brief, verify all of these:
 - The brief fits on one page (approximately 400-500 words)
 - A reader with no design systems background can understand the situation and the ask
 - The expected outcome is honest about timeline and scope
-- If maturity level is referenced, it is explained in plain terms with evidence
+- Every figure traces to a named source (file, tool output, prior skill output, or the user) and is labelled measured, estimated or assumed; derived figures are recomputed
+- Open placeholders are listed at the top, and the brief ends with a `Based on: [source, date]` line
+- If maturity is referenced, it is a named stage from a cited assessment, explained in plain terms
 - If AI-readiness is referenced, the business value is framed in terms the audience understands (efficiency, speed, competitive positioning), not in technical terms
-- Tone is calibrated to the audience (engineering vs. product vs. design vs. executive)
-- The framing pattern (growth/risk/cost) matches the audience's priorities
-- No anti-patterns from Step 7 are present
+- Tone and framing pattern (growth/risk/cost) match the audience's priorities
+- None of the anti-patterns in the executive-communication note are present
 
 ---
 
-## Configuration for .ds-ops-config.yml
-
-If this skill runs as part of a recurring workflow, configure it as follows:
-
-```yaml
-skills:
-  stakeholder-brief:
-    trigger: "quarterly-governance-review"  # or "on-demand"
-    audience: "engineering-leadership"      # or "product-leadership", "design-leadership", "executive"
-    framing: "cost"                         # or "growth", "risk"
-    maturity_level: true                    # if a maturity assessment is available, reference it
-    include_anti_patterns_check: true       # always include
-```
+## Recurring briefs
 
 For quarterly stakeholder briefs:
-1. Schedule this skill to run after `system-health` completes
-2. Pass the health assessment findings as input
-3. Output is a brief ready for leadership distribution
-4. Archive the brief in the project's decision record
-
----
-
-## Platform and maturity framing (staff-level)
-
-At the staff level, stakeholder briefs should frame the design system as infrastructure, not as a design convenience. This changes how the situation, recommendation, and outcome are written.
-
-**AI-readiness as a competitive/efficiency argument:**
-If relevant to the organisation, include the AI-readiness angle: "Design systems that are machine-readable enable AI-assisted development — code generation, automated testing, and design-to-code workflows. Our current system is not structured for AI consumption. The proposed investment includes making the system machine-readable, which positions the organisation to benefit from AI tooling without a separate initiative."
-
----
-
-## Summary: From brief to decision
-
-A stakeholder brief is only valuable if it leads to a decision. The brief should:
-
-1. Be sent to the decision-maker (not their staff) directly
-2. State when a decision is needed
-3. Offer a follow-up conversation if there are questions
-4. Arrive 5–7 days before the decision deadline (enough time to ask questions, not so early that it gets forgotten)
-
-If the brief does not result in a decision after 2 weeks, follow up: "I wanted to check whether you have questions about the brief, or whether we need to adjust the proposal."
-
-If the decision is no: ask why. Often the objection is not what was addressed in the brief — the brief revealed a different constraint.
-
-If the decision is yes: confirm what changed, document it as a decision record, and set up the follow-up communication for consuming teams.
+1. Run this skill after `system-health` completes
+2. Pass the health assessment findings as input, and cite the assessment in the `Based on:` line
+3. Output is a brief ready for leadership distribution once its open placeholders are resolved
+4. Archive the brief alongside the project's decision records

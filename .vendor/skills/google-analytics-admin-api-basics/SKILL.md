@@ -5,7 +5,8 @@ metadata:
     github-path: skills/analytics/google-analytics-admin-api-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 970603f7a576225382562da749f37254171c3c02
+    github-tree-sha: 47effaa1c37a04c70921be6763b7991f11d6dcfc
+    version: 1.0.0
 name: google-analytics-admin-api-basics
 ---
 # Getting Started with Google Analytics Admin API
