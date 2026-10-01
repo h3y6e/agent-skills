@@ -32,7 +32,10 @@ const isIndex = (page) => basename(page.file) === "README.md";
 
 function pageFiles(bundle) {
   return readdirSync(bundle, { recursive: true })
-    .filter((p) => p.endsWith(".md") && !p.startsWith(RAW_DIR + sep) && !NOT_A_PAGE.has(basename(p)))
+    .filter((p) =>
+      p.endsWith(".md") && !p.startsWith(RAW_DIR + sep) &&
+      !NOT_A_PAGE.has(basename(p))
+    )
     .sort()
     .map((p) => join(bundle, p));
 }
@@ -50,7 +53,11 @@ function blocks(frontmatter) {
   for (const line of frontmatter.split("\n").slice(0, -1)) {
     const key = KEY_LINE.exec(line)?.[1];
     if (key) {
-      out.push({ key, value: line.slice(key.length + 1).trim(), text: pending + line + "\n" });
+      out.push({
+        key,
+        value: line.slice(key.length + 1).trim(),
+        text: pending + line + "\n",
+      });
       pending = "";
     } else if (out.length === 0 || line.trimStart().startsWith("#")) {
       pending += line + "\n";
@@ -70,7 +77,13 @@ function parsePage(file, report) {
   }
   const fmBlocks = blocks(split.frontmatter);
   const block = (key) => fmBlocks.find((b) => b.key === key);
-  return { file, ...split, block, keys: fmBlocks.map((b) => b.key).filter(Boolean), type: block("type")?.value ?? "" };
+  return {
+    file,
+    ...split,
+    block,
+    keys: fmBlocks.map((b) => b.key).filter(Boolean),
+    type: block("type")?.value ?? "",
+  };
 }
 
 // The schema declares the permitted type values, so a type named there in
@@ -87,22 +100,47 @@ function declaredTypes(bundle) {
 
 // README.md is one per directory, so it has no majority to compare against.
 function checkConventions(pages, declared, report) {
-  const byType = Map.groupBy(pages.filter((p) => p.type && !isIndex(p)), (p) => p.type);
+  const byType = Map.groupBy(
+    pages.filter((p) => p.type && !isIndex(p)),
+    (p) => p.type,
+  );
   for (const [type, group] of byType) {
-    if (group.length === 1 && !declared.has(type)) report("warn", group[0].file, `type "${type}" is used by this page alone and the schema does not declare it — a new page type, or a typo`);
+    if (group.length === 1 && !declared.has(type)) {
+      report(
+        "warn",
+        group[0].file,
+        `type "${type}" is used by this page alone and the schema does not declare it — a new page type, or a typo`,
+      );
+    }
     if (group.length < MIN_PAGES_FOR_MAJORITY) continue;
     const counts = new Map();
-    for (const page of group) for (const key of page.keys) counts.set(key, (counts.get(key) ?? 0) + 1);
+    for (const page of group) {
+      for (const key of page.keys) {
+        counts.set(key, (counts.get(key) ?? 0) + 1);
+      }
+    }
     for (const [key, count] of counts) {
       const rate = count / group.length;
       const lonelyHoldout = count === group.length - 1;
       if (lonelyHoldout || rate >= CONVENTION_RATE) {
         for (const page of group) {
-          if (!page.keys.includes(key)) report(lonelyHoldout ? "error" : "warn", page.file, `missing "${key}" — ${count} of ${group.length} ${type} pages carry it`);
+          if (!page.keys.includes(key)) {
+            report(
+              lonelyHoldout ? "error" : "warn",
+              page.file,
+              `missing "${key}" — ${count} of ${group.length} ${type} pages carry it`,
+            );
+          }
         }
       } else if (count === 1 || rate <= OUTLIER_RATE) {
         for (const page of group) {
-          if (page.keys.includes(key)) report("warn", page.file, `"${key}" appears on ${count} of ${group.length} ${type} pages — a typo, or a convention not yet adopted`);
+          if (page.keys.includes(key)) {
+            report(
+              "warn",
+              page.file,
+              `"${key}" appears on ${count} of ${group.length} ${type} pages — a typo, or a convention not yet adopted`,
+            );
+          }
         }
       }
     }
@@ -113,21 +151,47 @@ function checkTimestamps(page, report) {
   for (const [, key, raw] of page.frontmatter.matchAll(STAMP)) {
     const value = raw.trim();
     const parsed = Date.parse(value);
-    const exact = ISO_UTC.test(value) && !Number.isNaN(parsed) && new Date(parsed).toISOString() === value.replace("Z", ".000Z");
-    if (!exact) report("error", page.file, `${key} must be an absolute UTC timestamp (YYYY-MM-DDTHH:MM:SSZ), got ${value}`);
+    const exact = ISO_UTC.test(value) && !Number.isNaN(parsed) &&
+      new Date(parsed).toISOString() === value.replace("Z", ".000Z");
+    if (!exact) {
+      report(
+        "error",
+        page.file,
+        `${key} must be an absolute UTC timestamp (YYYY-MM-DDTHH:MM:SSZ), got ${value}`,
+      );
+    }
   }
 }
 
 function checkFootnotes(page, report) {
   const defined = new Set(captures(page.body, FOOTNOTE_DEF));
   const used = new Set(captures(page.body, FOOTNOTE_REF));
-  const sourceIds = new Set(captures(page.block("sources")?.text ?? "", SOURCE_ID));
+  const sourceIds = new Set(
+    captures(page.block("sources")?.text ?? "", SOURCE_ID),
+  );
   for (const name of used) {
-    if (!defined.has(name)) report("error", page.file, `footnote [^${name}] is referenced but never defined`);
-    else if (!sourceIds.has(name)) report("error", page.file, `footnote [^${name}] does not match any sources[].id`);
+    if (!defined.has(name)) {
+      report(
+        "error",
+        page.file,
+        `footnote [^${name}] is referenced but never defined`,
+      );
+    } else if (!sourceIds.has(name)) {
+      report(
+        "error",
+        page.file,
+        `footnote [^${name}] does not match any sources[].id`,
+      );
+    }
   }
   for (const name of defined) {
-    if (!used.has(name)) report("warn", page.file, `footnote [^${name}] is defined but never cited`);
+    if (!used.has(name)) {
+      report(
+        "warn",
+        page.file,
+        `footnote [^${name}] is defined but never cited`,
+      );
+    }
   }
 }
 
@@ -135,12 +199,20 @@ function checkLinks(page, report) {
   for (const href of captures(page.body, MD_LINK)) {
     const target = href.split("#")[0];
     if (EXTERNAL_URL.test(href) || !target.endsWith(".md")) continue;
-    if (!existsSync(resolve(dirname(page.file), target))) report("info", page.file, `link target ${target} does not exist — unwritten knowledge, or a typo`);
+    if (!existsSync(resolve(dirname(page.file), target))) {
+      report(
+        "info",
+        page.file,
+        `link target ${target} does not exist — unwritten knowledge, or a typo`,
+      );
+    }
   }
 }
 
 function checkPage(page, report) {
-  if (!page.type) report("error", page.file, "no type — every page declares one");
+  if (!page.type) {
+    report("error", page.file, "no type — every page declares one");
+  }
   checkTimestamps(page, report);
   checkFootnotes(page, report);
   checkLinks(page, report);
@@ -151,18 +223,28 @@ function checkPage(page, report) {
 function checkContext(bundle, report) {
   const index = join(bundle, "README.md");
   if (!existsSync(index)) {
-    report("error", index, "no README.md at the bundle root — the bundle has no entry point");
+    report(
+      "error",
+      index,
+      "no README.md at the bundle root — the bundle has no entry point",
+    );
     return;
   }
   if (!CONTEXT_SECTION.test(readFileSync(index, "utf8"))) {
-    report("error", index, "no CONTEXT section — the domain's vocabulary has no home");
+    report(
+      "error",
+      index,
+      "no CONTEXT section — the domain's vocabulary has no home",
+    );
   }
 }
 
 function lint(bundle) {
   const issues = [];
   const report = (level, file, msg) => issues.push({ level, file, msg });
-  const pages = pageFiles(bundle).map((file) => parsePage(file, report)).filter(Boolean);
+  const pages = pageFiles(bundle).map((file) => parsePage(file, report)).filter(
+    Boolean,
+  );
   checkConventions(pages, declaredTypes(bundle), report);
   for (const page of pages) checkPage(page, report);
   checkContext(bundle, report);
@@ -177,8 +259,16 @@ function main(argv) {
   }
   const { pages, issues } = lint(bundle);
   const errors = issues.filter(({ level }) => level === "error").length;
-  const lines = issues.map(({ level, file, msg }) => `${level.toUpperCase().padEnd(5)} ${file}: ${msg}`);
-  console.log([...lines, "", `${pages} page(s), ${issues.length} issue(s), ${errors} error(s)`].join("\n"));
+  const lines = issues.map(({ level, file, msg }) =>
+    `${level.toUpperCase().padEnd(5)} ${file}: ${msg}`
+  );
+  console.log(
+    [
+      ...lines,
+      "",
+      `${pages} page(s), ${issues.length} issue(s), ${errors} error(s)`,
+    ].join("\n"),
+  );
   return errors ? 1 : 0;
 }
 
