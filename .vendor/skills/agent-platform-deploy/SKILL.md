@@ -1,12 +1,12 @@
 ---
-description: Deploy open models or custom weights from Model Garden to Agent Platform endpoints, check the status of an in-progress deployment operation, or clean up resources by undeploying models and deleting endpoints. Use when asked to actively deploy a model, list the Model Garden CATALOG of available models, check if a specific model is deployable (`gcloud ai model-garden models list-deployment-config`), query deployment cost, troubleshoot deployment errors (like quota limits), or undeploy/clean up endpoints. Also use when copying and deploying a 1P Tuned Model. Don't use for pure listing/discovery questions of the form "is X deployed?", "list my endpoints", or "which regions have models running?" — for those use `agent-platform-endpoint-management`. Don't use for public Vertex AI deployments (use `vertex-deploy` skill) or for running model evaluations (use `agent-platform-eval-flywheel` skill).
+description: Deploy open models or custom weights from Model Garden to Agent Platform endpoints, check the status of an in-progress deployment operation, or clean up resources by undeploying models and deleting endpoints. Use when asked to actively deploy a model, list the Model Garden CATALOG of available models, check if a specific model is deployable (`gcloud ai model-garden models list-deployment-config`), query deployment cost, troubleshoot deployment errors (like quota limits), or undeploy/clean up endpoints. Also use when copying and deploying a 1P Tuned Model. Don't use for pure listing/discovery questions of the form "is X deployed?", "list my endpoints", or "which regions have models running?" — for those use `agent-platform-endpoint-management`. Don't use for running model evaluations (use `agent-platform-eval-flywheel` skill).
 metadata:
     category: AiAndMachineLearning
     github-path: skills/cloud/agent-platform-deploy
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 8a3656c4750e87f43625b42296de7296fb35e42e
-    version: 1.0.2
+    github-tree-sha: 5417ede8cbba6bdc262877eaa885f6581a0e6858
+    version: 1.0.3
 name: agent-platform-deploy
 ---
 # Agent Platform Model Garden Deploy Skill

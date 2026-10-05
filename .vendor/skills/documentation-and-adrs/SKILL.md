@@ -2,9 +2,9 @@
 description: Records decisions and documentation. Use when you need to document an architecture decision (ADR) or the reasoning behind a design choice, when changing public APIs, shipping features, or when you need to record context that future engineers and agents will need to understand the codebase.
 metadata:
     github-path: skills/documentation-and-adrs
-    github-ref: refs/tags/0.6.10
+    github-ref: refs/tags/0.6.12
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: eeff83d93dd39454d0b9d193ba3ea5c85f681530
+    github-tree-sha: e0cbd8df50a6339e36596a1d998c293d8ced318d
 name: documentation-and-adrs
 ---
 # Documentation and ADRs
@@ -55,7 +55,7 @@ Store ADRs in `docs/decisions/` with sequential numbering (unless the project al
 # ADR-001: Use PostgreSQL for primary database
 
 ## Status
-Accepted | Superseded by ADR-XXX | Deprecated
+Proposed | Accepted | Superseded by ADR-XXX | Deprecated
 
 ## Date
 2025-01-15

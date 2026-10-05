@@ -5,7 +5,7 @@ metadata:
     github-path: pstack/skills/typescript-best-practices
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: 924cb1d5fee20dc4028a10bf98b26dec8cbdfd83
+    github-tree-sha: 319e39dfd8c0da0602db8d50ce6e48b0945bbf3a
 name: typescript-best-practices
 paths:
     - '**/*.ts'

@@ -2,9 +2,9 @@
 description: Prepares production launches. Use when preparing to deploy to production, or when asking what needs to be in place before shipping. Use when you need a pre-launch checklist, when setting up monitoring, when planning a staged rollout, or when you need a rollback strategy.
 metadata:
     github-path: skills/shipping-and-launch
-    github-ref: refs/tags/0.6.10
+    github-ref: refs/tags/0.6.12
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 48677fb7727e6cdb9be1713ace4837aaaa37aed9
+    github-tree-sha: 0be8f859c53de383a1ae99a44e52c7354385b004
 name: shipping-and-launch
 ---
 # Shipping and Launch
@@ -272,7 +272,7 @@ Every deployment needs a rollback plan before it happens:
 3. Communicate: notify team of rollback
 
 ### Database Considerations
-- Migration [X] has a rollback: `npx prisma migrate rollback`
+- Migration [X] has a rollback: <verified command or runbook link>
 - Data inserted by new feature: [preserved / cleaned up]
 
 ### Time to Rollback

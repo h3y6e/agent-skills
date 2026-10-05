@@ -1,15 +1,17 @@
 ---
-description: Improves GKE workload reliability, using PDBs, health probes, and topology spread constraints. Use when configuring GKE workload reliability, setting up PDBs, or configuring GKE health probes (liveness, readiness, startup). Don't use for disaster recovery setup or full cluster backups (use gke-backup-dr instead).
+description: Improves GKE workload reliability, using PDBs, health probes, and topology spread constraints. Use when configuring GKE workload reliability, setting up PDBs, or configuring GKE health probes (liveness, readiness, startup). Don't use for generating K8s YAML manifests (use gke-manifest-generation) or disaster recovery and cluster backups (use gke-backup-dr).
 metadata:
     category: Containers
     github-path: skills/cloud/gke-reliability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: d38db817a1d1d3285c923645a4b2304d3a6b0d0b
-    version: 1.0.0
+    github-tree-sha: b7405b3c632bd21f23de211eca555abf877d53a2
+    version: 1.0.1
 name: gke-reliability
 ---
 # GKE Reliability
+
+> **Routing Note:** To generate Kubernetes YAML manifests (`Deployment`, `StatefulSet`, `Service`, `ConfigMap`, `HTTPRoute`, `PodDisruptionBudget`), open `gke-manifest-generation/SKILL.md`.
 
 This reference covers high availability and reliability configuration for GKE
 clusters and workloads.

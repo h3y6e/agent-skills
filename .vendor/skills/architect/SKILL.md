@@ -5,7 +5,7 @@ metadata:
     github-path: pstack/skills/architect
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: 603668c4b5c46d6e32d6f325c01359a831854941
+    github-tree-sha: 0f150e66a3af501fa7f759b6b27814ad6732142f
 name: architect
 ---
 # Architect
@@ -38,7 +38,7 @@ Take the runners from the `architect runners` line in the `pstack-models.mdc` ru
 
 Design it twice. Require at least two structurally distinct candidates before synthesis, even when the first looks sufficient. This is the **exhaust-the-design-space** principle skill made concrete. Whole-shape alternatives, not point fixes inside one shape.
 
-Screen every candidate against [`references/design-red-flags.md`](references/design-red-flags.md) before synthesis. Reject or revise shallow modules, information leakage, temporal decomposition, and pass-through methods.
+Screen every candidate against [`references/design-red-flags.md`](references/design-red-flags.md) before synthesis. Assume the next contributor is an agent that sees only the files it opened, copies the nearest example, and takes the shortest path that compiles. Prefer the design where a change that looks right from one file is right for the whole repo.
 
 Compare viable candidates on interface depth. Prefer the design that hides more complexity behind a smaller, simpler public surface. A rich interface can keep call chains short by concentrating capability instead of scattering it across layers.
 

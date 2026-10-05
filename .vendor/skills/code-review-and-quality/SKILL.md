@@ -2,9 +2,9 @@
 description: Conducts multi-axis code review. Use before merging any change. Use when reviewing code written by yourself, another agent, or a human. Use when you need to assess code quality across multiple dimensions before it enters the main branch. Use when asked to review a diff or a pull request, even when the diff is pasted inline.
 metadata:
     github-path: skills/code-review-and-quality
-    github-ref: refs/tags/0.6.11
+    github-ref: refs/tags/0.6.12
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 57d9d2d1112ed2e972c08c0f6de097badde32498
+    github-tree-sha: 2c0b966d411b0d64c4f44efdde30d5f6f3666f76
 name: code-review-and-quality
 ---
 # Code Review and Quality
@@ -164,6 +164,8 @@ Tests reveal intent and coverage:
 - Do tests have descriptive names?
 - Would the tests catch a regression if the code changed?
 ```
+
+Answer the last question by experiment, not by reading. Invert one condition the change adds (drop a negation, swap `&&` for `||`), run the suite, then restore the file from a copy. A mutation that stays green is a finding: name the test case that is missing. For a project-wide mutation score, see `constraint-driven-development`.
 
 ### Step 3: Review the Implementation
 

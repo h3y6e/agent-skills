@@ -2,9 +2,9 @@
 description: Creates specs before coding. Use when starting a new project, feature, or significant change and no specification exists yet. Use when drafting a PRD or requirements document with objectives and scope, or when requirements are unclear, ambiguous, or only exist as a vague idea. Use when a single requirement spans several independently testable capabilities and needs decomposing into a capability map of modules before specifying.
 metadata:
     github-path: skills/spec-driven-development
-    github-ref: refs/tags/0.6.10
+    github-ref: refs/tags/0.6.12
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 3c412780068d7faf9f504a9fac10b8137fcd5faa
+    github-tree-sha: 4d36b30efbe4109ed70f5933fb9cf97860786492
 name: spec-driven-development
 ---
 # Spec-Driven Development
@@ -171,6 +171,12 @@ REFRAMED SUCCESS CRITERIA:
 
 This lets you loop, retry, and problem-solve toward a clear goal rather than guessing what "faster" means.
 
+**Stop after writing the spec (CRITICAL).** Once the spec is saved:
+
+1. Summarize it and list any Open Questions.
+2. Ask the human to approve it or request changes.
+3. **STOP YOUR TURN IMMEDIATELY.** Do NOT start Phase 2, invoke `planning-and-task-breakdown`, or write code in this turn. Planning starts only after the human approves the spec in a later turn.
+
 ### Phase 2: Plan
 
 With the validated spec, generate a technical implementation plan:
@@ -239,6 +245,7 @@ The spec is a living document, not a one-time artifact:
 - Implementing features not mentioned in any spec or task list
 - Making architectural decisions without documenting them
 - Skipping the spec because "it's obvious what to build"
+- Writing the spec and starting the plan or code in the same turn
 - One spec whose requirements span several independently testable capabilities
 - Module boundaries or build order decided implicitly during implementation because no capability map was approved up front
 
@@ -248,6 +255,7 @@ Before proceeding to implementation, confirm:
 
 - [ ] The spec covers all six core areas
 - [ ] The human has reviewed and approved the spec
+- [ ] The turn ended after saving the spec; approval came in a later turn
 - [ ] Success criteria are specific and testable
 - [ ] Boundaries (Always/Ask First/Never) are defined
 - [ ] The spec is saved to a file in the repository

@@ -2,9 +2,9 @@
 description: Set up Husky pre-commit hooks with lint-staged (Prettier), type checking, and tests in the current repo. Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing.
 metadata:
     github-path: skills/misc/setup-pre-commit
-    github-ref: refs/tags/v1.2.3
+    github-ref: refs/tags/v1.3.1
     github-repo: https://github.com/mattpocock/skills
-    github-tree-sha: dcc584ff84c4f040ea12742fcb46b7c3ad7070bd
+    github-tree-sha: 5b63f9f665bacc9be04cae51982e9ef1469d6699
 name: setup-pre-commit
 ---
 # Setup Pre-Commit Hooks
@@ -86,7 +86,7 @@ Only create if no Prettier config exists. Use these defaults:
 
 Stage all changed/created files and commit with message: `Add pre-commit hooks (husky + lint-staged + prettier)`
 
-This will run through the new pre-commit hooks — a good smoke test that everything works.
+This will run through the new pre-commit hooks: a good smoke test that everything works.
 
 ## Notes
 
