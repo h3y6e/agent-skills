@@ -13,13 +13,16 @@ if (bin === undefined) {
   process.exit(2);
 }
 
+const env = { ...process.env, NO_COLOR: "1" };
+delete env.CLICOLOR_FORCE;
+
 function run(args) {
   const start = Date.now();
   const result = spawnSync(bin, args, {
     input: "",
     encoding: "utf8",
     timeout: 10_000,
-    env: { ...process.env, NO_COLOR: "1" },
+    env,
   });
   return {
     ms: Date.now() - start,
@@ -120,12 +123,20 @@ function specCommands() {
   return commands;
 }
 
+function spelling(flag) {
+  return flag.long.length > 0 ? `--${flag.long[0]}` : `-${flag.short[0]}`;
+}
+
 function specRejects(args) {
   const explain = spawnSync(
     "usage",
     ["explain", "-f", specFile, "--format", "json", "--", bin, ...args],
     { encoding: "utf8" },
   );
+  if (explain.status !== 0) {
+    console.error(explain.stderr || explain.error?.message);
+    process.exit(2);
+  }
   const report = JSON.parse(explain.stdout);
   return report.errors.length > 0 || report.refused !== null;
 }
@@ -140,7 +151,7 @@ for (const { path, cmd } of specFile === undefined ? [] : specCommands()) {
   expect(0, "out", ["help", ...path], { optional: true, sameAs: subHelp });
 
   for (const flag of cmd.flags.filter((f) => !f.hide && f.long.length > 0)) {
-    if (!subHelp.result.out.includes(`--${flag.long[0]}`)) {
+    if (!new RegExp(`--${flag.long[0]}(?![\\w-])`).test(subHelp.result.out)) {
       console.log(
         `FAIL ${bin} ${label}: spec flag --${
           flag.long[0]
@@ -159,6 +170,10 @@ for (const { path, cmd } of specFile === undefined ? [] : specCommands()) {
   }
   const filled = [
     ...path,
+    ...cmd.flags.filter((f) => f.required).flatMap((f) => [
+      spelling(f),
+      ...(f.arg ? [f.arg.choices?.choices[0] ?? "x"] : []),
+    ]),
     ...cmd.args.filter((a) => a.required).map(() => "x"),
   ];
   const cases = [
@@ -167,7 +182,7 @@ for (const { path, cmd } of specFile === undefined ? [] : specCommands()) {
     [...filled, "__probe_extra__"],
     ...cmd.flags.filter((f) => f.arg?.choices).map((
       f,
-    ) => [...filled, `--${f.long[0]}`, "__probe_bad_choice__"]),
+    ) => [...filled, spelling(f), "__probe_bad_choice__"]),
   ];
   for (const args of cases.filter(specRejects)) expect(2, "err", args);
 }
