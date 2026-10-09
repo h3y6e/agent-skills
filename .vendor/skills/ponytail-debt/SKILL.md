@@ -2,9 +2,9 @@
 description: Harvest every `ponytail:` comment in the codebase into a debt ledger, so the deliberate shortcuts and deferrals ponytail leaves behind get tracked instead of rotting into "later means never". Use when the user says "ponytail debt", "/ponytail-debt", "what did ponytail defer", "list the shortcuts", "ponytail ledger", or "what did we mark to do later". One-shot report, changes nothing.
 metadata:
     github-path: skills/ponytail-debt
-    github-ref: refs/tags/v4.8.3
+    github-ref: refs/tags/v4.12.0
     github-repo: https://github.com/DietrichGebert/ponytail
-    github-tree-sha: fe9ea82cad2b42a9c244acc275c9091c414ff528
+    github-tree-sha: c9bf71ce830bce18e5bbe277828d56ff20eb3dfb
 name: ponytail-debt
 ---
 Every deliberate ponytail shortcut is marked with a `ponytail:` comment naming
@@ -16,7 +16,7 @@ can't quietly become permanent.
 Grep the repo for comment markers, skipping `node_modules`, `.git`, and build
 output:
 
-`grep -rnE '(#|//) ?ponytail:' .`  (add other comment prefixes if your stack uses them)
+`grep -rnE --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=build '(#|//|/[*]) ?ponytail:' .`  (add other comment prefixes if your stack uses them)
 
 Each hit is one ledger row. The comment prefix keeps prose that merely mentions
 the convention out of the ledger.

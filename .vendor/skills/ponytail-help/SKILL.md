@@ -2,9 +2,9 @@
 description: 'Quick-reference card for all ponytail modes, skills, and commands. One-shot display, not a persistent mode. Trigger: /ponytail-help, "ponytail help", "what ponytail commands", "how do I use ponytail".'
 metadata:
     github-path: skills/ponytail-help
-    github-ref: refs/tags/v4.9.0
+    github-ref: refs/tags/v4.12.0
     github-repo: https://github.com/DietrichGebert/ponytail
-    github-tree-sha: b7df7bc32b6e4e8bbde8acb2ef3c97ee7e7638f7
+    github-tree-sha: 3927d4fb46b93abbfe7da4ce1576e0891ae03005
 name: ponytail-help
 ---
 # Ponytail Help
@@ -33,9 +33,9 @@ Level sticks until changed or session end.
 | **ponytail-gain** | `/ponytail-gain` | Measured-impact scoreboard: less code, less cost, more speed. |
 | **ponytail-help** | `/ponytail-help` | This card. |
 
-Codex uses `@ponytail`, `@ponytail-review`, and `@ponytail-help`; Claude Code
-and OpenCode use the slash-command forms above (OpenCode ships all six as
-slash commands).
+In Codex CLI and the IDE extension, invoke skills with `$ponytail`,
+`$ponytail-review`, or `$ponytail-help`. Claude Code and OpenCode use the
+slash-command forms above (OpenCode ships all six as slash commands).
 
 ## Deactivate
 

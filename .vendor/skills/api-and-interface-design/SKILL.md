@@ -2,9 +2,9 @@
 description: Guides stable API and interface design. Use when designing APIs, module boundaries, or any public interface. Use when creating REST or GraphQL endpoints, defining type contracts between modules, or establishing boundaries between frontend and backend.
 metadata:
     github-path: skills/api-and-interface-design
-    github-ref: refs/tags/0.6.7
+    github-ref: refs/tags/0.6.12
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: f7eefe1133c8540d00f279a171053cc9551ec5c4
+    github-tree-sha: 3234ce9609d7ce2fc49b2a51fb64e118d20c7e85
 name: api-and-interface-design
 ---
 # API and Interface Design
@@ -188,7 +188,7 @@ try {
   await db.insert({ key, state: 'in_progress', requestHash });
 } catch (e) {
   if (isUniqueViolation(e)) return replayOrReject(key);
-  throw;
+  throw e;
 }
 const result = await chargeCard(amount);
 await db.update({ key, state: 'succeeded', response: result });
