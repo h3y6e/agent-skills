@@ -1,8 +1,8 @@
 ---
 name: tracking-tasks
 description: Tracks task state and findings as Obsidian task/daily notes so work survives across sessions. Use when starting any multi-step task, resuming prior work or referring to an earlier task/issue/PR, switching direction or scope mid-task, wrapping up or reporting task status, or hitting a TIL, workaround, env/tooling quirk, or cross-cutting decision worth recording — even in a single-response task with no note yet.
-compatibility: Requires Obsidian with CLI enabled, vault "log", and anna recall configured.
-allowed-tools: Bash(obsidian:*) Bash(anna recall:*) Bash(ghq get log) Read Edit Write
+compatibility: Requires Obsidian with CLI enabled, vault "memex", and anna recall configured.
+allowed-tools: Bash(obsidian:*) Bash(anna recall:*) Bash(ghq get memex) Read Edit Write
 license: MIT
 metadata:
   author: h3y6e
@@ -13,7 +13,7 @@ metadata:
 
 ## Vault
 
-`~/ghq/github.com/h3y6e/log` — if missing, `ghq get log`.
+`~/ghq/github.com/h3y6e/memex` — if missing, `ghq get memex`.
 
 ## Task Note
 
@@ -37,7 +37,7 @@ Make the Obsidian graph useful with `[[wikilinks]]`; do not treat notes as isola
 
 Triggers are **session-wide** — even without a task note, even on single-response tasks. Write at the moment of discovery, not batched at the end.
 
-Path: `obsidian daily` → `daily/YYYY-MM-DD.md`. If CLI fails, use `~/ghq/github.com/h3y6e/log/daily/YYYY-MM-DD.md`.
+Path: `obsidian daily` → `daily/YYYY-MM-DD.md`. If CLI fails, use `~/ghq/github.com/h3y6e/memex/daily/YYYY-MM-DD.md`.
 
 **Triggers** — TIL, workarounds, cross-cutting decisions, env/tooling issues, useful links, recurring patterns.
 
