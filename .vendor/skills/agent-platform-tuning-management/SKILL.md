@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/agent-platform-tuning-management
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 06e19e548628a0a6d5afa6693c62134b3faffa43
-    version: 1.0.0
+    github-tree-sha: 77e2617044181d619a95330ac694bff1a4cdddce
+    version: 1.0.1
 name: agent-platform-tuning-management
 ---
 # Agent Platform Tuning Management
@@ -126,6 +126,9 @@ for job in jobs:
     print(f"Base Model: {job.base_model}")
     print(f"State: {job.state}")
 ```
+
+`list_tuning_jobs` takes no `page_size` keyword. To set one, pass the request:
+`client.list_tuning_jobs(request={"parent": parent, "page_size": 50})`.
 
 ### 2. Getting Details for a Specific Job (Tier R)
 

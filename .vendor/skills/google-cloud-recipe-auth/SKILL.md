@@ -1,15 +1,15 @@
 ---
-description: Provides expert guidance on authenticating and authorizing to Google Cloud services and APIs, covering human users, service identities, Application Default Credentials (ADC), and best practices for secure access.
+description: Provides expert guidance on Identity and Access Management (IAM) and authenticating and authorizing to Google Cloud services and APIs, covering human users, service identities, Application Default Credentials (ADC), and best practices for secure access.
 metadata:
     category: GettingStarted
     github-path: skills/cloud/google-cloud-recipe-auth
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 377e20398ff37189e0c8779b034114d68c74351a
-    version: 1.0.0
+    github-tree-sha: 5c495b7c6dda32d1e11c2d928cad4220afb7709a
+    version: 1.0.1
 name: google-cloud-recipe-auth
 ---
-# Authenticating to Google Cloud
+# Authenticating and Authorizing to Google Cloud (IAM)
 
 [Authentication](https://docs.cloud.google.com/docs/authentication.md.txt) is the
 process of proving **who you are**. In Google Cloud, you represent a

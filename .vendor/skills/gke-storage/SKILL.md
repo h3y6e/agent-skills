@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-storage
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: ca29a3e949956445af0b1e0ce7e24d9a06be457b
-    version: 1.0.1
+    github-tree-sha: 9d42b838b7bed46a74f4d49f03ca507a4e868492
+    version: 1.0.2
 name: gke-storage
 ---
 # GKE Storage
@@ -146,6 +146,15 @@ patch_k8s_resource(parent="...", resourceType="persistentvolumeclaim", name="<PV
 ```
 
 Kubernetes automatically resizes the filesystem.
+
+## Stateful Storage & Capacity Constraints
+
+When configuring storage for stateful workloads, keep the following capacity and scheduling constraints in mind:
+
+*   **Existing zonal PVs pin the workload to a zone:** A Pod that uses an existing zonal PersistentVolume (for example, in `europe-north1-b`) can only run in that zone. The cluster autoscaler can't work around a capacity shortage by adding nodes in another zone; any fallback must be in the same zone.
+*   **Use automated disk type selection and topology-aware scheduling for new workloads:** Use `volumeBindingMode: WaitForFirstConsumer` so the volume is created in the zone where the Pod lands. When a ComputeClass mixes machine generations (for example, C4/N4 priority with N2 fallback), configure the StorageClass for **automated disk type selection** (`parameters.type: dynamic` with `pd-type: pd-balanced`, `hyperdisk-type: hyperdisk-balanced`, `disk-type-preference: hyperdisk-type`, and `use-allowed-disk-topology: "true"`, GKE 1.35.3-gke.1290000+; or `use-allowed-disk-topology: "true"` on GKE 1.34.1-gke.2541000+) so the autoscaler only picks nodes that support the disk type and new volumes get a compatible disk type per node.
+*   **Same-zone PD-type swaps rarely help:** Switching a same-zone fallback from `pd-ssd` to `pd-balanced` is unlikely to resolve a zonal capacity shortage, because both can be affected by the same zonal constraints. Prefer a fallback to a Hyperdisk-capable machine series (for example, C3 or N4) with `hyperdisk-balanced`.
+*   **Check Hyperdisk quotas first:** Hyperdisk quotas (for example, `HDB-TOTAL-GB`, throughput, and IOPS) are separate from Persistent Disk quotas. Verify the regional limits before recommending a Hyperdisk Balanced fallback.
 
 ## Best Practices
 

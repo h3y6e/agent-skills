@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/agent-platform-endpoint-management
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: d75a4f1774e8080e9fc4a1756fa9a154b31a795e
-    version: 1.0.0
+    github-tree-sha: c153d59d95b933bd66cb5e48dfa86530774b7e10
+    version: 1.0.1
 name: agent-platform-endpoint-management
 ---
 # Agent Platform Endpoint Management
@@ -73,9 +73,9 @@ gcloud ai endpoints list \
     --region=$LOCATION_ID
 ```
 
-*(Optional)* For pagination, you MUST use `--limit=$LIMIT` to restrict the total
-number of returned endpoints. You can also append `--page-size=$PAGE_SIZE` to
-control API chunking, or `--page-token=$PAGE_TOKEN` for next pages.
+*(Optional)* To bound the result, use `--limit=$LIMIT`; `--page-size=$PAGE_SIZE`
+controls API chunking only and does NOT limit the total output. Use
+`--page-token=$PAGE_TOKEN` to continue from a previous batch.
 
 > [!IMPORTANT]
 >
@@ -91,6 +91,10 @@ gcloud ai endpoints describe $ENDPOINT_ID \
     --region=$LOCATION_ID
 ```
 
+The models deployed on an endpoint are its `deployedModels` in this output. In
+the Python SDK they are `endpoint.gca_resource.deployed_models`;
+`aiplatform.Endpoint` has no `deployed_models` attribute.
+
 ## 3. Creating an Endpoint (Tier M)
 
 Create a new endpoint resource. The parent resource is the location. **Action
@@ -101,6 +105,9 @@ gcloud ai endpoints create \
     --region=$LOCATION_ID \
     --display-name="my-endpoint"
 ```
+
+The command has no `--asynchronous` flag: it waits for the operation and prints
+the new endpoint's resource name, whose last segment is the endpoint ID.
 
 > [!IMPORTANT]
 >
