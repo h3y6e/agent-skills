@@ -1,4 +1,4 @@
-google-cloud-monitoring==2.31.0
+google-cloud-monitoring==2.32.0
 google-cloud-aiplatform==1.165.1
 google-auth==2.59.1
 requests==2.34.2
