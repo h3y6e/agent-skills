@@ -1,6 +1,6 @@
 [tools]
 deno = "2.9.7"
-hk = "2.4.0"
+hk = { version = "2.5.0", workflow = "release.yml" }
 pinact = "5.0.0"
-rumdl = "0.2.78"
+rumdl = "0.2.79"
 zizmor = "1.30.1"
