@@ -2,9 +2,9 @@
 description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
 metadata:
     github-path: skills/systematic-debugging
-    github-ref: refs/tags/v6.4.1
+    github-ref: refs/tags/v7.0.0
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: 9a48dfda84bf339cba4b03fd803ba0dca2e158e3
+    github-tree-sha: 108961c080a6837ad8a188a553e593cc5e6df62d
 name: systematic-debugging
 ---
 # Systematic Debugging
@@ -92,11 +92,11 @@ You MUST complete each phase before proceeding to the next.
    ```bash
    # Layer 1: Workflow
    echo "=== Secrets available in workflow: ==="
-   echo "IDENTITY: ${IDENTITY:+SET}${IDENTITY:-UNSET}"
+   echo "IDENTITY: $([ -n "${IDENTITY:-}" ] && echo SET || echo UNSET)"
 
    # Layer 2: Build script
    echo "=== Env vars in build script: ==="
-   env | grep IDENTITY || echo "IDENTITY not in environment"
+   printenv IDENTITY >/dev/null 2>&1 && echo "IDENTITY in environment" || echo "IDENTITY not in environment"
 
    # Layer 3: Signing script
    echo "=== Keychain state: ==="

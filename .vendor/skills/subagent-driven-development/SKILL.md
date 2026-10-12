@@ -2,9 +2,9 @@
 description: Use when executing implementation plans with independent tasks in the current session
 metadata:
     github-path: skills/subagent-driven-development
-    github-ref: refs/tags/v6.4.1
+    github-ref: refs/tags/v7.0.0
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: 5d44ced88725298e847c62c67a726dcc29e20d00
+    github-tree-sha: a9ec528b252e536a404fd0522e32cec31094d669
 name: subagent-driven-development
 ---
 # Subagent-Driven Development

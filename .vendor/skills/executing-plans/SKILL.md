@@ -2,9 +2,9 @@
 description: Use when executing an implementation plan in the current session as the implementer yourself — your human partner chose inline execution, or no subagent tool is available
 metadata:
     github-path: skills/executing-plans
-    github-ref: refs/tags/v6.4.1
+    github-ref: refs/tags/v7.0.0
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: 899ffeab92be3de6cd9ed0078b32737b18b8c135
+    github-tree-sha: ef38c6c33e88e4248018dab6f03fc1ceda916ba0
 name: executing-plans
 ---
 # Executing Plans

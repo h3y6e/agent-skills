@@ -2,9 +2,9 @@
 description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements
 metadata:
     github-path: skills/requesting-code-review
-    github-ref: refs/tags/v6.4.1
+    github-ref: refs/tags/v7.0.0
     github-repo: https://github.com/obra/superpowers
-    github-tree-sha: 5fcdadfccd8c90987a11969d2f8c844820fee6e1
+    github-tree-sha: f4a6749898702895ea4fd57c7f186cf43205b99a
 name: requesting-code-review
 ---
 # Requesting Code Review
@@ -56,7 +56,7 @@ Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md
 
 You: Let me request code review before proceeding.
 
-BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | awk '{print $1}')
+BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | cut -d' ' -f1)
 HEAD_SHA=$(git rev-parse HEAD)
 
 [Dispatch code reviewer subagent]
