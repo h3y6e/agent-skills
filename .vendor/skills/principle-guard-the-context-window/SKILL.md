@@ -5,16 +5,12 @@ metadata:
     github-path: pstack/skills/principle-guard-the-context-window
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: 8c132ce80504b04cb2c04070b9ca8c6932807037
+    github-tree-sha: bf09c18e975ded9dc137631c6529db941dda24a2
 name: principle-guard-the-context-window
 ---
 # Guard the Context Window
 
-The context window is finite and non-renewable within a session. Every token should be worth its cost.
-
 **Why:** Context overflow degrades reasoning quality, creates compression artifacts, and halts progress.
 
 **Pattern:**
-- **Isolate large payloads.** Route verbose outputs, screenshots, and large documents to subagents. The main context gets summaries, not raw data.
-- **Keep frequently used content inline.** Templates and references used on every invocation belong in the skill file, not in separate files that cost a read each time.
 - **Size phases and cap scope.** Limit files per phase, set turn budgets, account for mechanism costs.
