@@ -13,7 +13,7 @@ metadata:
 ## Workflow
 
 1. **Start.** For a new CLI, confirm the language and whether it ships as a binary.
-2. **Define** commands, flags, help, examples, and effects in one framework definition: cobra, viper, and `github.com/jdx/usage/integrations/cobra` for Go; gunshi v1 with `@gunshi/plugin-suggestion`, `@h3y6e/gunshi-plugin-env`, and `@h3y6e/gunshi-plugin-usage` for TypeScript; usage-rs for Rust; usage `#USAGE` comments for shell.
+2. **Define** commands, flags, help, examples, and effects in one framework definition: cobra and `github.com/jdx/usage/integrations/cobra` for Go, adding viper only with config files; gunshi v1 with `@gunshi/plugin-suggestion`, `@h3y6e/gunshi-plugin-env`, and `@h3y6e/gunshi-plugin-usage` for TypeScript; usage-rs for Rust; usage `#USAGE` comments for shell.
 3. **Classify** each item below as pass, n/a, or deviation in a table, citing a probe line, command run, or code read. Items without a subject are n/a. A deviation needs the user's reason, or a fix when reviewing; check [references/rationale.md](references/rationale.md) first.
 4. **Probe**: build, then run `scripts/probe.mjs <bin> [app.usage.kdl]`, passing the spec when the framework exports one. Fix each FAIL; NOTEs are evidence.
 5. **Done** when every item is classified and the probe has no FAIL.
