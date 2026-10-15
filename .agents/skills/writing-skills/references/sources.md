@@ -1,6 +1,6 @@
 # Sources
 
-Where each rule in `SKILL.md` comes from. Before changing or deleting a rule, reread its source here; before adding one, add its source. Quotes are verbatim; retrieved 2026-10-16.
+Where each rule in `SKILL.md` comes from. Before changing or deleting a rule, reread its source here; before adding one, add its source. Quotes are verbatim apart from ASCII quote marks; retrieved 2026-10-16.
 
 ## Sources
 
