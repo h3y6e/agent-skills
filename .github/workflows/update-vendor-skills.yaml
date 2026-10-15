@@ -9,19 +9,20 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   update:
     runs-on: ubuntu-slim
+    permissions:
+      contents: write
+      pull-requests: write
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
-      - uses: h3y6e/gh-skill-update-action@ef708035a955ed549e143ad55d708e89e39f98c3 # v1.2.0
+      - uses: h3y6e/gh-skill-update-action@v1.2.0
         with:
           dir: .vendor/skills

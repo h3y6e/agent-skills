@@ -1,5 +1,5 @@
-amends "package://github.com/jdx/hk/releases/download/v2.4.0/hk@2.4.0#/Config.pkl"
-import "package://github.com/jdx/hk/releases/download/v2.4.0/hk@2.4.0#/Builtins.pkl"
+amends "package://github.com/jdx/hk/releases/download/v2.6.0/hk@2.6.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.6.0/hk@2.6.0#/Builtins.pkl"
 
 local nonVendor = new Mapping<String, Step> {
     ["rumdl"] = Builtins.rumdl
@@ -18,8 +18,7 @@ local nonVendor = new Mapping<String, Step> {
 
 steps {
     ["mise"] = Builtins.mise
-    ["pinact"] = Builtins.pinact
-    ["zizmor"] = Builtins.zizmor
+    ["jactionlint"] = Builtins.jactionlint
     ["detect_private_key"] = Builtins.detect_private_key
     ["check_merge_conflict"] = Builtins.check_merge_conflict
     ["check_symlinks"] = Builtins.check_symlinks
