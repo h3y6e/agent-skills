@@ -11,6 +11,7 @@ Where each rule in `SKILL.md` comes from. Before changing or deleting a rule, re
 | as-eval | official | <https://agentskills.io/skill-creation/evaluating-skills> |
 | as-desc | official | <https://agentskills.io/skill-creation/optimizing-descriptions> |
 | cc-skills | official | <https://code.claude.com/docs/en/skills> |
+| cc-subagents | official | <https://code.claude.com/docs/en/sub-agents> |
 | codex | official | <https://learn.chatgpt.com/docs/build-skills> |
 | astra | official | <https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra> |
 | skillsbench | paper | <https://arxiv.org/abs/2602.12670> (v4) |
@@ -45,6 +46,7 @@ Where each rule in `SKILL.md` comes from. Before changing or deleting a rule, re
 | Prove a new check fails on a real past mistake | pstack-guide | "proves each new check fails on a real past mistake" |
 | Execution evals with and without the skill | as-eval | "run each test case twice: once with the skill and once without it (or with a previous version)" |
 | Blind candidates; judge activation from transcripts; one judge | pstack-eval | "The candidate prompt looks like an organic user request."; "Grade chain-following from the files it really read"; "one judge scores both sets in a single pass on one scale" |
+| Fresh non-fork subagents; no-skill runs need the skill uninstalled | cc-subagents | "Each subagent starts with a fresh, isolated context window."; "without it, the subagent can still discover and invoke project, user," |
 | About 20 discovery queries, near-misses, held-out split | as-desc | "Aim for about 20 queries"; "The most valuable negative test cases are near-misses"; "Avoid adding specific keywords from failed queries — that's overfitting." |
 | Validator rejects unknown frontmatter fields | cc-skills | "Claude Code ignores a field it doesn't recognize without reporting an error." |
 | `disable-model-invocation` needs `allow_implicit_invocation: false` | codex | "When false, Codex won't implicitly invoke the skill based on user prompt" |
