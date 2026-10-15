@@ -36,7 +36,7 @@ AI reviewers such as Copilot code review never read replies and re-raise items a
 
 Assign verdicts across every item before implementing any of them, and ask about all the unclear ones in a single reply. Hold any item sharing an assumption with an unclear one — fixing item 3 under a wrong reading of item 5 produces work that must be undone. Independent accepted items can proceed while you wait.
 
-When no user can answer mid-run, as in a review loop, do not wait: fix accepted items, and for every other verdict reply with your reading and evidence and leave the code unchanged. Resolved threads drop out of sight, so list each non-accepted item with its verdict in the final report.
+When no user can answer mid-run, as in a review loop, do not wait: fix independent accepted items, and for every other verdict or held item reply with your reading and evidence and leave the code unchanged. Resolved threads drop out of sight, so list each unfixed item with its verdict, or what holds it, in the final report.
 
 ## Implement and Verify
 
