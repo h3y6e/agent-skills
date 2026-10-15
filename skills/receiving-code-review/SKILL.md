@@ -28,11 +28,15 @@ The item is clear but nothing in reach proves or disproves it — a production-o
 
 A suggestion that contradicts a decision the user already made outranks the table: it goes back to the user, not into the code.
 
-Confidence in a reviewer is not evidence. Bots and agent reviewers report findings about code paths they never read, and a human may be reading an older revision; check either, and accept what holds up.
+Confidence in a reviewer is not evidence. Bots and agent reviewers report findings about code paths they never read, and a human may be reading an older revision; check either, and accept what holds up. Judge an outdated thread against the current code, not the hunk it was left on.
+
+AI reviewers such as Copilot code review never read replies and re-raise items already settled. A repeat keeps its earlier verdict unless the code it cites has changed; re-judging the same evidence only flips the verdict back and forth.
 
 ## Clarify All Items First
 
 Assign verdicts across every item before implementing any of them, and ask about all the unclear ones in a single reply. Hold any item sharing an assumption with an unclear one — fixing item 3 under a wrong reading of item 5 produces work that must be undone. Independent accepted items can proceed while you wait.
+
+When no user can answer mid-run, as in a review loop, do not wait: fix accepted items, and for every other verdict reply with your reading and evidence and leave the code unchanged. Resolved threads drop out of sight, so list each non-accepted item with its verdict in the final report.
 
 ## Implement and Verify
 
@@ -40,10 +44,6 @@ Order accepted items: breakage and security first, then mechanical fixes, then t
 
 ## Replying
 
-Report the verdict and what settled it — "Reproduced, fixed in `parser.ts`", "Checked: no caller reaches this branch". Accepting is silent work; pushing back needs the contradicting evidence quoted. If you pushed back and were wrong, say what you checked, what it showed, and that you are fixing it.
+Report the verdict and what settled it — "Reproduced, fixed in `parser.ts`", "Checked: no caller reaches this branch". Accepting is silent work; pushing back needs the contradicting evidence quoted, plus a question only for a reviewer who reads replies. If you pushed back and were wrong, say what you checked, what it showed, and that you are fixing it.
 
-On GitHub, answer an inline comment inside its own thread:
-
-```bash
-gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies -f body='...'
-```
+On GitHub, reply inside the comment's own thread and resolve the thread once handled, so the next pass sees only new items.

@@ -58,3 +58,12 @@ Use the `cxg` skill for the commit message format, and pipe the message through 
 - Create the PR with `gh pr create --draft --body-file <file>`, adding `--attach <image>` for each image the body references by that same path.
 - Leave an existing PR's draft/ready state alone unless asked.
 - After each push to a branch with an open PR, reread the title and body against the diff and `gh pr edit` what no longer matches.
+
+## Review Loop
+
+After opening a PR, get it reviewed by Copilot code review and settle the result without waiting for the user:
+
+1. Request a review from `@copilot`. Each review costs AI credits, so request once per push.
+2. Wait until `copilot-pull-request-reviewer[bot]` has reviewed the head commit; this usually takes under a minute. After 10 minutes, stop and report.
+3. Settle every unresolved thread with the `receiving-code-review` skill, running unattended.
+4. If accepted fixes produced commits, push and return to step 1. Otherwise, or after the third review, stop and report.
