@@ -48,22 +48,11 @@ Use the `cxg` skill for the commit message format, and pipe the message through 
 ## Pull Request
 
 - PR titles use Conventional Commit subject format: `type(scope): subject`.
-- Prefer a repository PR template when one applies. Otherwise use only these sections, written so a reviewer grasps the change without reading the diff, and skip what they already know:
-  - `## Summary`: 1–3 sentences: the outcome once merged, then why it is needed now. Link the issue.
-  - `## Evidence`: before and after, above the level of the diff. Never copy diff lines or list changes by file. Omit when the diff reads at a glance.
-    - Behavior: screenshots for UI; otherwise output or a test that fails before and passes after, pasted verbatim.
-    - Structure: a `diff` or `text` block of a file tree, call tree, or pseudocode you write (`retry: caller → HTTP client`, not the code). Mermaid only for what text cannot show, such as sequences between parties; SVG (e.g. from D2) only when Mermaid lays it out badly.
-    - Draw from `git diff` and the code, not memory, and check the rendered result, on the PR page if not locally.
-  - `## Impact` (optional): one-way or two-way door, blast radius, and up to 3 things reviewers must know. Omit unchanged behavior and work not done.
+- Prefer a repository PR template when one applies; otherwise read [the PR body format](references/pr-body.md) before writing the body.
 - Create the PR with `gh pr create --draft --body-file <file>`, adding `--attach <image>` for each image the body references by that same path.
 - Leave an existing PR's draft/ready state alone unless asked.
 - After each push to a branch with an open PR, reread the title and body against the diff and `gh pr edit` what no longer matches.
 
 ## Review Loop
 
-After opening a PR, get it reviewed by Copilot code review and settle the result without waiting for the user:
-
-1. Request a review from `@copilot`. Each review costs AI credits, so request once per push.
-2. Wait until `copilot-pull-request-reviewer[bot]` has reviewed the head commit; this usually takes a few minutes. After 10 minutes, stop and report.
-3. Settle every unresolved thread with the `receiving-code-review` skill, running unattended. Read the review body too: Copilot lists findings on unchanged code there without opening a thread.
-4. Commit and push accepted fixes. If there were any and fewer than three reviews have run, return to step 1; otherwise stop and report, naming fixes no review has seen.
+After opening a PR, read [the review loop](references/review-loop.md) and run it before reporting back.
