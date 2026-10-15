@@ -3,6 +3,29 @@
 import { parse } from "jsr:@std/yaml@1.1.2";
 import { basename, isAbsolute, join, relative, resolve, sep } from "node:path";
 
+const knownFields = new Set([
+  "name",
+  "description",
+  "license",
+  "compatibility",
+  "metadata",
+  "allowed-tools",
+  "when_to_use",
+  "argument-hint",
+  "arguments",
+  "disable-model-invocation",
+  "user-invocable",
+  "disallowed-tools",
+  "model",
+  "effort",
+  "context",
+  "agent",
+  "background",
+  "hooks",
+  "paths",
+  "shell",
+]);
+
 type SkillTarget = {
   root: string;
   publishedSkillsDir: string;
@@ -82,11 +105,15 @@ function validateSkillFile(target: SkillTarget, errors: string[]) {
     return "";
   }
 
-  return validateFrontmatter(
+  const properties = validateFrontmatter(
     Deno.readTextFileSync(skillFile),
     target.name,
     errors,
   );
+  if (properties["disable-model-invocation"] === true) {
+    validateOpenaiPolicy(target, errors);
+  }
+  return typeof properties.name === "string" ? properties.name : "";
 }
 
 function validateFrontmatter(
@@ -114,6 +141,13 @@ function validateFrontmatter(
         }`,
       );
     }
+  }
+
+  const unknown = Object.keys(properties).filter((key) =>
+    !knownFields.has(key)
+  );
+  if (unknown.length > 0) {
+    errors.push(`unknown frontmatter fields: ${unknown.join(", ")}`);
   }
 
   const name = typeof properties.name === "string" ? properties.name : "";
@@ -144,7 +178,21 @@ function validateFrontmatter(
     );
   }
 
-  return name;
+  return properties;
+}
+
+function validateOpenaiPolicy(target: SkillTarget, errors: string[]) {
+  const file = join(target.skillDir, "agents", "openai.yaml");
+  const policy = exists(file)
+    ? (parse(Deno.readTextFileSync(file)) as {
+      policy?: { allow_implicit_invocation?: unknown };
+    })?.policy
+    : undefined;
+  if (policy?.allow_implicit_invocation !== false) {
+    errors.push(
+      `disable-model-invocation requires ${target.relativeDir}/agents/openai.yaml with policy.allow_implicit_invocation: false`,
+    );
+  }
 }
 
 function validateTagpr(root: string, skillsDir: string, errors: string[]) {
