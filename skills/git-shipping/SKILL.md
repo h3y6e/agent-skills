@@ -1,7 +1,7 @@
 ---
 name: git-shipping
 description: Guides the git workflow for shipping code changes — branch, commit, push, PR. Use whenever asked to `commit`, `push`, `pr`/`ship`/`open a PR`/`merge this`, or manage branches, and whenever about to make code changes in a git repo, to confirm the branch is right before implementation starts — even if the user only described the change and never said the word "git".
-compatibility: Requires git, gh, cxg, and git-wt. Do not use raw git worktree.
+compatibility: Requires git, gh, cxg, and git-wt.
 license: MIT
 metadata:
   author: h3y6e
@@ -35,7 +35,7 @@ Check visibility with `gh repo view --json visibility -q '.visibility'`.
 
 Start new feature work in a clean worktree from the remote default branch, not in the default-branch checkout.
 Before creating it, check `git wt -h`, then use `git wt <branch> origin/<default-branch> --nocd`.
-Never call raw `git worktree`.
+Use `git wt` rather than raw `git worktree` so worktrees follow the repository's configured layout.
 
 New worktrees start clean; transfer in-progress changes only on request.
 
@@ -43,7 +43,7 @@ Do not move already-started work into a new worktree just to satisfy this workfl
 
 ## Commit
 
-**REQUIRED SUB-SKILL:** Use `cxg` skill for commit message format. Pipe the message through `cxg lint` before committing.
+Use the `cxg` skill for the commit message format, and pipe the message through `cxg lint` before committing.
 
 ## Pull Request
 
