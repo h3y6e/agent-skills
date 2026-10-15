@@ -30,7 +30,7 @@ A suggestion that contradicts a decision the user already made outranks the tabl
 
 Confidence in a reviewer is not evidence. Bots and agent reviewers report findings about code paths they never read, and a human may be reading an older revision; check either, and accept what holds up. Judge an outdated thread against the current code, not the hunk it was left on.
 
-AI reviewers such as Copilot code review never read replies and re-raise items already settled. A repeat keeps its earlier verdict unless the code it cites has changed; re-judging the same evidence only flips the verdict back and forth.
+AI reviewers such as Copilot code review never read replies and re-raise items already settled. A repeat keeps its earlier verdict unless the code or evidence behind that verdict has changed; re-judging the same evidence only flips the verdict back and forth.
 
 ## Clarify All Items First
 
