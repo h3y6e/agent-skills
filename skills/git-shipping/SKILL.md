@@ -48,10 +48,13 @@ Use the `cxg` skill for the commit message format, and pipe the message through 
 ## Pull Request
 
 - PR titles use Conventional Commit subject format: `type(scope): subject`.
-- Prefer a repository PR template when one applies.
-- Without a template, use only: `## Summary`, `## Background`, `## Changes`, optional `## Impact`.
-- Use `## Impact` only for merge behavior changes. Omit unchanged behavior, non-goals, and work not done.
-- Do not add ad hoc `Testing`, `Verification`, `Checklist`, `Related issues`, or `Screenshots`. Never dump local verification commands into the PR body.
-- Write the body to a `mktemp` file under `$TMPDIR`, never a fixed path — `gh pr create`/`gh pr edit` can reuse stale content, and plain `mktemp` can fail in a sandboxed shell.
-- New PRs default to draft (`gh pr create --draft`); preserve existing PR draft/ready state unless asked.
-- After pushing to a branch with an open PR, reread the title and body against the new diff and edit whatever no longer matches (`gh pr edit`).
+- Prefer a repository PR template when one applies. Otherwise use only these sections, written so a reviewer grasps the change without reading the diff, and skip what they already know:
+  - `## Summary`: 1–3 sentences: the outcome once merged, then why it is needed now. Link the issue.
+  - `## Evidence`: before and after, above the level of the diff. Never copy diff lines or list changes by file. Omit when the diff reads at a glance.
+    - Behavior: screenshots for UI; otherwise output or a test that fails before and passes after, pasted verbatim.
+    - Structure: a `diff` or `text` block of a file tree, call tree, or pseudocode you write (`retry: caller → HTTP client`, not the code). Mermaid only for what text cannot show, such as sequences between parties; SVG (e.g. from D2) only when Mermaid lays it out badly.
+    - Draw from `git diff` and the code, not memory, and check the rendered result, on the PR page if not locally.
+  - `## Impact` (optional): one-way or two-way door, blast radius, and up to 3 things reviewers must know. Omit unchanged behavior and work not done.
+- Create the PR with `gh pr create --draft --body-file <file>`, adding `--attach <image>` for each image the body references by that same path.
+- Leave an existing PR's draft/ready state alone unless asked.
+- After each push to a branch with an open PR, reread the title and body against the diff and `gh pr edit` what no longer matches.
