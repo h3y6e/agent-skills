@@ -5,7 +5,7 @@ compatibility: Requires git, gh, cxg, and git-wt.
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.10.4
+  version: 2026.10.5
 ---
 
 # Git Shipping
