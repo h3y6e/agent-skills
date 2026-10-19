@@ -26,10 +26,7 @@ Ask only when the intended change scope is unclear enough that you might include
 
 ## Language Rule
 
-Check visibility with `gh repo view --json visibility -q '.visibility'`.
-
-- **PUBLIC**: Use English for commit messages, PR titles, and PR bodies.
-- **PRIVATE / INTERNAL**: Use the language the user is currently using.
+Write commit messages, PR titles, and PR bodies in the language the repository's recent commits and PRs already use. With no precedent, English if `gh repo view --json visibility -q '.visibility'` is `PUBLIC`, else the user's language.
 
 ## Branch
 
