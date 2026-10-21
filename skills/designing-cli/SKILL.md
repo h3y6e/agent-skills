@@ -5,7 +5,7 @@ compatibility: Requires Node.js, and the usage CLI to probe with a spec.
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.10.4
+  version: 2026.10.5
 ---
 
 # Designing CLIs
