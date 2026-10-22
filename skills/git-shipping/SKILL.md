@@ -40,7 +40,7 @@ Do not move already-started work into a new worktree just to satisfy this workfl
 
 ## Commit
 
-Use the `cxg` skill for the commit message format, and pipe the message through `cxg lint` before committing.
+Use the `cxg-commit` skill for the commit message format, and pipe the message through `cxg lint` before committing.
 
 ## Pull Request
 
