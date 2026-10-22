@@ -4,7 +4,7 @@ description: Creates draft content for issues as a single issue or dependency-aw
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.10.5
+  version: 2026.10.6
 ---
 
 # Creating Issues
