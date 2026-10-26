@@ -6,7 +6,7 @@ allowed-tools: Bash(obsidian:*) Bash(anna recall:*) Bash(ghq get memex) Read Edi
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.10.6
+  version: 2026.10.7
 ---
 
 # Tracking Tasks
