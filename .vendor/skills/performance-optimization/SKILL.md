@@ -2,9 +2,9 @@
 description: Optimizes application performance across frontend, backend, queries, and databases. Use when performance requirements exist, when you suspect performance regressions, when Core Web Vitals or load times need improvement, when N+1 query patterns need fixing, or when profiling reveals bottlenecks.
 metadata:
     github-path: skills/performance-optimization
-    github-ref: refs/tags/0.6.12
+    github-ref: refs/tags/0.6.13
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: c0cf6ae718e8552be7538a1cb6ea7f941a273359
+    github-tree-sha: c924947ef20bdf80fe7a0af2267e02215ecea4b8
 name: performance-optimization
 ---
 # Performance Optimization
@@ -49,12 +49,12 @@ Two complementary approaches — use both:
 - **RUM (web-vitals library, CrUX):** Real user data in real conditions. Required to validate that a fix actually improved user experience.
 
 **Frontend:**
-```bash
-# Synthetic: Lighthouse in Chrome DevTools (or CI)
-# Chrome DevTools → Performance tab → Record
-# Chrome DevTools MCP → Performance trace
+```javascript
+// Synthetic: Lighthouse in Chrome DevTools (or CI)
+// Chrome DevTools → Performance tab → Record
+// Chrome DevTools MCP → Performance trace
 
-# RUM: Web Vitals library in code
+// RUM: Web Vitals library in code
 import { onLCP, onINP, onCLS } from 'web-vitals';
 
 onLCP(console.log);
@@ -63,12 +63,12 @@ onCLS(console.log);
 ```
 
 **Backend:**
-```bash
-# Response time logging
-# Application Performance Monitoring (APM)
-# Database query logging with timing
+```javascript
+// Response time logging
+// Application Performance Monitoring (APM)
+// Database query logging with timing
 
-# Simple timing
+// Simple timing
 console.time('db-query');
 const result = await db.query(...);
 console.timeEnd('db-query');

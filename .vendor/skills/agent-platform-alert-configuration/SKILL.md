@@ -6,11 +6,22 @@ metadata:
     github-path: skills/cloud/agent-platform-alert-configuration
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 05d8f5497f72eb1466dcde0d74d51b04d81cac16
-    version: 1.0.0
+    github-tree-sha: cd152e0bbc1e7ae32d429cb6504016386e53ed29
+    version: 1.0.1
 name: agent-platform-alert-configuration
 ---
 # Agent Platform Alert Configuration
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:agent-platform-alert-configuration)"`
+and append
+`agent-skills/1.0 (skill:agent-platform-alert-configuration)`
+to `User-Agent` headers.
 
 ## Critical Steps
 

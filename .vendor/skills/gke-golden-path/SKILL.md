@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-golden-path
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: d920d372ffdd6a571babc4f4148b2228fd43c85e
-    version: 1.1.0
+    github-tree-sha: 413b038241569c4065dcd6d04580cfba7b580ed8
+    version: 1.1.1
 name: gke-golden-path
 ---
 # GKE Golden Path Configuration
@@ -18,6 +18,15 @@ specifically, use `gke-cluster-autoscaler` for node autoscaling or
 `gke-workload-scaling` for workload autoscaling (HPA/VPA).
 
 > **MCP Tools:** `get_cluster`, `create_cluster`, `update_cluster`
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-golden-path)"`
+and append `agent-skills/1.0 (skill:gke-golden-path)` to `User-Agent` headers.
 
 ## Rules
 

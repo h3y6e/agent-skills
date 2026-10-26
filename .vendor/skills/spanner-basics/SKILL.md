@@ -1,17 +1,26 @@
 ---
-description: Assists in provisioning instances and databases, designing performant schemas, and querying data in Spanner. Use when designing primary keys, writing SQL queries or client library code, or diagnosing performance issues.
+description: Assists in provisioning instances and databases, designing performant schemas, and querying data in Cloud Spanner on Google Cloud. Use when designing primary keys, writing SQL queries or client library code, or diagnosing performance issues.
 metadata:
     category: Databases
     github-path: skills/cloud/spanner-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a3fe5662ac591bd0d8d794dc106b7b55753c236b
-    version: 1.1.0
+    github-tree-sha: 8e0f0cc4dd94e65f0ad7c80a1c3f857786be6ab8
+    version: 1.1.2
 name: spanner-basics
 ---
 # Spanner Basics
 
-This skill provides core workflows and guidance for administering and developing with Google Cloud Spanner, a fully managed, mission-critical database service offering global transactional consistency and automatic, synchronous replication for high availability.
+This skill provides core workflows and guidance for administering and developing with Cloud Spanner on Google Cloud, a fully managed, mission-critical database service offering global transactional consistency and automatic, synchronous replication for high availability.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:spanner-basics)"`
+and append `agent-skills/1.0 (skill:spanner-basics)` to `User-Agent` headers.
 
 ## Core Principles
 

@@ -15,11 +15,22 @@ metadata:
     github-path: skills/cloud/google-cloud-global-frontend-configuration
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: aa9c801f616c167fa5c583b85476fc3199eb90d3
-    version: 1.0.0
+    github-tree-sha: 2a9b946ca1e6fc059ecf4a55a132840faa4c011b
+    version: 1.0.1
 name: google-cloud-global-frontend-configuration
 ---
 # Google Cloud global external Application Load Balancer Configuration Skill
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:google-cloud-global-frontend-configuration)"`
+and append
+`agent-skills/1.0 (skill:google-cloud-global-frontend-configuration)`
+to `User-Agent` headers.
 
 ## Purpose & Agent Guidance
 

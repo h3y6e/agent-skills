@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/cloud-monitoring-metric-selection
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: c2153a9a6b401e3258127de8463225cae55d373f
-    version: 1.0.1
+    github-tree-sha: 65f518e9b65c9bfe6a7df73b707184fe729e7485
+    version: 1.0.2
 name: cloud-monitoring-metric-selection
 ---
 # Metric Selection (Service Query & Local Keyword Filtering)
@@ -14,6 +14,15 @@ name: cloud-monitoring-metric-selection
 Use this skill to identify the most relevant Cloud Monitoring metric
 descriptors. It queries all metric descriptors for a target service from the API
 and filters them locally inside the agent's context using keyword matching.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:cloud-monitoring-metric-selection)"`
+and append `agent-skills/1.0 (skill:cloud-monitoring-metric-selection)` to `User-Agent` headers.
 
 ## CRITICAL RULES
 

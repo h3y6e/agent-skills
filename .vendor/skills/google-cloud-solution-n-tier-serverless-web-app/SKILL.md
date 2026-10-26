@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-n-tier-serverless-web-app
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 9f5126579270e90290fef4dd515d8b2e714f768c
-    version: 1.0.0
+    github-tree-sha: e90d7c9b1c3b8b32af2f3c0de731a87b4e44c783
+    version: 1.0.1
 name: google-cloud-solution-n-tier-serverless-web-app
 ---
 <!-- disableFinding(all) -->
@@ -27,6 +27,12 @@ The architecture enforces strict physical and network isolation across all tiers
 *   **Tier 2..N application tier (internal microservices / business logic)**: Private application services (Cloud Run). 100% isolated from the internet (Ingress: VPC-internal, `INGRESS_TRAFFIC_INTERNAL_ONLY`), reachable exclusively via upstream VPC routing (`egress = "ALL_TRAFFIC"` with Private Google Access on the subnet for `*.run.app` URLs).
 *   **Data tier**: Private Cloud SQL for persistent data and Memorystore for
     Redis for caching, reachable exclusively from authorized application tiers.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## General guidance to the LLM
 

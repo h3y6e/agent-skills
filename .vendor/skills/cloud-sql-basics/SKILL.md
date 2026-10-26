@@ -8,8 +8,8 @@ metadata:
     github-path: skills/cloud/cloud-sql-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: dbd40824068ec5220e8ff3f2099fab0536a087a0
-    version: 1.0.0
+    github-tree-sha: 3a8cefbb70599a75a720bc581fd3bcaf9f7bdbc4
+    version: 1.0.1
 name: cloud-sql-basics
 ---
 # Cloud SQL Basics
@@ -18,6 +18,15 @@ Cloud SQL is a fully managed relational database service for MySQL, PostgreSQL,
 and SQL Server. It automates time-consuming tasks like patches, updates,
 backups, and replicas, while providing high performance and availability for
 your applications.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:cloud-sql-basics)"`
+and append `agent-skills/1.0 (skill:cloud-sql-basics)` to `User-Agent` headers.
 
 ## Prerequisites
 

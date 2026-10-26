@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gemini-interactions-api
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: b964a9c55e564bc53b2e87b26a32bda0f87223ed
-    version: 2.0.0
+    github-tree-sha: e2cbcb88bf9aba335bc1e0bd5b27daba6a9d6b90
+    version: 2.0.1
 name: gemini-interactions-api
 ---
 # Gemini Interactions API Skill
@@ -46,6 +46,17 @@ The Interactions API is the modern, recommended way to execute Generative AI age
 > `environment="remote"` to provision a sandbox. * **Turn-Scoped Parameters**:
 > Parameters like `tools`, `system_instruction`, and `generation_config` are
 > turn-scoped. They **MUST** be passed with each interaction request.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gemini-interactions-api)"`
+and append
+`agent-skills/1.0 (skill:gemini-interactions-api)`
+to `User-Agent` headers.
 
 ## 1. Authentication
 

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-agentic-ai-bidirectional-streaming
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 2fb996fb051a645a5dff1d5e5f45333f0774b1ba
-    version: 1.0.0
+    github-tree-sha: 6858e80ce4b1a30e921e42d64a1340c5128e91ea
+    version: 1.0.1
 name: google-cloud-solution-agentic-ai-bidirectional-streaming
 ---
 # Live bidirectional multimodal streaming agentic AI solution
@@ -14,6 +14,12 @@ name: google-cloud-solution-agentic-ai-bidirectional-streaming
 This skill guides agents through the workflow to design and implement a
 tailored multi-product solution in the cloud for a live, bidirectional
 multimodal streaming workload, use case, or requirement.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Workflow
 

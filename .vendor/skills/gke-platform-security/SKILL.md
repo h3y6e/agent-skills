@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-platform-security
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a95170307e8fb65dc489d924334a48efe43a82dd
-    version: 1.0.1
+    github-tree-sha: 57220e48a5fbee2421c4a3a9f292d6c55609a433
+    version: 1.0.2
 name: gke-platform-security
 ---
 # GKE Platform Security
@@ -19,6 +19,15 @@ Standards), refer to the `gke-workload-security` skill.
 
 > **MCP Tools:** `gke:get_cluster`, `k8s:check_k8s_auth`,
 > `k8s:get_k8s_resource`, `k8s:apply_k8s_manifest`, `gke:update_cluster`
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-platform-security)"`
+and append `agent-skills/1.0 (skill:gke-platform-security)` to `User-Agent` headers.
 
 ## Golden Path Security Defaults
 

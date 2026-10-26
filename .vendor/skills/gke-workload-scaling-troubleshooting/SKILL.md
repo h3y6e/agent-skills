@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-workload-scaling-troubleshooting
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: c6fd8ee1e4f13181b7f7918e8423beec432259ca
-    version: 1.0.0
+    github-tree-sha: 16b281a44070f1499e365d3843ff11458b7cbd2c
+    version: 1.0.1
 name: gke-workload-scaling-troubleshooting
 ---
 # GKE Workload Scaling Troubleshooting Skill
@@ -21,6 +21,15 @@ diagnostics boundary before proposing manifest or configuration corrections.
 > For configuring HPA/VPA objects and scaling **best practices**, use the
 > `gke-workload-scaling` skill instead. This skill focuses on **failure
 > diagnosis**.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-workload-scaling-troubleshooting)"`
+and append `agent-skills/1.0 (skill:gke-workload-scaling-troubleshooting)` to `User-Agent` headers.
 
 ## 🔍 Diagnosis & Resolution Workflow
 

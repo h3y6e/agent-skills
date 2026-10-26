@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gemini-live-api
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 2b9647f35acc0d0870da2f8b1a4e1953efb71bec
-    version: 1.0.0
+    github-tree-sha: d0388af51044d0f8b62cdce6ef8adf68b4b901fe
+    version: 1.0.1
 name: gemini-live-api
 ---
 # LiveAPI Service Skill
@@ -20,6 +20,15 @@ via Application Default Credentials (ADC), transparent session resumption, and
 The skill also produces a demo frontend + backend service so the user can
 interactively validate the generated client (text, audio, video, transcription,
 and interrupt handling).
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gemini-live-api)"`
+and append `agent-skills/1.0 (skill:gemini-live-api)` to `User-Agent` headers.
 
 ## Prerequisites
 

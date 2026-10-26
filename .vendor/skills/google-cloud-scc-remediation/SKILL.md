@@ -5,11 +5,17 @@ metadata:
     github-path: skills/cloud/google-cloud-scc-remediation
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 7eac84195d0aa2460aceb96b5036f16473acccda
-    version: 1.0.0
+    github-tree-sha: cb75a6bba4fd780828072da1e65bda7ec6353a19
+    version: 1.0.1
 name: google-cloud-scc-remediation
 ---
 # Google Cloud Security Command Center Remediation
+
+## Usage Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Overview
 

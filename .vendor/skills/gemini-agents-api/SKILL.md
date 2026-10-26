@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gemini-agents-api
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: f638b712a67ec7700c14f97f55c60f88d5f4f903
-    version: 1.0.0
+    github-tree-sha: a322e29e1e5dda36afc12403338926b46ae129da
+    version: 1.0.1
 name: gemini-agents-api
 ---
 # Gemini Enterprise Agent Platform - Managed Agents API Skill
@@ -14,6 +14,15 @@ name: gemini-agents-api
 This skill provides complete instructions, REST request endpoints, and JSON payload structures to programmatically manage **custom Agent resources** on the Gemini Enterprise Agent Platform (Agent Platform).
 
 The **Managed Agents API** forms the **Control Plane** of the platform. It allows developers to provision, retrieve, update, and delete tailored, stateful agent containers equipped with system instructions, sandboxed files, custom skill registries, and local/remote tools.
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gemini-agents-api)"`
+and append `agent-skills/1.0 (skill:gemini-agents-api)` to `User-Agent` headers.
+
 ---
 
 ## 1. Authentication & Setup

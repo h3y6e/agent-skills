@@ -5,14 +5,23 @@ metadata:
     github-path: skills/cloud/cloud-logging-query-generation
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: ed492897f650a580dc3c1736a1e50d3aa6f39133
-    version: 1.0.1
+    github-tree-sha: 75a8a3a86114c1ade309683b28bbe88166278268
+    version: 1.0.2
 name: cloud-logging-query-generation
 ---
 # Generate Logging Query Language queries
 
 Use this skill to generate correct Logging Query Language (LQL) queries for
 Cloud Logging.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:cloud-logging-query-generation)"`
+and append `agent-skills/1.0 (skill:cloud-logging-query-generation)` to `User-Agent` headers.
 
 ## Core rules
 

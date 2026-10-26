@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-workload-troubleshooting
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 91c4421c720659400addf0e4793018abf614aac8
-    version: 1.0.0
+    github-tree-sha: 39e7c84dbd09d5465f96805b644778ac94dde60d
+    version: 1.0.1
 name: gke-workload-troubleshooting
 ---
 # GKE Workload Troubleshooting Skill
@@ -17,6 +17,15 @@ enforces a read-only diagnostics boundary: it only **proposes** fixes — whethe
 Kubernetes manifest/config patches or Google Cloud changes (for example `gcloud`
 IAM bindings or node-pool recreation) — and never executes live mutations
 itself.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-workload-troubleshooting)"`
+and append `agent-skills/1.0 (skill:gke-workload-troubleshooting)` to `User-Agent` headers.
 
 ## 🔍 Diagnostic Workflow
 

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/cloud-logging-configuration-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 98df2d668c3f33199edb2786189dbbb392a1b786
-    version: 1.0.1
+    github-tree-sha: b7108d395150a4fafc5aea14c4989e4d447d1a1c
+    version: 1.0.2
 name: cloud-logging-configuration-basics
 ---
 # Configuring Cloud Logging
@@ -22,6 +22,15 @@ views, or log sinks.
 > example, `{project_id}`. Assume these resources exist and proceed directly
 > with configuration commands. Running these discovery commands will cause the
 > execution to hang and timeout.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:cloud-logging-configuration-basics)"`
+and append `agent-skills/1.0 (skill:cloud-logging-configuration-basics)` to `User-Agent` headers.
 
 ## Safety and Confirmation Tiers (CRITICAL)
 

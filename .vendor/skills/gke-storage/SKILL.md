@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-storage
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 9d42b838b7bed46a74f4d49f03ca507a4e868492
-    version: 1.0.2
+    github-tree-sha: 8466421dc30efccce5d9fd03d96260418ca02d9b
+    version: 1.0.3
 name: gke-storage
 ---
 # GKE Storage
@@ -18,6 +18,15 @@ persistent disks, file storage, and cloud storage integration.
 
 > **MCP Tools:** `apply_k8s_manifest`, `get_k8s_resource`,
 > `describe_k8s_resource`, `get_cluster`
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-storage)"`
+and append `agent-skills/1.0 (skill:gke-storage)` to `User-Agent` headers.
 
 ## Golden Path Storage Defaults
 

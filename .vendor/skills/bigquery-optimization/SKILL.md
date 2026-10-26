@@ -7,11 +7,20 @@ metadata:
     github-path: skills/cloud/bigquery-optimization
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 287785e28d6b64ad6952140b2d381e8f285adbf2
-    version: 1.1.0
+    github-tree-sha: 6f406a47d36137a476661ab16763b9eb32c5ddf2
+    version: 1.1.1
 name: bigquery-optimization
 ---
 # BigQuery Optimization Workflow
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:bigquery-optimization)"`
+and append `agent-skills/1.0 (skill:bigquery-optimization)` to `User-Agent` headers.
 
 ## Prerequisites & Environment Setup
 

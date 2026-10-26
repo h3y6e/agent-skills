@@ -5,13 +5,19 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-guided-gke-ai-migration
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 939d8b4c052593af8b7f391c4f594794c0dc5587
-    version: 1.0.0
+    github-tree-sha: 2e934dff4c895f4f47569a71ec88fdc28d48fdf9
+    version: 1.0.1
 name: google-cloud-solution-guided-gke-ai-migration
 ---
 # Migrate AI Workloads to GKE Inference
 
 This skill guides agents through the end-to-end process of migrating existing AI inference workloads (e.g., from Cloud Run, Gemini API, Gemini Enterprise Agent Platform) to self-hosted inference on Google Kubernetes Engine (GKE). The agent will act as an interactive architect, using a structured 4-phase workflow to discover requirements, design a Google Cloud-native solution, execute the implementation using `gcloud` and `kubectl`, and validate the deployment.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Gemini Cloud Assist MCP off-ramp
 

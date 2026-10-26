@@ -1,13 +1,13 @@
 ---
-argument-hint: '[lite|full|ultra]'
+argument-hint: '[lite|full|ultra|off]'
 description: |
     Lazy senior dev mode: the smallest change that fully solves the task, and a reply a busy human understands in one read. Use on any coding task (writing, fixing, refactoring, reviewing, choosing dependencies) and when the user says "ponytail", "be lazy", "simplest solution", "yagni", or complains about over-engineering or bloat. Levels: lite, full (default), ultra.
 license: MIT
 metadata:
     github-path: skills/ponytail
-    github-ref: refs/tags/v5.1.0
+    github-ref: refs/tags/v5.3.2
     github-repo: https://github.com/DietrichGebert/ponytail
-    github-tree-sha: db8acd3ce9e04ef4a5d42bbd90924b6d0a488318
+    github-tree-sha: e8d3fa76e7ff9223a784dbd4bcfc9ff46b3fa55d
 name: ponytail
 ---
 # Ponytail

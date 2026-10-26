@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-hybrid-search-alloydb
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 863702d3648812ac7dd08c22a44460ae9d5f2e9e
-    version: 1.0.0
+    github-tree-sha: becdd73f25b7595695b9d5c3a321b7358ba483d0
+    version: 1.0.1
 name: google-cloud-solution-hybrid-search-alloydb
 ---
 # Dynamic Hybrid Search using AlloyDB
@@ -16,6 +16,12 @@ high-accuracy hybrid search solutions combining structured dataset filtering,
 vector search indexing, faceted metadata filtering, semantic reranking, recall
 evaluation, in-database AI validation, database abstraction layers, and
 serverless application hosting.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Overview of the workflow
 

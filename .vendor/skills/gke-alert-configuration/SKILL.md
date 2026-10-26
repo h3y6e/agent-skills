@@ -6,8 +6,8 @@ metadata:
     github-path: skills/cloud/gke-alert-configuration
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 812974038fad53cbf1e398513019ab5f85cf3efd
-    version: 1.0.0
+    github-tree-sha: f0698f68d8859415570dfbecc9bf565a7775cb47
+    version: 1.0.2
 name: gke-alert-configuration
 ---
 # GKE Alert Configuration
@@ -19,6 +19,15 @@ comprehensive coverage of the **4 Golden Signals** and key cluster health
 metrics while minimizing alert noise.
 
 --------------------------------------------------------------------------------
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-alert-configuration)"`
+and append `agent-skills/1.0 (skill:gke-alert-configuration)` to `User-Agent` headers.
 
 ## Critical Rules
 
@@ -392,9 +401,9 @@ configurations when working in a repository:
 
 ## Additional Resources
 
-*   [Google Cloud Managed Service for Prometheus Documentation](https://docs.cloud.google.com/monitoring/managed-prometheus.md.txt)
-*   [GKE Observability and Monitoring Concepts](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/monitoring.md.txt)
-*   [Google Cloud Alerting Policies in Terraform](https://docs.cloud.google.com/monitoring/alerts/terraform-alert-policy.md.txt)
-*   [Google Cloud Monitoring Pricing](https://docs.cloud.google.com/monitoring/pricing.md.txt)
+*   [Google Cloud Managed Service for Prometheus Documentation](https://docs.cloud.google.com/stackdriver/docs/managed-prometheus.md.txt)
+*   [GKE Observability and Monitoring Concepts](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/observability.md.txt)
+*   [Google Cloud Alerting Policies in Terraform](https://docs.cloud.google.com/monitoring/alerts/terraform.md.txt)
+*   [Google Cloud Monitoring Pricing](https://docs.cloud.google.com/monitoring/pricing.md.txt
 *   [Google SRE Workbook: Alerting on SLOs](https://sre.google/workbook/alerting-on-slos/)
 *   [Awesome Prometheus Alerts Repository](https://github.com/samber/awesome-prometheus-alerts)

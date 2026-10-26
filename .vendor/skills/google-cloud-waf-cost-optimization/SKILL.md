@@ -5,11 +5,17 @@ metadata:
     github-path: skills/cloud/google-cloud-waf-cost-optimization
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 18bfa99d6ae01d1935d0ddfa67f8dcc09a777b08
-    version: 1.0.1
+    github-tree-sha: 3b98e5ce36c983a75c29b5bfbd942c99b6a3c25f
+    version: 1.0.2
 name: google-cloud-waf-cost-optimization
 ---
 # Google Cloud Well-Architected Framework skill for the Cost Optimization pillar
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Overview
 

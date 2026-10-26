@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/managed-airflow-migrations
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 2b6b7c59fcf0495ddda59d3c6e2eae21ae19f8c7
-    version: 1.0.0
+    github-tree-sha: 0d3f4d0ea59b4c973b7009f13fe49dbb527de817
+    version: 1.0.1
 name: managed-airflow-migrations
 ---
 # Managed Service for Apache Airflow (formerly Cloud Composer) Migration Guide
@@ -17,6 +17,15 @@ environment (or available locally) to make them compatible with **Airflow
 2.11.1** (MSAA Gen 2 or 3) or **Airflow 3** (MSAA Gen 3).
 
 --------------------------------------------------------------------------------
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:managed-airflow-migrations)"`
+and append `agent-skills/1.0 (skill:managed-airflow-migrations)` to `User-Agent` headers.
 
 ## Phase 1: Discovery & Download
 

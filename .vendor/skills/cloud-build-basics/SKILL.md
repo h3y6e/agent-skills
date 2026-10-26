@@ -5,11 +5,20 @@ metadata:
     github-path: skills/cloud/cloud-build-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: b2afc81e5bfc11405889654a8c8399899f768059
-    version: 1.0.1
+    github-tree-sha: fbbfa243198cbf25703931e1b4576ec21cc4ec94
+    version: 1.0.2
 name: cloud-build-basics
 ---
 # Cloud Build Basics
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:cloud-build-basics)"`
+and append `agent-skills/1.0 (skill:cloud-build-basics)` to `User-Agent` headers.
 
 ## Prerequisites
 

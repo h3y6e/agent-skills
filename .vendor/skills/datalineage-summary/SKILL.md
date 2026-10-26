@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/datalineage-summary
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 2004a0cafaad627e82c89fc155d33f30246892bd
-    version: 1.0.1
+    github-tree-sha: 155a780d1ac962d73d13182e0209c042c46e76fc
+    version: 1.0.2
 name: datalineage-summary
 ---
 # Data Lineage Summary
@@ -16,6 +16,15 @@ graph for a specific focal asset (Table-Level Lineage) or specific fields
 (Column-Level Lineage). It provides an intuitive left-to-right walkthrough of
 how data enters and leaves the asset, abstracting away complex node and link
 details into plain English.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:datalineage-summary)"`
+and append `agent-skills/1.0 (skill:datalineage-summary)` to `User-Agent` headers.
 
 ## Prerequisites
 
