@@ -99,8 +99,12 @@ function expect(
       } (fine if the framework does not support this form)`,
     );
   } else {
-    const reason = result.timedOut ? PROMPT_WHY : why;
-    fail(`${label}: ${problems.join("; ")}${reason ? ` (${reason})` : ""}`);
+    const reasons = [why, result.timedOut && PROMPT_WHY].filter(Boolean);
+    fail(
+      `${label}: ${problems.join("; ")}${
+        reasons.length > 0 ? ` (${reasons.join("; ")})` : ""
+      }`,
+    );
   }
   return result;
 }
@@ -180,14 +184,23 @@ function specRejects(args) {
 
 const root = specFile === undefined ? undefined : specRoot();
 const commands = root === undefined ? [] : specCommands(root);
-const topNames = Object.entries(root?.subcommands ?? {}).flatMap((
-  [name, sub],
-) => [name, ...(sub.aliases ?? []), ...(sub.hidden_aliases ?? [])]);
+const names = (name, sub) => [
+  name,
+  ...(sub.aliases ?? []),
+  ...(sub.hidden_aliases ?? []),
+];
+const others = (own) =>
+  Object.entries(root?.subcommands ?? {}).filter(([name]) => name !== own)
+    .flatMap(([name, sub]) => names(name, sub));
 const typoOf = commands.find(({ path, cmd }) =>
   path.length === 1 && cmd.effect === "read" && path[0].length > 1 &&
-  !topNames.some((n) => n !== path[0] && n.startsWith(path[0].slice(0, -1)))
+  !others(path[0]).some((n) => n.startsWith(path[0].slice(0, -1)))
 )?.path[0];
-if (typoOf !== undefined) {
+if (root !== undefined && typoOf === undefined) {
+  console.log(
+    `NOTE ${bin}: no top-level read command has an unambiguous typo, so "did you mean" is not probed`,
+  );
+} else if (typoOf !== undefined) {
   expect(2, "err", [typoOf.slice(0, -1)], {
     suggests: typoOf,
     why: "typos are the most common usage error",
