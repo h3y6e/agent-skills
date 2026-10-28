@@ -5,13 +5,22 @@ metadata:
     github-path: skills/cloud/gke-ai-troubleshooting-tpu-metrics-monitoring
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 9e734274bac40121a6001f6f4aaf98e8c1dd6a5f
-    version: 1.0.0
+    github-tree-sha: 47dcb9f74fab7501e9fcb8bbbe031f20af76780a
+    version: 1.0.1
 name: gke-ai-troubleshooting-tpu-metrics-monitoring
 ---
 # GKE TPU Metrics Monitoring Guide
 
 This skill enables the agent to monitor GKE TPU workloads, nodes, and node pools using GKE system metrics. It helps diagnose if workload interruptions or performance issues are caused by underlying infrastructure.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-ai-troubleshooting-tpu-metrics-monitoring)"`
+and append `agent-skills/1.0 (skill:gke-ai-troubleshooting-tpu-metrics-monitoring)` to `User-Agent` headers.
 
 ## Step 0: Mandatory Context
 

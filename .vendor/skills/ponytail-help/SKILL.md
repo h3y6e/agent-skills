@@ -2,9 +2,9 @@
 description: Quick reference for ponytail levels, skills and commands. One-shot display. Use for /ponytail-help, "ponytail help", "how do I use ponytail".
 metadata:
     github-path: skills/ponytail-help
-    github-ref: refs/tags/v5.1.0
+    github-ref: refs/tags/v5.3.2
     github-repo: https://github.com/DietrichGebert/ponytail
-    github-tree-sha: 87f25f262420cf82267b3170d75d4b295ab2d986
+    github-tree-sha: f293d9e0ecff5da72cb4accf8a9e4717892cf0ad
 name: ponytail-help
 ---
 # Ponytail Help
@@ -41,6 +41,12 @@ slash-command forms above (OpenCode ships all six as slash commands).
 
 Say "stop ponytail" or "normal mode". Resume anytime with `/ponytail`.
 `/ponytail off` also works.
+
+## Band (Claude Code)
+
+`/ponytail band` hides the band above the prompt, the same command brings it back.
+`/ponytail band on` and `/ponytail band off` set it directly. The level stays.
+`/ponytail band import` adds your past Claude Code sessions (cost, agent time, tokens) to the board.
 
 ## Configure Default Mode
 

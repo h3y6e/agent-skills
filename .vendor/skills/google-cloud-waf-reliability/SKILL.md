@@ -1,15 +1,21 @@
 ---
-description: Generates guidance for reliability, resilience, availability, redundancy, fault-tolerance, and disaster recovery (DR) for Google Cloud workloads based on the design principles and recommendations in the Google Cloud Well-Architected Framework. Use when the user asks to evaluate, design, or improve the reliability, resilience, availability, or disaster recovery capabilities of Google Cloud workloads.
+description: Evaluates, designs, and improves the reliability, resilience, availability, fault tolerance, and disaster recovery (DR) of Google Cloud workloads based on the design principles and recommendations in the Reliability pillar of the Google Cloud Well-Architected Framework. Use when the user asks about reliability-related topics like workload uptime, designing for high availability (HA) or DR, setting and meeting RTO/RPO targets, SRE best practices, backup strategies, multi-region failover, or fault-tolerant architecture on Google Cloud. Don't use for other Well-Architected Framework pillars such as Cost Optimization, Operational Excellence, or Security, or for hands-on resource deployment and live incident troubleshooting.
 metadata:
     category: WellArchitectedFramework
     github-path: skills/cloud/google-cloud-waf-reliability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: c195cc3a89ee81c822d5e7a98277847d045b8032
-    version: 1.0.0
+    github-tree-sha: 20c153fc5e057546a85b5d0999b98f45325d3757
+    version: 1.0.2
 name: google-cloud-waf-reliability
 ---
 # Google Cloud Well-Architected Framework skill for the Reliability pillar
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Overview
 

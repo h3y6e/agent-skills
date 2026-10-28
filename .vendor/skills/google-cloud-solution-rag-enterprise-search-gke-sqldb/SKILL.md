@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-rag-enterprise-search-gke-sqldb
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: b14fe52570a9434c38134a2d24da808118e82d5c
-    version: 1.0.0
+    github-tree-sha: 6aba35afeae09f4041604fb0acd1f71c966c6581
+    version: 1.0.1
 name: google-cloud-solution-rag-enterprise-search-gke-sqldb
 ---
 # RAG for enterprise search using GKE and AlloyDB
@@ -16,6 +16,12 @@ and high-accuracy RAG-enabled conversational search solution for private
 enterprise content by using an AlloyDB database, Cloud Storage, and a Google
 Kubernetes Engine (GKE) cluster to host all the application components,
 including an open model and an open-source inference framework.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Overview of the workflow
 

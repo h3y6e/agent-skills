@@ -5,20 +5,18 @@ metadata:
     github-path: pstack/skills/principle-make-operations-idempotent
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: c69d590d8da3af63e34954aa21254e1ec9a2996c
+    github-tree-sha: 5111ac1acc6584dad178af96174140ee5b29bca4
 name: principle-make-operations-idempotent
 ---
 # Make Operations Idempotent
 
-Design operations so they converge to the correct state regardless of how many times they run or where they start from. Every state-mutating operation should answer: "What happens if this runs twice? What happens if the previous run crashed halfway?"
+Design operations so they converge to the correct state regardless of how many times they run or where the previous run stopped. Every state-mutating operation should answer: "What happens if this runs twice? What happens if the previous run crashed halfway?"
 
 **Why:** Commands, lifecycle operations, and processing loops run where crashes, restarts, and retries are normal. If partial state changes the next run's outcome, every restart becomes a debugging session.
 
-**The pattern:**
-- Convergent startup: scan for existing state, clean stale artifacts, adopt live sessions
-- Content-based cleanup: compare by content equivalence, not creation order
-- Self-healing locks: use PID-based stale lock detection
-- Idempotent scheduling: failed work respawns cleanly, fresh input regenerated after each cycle
+**The idea:** derive each step from the state that exists, not from what the previous run meant to do. Read the current state, compare it to the goal, and apply only the difference. A step written this way is safe to repeat, because a repeat finds nothing left to do.
+
+Anything a run leaves behind, such as a lock, a temporary file, a half-written record, or a claimed job, must be recognizable as stale by the next run. Judge staleness by evidence that stays true wherever the previous run could have stopped, not only in the common case. A marker that the next run cannot judge turns every crash into manual cleanup. For example, write to a temporary path and rename it into place, or compare artifacts by content instead of by creation order.
 
 **The test:**
 1. What happens if this runs twice in a row?

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/detection-engineering-coverage-evaluation
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 46e9fe0085c2262bd77c4cb0f33c90eb19039128
-    version: 1.0.1
+    github-tree-sha: 6ccccecaec70c19378e7d0838becdd1079b18d67
+    version: 1.0.2
 name: detection-engineering-coverage-evaluation
 ---
 # SecOps Detection Coverage Skill
@@ -17,6 +17,12 @@ This skill guides the agent through an end-to-end detection engineering
 lifecycle using Google SecOps MCP tools. It handles multiple Threat Detection
 Opportunities (TDOs) and ensures exhaustive coverage evaluation for all
 generated synthetic events.
+
+## Usage Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Workflow Execution Checklist
 

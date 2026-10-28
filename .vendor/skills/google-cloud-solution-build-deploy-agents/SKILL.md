@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-build-deploy-agents
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: ada5687bff4070199e10bb09555f4e507bf5ac3d
-    version: 1.0.0
+    github-tree-sha: 935cca769d17c11f69ac16150f6a44749ec1f5a8
+    version: 1.0.1
 name: google-cloud-solution-build-deploy-agents
 ---
 # Build and deploy AI agents on Google Cloud
@@ -14,6 +14,12 @@ name: google-cloud-solution-build-deploy-agents
 This skill guides agents through the workflow of designing and implementing a
 tailored multi-product solution in the cloud for a given workload, use case, or
 requirement.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Workflow
 

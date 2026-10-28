@@ -1,16 +1,16 @@
 ---
-description: 'Mounts Cloud Storage buckets on Google Cloud as a POSIX file system using Cloud Storage FUSE (and the gcsfuse CLI tool). Use when interacting with the gcsfuse CLI or Cloud Storage FUSE mounts: decide whether FUSE, native gs:// reads, or Filestore/Managed Lustre fits a workload, deploy tuned mounts on GKE, Compute Engine, or Cloud Run, enable and size file, stat, and list caches, tune mount flags (--implicit-dirs) or config-file settings, apply workload profiles, keep ML checkpointing safe (rename atomicity, hierarchical namespace/HNS, close-time finalization, concurrent writers), or diagnose slow training, low throughput, or bill spikes with gcsfuse metrics. Covers mount semantics, gcsfuse CLI and config files, GKE gcsfuse CSI driver (Workload Identity principal:// bindings, profile StorageClasses, sidecar sizing), and Cloud Run volume mounts. Don''t use for bucket administration or data management without a mount (google-cloud-storage-basics) or fully POSIX-compliant shared file systems (Filestore, Managed Lustre; use gke-storage).'
+description: 'Mounts Cloud Storage buckets on Google Cloud as a POSIX file system with Cloud Storage FUSE (gcsfuse). Use when interacting with gcsfuse or Cloud Storage FUSE mounts: decide whether FUSE, native gs:// reads, or Filestore/Managed Lustre fits a workload, deploy tuned mounts on GKE, Compute Engine, or Cloud Run, enable and size file, stat, and list caches, tune mount flags (--implicit-dirs) or config files, apply workload profiles, keep ML checkpointing safe (rename atomicity, hierarchical namespace/HNS, close-time finalization, concurrent writers), or diagnose slow training, low throughput, or bill spikes with gcsfuse metrics. Covers mount semantics, gcsfuse CLI and configs, GKE gcsfuse CSI driver (Workload Identity principal:// bindings, profile StorageClasses, sidecar sizing), and Cloud Run volume mounts. Don''t use for bucket administration without a mount (google-cloud-storage-basics) or POSIX shared file systems (Filestore, Managed Lustre; use gke-storage).'
 license: Apache-2.0
 metadata:
     category: Storage
     github-path: skills/cloud/google-cloud-storage-fuse
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 2a87042a4c5e4718ca7ac7a012372c0c969e8f96
+    github-tree-sha: 6e81ef207197f70e5b8b825bfc1a7f4a95c99100
     publisher: google
     support_tier: primary
     tags: gcs, gcsfuse, fuse, mount, file-system
-    version: 1.0.2
+    version: 1.0.3
 name: google-cloud-storage-fuse
 ---
 # Cloud Storage FUSE

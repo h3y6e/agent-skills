@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-ai-troubleshooting-tpu-mxla-hang
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 081e41bb3253c02d7687f0b832e46366b6870fe3
-    version: 1.0.0
+    github-tree-sha: ee7386ee81dcdb3cc8e69d89e746e5a76a02bddd
+    version: 1.0.1
 name: gke-ai-troubleshooting-tpu-mxla-hang
 ---
 # Troubleshoot GKE TPU multi-slice hangs with the MXLA Hang Analyzer
@@ -18,6 +18,15 @@ multi-slice latency metrics** (`kubernetes.io/container/multislice/*`) and GKE
 node topology labels.
 
 ---
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-ai-troubleshooting-tpu-mxla-hang)"`
+and append `agent-skills/1.0 (skill:gke-ai-troubleshooting-tpu-mxla-hang)` to `User-Agent` headers.
 
 ## Prerequisites
 

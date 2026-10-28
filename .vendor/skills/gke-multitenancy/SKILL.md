@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-multitenancy
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 0003bbfcdc6f227295f68423916186dc6494dd30
-    version: 1.0.0
+    github-tree-sha: bd386851455c0a69d3fee2e64a67ad125329216b
+    version: 1.0.1
 name: gke-multitenancy
 ---
 # GKE Multi-Tenancy
@@ -16,6 +16,15 @@ namespace isolation, RBAC planning, resource quotas, and network segmentation.
 
 > **MCP Tools:** `apply_k8s_manifest`, `get_k8s_resource`, `check_k8s_auth`,
 > `describe_k8s_resource`, `delete_k8s_resource`
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-multitenancy)"`
+and append `agent-skills/1.0 (skill:gke-multitenancy)` to `User-Agent` headers.
 
 ## When to Use
 

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-storage-troubleshooting
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a7bd67b8d46ff6ae508b133368acfbde8fd7fe21
-    version: 1.1.0
+    github-tree-sha: 92dee913db0afe666a73928355f3d9ba5ceb0a08
+    version: 1.1.1
 name: gke-storage-troubleshooting
 ---
 # GKE Storage Troubleshooting Skill
@@ -20,6 +20,15 @@ before proposing manifest or configuration corrections.
 
 > For routine storage **provisioning** and StorageClass/PVC authoring, use the
 > `gke-storage` skill instead. This skill focuses on **failure diagnosis**.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-storage-troubleshooting)"`
+and append `agent-skills/1.0 (skill:gke-storage-troubleshooting)` to `User-Agent` headers.
 
 ## 🔍 Diagnosis & Resolution Workflow
 

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/cloud-monitoring-promql-query
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: f88eb875086fbbb02268b1f511cb5bbbb9c32402
-    version: 1.0.0
+    github-tree-sha: 5aa61580da57eff8b6be832b13ef17f291865101
+    version: 1.0.1
 name: cloud-monitoring-promql-query
 ---
 # Cloud Monitoring PromQL Generator
@@ -14,6 +14,15 @@ name: cloud-monitoring-promql-query
 Use this skill to generate a valid PromQL query from any Cloud Monitoring metric
 type. This guide applies to all Cloud Monitoring metric types by mapping Cloud
 Monitoring metric and resource descriptors to PromQL structures.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:cloud-monitoring-promql-query)"`
+and append `agent-skills/1.0 (skill:cloud-monitoring-promql-query)` to `User-Agent` headers.
 
 ## Workflow
 

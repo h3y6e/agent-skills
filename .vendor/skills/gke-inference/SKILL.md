@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-inference
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 61ce36e9880880c826d110171c60cd3072ad6b4b
-    version: 1.0.1
+    github-tree-sha: 5d622ff4bf489eff7708e04766704c3606f912e6
+    version: 1.0.2
 name: gke-inference
 ---
 # GKE AI/ML Inference
@@ -19,6 +19,15 @@ Inference Quickstart (GIQ) and best practices for LLM serving.
 > **MCP Tools:** `apply_k8s_manifest`, `get_k8s_resource`, `get_k8s_logs`,
 > `get_k8s_rollout_status`, `describe_k8s_resource`, `list_k8s_events`.
 > **CLI-only:** `gcloud container ai profiles *`
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-inference)"`
+and append `agent-skills/1.0 (skill:gke-inference)` to `User-Agent` headers.
 
 ## When to Use
 

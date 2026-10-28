@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/agent-platform-migrate-from-ai-studio
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 131725c1ef9f1ac400bcbf3b5ed0c30692e0cdea
-    version: 1.0.0
+    github-tree-sha: 869afd2600723b1ec6e4fdedabf0d3bce7ea226f
+    version: 1.0.1
 name: agent-platform-migrate-from-ai-studio
 ---
 # Migrating from Gemini API in AI Studio to Agent Platform
@@ -15,6 +15,17 @@ Use this skill when you need to transition an application from the
 developer-centric Google AI Studio ecosystem
 (`generativelanguage.googleapis.com`) to the enterprise-grade Google Cloud Agent
 Platform (`aiplatform.googleapis.com`).
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:agent-platform-migrate-from-ai-studio)"`
+and append
+`agent-skills/1.0 (skill:agent-platform-migrate-from-ai-studio)`
+to `User-Agent` headers.
 
 --------------------------------------------------------------------------------
 

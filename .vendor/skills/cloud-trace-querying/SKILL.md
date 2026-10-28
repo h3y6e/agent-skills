@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/cloud-trace-querying
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 97ac60fe636f9bd2ecf74d67d58702ddcd8183e8
-    version: 1.0.0
+    github-tree-sha: 935dd489d415ac92c227c2e95db5d0ce2f0f2468
+    version: 1.0.2
 name: cloud-trace-querying
 ---
 # Cloud Trace Querying Skill (`cloud-trace-querying`)
@@ -17,6 +17,15 @@ This skill equips the agent to interact with Cloud Trace by providing standard q
 > **AUTONOMOUS TOOL EXECUTION MANDATE**:
 > You MUST execute the tool scripts directly in bash to query telemetry.
 > Do NOT just describe query strings or write Python scripts. Run the provided bash tools directly and report the exact results.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:cloud-trace-querying)"`
+and append `agent-skills/1.0 (skill:cloud-trace-querying)` to `User-Agent` headers.
 
 ## Prerequisites & Setup
 1. **Google Cloud SDK**: Verify `gcloud` is installed ([Installation Guide](https://docs.cloud.google.com/sdk/docs/install-sdk)).

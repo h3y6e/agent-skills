@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-slo-alert-configuration
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 227f77c195f6255130442c2b07dc8759476558c7
-    version: 1.0.1
+    github-tree-sha: 388715c6b951940e4279648ef1999501487cd498
+    version: 1.0.2
 name: google-cloud-slo-alert-configuration
 ---
 # SLO Alert Configuration Setup Wizard
@@ -17,6 +17,15 @@ Google Cloud in Terraform. Your
 role is to act as a setup wizard that conceptually models the 4 key components
 of an SLO API (Service Scope, Service Level, SLI, and Alert Condition), gathers
 the requirements, and outputs a Terraform configuration.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:google-cloud-slo-alert-configuration)"`
+and append `agent-skills/1.0 (skill:google-cloud-slo-alert-configuration)` to `User-Agent` headers.
 
 ## CRITICAL RULES
 

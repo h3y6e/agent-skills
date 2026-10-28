@@ -5,13 +5,22 @@ metadata:
     github-path: skills/cloud/bigquery-bigframes
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 2442dedcb5e3d20b80618d9698595d63bd660bc6
-    version: 2.0.0
+    github-tree-sha: 9adc638838107b24e53a195ba75767197902b3cf
+    version: 2.0.1
 name: bigquery-bigframes
 ---
 # BigFrames (BigQuery DataFrame) basics
 BigFrames is a Python library that lets you take advantage of BigQuery
 data processing by using familiar Python APIs.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:bigquery-bigframes)"`
+and append `agent-skills/1.0 (skill:bigquery-bigframes)` to `User-Agent` headers.
 
 ## Dataframe API best practices
 

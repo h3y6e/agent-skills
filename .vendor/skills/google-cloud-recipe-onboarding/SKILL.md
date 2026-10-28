@@ -5,13 +5,19 @@ metadata:
     github-path: skills/cloud/google-cloud-recipe-onboarding
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 1684b4e81265d2d965f1e315ee447391accffad5
-    version: 1.0.0
+    github-tree-sha: 7734d0c82a97791a3e668dd1c6d33a929052e1cc
+    version: 1.0.1
 name: google-cloud-recipe-onboarding
 ---
 # Onboarding to Google Cloud
 
 This skill provides a streamlined, non-interactive "happy path" for a singleton developer to get started with [Google Cloud](https://cloud.google.com/). It covers everything from environment verification and authentication to project selection, billing account linkage, and downstream safety chaining.
+
+## Attribution
+
+For all `gcloud` CLI, REST API, and MCP attribution requirements when executing
+commands with this skill, follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 > [!IMPORTANT]
 > For autonomous agents executing this skill:
@@ -224,3 +230,4 @@ After completing the onboarding steps, programmatically verify the completed env
 - [Google Cloud Free Program](https://docs.cloud.google.com/free/docs/free-cloud-features)
 - [Google Cloud Setup overview](https://docs.cloud.google.com/docs/enterprise/cloud-setup.md.txt)
 - [Google Cloud Setup Advanced production foundation](https://docs.cloud.google.com/docs/enterprise/advanced-production.md.txt)
+- [Usage Attribution](references/attribution.md): Standardized usage attribution tags for `gcloud` CLI, REST API, and MCP requests.

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-upgrades
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: f0fc6bfad2ecd612cfbb3407691d90a36cef7521
-    version: 1.1.0
+    github-tree-sha: 2f334e7c648c8a441b9529c2d001895d2df4ea09
+    version: 1.1.1
 name: gke-upgrades
 ---
 # GKE Upgrades & Maintenance
@@ -14,6 +14,15 @@ name: gke-upgrades
 Produce clear, actionable documents — upgrade plans, runbooks, or checklists — tailored to the user's environment. Output should be specific to their cluster mode, release channel, version, and workload types rather than generic advice.
 
 Always frame guidance around the auto-upgrade model: auto-upgrade with maintenance windows and exclusions is the preferred control mechanism.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-upgrades)"`
+and append `agent-skills/1.0 (skill:gke-upgrades)` to `User-Agent` headers.
 
 ## Context Gathering
 

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-ai-troubleshooting-node-unresponsive-timeout
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: cb45890a0d9759a9b2f83c8ef8aa95273abe0ff7
-    version: 1.0.0
+    github-tree-sha: 079d6b63e356c9c72c18610d320091287d6021c8
+    version: 1.0.1
 name: gke-ai-troubleshooting-node-unresponsive-timeout
 ---
 # Troubleshoot unresponsive GKE TPU and GPU nodes (`NodeStatusUnknown`)
@@ -18,6 +18,15 @@ condition becomes `Unknown` with `Reason: NodeStatusUnknown` (`Kubelet stopped
 posting node status.`). If node auto-repair is disabled on the node pool, GKE
 doesn't repair the node. The node can stay `NotReady`, and pods on it can stay
 in `Terminating`, which blocks multi-host `JobSet` workloads from recovering.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-ai-troubleshooting-node-unresponsive-timeout)"`
+and append `agent-skills/1.0 (skill:gke-ai-troubleshooting-node-unresponsive-timeout)` to `User-Agent` headers.
 
 ## Prerequisites
 

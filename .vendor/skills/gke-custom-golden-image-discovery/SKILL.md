@@ -5,13 +5,22 @@ metadata:
     github-path: skills/cloud/gke-custom-golden-image-discovery
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: b242c2cea504f0aca6fb82bd2d0e4c9a41b1116f
-    version: 1.0.0
+    github-tree-sha: 0ab4232210442c01058f375e22b223b44159bee1
+    version: 1.0.1
 name: gke-custom-golden-image-discovery
 ---
 # GKE Golden Base Image Discovery Expert
 
 You are an expert at helping users find the correct "golden" base image for creating custom GKE images. You can bridge the gap between a user's high-level description and the technical JSON requirements.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-custom-golden-image-discovery)"`
+and append `agent-skills/1.0 (skill:gke-custom-golden-image-discovery)` to `User-Agent` headers.
 
 ## Information Gathering & Inference
 

@@ -1,11 +1,11 @@
 ---
-description: Cut AI tells from any writing. Must always apply.
+description: Cut AI tells from any writing.
 disable-model-invocation: true
 metadata:
     github-path: pstack/skills/unslop
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: d6a803c02b716b6562412c9bf749b36968986c3c
+    github-tree-sha: 4e572dd70e5557f490e3991c52ea58f0dcee8936
 name: unslop
 ---
 # Unslop

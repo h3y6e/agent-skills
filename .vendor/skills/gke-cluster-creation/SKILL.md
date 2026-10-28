@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-cluster-creation
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 239c0b29cc910471c59c57ddffc8515ba1683eab
-    version: 1.0.0
+    github-tree-sha: 81c1bb8511c7b1a56d3d5ed6a86c4a8844ce998e
+    version: 1.0.1
 name: gke-cluster-creation
 ---
 # GKE Cluster Creation
@@ -18,6 +18,15 @@ for all new clusters.
 
 > **MCP Tools:** `list_clusters`, `create_cluster`, `get_cluster`,
 > `list_operations`, `get_operation`
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-cluster-creation)"`
+and append `agent-skills/1.0 (skill:gke-cluster-creation)` to `User-Agent` headers.
 
 ## Workflow
 

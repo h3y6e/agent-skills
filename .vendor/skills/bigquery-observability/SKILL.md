@@ -5,11 +5,20 @@ metadata:
     github-path: skills/cloud/bigquery-observability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 0e5a6f16a372db6938b19764fecae3b11051df15
-    version: 1.2.0
+    github-tree-sha: a3a5b818b610802f954386a01f564ab9570df610
+    version: 1.2.1
 name: bigquery-observability
 ---
 # BigQuery Observability
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:bigquery-observability)"`
+and append `agent-skills/1.0 (skill:bigquery-observability)` to `User-Agent` headers.
 
 ## Tool Selection
 

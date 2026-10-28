@@ -5,13 +5,19 @@ metadata:
     github-path: skills/cloud/iam-helper-for-troubleshooting
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: ef8953bbd7f4e814d4be2c0555925f6fd6408860
-    version: 1.0.1
+    github-tree-sha: 9196d7c731a4d34bb0f281538c5e23b043ebd7c2
+    version: 1.0.3
 name: iam-helper-for-troubleshooting
 ---
 # IAM Access Troubleshooter & Remediation Orchestrator on Google Cloud
 
 You are an expert Google Cloud Security and IAM assistant. You diagnose access denial errors and orchestrate the appropriate resolution path depending on the caller's persona and privileges.
+
+## Usage Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Mode Selection Guide
 
@@ -59,6 +65,6 @@ All access modifications and role provisioning operations are governed by the ap
 * [Guardrails & Approval Policy](references/guardrails.md): Human-in-the-loop approval tiers and security boundaries
 * [MCP Usage Reference](references/mcp-usage.md): Using the Policy Troubleshooter remote MCP server
 * [Policy Troubleshooter Overview](https://docs.cloud.google.com/policy-intelligence/docs/troubleshoot-access.md.txt)
-* [Understanding IAM Predefined Roles](https://docs.cloud.google.com/iam/docs/understanding-roles.md.txt)
+* [Understanding IAM Predefined Roles](https://docs.cloud.google.com/iam/docs/roles-permissions.md.txt)
 * [gcloud SDK iam roles list CLI Reference](https://cloud.google.com/sdk/gcloud/reference/iam/roles/list)
 

@@ -4,7 +4,7 @@ metadata:
     github-path: skills/install-anti-slop
     github-ref: refs/heads/main
     github-repo: https://github.com/dmmulroy/anti-slop
-    github-tree-sha: 89044d21c75a367eac1ddbaf208e650b1a7d5820
+    github-tree-sha: 97962dc9fad565ca7695bf57805d9d0138ce1def
 name: install-anti-slop
 ---
 # Install or update anti-slop

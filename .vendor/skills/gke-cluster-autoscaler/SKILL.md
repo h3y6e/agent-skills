@@ -5,11 +5,20 @@ metadata:
     github-path: skills/cloud/gke-cluster-autoscaler
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 4fea4beff4faf82977657052b57c898bf2231611
-    version: 1.0.0
+    github-tree-sha: 294c510bf437537e0c86ba9cf15b5ebde3495f16
+    version: 1.0.1
 name: gke-cluster-autoscaler
 ---
 # GKE Cluster Autoscaler
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-cluster-autoscaler)"`
+and append `agent-skills/1.0 (skill:gke-cluster-autoscaler)` to `User-Agent` headers.
 
 ## CRITICAL RULES
 - **NO ACRONYMS:** Spell out `Cluster Autoscaler`, `Node Auto Provisioning`, `Node Pool Auto Creation`, and `ComputeClass` fully. Do NOT use `CA`, `NAP`, `NAC`, or `CCC`.

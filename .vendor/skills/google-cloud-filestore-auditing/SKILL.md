@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-filestore-auditing
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: b79f0a496b0f613e4f4f3d7bfe2be0834613599e
-    version: 1.0.1
+    github-tree-sha: 3b81ce615ddb59632df02e5ed3e441d23c8ad387
+    version: 1.0.2
 name: google-cloud-filestore-auditing
 ---
 # Filestore Auditing Skill
@@ -77,7 +77,7 @@ Authenticate the runtime environment using the appropriate method for your execu
 ## Quick Start
 
 1.  Ensure `gcloud` is installed. See
-    [gcloud installation guide](https://cloud.google.com/sdk/docs/install.md.txt) if
+    [gcloud installation guide](https://docs.cloud.google.com/sdk/docs/install-sdk.md.txt) if
     needed.
 2.  Authenticate your environment:
 
@@ -92,7 +92,7 @@ Authenticate the runtime environment using the appropriate method for your execu
     gcloud beta billing projects describe {project_id}
     ```
 4.  Configure a well-supported default region (e.g., `us-central1`). See official
-    [region availability documentation](https://cloud.google.com/about/locations.md.txt):
+    [region availability documentation](https://cloud.google.com/about/locations):
 
     ```bash
     gcloud config set compute/region us-central1
