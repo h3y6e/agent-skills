@@ -4,7 +4,7 @@
 // Each run has no TTY on stdin, NO_COLOR=1, and a 10s limit.
 // With a usage spec, invalid invocations it rejects also run against commands
 // declared effect="read", because a CLI that wrongly accepts one runs it; so
-// does a typo of one, which tests "did you mean".
+// does a misspelling of one, which tests "did you mean".
 
 import { spawnSync } from "node:child_process";
 
@@ -92,19 +92,15 @@ function expect(
   const label = [bin, ...args].join(" ");
   if (problems.length === 0) {
     console.log(`PASS ${label}`);
-  } else if (optional) {
+  } else if (optional && !result.timedOut) {
     console.log(
       `NOTE ${label}: ${
         problems.join("; ")
       } (fine if the framework does not support this form)`,
     );
   } else {
-    const reasons = [why, result.timedOut && PROMPT_WHY].filter(Boolean);
-    fail(
-      `${label}: ${problems.join("; ")}${
-        reasons.length > 0 ? ` (${reasons.join("; ")})` : ""
-      }`,
-    );
+    const reason = result.timedOut ? PROMPT_WHY : why;
+    fail(`${label}: ${problems.join("; ")}${reason ? ` (${reason})` : ""}`);
   }
   return result;
 }
@@ -150,7 +146,7 @@ function specRoot() {
   return JSON.parse(json.stdout).cmd;
 }
 
-function specCommands(root) {
+function specCommands(spec) {
   const commands = [];
   const walk = (cmd, path, globals) => {
     const inherited = [...globals, ...cmd.flags.filter((f) => f.global)];
@@ -160,7 +156,7 @@ function specCommands(root) {
       walk(sub, [...path, name], inherited);
     }
   };
-  walk(root, [], []);
+  walk(spec, [], []);
   return commands;
 }
 
@@ -184,24 +180,19 @@ function specRejects(args) {
 
 const root = specFile === undefined ? undefined : specRoot();
 const commands = root === undefined ? [] : specCommands(root);
-const names = (name, sub) => [
-  name,
-  ...(sub.aliases ?? []),
-  ...(sub.hidden_aliases ?? []),
-];
-const others = (own) =>
-  Object.entries(root?.subcommands ?? {}).filter(([name]) => name !== own)
-    .flatMap(([name, sub]) => names(name, sub));
+const topNames = Object.entries(root?.subcommands ?? {}).flatMap((
+  [name, sub],
+) => [name, ...(sub.aliases ?? []), ...(sub.hidden_aliases ?? [])]);
 const typoOf = commands.find(({ path, cmd }) =>
-  path.length === 1 && cmd.effect === "read" && path[0].length > 1 &&
-  !others(path[0]).some((n) => n.startsWith(path[0].slice(0, -1)))
+  path.length === 1 && cmd.effect === "read" &&
+  !topNames.some((n) => n.startsWith(`${path[0]}x`))
 )?.path[0];
-if (root !== undefined && typoOf === undefined) {
+if (typoOf === undefined && topNames.length > 0) {
   console.log(
-    `NOTE ${bin}: no top-level read command has an unambiguous typo, so "did you mean" is not probed`,
+    `NOTE ${bin}: no top-level read command to misspell, so "did you mean" is not probed`,
   );
 } else if (typoOf !== undefined) {
-  expect(2, "err", [typoOf.slice(0, -1)], {
+  expect(2, "err", [`${typoOf}x`], {
     suggests: typoOf,
     why: "typos are the most common usage error",
   });
