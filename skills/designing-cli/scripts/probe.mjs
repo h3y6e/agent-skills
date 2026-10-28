@@ -79,7 +79,10 @@ function expect(
     if (want === 2 && !result.err.includes("--help")) {
       problems.push("no pointer to --help");
     }
-    if (suggests !== undefined && !result.err.includes(suggests)) {
+    if (
+      suggests !== undefined &&
+      !result.err.replaceAll(args[0], "").includes(suggests)
+    ) {
       problems.push(`no suggestion of ${suggests}`);
     }
     if ((result.out + result.err).includes("\x1b")) {
@@ -184,12 +187,12 @@ const topNames = Object.entries(root?.subcommands ?? {}).flatMap((
   [name, sub],
 ) => [name, ...(sub.aliases ?? []), ...(sub.hidden_aliases ?? [])]);
 const typoOf = commands.find(({ path, cmd }) =>
-  path.length === 1 && cmd.effect === "read" &&
+  path.length === 1 && cmd.effect === "read" && root.args.length === 0 &&
   !topNames.some((n) => n.startsWith(`${path[0]}x`))
 )?.path[0];
 if (typoOf === undefined && topNames.length > 0) {
   console.log(
-    `NOTE ${bin}: no top-level read command to misspell, so "did you mean" is not probed`,
+    `NOTE ${bin}: no top-level read command can be safely misspelled, so "did you mean" is not probed`,
   );
 } else if (typoOf !== undefined) {
   expect(2, "err", [`${typoOf}x`], {
@@ -213,13 +216,13 @@ for (const { path, cmd, inherited } of commands) {
         `${bin} ${label}: spec flag --${flag.long[0]} is missing from --help`,
       );
     }
-    if (flag.required) {
-      fail(
-        `${bin} ${label}: flag ${
-          spelling(flag)
-        } is required (a required value names the target, so it is a positional; flags read env, and a stale variable must not pick the target)`,
-      );
-    }
+  }
+  for (const flag of cmd.flags.filter((f) => f.required)) {
+    fail(
+      `${bin} ${label}: flag ${
+        spelling(flag)
+      } is required (a required value names the target, so it is a positional; flags read env, and a stale variable must not pick the target)`,
+    );
   }
   const has = (name) =>
     [...cmd.flags, ...inherited].some((f) => f.long.includes(name));
