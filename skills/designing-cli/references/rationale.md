@@ -1,6 +1,6 @@
 # Rationale
 
-Each reason explains why an item holds; none marks when it may be skipped. `scripts/probe.mjs` prints the reason for each item it checks.
+Each reason explains why an item holds; none marks when it may be skipped.
 
 ## Input
 

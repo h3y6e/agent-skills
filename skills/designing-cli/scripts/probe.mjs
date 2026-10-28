@@ -4,7 +4,7 @@
 // Each run has no TTY on stdin, NO_COLOR=1, and a 10s limit.
 // With a usage spec, invalid invocations it rejects also run against commands
 // declared effect="read", because a CLI that wrongly accepts one runs it; so
-// does a typo of one, which tests "did you mean".
+// does a misspelling of one, which tests "did you mean".
 
 import { spawnSync } from "node:child_process";
 
@@ -53,6 +53,7 @@ function fail(message) {
 
 const HELP_WHY =
   "users and agents try help first, and a nonzero exit makes `app --help | less` look like a failure";
+const PROMPT_WHY = "a prompt without a TTY hangs scripts and agents";
 const USAGE_WHY = "exit 2 tells misuse from failure, and help is the next step";
 
 function expect(
@@ -65,7 +66,7 @@ function expect(
   const problems = [];
   if (result.timedOut) {
     problems.push(
-      "no exit within 10s without a TTY (prompt or hang?); a prompt without a TTY hangs scripts and agents",
+      "no exit within 10s without a TTY (prompt or hang?)",
     );
   } else {
     if (result.code !== want) {
@@ -78,7 +79,10 @@ function expect(
     if (want === 2 && !result.err.includes("--help")) {
       problems.push("no pointer to --help");
     }
-    if (suggests !== undefined && !result.err.includes(suggests)) {
+    if (
+      suggests !== undefined &&
+      !result.err.replaceAll(args[0], "").includes(suggests)
+    ) {
       problems.push(`no suggestion of ${suggests}`);
     }
     if ((result.out + result.err).includes("\x1b")) {
@@ -91,14 +95,15 @@ function expect(
   const label = [bin, ...args].join(" ");
   if (problems.length === 0) {
     console.log(`PASS ${label}`);
-  } else if (optional) {
+  } else if (optional && !result.timedOut) {
     console.log(
       `NOTE ${label}: ${
         problems.join("; ")
       } (fine if the framework does not support this form)`,
     );
   } else {
-    fail(`${label}: ${problems.join("; ")}${why ? ` (${why})` : ""}`);
+    const reason = result.timedOut ? PROMPT_WHY : why;
+    fail(`${label}: ${problems.join("; ")}${reason ? ` (${reason})` : ""}`);
   }
   return result;
 }
@@ -133,7 +138,7 @@ expect(0, "out", ["-v"], {
 expect(2, "err", ["__probe_unknown_command__"], { why: USAGE_WHY });
 expect(2, "err", ["--__probe-unknown-flag__"], { why: USAGE_WHY });
 
-function specCommands() {
+function specRoot() {
   const json = spawnSync("usage", ["generate", "json", "-f", specFile], {
     encoding: "utf8",
   });
@@ -141,15 +146,20 @@ function specCommands() {
     console.error(json.stderr || json.error?.message);
     process.exit(2);
   }
+  return JSON.parse(json.stdout).cmd;
+}
+
+function specCommands(spec) {
   const commands = [];
-  const walk = (cmd, path) => {
+  const walk = (cmd, path, globals) => {
+    const inherited = [...globals, ...cmd.flags.filter((f) => f.global)];
     for (const [name, sub] of Object.entries(cmd.subcommands ?? {})) {
       if (sub.hide) continue;
-      commands.push({ path: [...path, name], cmd: sub });
-      walk(sub, [...path, name]);
+      commands.push({ path: [...path, name], cmd: sub, inherited });
+      walk(sub, [...path, name], inherited);
     }
   };
-  walk(JSON.parse(json.stdout).cmd, []);
+  walk(spec, [], []);
   return commands;
 }
 
@@ -171,18 +181,27 @@ function specRejects(args) {
   return report.errors.length > 0 || report.refused !== null;
 }
 
-const commands = specFile === undefined ? [] : specCommands();
+const root = specFile === undefined ? undefined : specRoot();
+const commands = root === undefined ? [] : specCommands(root);
+const topNames = Object.entries(root?.subcommands ?? {}).flatMap((
+  [name, sub],
+) => [name, ...(sub.aliases ?? []), ...(sub.hidden_aliases ?? [])]);
 const typoOf = commands.find(({ path, cmd }) =>
-  path.length === 1 && cmd.effect === "read"
+  path.length === 1 && cmd.effect === "read" && root.args.length === 0 &&
+  !topNames.some((n) => n.startsWith(`${path[0]}x`))
 )?.path[0];
-if (typoOf !== undefined) {
-  expect(2, "err", [typoOf.slice(0, -1)], {
+if (typoOf === undefined && topNames.length > 0) {
+  console.log(
+    `NOTE ${bin}: no top-level read command can be safely misspelled, so "did you mean" is not probed`,
+  );
+} else if (typoOf !== undefined) {
+  expect(2, "err", [`${typoOf}x`], {
     suggests: typoOf,
     why: "typos are the most common usage error",
   });
 }
 
-for (const { path, cmd } of commands) {
+for (const { path, cmd, inherited } of commands) {
   const label = path.join(" ");
   const subHelp = {
     label: `${label} --help`,
@@ -197,15 +216,16 @@ for (const { path, cmd } of commands) {
         `${bin} ${label}: spec flag --${flag.long[0]} is missing from --help`,
       );
     }
-    if (flag.required) {
-      fail(
-        `${bin} ${label}: flag ${
-          spelling(flag)
-        } is required (a required value names the target, so it is a positional; flags read env, and a stale variable must not pick the target)`,
-      );
-    }
   }
-  const has = (name) => cmd.flags.some((f) => f.long.includes(name));
+  for (const flag of cmd.flags.filter((f) => f.required)) {
+    fail(
+      `${bin} ${label}: flag ${
+        spelling(flag)
+      } is required (a required value names the target, so it is a positional; flags read env, and a stale variable must not pick the target)`,
+    );
+  }
+  const has = (name) =>
+    [...cmd.flags, ...inherited].some((f) => f.long.includes(name));
   if (["write", "destructive"].includes(cmd.effect) && !has("dry-run")) {
     fail(
       `${bin} ${label}: ${cmd.effect} command has no --dry-run (a reviewer or agent sees the effect before approving it)`,
@@ -240,7 +260,9 @@ for (const { path, cmd } of commands) {
       f,
     ) => [...filled, spelling(f), "__probe_bad_choice__"]),
   ];
-  for (const args of cases.filter(specRejects)) expect(2, "err", args);
+  for (const args of cases.filter(specRejects)) {
+    expect(2, "err", args, { why: USAGE_WHY });
+  }
 }
 
 console.log(`${fails} failure(s)`);
