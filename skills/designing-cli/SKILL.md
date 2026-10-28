@@ -15,18 +15,17 @@ metadata:
 1. **Start.** For a new CLI, confirm the language and whether it ships as a binary.
 2. **Define** commands, flags, help, examples, and effects in one framework definition: cobra and `github.com/jdx/usage/integrations/cobra` for Go, adding viper only with config files; gunshi v1 with `@gunshi/plugin-suggestion`, `@h3y6e/gunshi-plugin-env`, and `@h3y6e/gunshi-plugin-usage` for TypeScript; usage-rs for Rust; usage `#USAGE` comments for shell.
    For Go, also invoke the `golang-cli` and `golang-spf13-cobra` skills, plus `golang-spf13-viper` once viper is added; if they are not installed, ask the user to add them from `samber/cc-skills-golang`.
-3. **Classify** each item below as pass, n/a, or deviation in a table, citing a probe line, command run, or code read. Items without a subject are n/a. A deviation needs the user's reason, or a fix when reviewing; check [references/rationale.md](references/rationale.md) first.
+3. **Classify** each item below as pass, n/a, or deviation in a table, citing a probe line, command run, or code read. Items without a subject are n/a. Fix every deviation; [references/rationale.md](references/rationale.md) gives the reasons.
 4. **Probe**: build, then run `scripts/probe.mjs <bin> [app.usage.kdl]`, passing the spec when the framework exports one. Fix each FAIL; NOTEs are evidence.
-5. **Done** when every item is classified and the probe has no FAIL.
+5. **Done** when every item passes or is n/a and the probe has no FAIL.
 
 ## Checklist
 
 ### Input
 
-- Subcommands nest with spaces in one consistent order (`app server start`). At most one kind of positional; the rest are flags; child-process arguments follow `--`.
+- Subcommands nest with spaces in one consistent order (`app server start`). Positionals name the target, one kind at most; flags are optional and also read `APP_*` env vars; child-process arguments follow `--`.
 - Bare `app`, `-h`, and `--help` at any level print help to stdout and exit 0.
 - `--version` and bare `-v` print the version; `-V` and `version` follow the framework. Only the root parses version flags.
-- Flags also read `APP_*` env vars.
 - Prompt only on a TTY, with a flag to skip each prompt.
 
 ### Output
@@ -48,9 +47,9 @@ metadata:
 ### Safety
 
 - Each command's effect is `read`, `write`, or `destructive`; help marks destructive ones.
-- Destructive commands show what will be deleted, overwritten, or sent, then confirm on a TTY or exit 2 without `--yes`.
+- Destructive commands show what will be deleted, overwritten, or sent, then confirm on a TTY; without `--yes`, exit 2 and suggest `--dry-run`.
 - Write and destructive commands take `--dry-run`.
-- Secrets never arrive as arguments.
+- Secrets never arrive as arguments or env vars.
 
 ### Files and release
 
