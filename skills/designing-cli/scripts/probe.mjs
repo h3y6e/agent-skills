@@ -3,7 +3,8 @@
 // against a CLI that follows the checklist; one that acts on them may run.
 // Each run has no TTY on stdin, NO_COLOR=1, and a 10s limit.
 // With a usage spec, invalid invocations it rejects also run against commands
-// declared effect="read", because a CLI that wrongly accepts one runs it.
+// declared effect="read", because a CLI that wrongly accepts one runs it; so
+// does a typo of one, which tests "did you mean".
 
 import { spawnSync } from "node:child_process";
 
@@ -45,11 +46,27 @@ if (help.code !== 0 && version.code === help.code && version.err === help.err) {
 
 let fails = 0;
 
-function expect(want, stream, args, { optional = false, sameAs } = {}) {
+function fail(message) {
+  console.log(`FAIL ${message}`);
+  fails++;
+}
+
+const HELP_WHY =
+  "users and agents try help first, and a nonzero exit makes `app --help | less` look like a failure";
+const USAGE_WHY = "exit 2 tells misuse from failure, and help is the next step";
+
+function expect(
+  want,
+  stream,
+  args,
+  { optional = false, sameAs, why, suggests } = {},
+) {
   const result = run(args);
   const problems = [];
   if (result.timedOut) {
-    problems.push("no exit within 10s without a TTY (prompt or hang?)");
+    problems.push(
+      "no exit within 10s without a TTY (prompt or hang?); a prompt without a TTY hangs scripts and agents",
+    );
   } else {
     if (result.code !== want) {
       problems.push(`exit ${result.code}, want ${want}`);
@@ -57,6 +74,12 @@ function expect(want, stream, args, { optional = false, sameAs } = {}) {
     if (result[stream] === "") problems.push(`empty std${stream}`);
     if (stream === "err" && result.out.trim() !== "") {
       problems.push("error output on stdout");
+    }
+    if (want === 2 && !result.err.includes("--help")) {
+      problems.push("no pointer to --help");
+    }
+    if (suggests !== undefined && !result.err.includes(suggests)) {
+      problems.push(`no suggestion of ${suggests}`);
     }
     if ((result.out + result.err).includes("\x1b")) {
       problems.push("ANSI escapes despite NO_COLOR and no TTY");
@@ -75,14 +98,18 @@ function expect(want, stream, args, { optional = false, sameAs } = {}) {
       } (fine if the framework does not support this form)`,
     );
   } else {
-    console.log(`FAIL ${label}: ${problems.join("; ")}`);
-    fails++;
+    fail(`${label}: ${problems.join("; ")}${why ? ` (${why})` : ""}`);
   }
   return result;
 }
 
-expect(0, "out", []);
-const rootHelp = { label: "--help", result: expect(0, "out", ["--help"]) };
+expect(0, "out", [], {
+  why: "a bare invocation that acts surprises someone who only wanted to look",
+});
+const rootHelp = {
+  label: "--help",
+  result: expect(0, "out", ["--help"], { why: HELP_WHY }),
+};
 const rootVersion = {
   label: "--version",
   result: expect(0, "out", ["--version"]),
@@ -95,13 +122,16 @@ if (rootVersion.result.ms > 500) {
 if (specFile === undefined) {
   console.log(`NOTE ${bin}: no spec, so subcommands are not probed`);
 }
-expect(0, "out", ["-h"]);
+expect(0, "out", ["-h"], { why: HELP_WHY });
 expect(0, "out", ["help"], { optional: true, sameAs: rootHelp });
 expect(0, "out", ["-V"], { optional: true, sameAs: rootVersion });
 expect(0, "out", ["version"], { optional: true, sameAs: rootVersion });
-expect(0, "out", ["-v"], { sameAs: rootVersion });
-expect(2, "err", ["__probe_unknown_command__"]);
-expect(2, "err", ["--__probe-unknown-flag__"]);
+expect(0, "out", ["-v"], {
+  sameAs: rootVersion,
+  why: "users and agents try -v for the version",
+});
+expect(2, "err", ["__probe_unknown_command__"], { why: USAGE_WHY });
+expect(2, "err", ["--__probe-unknown-flag__"], { why: USAGE_WHY });
 
 function specCommands() {
   const json = spawnSync("usage", ["generate", "json", "-f", specFile], {
@@ -141,24 +171,50 @@ function specRejects(args) {
   return report.errors.length > 0 || report.refused !== null;
 }
 
-for (const { path, cmd } of specFile === undefined ? [] : specCommands()) {
+const commands = specFile === undefined ? [] : specCommands();
+const typoOf = commands.find(({ path, cmd }) =>
+  path.length === 1 && cmd.effect === "read"
+)?.path[0];
+if (typoOf !== undefined) {
+  expect(2, "err", [typoOf.slice(0, -1)], {
+    suggests: typoOf,
+    why: "typos are the most common usage error",
+  });
+}
+
+for (const { path, cmd } of commands) {
   const label = path.join(" ");
   const subHelp = {
     label: `${label} --help`,
-    result: expect(0, "out", [...path, "--help"]),
+    result: expect(0, "out", [...path, "--help"], { why: HELP_WHY }),
   };
-  expect(0, "out", [...path, "-h"]);
+  expect(0, "out", [...path, "-h"], { why: HELP_WHY });
   expect(0, "out", ["help", ...path], { optional: true, sameAs: subHelp });
 
   for (const flag of cmd.flags.filter((f) => !f.hide && f.long.length > 0)) {
     if (!new RegExp(`--${flag.long[0]}(?![\\w-])`).test(subHelp.result.out)) {
-      console.log(
-        `FAIL ${bin} ${label}: spec flag --${
-          flag.long[0]
-        } is missing from --help`,
+      fail(
+        `${bin} ${label}: spec flag --${flag.long[0]} is missing from --help`,
       );
-      fails++;
     }
+    if (flag.required) {
+      fail(
+        `${bin} ${label}: flag ${
+          spelling(flag)
+        } is required (a required value names the target, so it is a positional; flags read env, and a stale variable must not pick the target)`,
+      );
+    }
+  }
+  const has = (name) => cmd.flags.some((f) => f.long.includes(name));
+  if (["write", "destructive"].includes(cmd.effect) && !has("dry-run")) {
+    fail(
+      `${bin} ${label}: ${cmd.effect} command has no --dry-run (a reviewer or agent sees the effect before approving it)`,
+    );
+  }
+  if (cmd.effect === "destructive" && !has("yes")) {
+    fail(
+      `${bin} ${label}: destructive command has no --yes (scripts must opt in without a TTY)`,
+    );
   }
   if (cmd.effect !== "read") {
     console.log(
