@@ -53,6 +53,7 @@ function fail(message) {
 
 const HELP_WHY =
   "users and agents try help first, and a nonzero exit makes `app --help | less` look like a failure";
+const PROMPT_WHY = "a prompt without a TTY hangs scripts and agents";
 const USAGE_WHY = "exit 2 tells misuse from failure, and help is the next step";
 
 function expect(
@@ -65,7 +66,7 @@ function expect(
   const problems = [];
   if (result.timedOut) {
     problems.push(
-      "no exit within 10s without a TTY (prompt or hang?); a prompt without a TTY hangs scripts and agents",
+      "no exit within 10s without a TTY (prompt or hang?)",
     );
   } else {
     if (result.code !== want) {
@@ -98,7 +99,8 @@ function expect(
       } (fine if the framework does not support this form)`,
     );
   } else {
-    fail(`${label}: ${problems.join("; ")}${why ? ` (${why})` : ""}`);
+    const reason = result.timedOut ? PROMPT_WHY : why;
+    fail(`${label}: ${problems.join("; ")}${reason ? ` (${reason})` : ""}`);
   }
   return result;
 }
@@ -133,7 +135,7 @@ expect(0, "out", ["-v"], {
 expect(2, "err", ["__probe_unknown_command__"], { why: USAGE_WHY });
 expect(2, "err", ["--__probe-unknown-flag__"], { why: USAGE_WHY });
 
-function specCommands() {
+function specRoot() {
   const json = spawnSync("usage", ["generate", "json", "-f", specFile], {
     encoding: "utf8",
   });
@@ -141,15 +143,20 @@ function specCommands() {
     console.error(json.stderr || json.error?.message);
     process.exit(2);
   }
+  return JSON.parse(json.stdout).cmd;
+}
+
+function specCommands(root) {
   const commands = [];
-  const walk = (cmd, path) => {
+  const walk = (cmd, path, globals) => {
+    const inherited = [...globals, ...cmd.flags.filter((f) => f.global)];
     for (const [name, sub] of Object.entries(cmd.subcommands ?? {})) {
       if (sub.hide) continue;
-      commands.push({ path: [...path, name], cmd: sub });
-      walk(sub, [...path, name]);
+      commands.push({ path: [...path, name], cmd: sub, inherited });
+      walk(sub, [...path, name], inherited);
     }
   };
-  walk(JSON.parse(json.stdout).cmd, []);
+  walk(root, [], []);
   return commands;
 }
 
@@ -171,9 +178,14 @@ function specRejects(args) {
   return report.errors.length > 0 || report.refused !== null;
 }
 
-const commands = specFile === undefined ? [] : specCommands();
+const root = specFile === undefined ? undefined : specRoot();
+const commands = root === undefined ? [] : specCommands(root);
+const topNames = Object.entries(root?.subcommands ?? {}).flatMap((
+  [name, sub],
+) => [name, ...(sub.aliases ?? []), ...(sub.hidden_aliases ?? [])]);
 const typoOf = commands.find(({ path, cmd }) =>
-  path.length === 1 && cmd.effect === "read"
+  path.length === 1 && cmd.effect === "read" && path[0].length > 1 &&
+  !topNames.some((n) => n !== path[0] && n.startsWith(path[0].slice(0, -1)))
 )?.path[0];
 if (typoOf !== undefined) {
   expect(2, "err", [typoOf.slice(0, -1)], {
@@ -182,7 +194,7 @@ if (typoOf !== undefined) {
   });
 }
 
-for (const { path, cmd } of commands) {
+for (const { path, cmd, inherited } of commands) {
   const label = path.join(" ");
   const subHelp = {
     label: `${label} --help`,
@@ -205,7 +217,8 @@ for (const { path, cmd } of commands) {
       );
     }
   }
-  const has = (name) => cmd.flags.some((f) => f.long.includes(name));
+  const has = (name) =>
+    [...cmd.flags, ...inherited].some((f) => f.long.includes(name));
   if (["write", "destructive"].includes(cmd.effect) && !has("dry-run")) {
     fail(
       `${bin} ${label}: ${cmd.effect} command has no --dry-run (a reviewer or agent sees the effect before approving it)`,
@@ -240,7 +253,9 @@ for (const { path, cmd } of commands) {
       f,
     ) => [...filled, spelling(f), "__probe_bad_choice__"]),
   ];
-  for (const args of cases.filter(specRejects)) expect(2, "err", args);
+  for (const args of cases.filter(specRejects)) {
+    expect(2, "err", args, { why: USAGE_WHY });
+  }
 }
 
 console.log(`${fails} failure(s)`);
