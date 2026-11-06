@@ -1,7 +1,7 @@
 ---
 name: git-shipping
 description: Guides the git workflow for shipping code changes — branch, commit, push, PR. Use whenever asked to `commit`, `push`, `pr`/`ship`/`open a PR`/`merge this`, or manage branches, and whenever about to make code changes in a git repo, to confirm the branch is right before implementation starts — even if the user only described the change and never said the word "git".
-compatibility: Requires git, gh, cxg, git-wt, and the code-review and security-review skills.
+compatibility: Requires git, gh, cxg, and the orchestrating, code-review, and security-review skills.
 license: MIT
 metadata:
   author: h3y6e
@@ -30,13 +30,8 @@ Write commit messages, PR titles, and PR bodies in the language the repository's
 
 ## Branch
 
-Start new feature work in a clean worktree from the remote default branch, not in the default-branch checkout.
-Before creating it, check `git wt -h`, then use `git wt <branch> origin/<default-branch> --nocd`.
-Use `git wt` rather than raw `git worktree` so worktrees follow the repository's configured layout.
-
-New worktrees start clean; transfer in-progress changes only on request.
-
-Do not move already-started work into a new worktree just to satisfy this workflow. If files are already being edited in the current checkout, keep working there and create or switch to the appropriate branch in place when safe.
+In a bare repository, follow the `orchestrating` skill instead.
+In a worktree, keep working there. Do not move already-started work into a new worktree; create or switch to the appropriate branch in place when safe.
 
 ## Commit
 
