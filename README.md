@@ -1,19 +1,19 @@
 # agent-skills
 
-Personal [agent skills](https://agentskills.io/).
+[Agent Skills](https://agentskills.io/)
 
-## Installation
+## インストール
 
 ```bash
 gh skill install h3y6e/agent-skills
 ```
 
-## Dependencies
+## 依存
 
-- [h3y6e/cxg](https://github.com/h3y6e/cxg) — Used by `git-shipping` for commit message formatting and linting.
-- [h3y6e/anna](https://github.com/h3y6e/anna) — Used by `tracking-tasks` for task note lookup.
+- [h3y6e/cxg](https://github.com/h3y6e/cxg) — `git-shipping` がコミットメッセージの整形と lint に使う
+- [h3y6e/anna](https://github.com/h3y6e/anna) — `tracking-tasks` がタスクノートの検索に使う
 
-## Related
+## 関連
 
-- [h3y6e/spec-skills](https://github.com/h3y6e/spec-skills) — Spec-driven development skills.
-- [h3y6e/dotfiles](https://github.com/h3y6e/dotfiles/tree/main/dot_agents/skills) — Agent skills managed via dotfiles with chezmoi.
+- [h3y6e/spec-skills](https://github.com/h3y6e/spec-skills)
+- [h3y6e/dotfiles](https://github.com/h3y6e/dotfiles/tree/main/dot_agents/skills)
