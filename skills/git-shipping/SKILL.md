@@ -1,7 +1,7 @@
 ---
 name: git-shipping
 description: Guides the git workflow for shipping code changes — branch, commit, push, PR. Use whenever asked to `commit`, `push`, `pr`/`ship`/`open a PR`/`merge this`, or manage branches, and whenever about to make code changes in a git repo, to confirm the branch is right before implementation starts — even if the user only described the change and never said the word "git".
-compatibility: Requires git, gh, cxg, git-wt, and the code-review and security-review skills.
+compatibility: Requires git, gh, cxg, and the orchestrating, code-review, and security-review skills.
 license: MIT
 metadata:
   author: h3y6e
@@ -24,23 +24,16 @@ Treat short git requests as workflow shorthand.
 
 Ask only when the intended change scope is unclear enough that you might include unrelated work.
 
-## Language Rule
-
-Write commit messages, PR titles, and PR bodies in the language the repository's recent commits and PRs already use. With no precedent, English if `gh repo view --json visibility -q '.visibility'` is `PUBLIC`, else the user's language.
-
 ## Branch
 
-Start new feature work in a clean worktree from the remote default branch, not in the default-branch checkout.
-Before creating it, check `git wt -h`, then use `git wt <branch> origin/<default-branch> --nocd`.
-Use `git wt` rather than raw `git worktree` so worktrees follow the repository's configured layout.
-
-New worktrees start clean; transfer in-progress changes only on request.
-
-Do not move already-started work into a new worktree just to satisfy this workflow. If files are already being edited in the current checkout, keep working there and create or switch to the appropriate branch in place when safe.
+In a bare repository, follow the `orchestrating` skill instead.
+In a worktree, keep working there. Do not move already-started work into a new worktree; create or switch to the appropriate branch in place when safe.
 
 ## Commit
 
 Use the `cxg-commit` skill for the commit message format, and pipe the message through `cxg lint` before committing.
+
+On a PR branch, keep history as meaningful units, not a log of attempts. Rewrite it with `git history` (see `git history -h`; `reword` opens `GIT_EDITOR`), and push with `--force-with-lease`.
 
 ## Pull Request
 
