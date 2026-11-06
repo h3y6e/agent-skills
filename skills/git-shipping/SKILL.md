@@ -33,6 +33,8 @@ In a worktree, keep working there. Do not move already-started work into a new w
 
 Use the `cxg-commit` skill for the commit message format, and pipe the message through `cxg lint` before committing.
 
+On a PR branch, keep history as meaningful units, not a log of attempts. Rewrite it with `git history` (see `git history -h`; `reword` opens `GIT_EDITOR`), and push with `--force-with-lease`.
+
 ## Pull Request
 
 - PR titles use Conventional Commit subject format: `type(scope): subject`.
