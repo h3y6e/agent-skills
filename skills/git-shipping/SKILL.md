@@ -24,10 +24,6 @@ Treat short git requests as workflow shorthand.
 
 Ask only when the intended change scope is unclear enough that you might include unrelated work.
 
-## Language Rule
-
-Write commit messages, PR titles, and PR bodies in the language the repository's recent commits and PRs already use. With no precedent, English if `gh repo view --json visibility -q '.visibility'` is `PUBLIC`, else the user's language.
-
 ## Branch
 
 In a bare repository, follow the `orchestrating` skill instead.
