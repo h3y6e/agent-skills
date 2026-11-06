@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-agents-cli-onboarding
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: c129e818a10d3a296ea08397e82e9761a2ddc6eb
-    version: 1.0.0
+    github-tree-sha: dcd9fab7c5b5849cb4c7cf19ac0abcba24f36f6b
+    version: 1.0.1
 name: google-agents-cli-onboarding
 ---
 # Google Agents CLI Onboarding
@@ -24,6 +24,15 @@ name: google-agents-cli-onboarding
 > ```bash
 > npx skills add google/agents-cli
 > ```
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:google-agents-cli-onboarding)"`
+and append `agent-skills/1.0 (skill:google-agents-cli-onboarding)` to `User-Agent` headers.
 
 ## Overview
 

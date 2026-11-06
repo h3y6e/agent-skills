@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-workload-scaling
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 9a9f02dcf87ec0ac2b3a18a8d076b9deb12f9852
-    version: 1.0.0
+    github-tree-sha: 2b995472c7dff56655ad518b16cab25f5d823e98
+    version: 1.0.1
 name: gke-workload-scaling
 ---
 # GKE Workload Scaling
@@ -14,6 +14,15 @@ name: gke-workload-scaling
 This skill provides workflows and best practices for scaling applications on
 Google Kubernetes Engine (GKE). It covers manual scaling, Horizontal Pod
 Autoscaling (HPA), and Vertical Pod Autoscaling (VPA).
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-workload-scaling)"`
+and append `agent-skills/1.0 (skill:gke-workload-scaling)` to `User-Agent` headers.
 
 ## Workflows
 

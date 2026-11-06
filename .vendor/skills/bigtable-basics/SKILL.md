@@ -5,14 +5,23 @@ metadata:
     github-path: skills/cloud/bigtable-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: e0f9fd9c13bb68a3bd4649a0059294411eceb2e4
-    version: 1.0.0
+    github-tree-sha: d475e657952d4e6a04d95e4bcf8d57b9bc80a39b
+    version: 1.0.1
 name: bigtable-basics
 ---
 # Bigtable Basics
 
 This skill provides core workflows and guidance for administering and developing
 with Google Bigtable.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:bigtable-basics)"`
+and append `agent-skills/1.0 (skill:bigtable-basics)` to `User-Agent` headers.
 
 ## Core Principles
 

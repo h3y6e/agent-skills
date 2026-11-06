@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-observability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: f49755e232190bc6e2a9ecc22862765a2b84c5d4
-    version: 1.1.0
+    github-tree-sha: 2f10d991159f2c48cc5c8f773224b7ddec491103
+    version: 1.1.5
 name: gke-observability
 ---
 # GKE Observability
@@ -18,6 +18,15 @@ metrics.
 > **MCP Tools:** `get_cluster`, `list_k8s_events`, `get_k8s_logs`,
 > `get_k8s_cluster_info`, `describe_k8s_resource`. **CLI-only:** `gcloud
 > container clusters update --monitoring=...`, `gcloud logging read`
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-observability)"`
+and append `agent-skills/1.0 (skill:gke-observability)` to `User-Agent` headers.
 
 ## Golden Path Observability Defaults
 
@@ -43,6 +52,30 @@ default clusters:
 
 These are critical for diagnosing cluster-level issues (slow API responses,
 scheduling delays, stuck controllers).
+
+When recommending any control-plane metric below, always state that it is a
+Managed Service for Prometheus (GMP) metric that requires explicit enabling
+(`--monitoring=SYSTEM,API_SERVER,...` and `--enable-managed-prometheus`) and
+link to
+https://docs.cloud.google.com/kubernetes-engine/docs/how-to/control-plane-metrics:
+
+-   **API storage utilization by resource
+    (`apiserver_resource_size_estimate_bytes`)**: Use
+    `apiserver_resource_size_estimate_bytes` (grouped by `group` and `resource`)
+    to identify which Kubernetes resource types consume the most API server
+    storage bytes in etcd, complementing object counts
+    (`apiserver_storage_objects`) and total database size
+    (`apiserver_storage_size_bytes`).
+-   **Admission webhook latency and timeouts
+    (`apiserver_admission_webhook_admission_duration_seconds`)**: When API calls
+    time out or fail and mutating or validating admission webhooks are
+    suspected, query the opt-in GMP metric
+    `apiserver_admission_webhook_admission_duration_seconds` (grouped by `name`,
+    `type`, `operation`, and `rejected`) to pinpoint slow or failing webhooks;
+    also inspect `ValidatingWebhookConfiguration` /
+    `MutatingWebhookConfiguration` `timeoutSeconds`, `failurePolicy`,
+    `namespaceSelector` exclusions (such as `kube-system`), and backing webhook
+    Service/Pod health.
 
 ## Enabling Full Monitoring
 
@@ -161,6 +194,33 @@ gcloud container clusters describe <CLUSTER_NAME> --region <REGION> \
   --quiet
 ```
 
+### Identifying Heavy API Server Clients from HTTP Access Logs
+
+To identify which clients are generating the most load on `kube-apiserver`,
+analyze the `httplog.go` HTTP access entries in `apiserver` component logs (an
+**optional feature that must be explicitly enabled** via
+`--logging=SYSTEM,WORKLOADS,API_SERVER`; always state this and link to
+https://docs.cloud.google.com/kubernetes-engine/docs/how-to/view-logs#control_plane_logs):
+
+1.  **Very stable `httplog.go` log structure (always mention this stability and
+    show an example log line)**: Explicitly advise the user that the structure
+    of `kube-apiserver` `httplog.go` logs is **very stable** across Kubernetes
+    releases (making regex extraction and Log Analytics queries reliable), and
+    include this example log line:
+    ```text
+    I1015 11:36:56.835535      10 httplog.go:137] "HTTP" verb="GET" URI="/api/v1/namespaces/default/pods" latency="7.374935s" userAgent="my-controller/v1.0.0 (linux/amd64)" audit-ID="b23db1f5-de18-4aa3-b506-46de0ed25e75" srcIP="10.128.0.27:52972" apf_pl="workload-low" apf_fs="everybody" apf_iseats=1 apf_fseats=0 apf_additionalLatency="0s" apf_execution_time="7.374765s" resp=200
+    ```
+2.  **Key fields for client load analysis**:
+    -   **`user_agent`** (`userAgent` in raw log text): Identifies the client
+        binary, controller, or operator issuing the requests.
+    -   **`verb`**: Distinguishes expensive request types (such as cluster-wide
+        `LIST` or mutating `PATCH`/`UPDATE` calls) from lightweight `GET` calls.
+    -   **`apf_iseats`** (along with `apf_fseats` and `apf_execution_time`):
+        Reports the API Priority and Fairness (APF) initial concurrency seats
+        occupied by the request; weighting or summing `apf_iseats *
+        apf_execution_time` by `user_agent` and `verb` reveals which clients
+        consume the most API server concurrency capacity.
+
 ## Alerting
 
 Set up alerts for critical conditions:
@@ -196,6 +256,39 @@ A comprehensive assessment of node health relies on analyzing these two metrics 
 
 1.  **`kubernetes.io/node/status_condition`** (filtered by `status_condition="Ready"`): Use this to track healthy nodes. Note that it will only report values for nodes that have successfully bootstrapped.
 2.  **`compute.googleapis.com/instance_group/size`** (filtered by `instance_group_name="gke-<cluster_name>-.*"`): Use this to track the total number of nodes in a specific cluster. Note that it does not differentiate between healthy and unhealthy nodes.
+
+### Control Plane Health (Production Rules)
+
+To check whether Google considers a GKE cluster's control plane healthy, use the
+**`kubernetes.io/cluster/kcp_healthchecks`** system metric (on the `k8s_cluster`
+monitored resource, included in the default `SYSTEM` metrics package):
+
+1.  **Metric semantics**: `kubernetes.io/cluster/kcp_healthchecks` is an
+    incremental (`DELTA` / `CUMULATIVE` counter) metric sampled every 60 seconds
+    that counts Google-internal control plane probes, labeled by boolean
+    `success` (`"true"` or `"false"`).
+2.  **Charting health ratio**: Because the metric is an incremental counter
+    rather than a boolean gauge, chart control plane availability by dividing
+    the rate of successful checks (`success="true"`) by the overall rate of
+    checks across all `success` values:
+
+```promql
+sum by (project_id, location, cluster_name) (
+  rate(
+    kubernetes_io:cluster_kcp_healthchecks{
+      monitored_resource="k8s_cluster", success="true"
+    }[5m]
+  )
+)
+/
+sum by (project_id, location, cluster_name) (
+  rate(
+    kubernetes_io:cluster_kcp_healthchecks{
+      monitored_resource="k8s_cluster"
+    }[5m]
+  )
+)
+```
 
 ## Cost Considerations
 

@@ -5,11 +5,17 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-multi-agent-security
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: d01e6acbe264afc6e7e52df0ffa1c71b2f297fff
-    version: 1.0.0
+    github-tree-sha: 378ec0f39c6508a2cce42e15c04333e617d5645b
+    version: 1.0.1
 name: google-cloud-solution-multi-agent-security
 ---
 # Agent Gateway multi-agent security
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Critical Enforcement Rules & Rationale
 

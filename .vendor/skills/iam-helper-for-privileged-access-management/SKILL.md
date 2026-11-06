@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/iam-helper-for-privileged-access-management
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: d115f415c097ead9aaffba65006c1297cc536831
-    version: 1.0.0
+    github-tree-sha: 3fd7618c7e623e0335fab03ef99ee2407964c5ec
+    version: 1.0.1
 name: iam-helper-for-privileged-access-management
 ---
 # Privileged Access Manager (PAM)
@@ -14,6 +14,12 @@ name: iam-helper-for-privileged-access-management
 This skill provides step-by-step guidance for planning, validating, and
 executing Privileged Access Manager (PAM) entitlement CRUD operations, approval
 workflow configurations, access elevations, and grant approval/denial workflows.
+
+## Usage Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Table of Contents
 

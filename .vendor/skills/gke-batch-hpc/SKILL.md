@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-batch-hpc
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 4349f1327c69310046ce983f2658ba20805767e2
-    version: 1.0.0
+    github-tree-sha: 6419665cbe169720679de5cde1a58042ff0a8aa3
+    version: 1.0.1
 name: gke-batch-hpc
 ---
 # GKE Batch & HPC Workloads
@@ -17,6 +17,15 @@ This reference covers running batch processing and high-performance computing
 > **MCP Tools:** `apply_k8s_manifest`, `get_k8s_resource`,
 > `describe_k8s_resource`, `get_k8s_logs`, `delete_k8s_resource`,
 > `list_k8s_events`
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-batch-hpc)"`
+and append `agent-skills/1.0 (skill:gke-batch-hpc)` to `User-Agent` headers.
 
 ## When to Use
 

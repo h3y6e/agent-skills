@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-workload-security
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: f789f06101402a128fadec5899da6872390db209
-    version: 1.0.1
+    github-tree-sha: 83d814206e3999d7e83128a935de7fa674c126e6
+    version: 1.0.2
 name: gke-workload-security
 ---
 # GKE Workload Security
@@ -16,6 +16,15 @@ name: gke-workload-security
 This skill provides workflows and best practices for securing GKE workloads. It
 covers security auditing, Identity and Access Management (Workload Identity),
 Network Security (Network Policies), and Node Security.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-workload-security)"`
+and append `agent-skills/1.0 (skill:gke-workload-security)` to `User-Agent` headers.
 
 ## Workflows
 

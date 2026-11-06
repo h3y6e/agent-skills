@@ -5,14 +5,20 @@ metadata:
     github-path: skills/cloud/iam-helper-for-policy-management
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 3c5a2acc763ac13bf15886f84487144289e010f7
-    version: 1.0.0
+    github-tree-sha: d9246ed9d6e17e775d16371a25f2266bfdd312ca
+    version: 1.0.1
 name: iam-helper-for-policy-management
 ---
 # IAM Helper for Policy Management
 
 Orchestrates the lifecycle and management of IAM allow and deny policies across
 IAM v1 (allow policies) and IAM v2 (deny policies).
+
+## Usage Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 --------------------------------------------------------------------------------
 

@@ -5,14 +5,23 @@ metadata:
     github-path: skills/cloud/gke-ai-troubleshooting-tpu-dynamic-slices-monitoring
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a6472f66878df25671b7f3539e5c396c0b018ab3
-    version: 1.0.0
+    github-tree-sha: 4c2632fa65a14566da3380652c38da1c4a545e3a
+    version: 1.0.1
 name: gke-ai-troubleshooting-tpu-dynamic-slices-monitoring
 ---
 # GKE TPU Dynamic Slices Monitoring & Management
 
 Monitors the status of TPU Slice custom resources, troubleshoots provisioning
 failures, validates workload manifests on dynamic slices, and performs cleanups.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-ai-troubleshooting-tpu-dynamic-slices-monitoring)"`
+and append `agent-skills/1.0 (skill:gke-ai-troubleshooting-tpu-dynamic-slices-monitoring)` to `User-Agent` headers.
 
 ## Prerequisites
 

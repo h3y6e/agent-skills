@@ -2,9 +2,9 @@
 description: Builds production-quality, accessible, responsive user-facing UIs. Use when building or modifying interfaces and pages, creating components, implementing layouts, meeting WCAG accessibility requirements, managing state, or when the output needs to look and feel production-quality rather than AI-generated.
 metadata:
     github-path: skills/frontend-ui-engineering
-    github-ref: refs/tags/0.6.11
+    github-ref: refs/tags/0.6.13
     github-repo: https://github.com/addyosmani/agent-skills
-    github-tree-sha: 8fdd24f2b93c198e4973f4008d694929a6082406
+    github-tree-sha: 39280620a66bfaf39ebe0aa032b8568c65f2b247
 name: frontend-ui-engineering
 ---
 # Frontend UI Engineering
@@ -83,7 +83,7 @@ export function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
 ```tsx
 // Container: handles data
 export function TaskListContainer() {
-  const { tasks, isLoading, error } = useTasks();
+  const { tasks, isLoading, error, refetch } = useTasks();
 
   if (isLoading) return <TaskListSkeleton />;
   if (error) return <ErrorState message="Failed to load tasks" retry={refetch} />;

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/managed-airflow-dag-authoring
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: f2c8fa8909ea9a3b0f79bc79860feb22e51e7118
-    version: 1.0.0
+    github-tree-sha: 3f54ce22cdd746eb58e6406c50c844feb713fe8c
+    version: 1.0.1
 name: managed-airflow-dag-authoring
 ---
 # GCP Managed Airflow DAG Authoring Guide
@@ -15,6 +15,15 @@ This skill guides you through authoring and validating Apache Airflow DAGs for
 Managed Service for Apache Airflow (MSAA; formerly Cloud Composer) environments.
 
 --------------------------------------------------------------------------------
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:managed-airflow-dag-authoring)"`
+and append `agent-skills/1.0 (skill:managed-airflow-dag-authoring)` to `User-Agent` headers.
 
 ## Phase 1: Context Discovery
 

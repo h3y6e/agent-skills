@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-manifest-generation
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 810556f0347692b1a1af2226434750388cb32725
-    version: 1.0.0
+    github-tree-sha: 6633b9bdc6c9d78892000f553064690c681cde92
+    version: 1.0.1
 name: gke-manifest-generation
 ---
 # GKE Manifest Generation Skill
@@ -15,6 +15,15 @@ This skill provides guidelines, tooling integration, and templates to translate
 natural language descriptions or application code changes into secure,
 compliant, and cost-effective Kubernetes YAML manifests optimized for both GKE
 Autopilot and GKE Standard clusters.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-manifest-generation)"`
+and append `agent-skills/1.0 (skill:gke-manifest-generation)` to `User-Agent` headers.
 
 ## Core Rules & Verification
 

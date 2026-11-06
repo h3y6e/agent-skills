@@ -5,11 +5,17 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-architecture
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 6ce3e19c1e57a1a1675b8a1b79bcf1f3a58a6efb
-    version: 1.0.3
+    github-tree-sha: c2be63797638f62b216abb637c245bbb879db578
+    version: 1.0.5
 name: google-cloud-solution-architecture
 ---
 # Google Cloud solution-architecture workflow
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Overview of the workflow
 

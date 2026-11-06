@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-recipe-auth
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 5c495b7c6dda32d1e11c2d928cad4220afb7709a
-    version: 1.0.1
+    github-tree-sha: d4d99becf3987748ca6b8221a9e76c724f216b9f
+    version: 1.0.2
 name: google-cloud-recipe-auth
 ---
 # Authenticating and Authorizing to Google Cloud (IAM)
@@ -16,6 +16,15 @@ process of proving **who you are**. In Google Cloud, you represent a
 **Principal** (an identity like a user or a service). This is the first step
 before [Authorization](https://docs.cloud.google.com/iam/docs/overview.md.txt)
 (determining **what you can do**).
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:google-cloud-recipe-auth)"`
+and append `agent-skills/1.0 (skill:google-cloud-recipe-auth)` to `User-Agent` headers.
 
 ## Authentication
 

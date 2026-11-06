@@ -14,8 +14,8 @@ metadata:
     github-path: skills/cloud/cloud-monitoring-chart-generation
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: b45ba07445744b9781bab887e7970ce7993d2a1b
-    version: 1.0.1
+    github-tree-sha: b7779592355f6f302a34c759e0e5c16a30b50108
+    version: 1.0.2
 name: cloud-monitoring-chart-generation
 ---
 # Cloud Monitoring Chart Generation Skill (`cloud-monitoring-chart-generation`)
@@ -48,6 +48,15 @@ dashboard provisioning pipelines.
 >     strongly prefixed with "Wrote widget textproto to:". You MUST parse this
 >     exact prefix from the logs to extract the generated path and use it for
 >     validation in Stage 4.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:cloud-monitoring-chart-generation)"`
+and append `agent-skills/1.0 (skill:cloud-monitoring-chart-generation)` to `User-Agent` headers.
 
 ## Prerequisites: Environment Setup
 

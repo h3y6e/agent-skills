@@ -5,11 +5,20 @@ metadata:
     github-path: skills/cloud/bigquery-troubleshooting
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: e8aa5aaf427ed08a5d9e2612f5f6d12ebbb8cb7f
-    version: 1.1.0
+    github-tree-sha: 9240ec3db368ba1ba693eb12159b81916b14cbb7
+    version: 1.1.1
 name: bigquery-troubleshooting
 ---
 # BigQuery Troubleshooting
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:bigquery-troubleshooting)"`
+and append `agent-skills/1.0 (skill:bigquery-troubleshooting)` to `User-Agent` headers.
 
 ## Prerequisites & Environment Setup
 

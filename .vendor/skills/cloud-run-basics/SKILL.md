@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/cloud-run-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 490652ced633152ecd1b0584be93cbc1ef86c8e2
-    version: 1.0.0
+    github-tree-sha: 03d252816fc8e4d2444d2574ad53f0522ab744b2
+    version: 1.0.1
 name: cloud-run-basics
 ---
 # Cloud Run Basics
@@ -24,6 +24,15 @@ types:
 3.  **Worker pools:** Handles always-on background workloads such as pull-based
     workloads, for example, Kafka consumers, Pub/Sub pull queues, or RabbitMQ
     consumers.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:cloud-run-basics)"`
+and append `agent-skills/1.0 (skill:cloud-run-basics)` to `User-Agent` headers.
 
 ## Prerequisites
 

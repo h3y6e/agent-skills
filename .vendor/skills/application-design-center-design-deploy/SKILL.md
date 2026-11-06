@@ -6,12 +6,21 @@ metadata:
     github-path: skills/cloud/application-design-center-design-deploy
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 2e1ab8c8004adbcbdebaf1effc67d8d946672abb
+    github-tree-sha: ab5350854be59a5f5d87c5515c6e53697de58c80
     publisher: google
-    version: 1.0.0
+    version: 1.0.1
 name: application-design-center-design-deploy
 ---
 # Designing and Deploying GCP Infrastructure with Application Design Center
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:application-design-center-design-deploy)"`
+and append `agent-skills/1.0 (skill:application-design-center-design-deploy)` to `User-Agent` headers.
 
 ## Overview
 

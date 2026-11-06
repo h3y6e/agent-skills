@@ -5,11 +5,20 @@ metadata:
     github-path: skills/cloud/gke-ai-troubleshooting-handle-disruption-gpu-tpu
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 2449576987cc1529f4407f750b78c4fa8dd627aa
-    version: 1.0.0
+    github-tree-sha: b89178654d68b01b74279b4b16bf5e034950f21f
+    version: 1.0.1
 name: gke-ai-troubleshooting-handle-disruption-gpu-tpu
 ---
 # Handle Disruption on GPUs and TPUs Troubleshooting
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-ai-troubleshooting-handle-disruption-gpu-tpu)"`
+and append `agent-skills/1.0 (skill:gke-ai-troubleshooting-handle-disruption-gpu-tpu)` to `User-Agent` headers.
 
 ## 🔍 Diagnostic Workflow
 

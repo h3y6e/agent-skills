@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/managed-airflow-dag-troubleshooting
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: cd3c5c6eca1f7fb7355553eafb0c7d570e2f07f3
-    version: 1.0.0
+    github-tree-sha: b917066981f443c92e0c4844364fc4ef766123a3
+    version: 1.0.1
 name: managed-airflow-dag-troubleshooting
 ---
 # Managed Service for Apache Airflow (formerly Cloud Composer) DAG troubleshooting guide
@@ -14,6 +14,15 @@ name: managed-airflow-dag-troubleshooting
 This skill provides instructions for troubleshooting Managed Airflow DAGs (DAG
 runs and task instances), utilizing `gcloud composer`, `gcloud logging` and
 `gcloud storage` commands to fetch remote logs and code.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:managed-airflow-dag-troubleshooting)"`
+and append `agent-skills/1.0 (skill:managed-airflow-dag-troubleshooting)` to `User-Agent` headers.
 
 ## General rules
 

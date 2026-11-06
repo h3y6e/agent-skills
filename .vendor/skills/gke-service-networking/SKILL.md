@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-service-networking
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: d813d69f9eb07e6c9da785eff9ae8f97607eff09
-    version: 1.1.0
+    github-tree-sha: cb1fccc7b9afbc65a3b070d65b5d2c5f4a7cb58c
+    version: 1.1.1
 name: gke-service-networking
 ---
 # GKE Service Networking Skill
@@ -16,6 +16,15 @@ to the internet or internal networks.
 
 Deployable manifest templates live in `assets/` — edit the `# Replace ...`
 placeholders before applying.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-service-networking)"`
+and append `agent-skills/1.0 (skill:gke-service-networking)` to `User-Agent` headers.
 
 ## Workflows
 

@@ -5,11 +5,17 @@ metadata:
     github-path: skills/cloud/google-cloud-waf-sustainability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 3261743ff32499200686b240a70518efec97d7cf
-    version: 1.0.1
+    github-tree-sha: 94571f44c2c3525d9b6e588bf3c9515546f22744
+    version: 1.0.2
 name: google-cloud-waf-sustainability
 ---
 # Google Cloud Well-Architected Framework skill for the Sustainability pillar
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Overview
 

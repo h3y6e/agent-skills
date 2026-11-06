@@ -5,11 +5,17 @@ metadata:
     github-path: skills/cloud/google-cloud-waf-security
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 27decf24aa128cfca8540a47257d5b46db58a406
-    version: 1.0.0
+    github-tree-sha: e154a69c8ccd69564af1245d88bc77ac12311b22
+    version: 1.0.1
 name: google-cloud-waf-security
 ---
 # Google Cloud Well-Architected Framework skill for the Security pillar
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Overview
 

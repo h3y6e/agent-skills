@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/iam-helper-for-policy-simulator
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 48585b4ef7cc1c736f855e980f734683672c3f39
-    version: 1.0.1
+    github-tree-sha: 4d5a246b47b087da59a5919f47d1b493f8c58c11
+    version: 1.0.2
 name: iam-helper-for-policy-simulator
 ---
 # IAM Policy Simulator (v1 Allow)
@@ -15,6 +15,12 @@ You are an advanced security assistant helping users safely modify IAM
 policies. You must NEVER apply a modifying policy change without first
 running a Policy Simulation to ensure existing workloads are not disrupted. You
 must only use standard public gcloud commands.
+
+## Usage Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Core Concepts & Prerequisites
 

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 96b2e1dc60c8f0b8caf2df0cbcaee2347dad47e5
-    version: 1.1.1
+    github-tree-sha: 499ea5e359d9fe95d326d6380343de061c468e4e
+    version: 1.1.2
 name: gke-basics
 ---
 # GKE Basics & Critical Gotchas
@@ -14,6 +14,15 @@ name: gke-basics
 > **Routing Note:** For Workload Identity KSA/GSA setup, open `gke-workload-identity/SKILL.md`. For cluster security flags (`--database-encryption-key`, `--security-posture`, RBAC, Shielded Nodes, Binary Authorization), open `gke-platform-security/SKILL.md`. For cluster upgrades or maintenance windows, open `gke-upgrades/SKILL.md`. For generating Kubernetes YAML manifests (`Deployment`, `StatefulSet`, `Service`, `HTTPRoute`, `PodDisruptionBudget`), open `gke-manifest-generation/SKILL.md`.
 
 Managed Kubernetes platform on Google Cloud. Defaults to Autopilot mode unless Standard is explicitly required.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-basics)"`
+and append `agent-skills/1.0 (skill:gke-basics)` to `User-Agent` headers.
 
 ## Key Selection Rules: Autopilot vs. Standard
 

@@ -5,14 +5,23 @@ metadata:
     github-path: skills/cloud/gke-cost-optimization
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 12358a6c29ac5c82b8ea0ca5757f781c2e6a1794
-    version: 1.0.0
+    github-tree-sha: d2426d41ceed8123132a2d959bf6fbe6da6024de
+    version: 1.0.1
 name: gke-cost-optimization
 ---
 # GKE Cost Optimization
 
 This reference covers strategies and workflows for reducing Google Kubernetes
 Engine (GKE) costs while maintaining a secure and reliable posture.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-cost-optimization)"`
+and append `agent-skills/1.0 (skill:gke-cost-optimization)` to `User-Agent` headers.
 
 ## Workflows & Optimization Strategies
 

@@ -10,6 +10,7 @@ local nonVendor = new Mapping<String, Step> {
     ["fix_smart_quotes"] = Builtins.fix_smart_quotes
     ["check_shebang_scripts_are_executable"] = Builtins.check_shebang_scripts_are_executable
     ["python_debug_statements"] = Builtins.python_debug_statements
+    ["check_added_large_files"] = Builtins.check_added_large_files
     ["deno"] = (Builtins.deno) {
         glob = List("**/*.ts", "**/*.mjs")
     }
@@ -24,7 +25,6 @@ steps {
     ["check_symlinks"] = Builtins.check_symlinks
     ["destroyed_symlinks"] = Builtins.destroyed_symlinks
     ["check_case_conflict"] = Builtins.check_case_conflict
-    ["check_added_large_files"] = Builtins.check_added_large_files
     ["check_executables_have_shebangs"] = Builtins.check_executables_have_shebangs
     ["python_check_ast"] = Builtins.python_check_ast
     for (name, step in nonVendor) {

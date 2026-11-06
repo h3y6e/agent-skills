@@ -5,14 +5,23 @@ metadata:
     github-path: skills/cloud/gke-cost-analysis
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 1fbe3bd298d66b4d65d7c6713c0a2d0ccecafdf5
-    version: 1.0.0
+    github-tree-sha: 3530a2d084a87e6646a359538e957bad51a57e5e
+    version: 1.0.1
 name: gke-cost-analysis
 ---
 # GKE Cost Analysis
 
 This skill provides guidance on answering natural language questions about
 GKE-related costs, billing reports, and utilization analysis.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-cost-analysis)"`
+and append `agent-skills/1.0 (skill:gke-cost-analysis)` to `User-Agent` headers.
 
 ## Overview
 

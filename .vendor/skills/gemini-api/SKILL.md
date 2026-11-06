@@ -6,8 +6,8 @@ metadata:
     github-path: skills/cloud/gemini-api
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: b40c9fc9b374cd3e33074876607746088c56bba0
-    version: 1.0.0
+    github-tree-sha: 8225b0d46103cfdc3e1b80862bba5314338b9631
+    version: 1.0.1
 name: gemini-api
 ---
 > [!IMPORTANT]
@@ -27,6 +27,15 @@ Provide these key capabilities:
 - **Embeddings** - Generate text embeddings for semantic search
 - **Live Realtime API** - Bidirectional streaming for low latency Voice and Video interactions
 - **Batch Prediction** - Handle massive async dataset prediction workloads
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gemini-api)"`
+and append `agent-skills/1.0 (skill:gemini-api)` to `User-Agent` headers.
 
 ## Core Directives
 

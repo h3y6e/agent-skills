@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/bigquery-ai-ml
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: ec8df4adf51b1da1ca810032aedee7229e387b35
-    version: 1.1.0
+    github-tree-sha: 856a08dfd70d0c509436a1935ff3d7a839afd89a
+    version: 1.1.1
 name: bigquery-ai-ml
 ---
 # BigQuery AI & ML
@@ -14,6 +14,15 @@ name: bigquery-ai-ml
 BigQuery integrates with Vertex AI to provide powerful machine learning and
 generative AI capabilities directly within SQL queries using built-in functions
 like `AI.FORECAST`, `AI.KEY_DRIVERS`, `AI.DETECT_ANOMALIES`, and `AI.GENERATE`.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:bigquery-ai-ml)"`
+and append `agent-skills/1.0 (skill:bigquery-ai-ml)` to `User-Agent` headers.
 
 ## Reference Directory
 

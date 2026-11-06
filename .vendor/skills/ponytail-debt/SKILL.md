@@ -2,9 +2,9 @@
 description: List every `shortcut:` comment (and older `ponytail:` ones) as a debt ledger. One-shot report, changes nothing. Use for "ponytail debt", "what did ponytail defer", "list the shortcuts", /ponytail-debt.
 metadata:
     github-path: skills/ponytail-debt
-    github-ref: refs/tags/v5.1.0
+    github-ref: refs/tags/v5.3.2
     github-repo: https://github.com/DietrichGebert/ponytail
-    github-tree-sha: 3ef222a86faced384074b717321ab06773c75b14
+    github-tree-sha: 16c3b7953629510afa8f061f0fefa61a104e3020
 name: ponytail-debt
 ---
 Every deliberate ponytail shortcut is marked with a `shortcut:` comment naming
@@ -13,10 +13,10 @@ can't quietly become permanent.
 
 ## Scan
 
-Grep the repo for comment markers, skipping `node_modules`, `.git`, and build
-output:
+Grep the repo for comment markers, skipping `.git` and everything the
+`.gitignore` files ignore (dependencies, build output, caches, in any stack):
 
-`grep -rnE --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=build '(#|//|/[*]) ?(shortcut|ponytail):' .`  (add other comment prefixes if your stack uses them)
+`git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?(shortcut|ponytail):'`  (add other comment prefixes if your stack uses them)
 
 If the user names their own marker word (`/ponytail-debt TODO`), grep for that word instead.
 
@@ -42,5 +42,4 @@ End with `<N> markers, <M> with no trigger.` Nothing found: `No shortcut debt. C
 ## Boundaries
 
 Reads and reports only, changes nothing. To persist it, ask and it writes the
-ledger to a file (e.g. `PONYTAIL-DEBT.md`). One-shot. "stop ponytail-debt" or
-"normal mode" to revert.
+ledger to a file (e.g. `PONYTAIL-DEBT.md`). One-shot.

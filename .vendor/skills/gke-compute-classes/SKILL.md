@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-compute-classes
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 55e1e3abc2eba779b28a3605e1c87b41efed80d4
-    version: 1.0.0
+    github-tree-sha: 3937d2c3b6f7e88cdf521056ec6db7e1b7e9d6d1
+    version: 1.0.1
 name: gke-compute-classes
 ---
 <!-- disableFinding(LINE_OVER_80) -->
@@ -14,6 +14,15 @@ name: gke-compute-classes
 # GKE ComputeClasses
 
 Guidance on configuring, optimizing, and troubleshooting GKE ComputeClasses.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-compute-classes)"`
+and append `agent-skills/1.0 (skill:gke-compute-classes)` to `User-Agent` headers.
 
 ## When to Use
 

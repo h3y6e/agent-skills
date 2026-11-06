@@ -5,8 +5,8 @@ metadata:
     github-path: pstack/skills/make-bot-ui
     github-ref: refs/heads/main
     github-repo: https://github.com/cursor/plugins
-    github-tree-sha: 4fb9b8cdd991f08b1c3d7516a886af210bd312cd
-name: Make Bot UI
+    github-tree-sha: 1645159d827f9adea7a9270082368eb1599927b8
+name: make-bot-ui
 ---
 # How to make a bot UI
 

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-scc-query
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 30eb337d5b6828f113d72ec27c06b9902dfb2fb8
-    version: 1.0.1
+    github-tree-sha: 39324b8adebe758587263e43f8dfbb85410aebf7
+    version: 1.0.2
 name: google-cloud-scc-query
 ---
 # Security Command Center Query Skill on Google Cloud
@@ -19,6 +19,12 @@ on Google Cloud.
 > [!IMPORTANT] There is NO `gcloud scc findings describe` command (`Invalid
 > choice: 'describe'`). To retrieve details for a specific finding by its name,
 > always use `gcloud scc findings list` with a filter on `name`.
+
+## Usage Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 --------------------------------------------------------------------------------
 

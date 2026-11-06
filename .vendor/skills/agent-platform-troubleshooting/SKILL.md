@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/agent-platform-troubleshooting
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 8150f18b73cbfba0e3903b6646c9abf92186c1df
-    version: 1.0.0
+    github-tree-sha: bf4f15fc4dfa8de4cb5ce1c7ad1c97716a6d405a
+    version: 1.0.1
 name: agent-platform-troubleshooting
 ---
 # Agent Platform Troubleshooting
@@ -21,6 +21,17 @@ name: agent-platform-troubleshooting
 Diagnose issues across the Google Cloud Gemini Enterprise Agent Platform: Agent
 Gateway, Agent Registry (Agents / MCP Servers / Endpoints), Agent Identity,
 Policies, IAP-delegated authorization, and service extensions.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:agent-platform-troubleshooting)"`
+and append
+`agent-skills/1.0 (skill:agent-platform-troubleshooting)`
+to `User-Agent` headers.
 
 ## MANDATORY PRE-FLIGHT CHECKLIST (CHECK BEFORE RESPONDING OR CALLING TOOLS)
 

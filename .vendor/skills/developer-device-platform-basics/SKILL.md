@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/developer-device-platform-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 4d00576af73ba322424904b26acc32701a7b1c26
-    version: 0.5.0
+    github-tree-sha: ff796e6f42e02439a6ec9e077db2bb01311d5d8e
+    version: 0.5.1
 name: developer-device-platform-basics
 ---
 # Developer Device Platform
@@ -20,6 +20,15 @@ providing access to a wide variety of physical and virtual devices.
 > status checking, stopping/canceling, updating, or listing a session), always
 > verify and use the exact instructions and curl commands provided in the linked
 > reference `.md` files.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:developer-device-platform-basics)"`
+and append `agent-skills/1.0 (skill:developer-device-platform-basics)` to `User-Agent` headers.
 
 ## Authentication & Setup
 

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/datalineage-bigquery-asset-impact-analysis
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 424903891e1f151a86ccd770326f834c18d03b80
-    version: 1.0.1
+    github-tree-sha: 85da22669e9ce40a4a0513ac5b6a1bfe4bec7aa9
+    version: 1.0.2
 name: datalineage-bigquery-asset-impact-analysis
 ---
 # BigQuery Asset Impact Analysis
@@ -18,6 +18,15 @@ consequences of modifying or pausing updates to an asset.
 
 It relies primarily on the **data lineage (Knowledge Catalog) MCP Server** on
 Google Cloud to discover relationships between assets.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:datalineage-bigquery-asset-impact-analysis)"`
+and append `agent-skills/1.0 (skill:datalineage-bigquery-asset-impact-analysis)` to `User-Agent` headers.
 
 ## Prerequisites
 

@@ -5,14 +5,23 @@ metadata:
     github-path: skills/cloud/gke-ai-troubleshooting-tpu-vbar-oom
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: fcbf64a5dd2049d0e67f99378ff37d1cf3af43ed
-    version: 1.0.0
+    github-tree-sha: d5d2d05f2421d6b4af3ba4619843f70dfbc3a147
+    version: 1.0.1
 name: gke-ai-troubleshooting-tpu-vbar-oom
 ---
 # TPU Connection Failure and VBAR OOM Troubleshooting
 
 Use this skill to systematically diagnose and prevent `vbar_control_agent`
 segfaults and Out-Of-Memory (OOM) errors on TPU v6e nodes.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-ai-troubleshooting-tpu-vbar-oom)"`
+and append `agent-skills/1.0 (skill:gke-ai-troubleshooting-tpu-vbar-oom)` to `User-Agent` headers.
 
 ## ⚠️ Prerequisites
 

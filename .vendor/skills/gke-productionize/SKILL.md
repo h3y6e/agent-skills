@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-productionize
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 57847e5db6e95811716a2a1b3b58fe1e89655bda
-    version: 1.0.0
+    github-tree-sha: fd55fa0bafc09f6bfff51fd6b49bb58c0d0ab336
+    version: 1.0.1
 name: gke-productionize
 ---
 # GKE Productionize Skill
@@ -21,6 +21,15 @@ workloads for production readiness.
 > implement all production readiness features directly within this skill;
 > instead, use this skill to assess the environment and then delegate to the
 > specific skills for each domain.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-productionize)"`
+and append `agent-skills/1.0 (skill:gke-productionize)` to `User-Agent` headers.
 
 ## Scope
 

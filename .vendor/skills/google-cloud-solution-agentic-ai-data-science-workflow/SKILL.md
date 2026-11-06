@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-agentic-ai-data-science-workflow
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 2391f1481e5ffeb2b692596662d105d416341f50
-    version: 1.0.1
+    github-tree-sha: 246820c2f8a91b27cd2131db08010d721283597d
+    version: 1.0.3
 name: google-cloud-solution-agentic-ai-data-science-workflow
 ---
 # Data science workflow with AI agents solution
@@ -14,6 +14,12 @@ name: google-cloud-solution-agentic-ai-data-science-workflow
 This skill guides agents through the workflow to design and implement a
 tailored multi-product solution in the cloud for a given workload, use case, or
 requirement.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Workflow
 

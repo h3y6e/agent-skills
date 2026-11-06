@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-networking
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 38bd286e618389fe54ff8d313e3ef223e88696fb
-    version: 1.0.0
+    github-tree-sha: e21a834622a09363f7ed984d457a3406ae9b657b
+    version: 1.0.1
 name: gke-networking
 ---
 # GKE Networking
@@ -16,6 +16,15 @@ enforces private, VPC-native clusters with Dataplane V2.
 
 > **MCP Tools:** `get_cluster`, `update_cluster`, `apply_k8s_manifest`,
 > `get_k8s_resource`
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-networking)"`
+and append `agent-skills/1.0 (skill:gke-networking)` to `User-Agent` headers.
 
 ## Golden Path Networking Defaults
 

@@ -5,11 +5,17 @@ metadata:
     github-path: skills/cloud/google-cloud-networking-observability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 3232d3035d5f3fa48fe1736d664c95e9478a72ef
-    version: 1.0.3
+    github-tree-sha: 6b2c3f39ce8fe0686d1423081e8fe2050e536b14
+    version: 1.0.5
 name: google-cloud-networking-observability
 ---
 # Google Cloud Networking Observability Expert
+
+## Attribution
+
+For all `gcloud` CLI, REST API, and MCP attribution requirements when executing
+commands with this skill, follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## 🛑 Core Directive: Results First
 
@@ -51,8 +57,8 @@ name: google-cloud-networking-observability
     finding trends or top-blocking rules.
 -   **Schema & Sample Discovery**: Before writing complex aggregations or filter
     queries in BigQuery or Cloud Logging, first inspect a single sample log
-    record (`LIMIT 1` in SQL or `--limit=1` in `gcloud logging read`) to verify
-    the exact payload schema and field paths.
+    record (`LIMIT 1` with `--format=json` in `bq query`, or `--limit=1` in
+    `gcloud logging read`) to verify the exact payload schema and field paths.
 -   **Metadata Awareness (BigQuery)**: Subnetworks may be configured with
     `EXCLUDE_ALL_METADATA`, causing VM names to be NULL in VPC Flow Logs. If a
     query by VM name returns nothing, retry using the internal IP address

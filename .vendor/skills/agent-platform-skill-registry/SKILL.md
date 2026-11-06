@@ -5,14 +5,25 @@ metadata:
     github-path: skills/cloud/agent-platform-skill-registry
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 71e676f15b18e579bbc0c03b22fbf661d0a5a954
-    version: 1.0.0
+    github-tree-sha: 7bb45151e40b635b68d3368b8ed5764ac9f834ba
+    version: 1.0.1
 name: agent-platform-skill-registry
 ---
 # Skill Registry
 
 This skill provides instructions for interacting with the **Skill Registry** on
 the Gemini Enterprise Agent Platform.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:agent-platform-skill-registry)"`
+and append
+`agent-skills/1.0 (skill:agent-platform-skill-registry)`
+to `User-Agent` headers.
 
 ## Core Capabilities
 

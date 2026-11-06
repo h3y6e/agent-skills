@@ -7,8 +7,8 @@ metadata:
     github-path: skills/cloud/google-cloud-recipe-foundation-builder
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: df48d0b00ec2a6369b5c5dc0fb576fd6e049656c
-    version: 1.0.0
+    github-tree-sha: f38d60ab7f3c70796e7db0c07fb750170b906cc1
+    version: 1.0.1
 name: google-cloud-recipe-foundation-builder
 ---
 # Google Cloud Recipe: Foundation Builder
@@ -22,6 +22,15 @@ This skill guides the setup of a secure, enterprise-grade Google Cloud landing
 zone foundation. It establishes baseline security controls, organizes the
 initial resource hierarchy, and configures centralized audit logging and
 cross-environment monitoring.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:google-cloud-recipe-foundation-builder)"`
+and append `agent-skills/1.0 (skill:google-cloud-recipe-foundation-builder)` to `User-Agent` headers.
 
 ## Overview
 

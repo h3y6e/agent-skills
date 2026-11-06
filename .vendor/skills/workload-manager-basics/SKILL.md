@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/workload-manager-basics
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: c410636a2b3f4003b1fff129bf30f6f3e58ae307
-    version: 1.0.0
+    github-tree-sha: dcea9e9bc10059003b998f6ea3b78c154bf02d7b
+    version: 1.0.1
 name: workload-manager-basics
 ---
 # Workload Manager Basics
@@ -15,6 +15,15 @@ Workload Manager validates enterprise workloads against Google Cloud best
 practices and recommendations. The public client libraries are centered on
 evaluations: define a resource scope, choose built-in or custom rules, run an
 evaluation, then inspect results and scanned resources.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:workload-manager-basics)"`
+and append `agent-skills/1.0 (skill:workload-manager-basics)` to `User-Agent` headers.
 
 ## Use This Flow
 

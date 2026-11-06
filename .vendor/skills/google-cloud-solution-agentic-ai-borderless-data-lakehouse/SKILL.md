@@ -5,14 +5,20 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-agentic-ai-borderless-data-lakehouse
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 224683ff87800a04cd2c434edd7548aa9e67b8b9
-    version: 1.0.0
+    github-tree-sha: 4b3bf7f1bee954e95cf86a2677dbc5f6606794ba
+    version: 1.0.1
 name: google-cloud-solution-agentic-ai-borderless-data-lakehouse
 ---
 # Borderless open data lakehouse agentic AI system
 
 Follow this workflow to help users design and implement a custom multi-product
 solution in the cloud for a given workload, use case, or requirement.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Product Renaming & Terminology
 

@@ -1,10 +1,10 @@
 ---
-description: Helps with grouping, alignment, reading order, responsive structure and room for translated text, so a layout holds up when it is resized, translated or mirrored.
+description: Sets grouping, alignment, reading order, responsive structure and room for translated text, so a layout holds up when it is resized, translated or mirrored.
 metadata:
     github-path: skills/better-layout
     github-ref: refs/heads/main
     github-repo: https://github.com/jakubkrehel/skills
-    github-tree-sha: 7ffa8ef65b63bd160eef9d32d1a4493d98260d0f
+    github-tree-sha: 4c3a6e2e53026e171e79b17b0d86c8d4d8639f49
 name: better-layout
 ---
 # Layout

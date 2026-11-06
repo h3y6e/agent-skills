@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-workload-identity
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 1faabd7422f74657d52f8bf3da09ca8a5700fe57
-    version: 1.0.1
+    github-tree-sha: 92fc8bfbed9f8c682d1ec9f33c5f1b776fbfdc94
+    version: 1.0.2
 name: gke-workload-identity
 ---
 # GKE Workload Identity Federation Troubleshooting Skill
@@ -20,6 +20,15 @@ Federation for GKE** cannot authenticate to Google Cloud APIs. Typical symptoms:
     `ComputeEngineCredentials cannot find the metadata server`
 -   API calls that unexpectedly use the node's default Compute Engine service
     account instead of the workload's identity.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-workload-identity)"`
+and append `agent-skills/1.0 (skill:gke-workload-identity)` to `User-Agent` headers.
 
 ## Read-only boundary
 

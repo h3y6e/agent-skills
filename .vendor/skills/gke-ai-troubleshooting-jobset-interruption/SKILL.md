@@ -5,14 +5,23 @@ metadata:
     github-path: skills/cloud/gke-ai-troubleshooting-jobset-interruption
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 653690c0b9e2b3261530a31050c5e0105452a240
-    version: 1.0.0
+    github-tree-sha: adfe352d67a8c6f034f9c70f222c3602108f892b
+    version: 1.0.1
 name: gke-ai-troubleshooting-jobset-interruption
 ---
 # GKE JobSet Interruption Troubleshooting
 
 Use this skill to systematically diagnose and resolve JobSet interruptions,
 restarts, and preemptions on GKE clusters hosting large-scale AI/ML workloads.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-ai-troubleshooting-jobset-interruption)"`
+and append `agent-skills/1.0 (skill:gke-ai-troubleshooting-jobset-interruption)` to `User-Agent` headers.
 
 ## ⚠️ Prerequisites & Sandbox Rules
 

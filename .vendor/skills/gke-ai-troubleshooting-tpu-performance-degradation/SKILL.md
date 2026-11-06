@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-ai-troubleshooting-tpu-performance-degradation
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: e573ae3b9370cfa94a4ffd0bf331caa3094d3199
-    version: 1.0.0
+    github-tree-sha: e8172480210fbd64147b66ca93d0f0717ac7dabf
+    version: 1.0.1
 name: gke-ai-troubleshooting-tpu-performance-degradation
 ---
 # Troubleshoot GKE TPU performance degradation with ML Diagnostics Workload Monitoring
@@ -18,6 +18,15 @@ reports with **1-minute Cloud Monitoring system metrics** and GKE node topology
 labels.
 
 ---
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-ai-troubleshooting-tpu-performance-degradation)"`
+and append `agent-skills/1.0 (skill:gke-ai-troubleshooting-tpu-performance-degradation)` to `User-Agent` headers.
 
 ## Prerequisites
 

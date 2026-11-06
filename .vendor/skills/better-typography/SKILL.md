@@ -1,10 +1,10 @@
 ---
-description: Sets and reviews how text renders in your product, from the type scale and spacing to font features, wrapping, truncation and punctuation.
+description: Sets and reviews how text renders, from the type scale and spacing to font features, wrapping, truncation and punctuation.
 metadata:
     github-path: skills/better-typography
     github-ref: refs/heads/main
     github-repo: https://github.com/jakubkrehel/skills
-    github-tree-sha: 25751e782efef061becc8922bb31e378d57fc7b8
+    github-tree-sha: aead1cd1526b13690c48513115030728cfbd4c2f
 name: better-typography
 ---
 # Typography

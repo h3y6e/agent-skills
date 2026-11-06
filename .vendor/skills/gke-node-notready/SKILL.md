@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-node-notready
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: a4c22f829df936b05af194c50ea79523131543fe
-    version: 1.0.0
+    github-tree-sha: d0a81da272efe4e03caa76761f9d39b5971b235b
+    version: 1.0.1
 name: gke-node-notready
 ---
 # GKE Node NotReady Troubleshooting Skill
@@ -26,6 +26,15 @@ cluster, drain, delete, or recreate nodes automatically.
 > First rule out an **expected** `NotReady`: a node that is newly provisioning,
 > upgrading, being repaired, cordoned, or scaling down will transiently report
 > `NotReady`. Only treat it as a fault if it persists beyond the expected window.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-node-notready)"`
+and append `agent-skills/1.0 (skill:gke-node-notready)` to `User-Agent` headers.
 
 ## 🔍 Diagnostic Workflow
 

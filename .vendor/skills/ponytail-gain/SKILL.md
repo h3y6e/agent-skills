@@ -2,9 +2,9 @@
 description: Show ponytail's measured savings (code, cost, speed) from the benchmark. One-shot display. Use for /ponytail-gain, "what does ponytail save", "ponytail impact".
 metadata:
     github-path: skills/ponytail-gain
-    github-ref: refs/tags/v5.1.0
+    github-ref: refs/tags/v5.3.2
     github-repo: https://github.com/DietrichGebert/ponytail
-    github-tree-sha: 3725b1222980f5643c52e19b96fa04a92b179152
+    github-tree-sha: c41e9e90173ddc6844c0bc44a89ba739534e06b0
 name: ponytail-gain
 ---
 # Ponytail Gain
@@ -51,4 +51,3 @@ this card points there instead of inventing one.
 ## Boundaries
 
 One-shot display. Edits nothing, changes no mode.
-"stop ponytail" or "normal mode": revert.

@@ -1,10 +1,10 @@
 ---
-description: Writes and reviews your interface copy, from labels and errors to empty states and confirmations, so it matches your product's voice and tells people what to do next.
+description: Writes and reviews interface copy, from labels and errors to empty states and confirmations, so it matches the product's voice and tells people what to do next.
 metadata:
     github-path: skills/better-writing
     github-ref: refs/heads/main
     github-repo: https://github.com/jakubkrehel/skills
-    github-tree-sha: 4589785678cb20ee3f2dec9cbbb1149bc408fbc1
+    github-tree-sha: 91039f39cc4cc2b7c0dd16174076a09e2e222a29
 name: better-writing
 ---
 # Writing

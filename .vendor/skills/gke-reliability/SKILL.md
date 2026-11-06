@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-reliability
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: b7405b3c632bd21f23de211eca555abf877d53a2
-    version: 1.0.1
+    github-tree-sha: 209c3a0bd9bfe0183d4945f7b021b6610effab2d
+    version: 1.0.2
 name: gke-reliability
 ---
 # GKE Reliability
@@ -18,6 +18,15 @@ clusters and workloads.
 
 > **MCP Tools:** `get_cluster`, `get_k8s_resource`, `describe_k8s_resource`,
 > `apply_k8s_manifest`, `list_k8s_events`
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-reliability)"`
+and append `agent-skills/1.0 (skill:gke-reliability)` to `User-Agent` headers.
 
 ## Golden Path Reliability Defaults
 

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/google-cloud-solution-agentic-analytics-spark-knowledge-catalog
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: 77e24246a71bd93a20c424e100bb1b0f9f28b590
-    version: 1.0.0
+    github-tree-sha: 7622ab6e51067c8644cff183c0e318c6289f87c0
+    version: 1.0.1
 name: google-cloud-solution-agentic-analytics-spark-knowledge-catalog
 ---
 # Agentic analytics across cloud providers and data types
@@ -15,6 +15,12 @@ This skill provides a workflow to design and implement a governed, secure
 pipeline for agentic analytics solution across structured and unstructured data
 that's distributed across Google Cloud, on-premises systems, and other cloud
 providers.
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read and follow the instructions in
+[Usage Attribution](references/attribution.md).
 
 ## Overview of the workflow
 

@@ -5,8 +5,8 @@ metadata:
     github-path: skills/cloud/gke-backup-dr
     github-ref: refs/heads/main
     github-repo: https://github.com/google/skills
-    github-tree-sha: e4141767798c587a7f71900fb89b423df5e80121
-    version: 1.0.0
+    github-tree-sha: 003e2c47ca3e2f10e2be8f9550b681a00ade0004
+    version: 1.0.1
 name: gke-backup-dr
 ---
 # GKE Backup & Disaster Recovery
@@ -16,6 +16,15 @@ both Kubernetes resource metadata (manifests, configurations, and secrets) and
 the underlying persistent volume (PV) data — but volume data and secrets are
 **only** captured when the backup plan explicitly enables them (see the flags
 below).
+
+## Attribution
+
+**MUST READ**: Before executing any `gcloud`, REST API, or MCP command, you
+MUST read [Usage Attribution](references/attribution.md). For commands executed
+directly in the terminal (never in generated scripts, Terraform, or user code),
+prefix `gcloud` with
+`CLOUDSDK_METRICS_REQUEST_ATTRIBUTION="agent-skills/1.0 (skill:gke-backup-dr)"`
+and append `agent-skills/1.0 (skill:gke-backup-dr)` to `User-Agent` headers.
 
 ## CLI Reference
 
