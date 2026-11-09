@@ -2,3 +2,4 @@
 - Do not edit skill `version` metadata manually; release automation updates those values.
 - Files added under `.vendor/skills` must remain exactly as generated; do not modify.
 - Vendor only skills whose source explicitly grants a license.
+- This repository is public. Never write private repository names, organization names, issue or PR numbers, or internal details from other work into commits, PR titles and bodies, or skill text; describe such trials generically.
