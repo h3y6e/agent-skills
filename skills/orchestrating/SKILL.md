@@ -1,6 +1,6 @@
 ---
 name: orchestrating
-description: Coordinates parallel coding work from a bare repository by running one agent session per worktree in Rex and tracking them. Use when started in a bare repository and asked for code changes, or asked about work already handed off from one.
+description: Coordinates parallel coding work from a bare repository by running one agent session per worktree in Rex and tracking them. Use when started in a bare repository, or asked about work already handed off from one.
 compatibility: Requires git, git-wt, jq, and rex.
 license: MIT
 metadata:
@@ -33,4 +33,4 @@ A status disappears when the agent exits and leaves a shell, so an `idle` child 
 
 ## Follow-ups
 
-Send follow-ups only to an `idle` or `done` child. Never send to a `blocked` one: Enter on a permission prompt approves it. Its approvals and questions belong to the user; name the tab instead of answering.
+Send follow-ups only to an `idle` or `done` child. Never send to a `blocked` one: Enter on a permission prompt approves it.
