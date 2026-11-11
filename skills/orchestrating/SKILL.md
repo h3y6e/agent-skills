@@ -5,7 +5,7 @@ compatibility: Requires git, git-wt, jq, and rex.
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.11.2
+  version: 2026.11.3
 ---
 
 # Orchestrating
