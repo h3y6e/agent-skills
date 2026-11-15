@@ -2,4 +2,4 @@
 deno = "2.9.8"
 hk = { version = "2.8.0", workflow = "release.yml" }
 jactionlint = "2.2.0"
-rumdl = "0.2.79"
+rumdl = "v0.3.2"
