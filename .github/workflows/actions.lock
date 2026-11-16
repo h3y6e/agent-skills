@@ -5,7 +5,7 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/hk.yaml':
         - 'actions/checkout@v7.0.1'
-        - 'jdx/mise-action@v5.1.0'
+        - 'jdx/mise-action@v5.2.7'
     '.github/workflows/tagpr.yaml':
         - 'actions/checkout@v7.0.1'
         - 'actions/create-github-app-token@v3.3.0'
@@ -31,9 +31,9 @@ dependencies:
         repo_id: 1239567891
         uses:
             - 'peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1'
-    'jdx/mise-action@v5.1.0':
-        ref: 'v5.1.0'
-        commit: 'sha1-94c60b39bc2d90ab2f9bab27f38d3cc4812c1834'
+    'jdx/mise-action@v5.2.7':
+        ref: 'v5.2.7'
+        commit: 'sha1-b44d12e7d0d8ee7461bb893e1b1993500433185b'
         owner_id: 216188
         repo_id: 738284564
     'peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1':
