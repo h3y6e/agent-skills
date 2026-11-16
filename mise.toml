@@ -1,5 +1,5 @@
 [tools]
 deno = "2.9.8"
 hk = { version = "2.11.1", workflow = "release.yml" }
-jactionlint = "2.2.0"
+jactionlint = "v2.5.0"
 rumdl = "v0.3.2"
