@@ -1,9 +1,11 @@
 ---
 name: writing-skills
-description: Creates and improves Agent Skills for this repository. Use when authoring, validating, or evaluating a skill under skills/ or .agents/skills/.
-compatibility: Requires Deno and git for the bundled validator.
+description: Creates and improves Agent Skills. Use when authoring, validating, or evaluating a skill.
+compatibility: Requires Deno for the bundled validator.
+license: MIT
 metadata:
   author: h3y6e
+  version: 2026.11.2
 ---
 
 # Writing Skills
@@ -16,17 +18,14 @@ Before changing, adding, or deleting a rule in this skill, read [its sources](re
 
 Before writing, define observable **process invariants**. Classify research as checked, not applicable, or unavailable; evaluate branches; require artifact fields; and stop when work or verification is incomplete. State how far work extends — whether a first working result ends it, or iteration continues.
 
-Follow the [Agent Skills specification](https://agentskills.io/specification); the validator enforces its mechanical constraints and this repository's frontmatter rules.
+Follow the [Agent Skills specification](https://agentskills.io/specification); the validator enforces its mechanical constraints, known frontmatter fields, and the `Use when` trigger phrase.
 
-Repository rules:
-
-- Put published skills at `skills/<skill-name>/SKILL.md`. Keep the body as short as possible; aim for fewer than 500 words without dropping required instructions or references.
-- Never edit `metadata.version` manually.
-- Keep eval cases in `<skill>/evals/`; run results go in the git-ignored `<skill-name>-workspace/` beside the skill.
+- Keep the body as short as possible; aim for fewer than 500 words without dropping required instructions or references.
+- Keep eval cases in `<skill>/evals/`; run results go in `<skill-name>-workspace/` beside the skill, kept out of git.
 - Before completion, run [the validator](scripts/validate.ts):
 
 ```bash
-deno run --allow-read --allow-run=git .agents/skills/writing-skills/scripts/validate.ts <skill-directory>
+deno run --allow-read scripts/validate.ts <skill-directory>
 ```
 
 ## Design
@@ -41,12 +40,12 @@ Skills regress agents in three ways:
 - **Grounding displacement**: a procedure overrides how the agent reads its inputs. Have steps read the actual inputs rather than presume them.
 - **Verification displacement**: a procedure suppresses checks the agent would otherwise run. Add checks it would miss; never replace its own.
 
-Treat loading tier and information role independently. Keep required procedures, decisions, gotchas, and output contracts in `SKILL.md`; conditional detail in `references/`, one level deep; fragile operations in `scripts/`; and artifact material in `assets/`. Reference pointers must say when to read and how to apply them. Invoke bundled scripts through their interpreter, never by bare path. For loading design and invocation choice, read `.vendor/skills/writing-for-agents/SKILL.md` and its `SKILL-MECHANICS.md`; for freedom levels, read `.vendor/skills/writing-skills/anthropic-best-practices.md`.
+Treat loading tier and information role independently. Keep required procedures, decisions, gotchas, and output contracts in `SKILL.md`; conditional detail in `references/`, one level deep; fragile operations in `scripts/`; and artifact material in `assets/`. Reference pointers must say when to read and how to apply them. Invoke bundled scripts through their interpreter, never by bare path. For loading design and invocation choice, read [writing-for-agents](https://github.com/mattpocock/skills/blob/24fe0ef7737efae15c87225755e9f6f5965e4888/skills/productivity/writing-for-agents/SKILL.md) and its [SKILL-MECHANICS.md](https://github.com/mattpocock/skills/blob/24fe0ef7737efae15c87225755e9f6f5965e4888/skills/productivity/writing-for-agents/SKILL-MECHANICS.md); for freedom levels, read [anthropic-best-practices.md](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/writing-skills/references/anthropic-best-practices.md).
 
 ## Workflow
 
 1. Record capability, triggers, evaluated near-misses, artifacts, and process invariants. Connect requirements to examples.
-2. Search `.vendor/skills/` for skills related to the target capability and triggers; read relevant ones before design. Use them only as authoring evidence: the result stands alone and names no consulted skill or path.
+2. Use consulted skills only as authoring evidence: the result stands alone and names no consulted skill or path.
 3. Run the target tasks without the skill; write guidance only for failures this baseline shows. One occurrence is an anecdote: add a skill or rule once the same failure recurs.
 4. Write the minimum skill. Format a model-invoked `description` as "capability. `Use when` triggers.", key use case first; an explicitly invoked skill states capability alone. Name triggers as the occasions calling for the skill, not the domains it touches: "adding or changing a migration", not "working with databases". Give important steps input, decisions, evidence, completion criteria, and incomplete transitions as needed.
 5. Pass mechanical validation, then evaluate as in Evidence.
@@ -61,8 +60,8 @@ Choose verification by failure cost, frequency, blast radius, and activation con
 - When a model-invoked skill's triggers change, run about 20 discovery queries, half near-miss should-not-trigger, 3 times each with a held-out split. Fix failures by category, not by adding their keywords.
 - For high-risk, frequent, broad, or activation-conflicting skills, repeat runs or models and compare variance.
 
-Record model/version, environment/tools, skill commit/hash, and prompts. For repeated evaluation, also record run count and activation, false-activation, and requirement-satisfaction rates. For discovery protocol, read `.vendor/skills/optimizing-descriptions/SKILL.md`; for iterative execution tuning, `.vendor/skills/empirical-prompt-tuning/SKILL.md`; for rules agents skip under pressure, `.vendor/skills/writing-skills/testing-skills-with-subagents.md`.
+Record model/version, environment/tools, skill commit/hash, and prompts. For repeated evaluation, also record run count and activation, false-activation, and requirement-satisfaction rates. For discovery protocol, read [optimizing-descriptions](https://github.com/mizchi/skills/blob/a41865b34b78f2675a6c73178377a5bcc1b492c6/optimizing-descriptions/SKILL.md); for iterative execution tuning, [empirical-prompt-tuning](https://github.com/mizchi/skills/blob/a41865b34b78f2675a6c73178377a5bcc1b492c6/empirical-prompt-tuning/SKILL.md); for rules agents skip under pressure, [testing-skills-with-subagents.md](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/writing-skills/references/testing-skills-with-subagents.md).
 
-When codifying experience, record the initial failure, final solution, and connecting insight; then use `.vendor/skills/retrospective-codify/SKILL.md` to choose between automation, project instructions, extending a skill, creating a skill, or no persistence.
+When codifying experience, record the initial failure, final solution, and connecting insight; then use [retrospective-codify](https://github.com/mizchi/skills/blob/a41865b34b78f2675a6c73178377a5bcc1b492c6/retrospective-codify/SKILL.md) to choose between automation, project instructions, extending a skill, creating a skill, or no persistence.
 
 Before completion, confirm evidence for every process invariant and no claim beyond the evidence produced.

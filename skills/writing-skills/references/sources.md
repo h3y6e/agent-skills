@@ -18,9 +18,9 @@ Where each rule in `SKILL.md` comes from. Before changing or deleting a rule, re
 | regression | paper | <https://arxiv.org/abs/2607.22520> |
 | reducer | paper | <https://arxiv.org/abs/2603.29919> |
 | must-vs-why | measured blog | <https://dev.classmethod.jp/articles/claude-skill-must-vs-reason/> |
-| pstack-eval | practitioner | `.vendor/skills/poteto-mode/playbooks/eval.md` |
+| pstack-eval | practitioner | <https://github.com/cursor/plugins/blob/f83fbe695ee14badf3ac128d3718f9fb71a3a3f9/pstack/skills/poteto-mode/playbooks/eval.md> |
 | pstack-guide | practitioner | <https://github.com/cursor/plugins/blob/main/pstack/docs/guide/09-make-it-yours.md> |
-| obra | practitioner | `.vendor/skills/writing-skills/SKILL.md` |
+| obra | practitioner | <https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/writing-skills/SKILL.md> |
 
 ## Rules
 
@@ -56,7 +56,6 @@ Where each rule in `SKILL.md` comes from. Before changing or deleting a rule, re
 
 | Proposal | Reason |
 |---|---|
-| "Tell it to do the thing and skip the reason" (`.vendor/skills/poteto-mode/playbooks/authoring-a-skill.md`) | Unmeasured; must-vs-why and as-best measure or recommend the opposite. |
+| "Tell it to do the thing and skip the reason" ([pstack authoring-a-skill](https://github.com/cursor/plugins/blob/f83fbe695ee14badf3ac128d3718f9fb71a3a3f9/pstack/skills/poteto-mode/playbooks/authoring-a-skill.md)) | Unmeasured; must-vs-why and as-best measure or recommend the opposite. |
 | Validator link check | rumdl MD057 already reports missing relative link targets. |
-| rumdl MD061 forbidding `.vendor` in `skills/` | Misses code spans; no leak in `skills/` history. |
-| Validator body word limit | Not chosen; `creating-issues` and `designing-cli` exceed 500 words and would need splitting first. |
+| Validator body word limit | The 500-word aim yields to required instructions; a hard limit would reject skills that need more. |
