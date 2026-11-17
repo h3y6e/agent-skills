@@ -31,6 +31,8 @@ The stream reports only changes, so check every child once when you start it. Ot
 
 A status disappears when the agent exits and leaves a shell, so an `idle` child may be gone; confirm its agent is running before calling it waiting or sending to it.
 
+Track each child's PR too: `gh pr view <branch> --json state,mergeStateStatus,statusCheckRollup,reviewDecision`, or `gh pr checks <branch> --watch` in the background. On merge, `git wt -d <branch>` and `rex block close <block>`. On failing checks, a conflict, or a new review, send the child a follow-up.
+
 ## Follow-ups
 
 Send follow-ups only to an `idle` or `done` child. Never send to a `blocked` one: Enter on a permission prompt approves it.

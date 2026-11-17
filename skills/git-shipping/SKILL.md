@@ -46,3 +46,7 @@ On a PR branch, keep history as meaningful units, not a log of attempts. Rewrite
 ## Review Loop
 
 After opening a PR, read [the review loop](references/review-loop.md) and run it before reporting back.
+
+## Monitor
+
+An open PR is not done. Watch it with `gh pr checks --watch`, fix failing checks, and settle new reviews with `receiving-code-review`. Report its CI, review, and merge state from `gh pr view --json state,mergeStateStatus,statusCheckRollup,reviewDecision`.
