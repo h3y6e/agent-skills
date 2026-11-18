@@ -217,11 +217,11 @@ for (const { path, cmd, inherited } of commands) {
       );
     }
   }
-  for (const flag of cmd.flags.filter((f) => f.required)) {
+  for (const flag of cmd.flags.filter((f) => f.required && f.env)) {
     fail(
-      `${bin} ${label}: flag ${
+      `${bin} ${label}: required flag ${
         spelling(flag)
-      } is required (a required value names the target, so it is a positional; flags read env, and a stale variable must not pick the target)`,
+      } reads ${flag.env} (a stale variable silently supplies a value the caller must give)`,
     );
   }
   const has = (name) =>

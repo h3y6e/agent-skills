@@ -23,7 +23,7 @@ metadata:
 
 ### Input
 
-- Subcommands nest with spaces in one consistent order (`app server start`). Positionals name the target, one kind at most; flags are optional and also read `APP_*` env vars; child-process arguments follow `--`.
+- Subcommands nest with spaces in one consistent order (`app server start`). Positionals are the target or the body of what is created (`app item new "<title>"`, `app item rm <id>`), one kind at most. Flags carry attributes and read `APP_*` env vars, except required flags, which never read env; child-process arguments follow `--`.
 - Bare `app`, `-h`, and `--help` at any level print help to stdout and exit 0.
 - `--version` and bare `-v` print the version; `-V` and `version` follow the framework. Only the root parses version flags.
 - Prompt only on a TTY, with a flag to skip each prompt.

@@ -8,6 +8,7 @@ Each reason explains why an item holds; none marks when it may be skipped.
 - **Root-only version flags**: a subcommand may take its own `--version <v>`.
 - **`-V` and `version` follow the framework**: help and completion then list them.
 - **Env for flags**: CI and wrappers set env once instead of editing each call.
+- **No env for required flags**: a stale variable silently supplies a value the caller must give.
 
 ## Output
 
