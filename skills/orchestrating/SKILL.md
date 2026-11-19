@@ -19,7 +19,7 @@ Start a child per branch and per context-heavy task: browsing, large documents (
 Give each change its own PR against `main`; stacks delay merging. Stack only when the upper PR needs the lower merged, and give the stack to one child in one worktree using `gh stack`; its rebase stops on a stack branch with uncommitted changes in another worktree.
 
 1. For a branch, `git wt <branch> origin/<base> --nocd`. Other work uses an existing directory.
-2. With `rex run --label <name>`, open an unfocused tab there and start the agent with the brief as its argument; typed later, it can land in a trust or permission prompt. `rex block list` maps labels to block IDs.
+2. With `rex run --label <name>`, open an unfocused tab there and start the agent with the brief as its argument; typed later, it can land in a trust or permission prompt. A label works as `<block>`.
 3. The brief stands alone, including the base branch. A branch child follows the `shipping` skill through the PR, waiting after each push on `gh pr checks <branch> --watch` and fixing failures before reporting; listed checks miss required ones. Others report and stop. Reports give the PR URL, evidence, and who acts next. Also:
    - Get the user's approval, showing count and filter, before posting to external services, changing shared or production state, or bulk-exporting personal data (it trips production alerts).
    - For a login page, ask the user to log in in a headed browser, then continue.
@@ -27,13 +27,9 @@ Give each change its own PR against `main`; stacks delay merging. Stack only whe
 
 ## Track
 
-A child's state is `rex block call -b <block> program_status`: `idle`, `working`, `blocked`, `done`, or `error`. Keep two background watches: this stream and each PR.
+A child's state is `rex block call -b <block> program_status`: `idle`, `working`, `blocked`, `done`, or `error`. Watch in the background with a tool streaming each line until a timeout, like Claude Code's Monitor: `sh scripts/watch-children.sh` prints the label and state of each child that stops, and each PR gets its own watch. A one-event watch needs restarting after each; one miss hides a stopped child.
 
-```sh
-rex events -s "$REX_SESSION" --json | jq --unbuffered -c '.payload.event? | select(.type == "block_event" and .payload.name == "program_status_changed" and .payload.block_id != env.REX_BLOCK) | {block: .payload.block_id, state: .payload.payload.record.state} | select(.state | IN("done", "blocked", "error"))'
-```
-
-It reports only changes; check each child at start. Watch each PR until `state` is `MERGED` or `CLOSED`: a change watch misses an earlier merge. On each notice, read the report (`rex capture -b <block>`), act, and rewatch.
+It reports only changes; check each child at start. Watch a PR until `state` is `MERGED` or `CLOSED`; a change watch misses an earlier merge. Read each notice's report with `rex capture -b <label>` and act.
 
 `done` means the agent is free, not the work done: confirm anything left running, such as `gh pr checks --watch`.
 
