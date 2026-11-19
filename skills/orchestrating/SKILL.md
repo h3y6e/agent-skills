@@ -10,35 +10,35 @@ metadata:
 
 # Orchestrating
 
-You are the coordinator: you never edit code. Spend your context on briefs and results; children work in parallel. The tabs and `git wt` (no arguments) are the task list, not your memory.
+You are the coordinator: you never edit code. Spend your context on briefs and results; children work in parallel. Tabs and `git wt` (no arguments), not your memory, are the task list.
 
 ## Start a Child
 
-Start a child per branch and per context-heavy task: browsing, large documents (spreadsheets, PDFs, exports), or logs. But a new tab must be re-briefed, loses detail in the handoff, and misses the prompt cache, so send same-topic or same-repository work to the child holding its context; start one only for an independent topic needing new context.
+Start a child per branch and per context-heavy task: browsing, large documents (spreadsheets, PDFs, exports), or logs. A new tab must be re-briefed, loses detail, and misses the prompt cache: give same-topic or same-repository work to the child holding its context, and start one only for an independent topic.
 
-Split changes into independent PRs against `main`; a stack delays merging. Stack only when the upper PR cannot work until the lower merges, and hand the whole stack to one child in one worktree that rebases, pushes, and merges with `gh stack`. Its rebase stops on uncommitted changes in a stack branch checked out elsewhere.
+Give each change its own PR against `main`; stacks delay merging. Stack only when the upper PR needs the lower merged, and give the stack to one child in one worktree using `gh stack`; its rebase stops on a stack branch with uncommitted changes in another worktree.
 
 1. For a branch, `git wt <branch> origin/<base> --nocd`. Other work uses an existing directory.
-2. With `rex run --label <name>`, open an unfocused tab there and start the agent with the brief as its argument; a brief typed after launch can land in a trust or permission prompt. The label names its block in `rex block list`.
-3. The brief stands alone, including the base branch. A branch child follows the `shipping` skill through the PR and after each push waits on `gh pr checks <branch> --watch`, fixing failures before reporting. Listing checks for it misses required ones. Others stop after reporting. All report the PR URL if any, evidence, and who acts next. Also:
-   - Without the user's approval, never post to external services, change shared or production state, or bulk-export personal data (it trips production alerts). If needed, ask with count and filter.
+2. With `rex run --label <name>`, open an unfocused tab there and start the agent with the brief as its argument; typed later, it can land in a trust or permission prompt. `rex block list` maps labels to block IDs.
+3. The brief stands alone, including the base branch. A branch child follows the `shipping` skill through the PR, waiting after each push on `gh pr checks <branch> --watch` and fixing failures before reporting; listed checks miss required ones. Others report and stop. Reports give the PR URL, evidence, and who acts next. Also:
+   - Get the user's approval, showing count and filter, before posting to external services, changing shared or production state, or bulk-exporting personal data (it trips production alerts).
    - For a login page, ask the user to log in in a headed browser, then continue.
-4. Capture the tab once: a startup prompt such as folder trust shows no status; ask the user to answer it there.
+4. Capture the tab once: a startup prompt like folder trust shows no status; have the user answer it.
 
 ## Track
 
-A child's state is `rex block call -b <block> program_status`: `idle`, `working`, `blocked`, `done`, or `error`. Read its report with `rex capture -b <block>`. If possible, watch this stream in the background:
+A child's state is `rex block call -b <block> program_status`: `idle`, `working`, `blocked`, `done`, or `error`. Keep two background watches: this stream and each PR.
 
 ```sh
 rex events -s "$REX_SESSION" --json | jq --unbuffered -c '.payload.event? | select(.type == "block_event" and .payload.name == "program_status_changed" and .payload.block_id != env.REX_BLOCK) | {block: .payload.block_id, state: .payload.payload.record.state} | select(.state | IN("done", "blocked", "error"))'
 ```
 
-It reports only changes: check each child at start, and without it, whenever the user talks to you. An `idle` child's agent may have exited; confirm it runs before sending.
+It reports only changes; check each child at start. Watch each PR until `state` is `MERGED` or `CLOSED`: a change watch misses an earlier merge. On each notice, read the report (`rex capture -b <block>`), act, and rewatch.
 
-Track each PR: `gh pr view <branch> --json state,mergeStateStatus,statusCheckRollup,reviewDecision`. On merge, `git wt -d <branch>` and `rex block close <block>`. On later failures, conflicts, or reviews, follow up with the child.
+`done` means the agent is free, not the work done: confirm anything left running, such as `gh pr checks --watch`.
+
+Decide beforehand what each merge triggers: a stack rebase, `git wt -d <branch>` and `rex block close <block>`, readying the next PR. Follow up on later failures, conflicts, or reviews.
 
 ## Follow-ups
 
-Send only to an `idle` or `done` child: Enter on a `blocked` one approves its permission prompt.
-
-To change direction, wait for `done`, then send the new instructions once; never retract them.
+Send only to an `idle` or `done` child whose agent still runs; Enter on a `blocked` one approves its prompt. For a `working` child, even to change direction, loop in the background and `rex send` once on `done`; never retract it.
