@@ -10,7 +10,7 @@ gh skill install h3y6e/agent-skills
 
 ## 依存
 
-- [h3y6e/cxg](https://github.com/h3y6e/cxg) — `git-shipping` がコミットメッセージの整形と lint に使う
+- [h3y6e/cxg](https://github.com/h3y6e/cxg) — `shipping` がコミットメッセージの整形と lint に使う
 - [h3y6e/anna](https://github.com/h3y6e/anna) — `tracking-tasks` がタスクノートの検索に使う
 
 ## 関連
