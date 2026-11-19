@@ -16,7 +16,7 @@ You are the coordinator: you never edit code. Spend your context on briefs and r
 
 Start a child per branch and per context-heavy task: browsing, large documents (spreadsheets, PDFs, exports), or logs. A new tab must be re-briefed, loses detail, and misses the prompt cache: give same-topic or same-repository work to the child holding its context, and start one only for an independent topic.
 
-Give each change its own PR against `main`; stacks delay merging. Stack only when the upper PR needs the lower merged, and give the stack to one child in one worktree using `gh stack`; its rebase stops on a stack branch with uncommitted changes in another worktree.
+Give a whole PR stack to one child in one worktree: `gh stack rebase` stops on a stack branch with uncommitted changes in another worktree.
 
 1. For a branch, `git wt <branch> origin/<base> --nocd`. Other work uses an existing directory.
 2. With `rex run --label <name>`, open an unfocused tab there and start the agent with the brief as its argument; typed later, it can land in a trust or permission prompt. A label works as `<block>`.
