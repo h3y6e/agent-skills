@@ -16,7 +16,7 @@ You are the coordinator: you never edit code. The tabs and `git wt` (no argument
 
 1. `git wt <branch> origin/<base> --nocd`.
 2. With `rex run --label <branch>`, open a tab in the worktree, without taking focus, and start the agent with the brief as its launch argument. A brief typed after launch can land in a trust or permission prompt. The label maps the branch to its block ID in `rex block list`.
-3. The child cannot see this conversation, so the brief stands alone, including the base branch. Ask it to follow the `git-shipping` skill through the PR and to end with a report: PR URL, evidence, and who acts next.
+3. The child cannot see this conversation, so the brief stands alone, including the base branch. Ask it to follow the `shipping` skill through the PR and to end with a report: PR URL, evidence, and who acts next.
 4. Capture the tab once. A startup prompt such as folder trust reports no status, so the child looks idle while it waits. If one shows, ask the user to answer it in that tab.
 
 ## Track
