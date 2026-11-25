@@ -55,8 +55,8 @@ After opening a PR, read [the review loop](references/review-loop.md) and run it
 
 ## Monitor
 
-An open PR is not done. After each push, wait on its required checks with `gh pr checks <branch> --watch` and fix failures before reporting; checks you chose to run locally do not replace them. Settle new reviews with `receiving-code-review`. Report its CI, review, and merge state from `gh pr view --json state,mergeStateStatus,statusCheckRollup,reviewDecision`.
+An open PR is not done. Settle new reviews with `receiving-code-review`. Report its CI, review, and merge state from `gh pr view --json state,mergeStateStatus,statusCheckRollup,reviewDecision`.
 
 ## Merge
 
-When strict required checks leave the PR `BEHIND`, rebase it onto the default branch before merging, or use the merge queue if the repository has one. After a behavior-changing PR deploys to staging, verify the behavior there and comment the result on the PR.
+Merge only once required checks pass; checks you chose to run locally do not replace them. When strict required checks leave the PR `BEHIND`, rebase it onto the default branch before merging, or use the merge queue if the repository has one. After a behavior-changing PR deploys to staging, verify the behavior there and comment the result on the PR.
