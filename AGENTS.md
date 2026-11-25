@@ -2,3 +2,4 @@
 - Do not edit skill `version` metadata manually; release automation updates those values.
 - Files added under `.vendor/skills` must remain exactly as generated; do not modify.
 - Vendor only skills whose source explicitly grants a license.
+- Before changing, adding, or deleting a rule in `skills/writing-skills/SKILL.md`, read `skills/writing-skills/references/sources.md` and keep it in sync.
