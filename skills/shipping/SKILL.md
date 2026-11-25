@@ -1,7 +1,7 @@
 ---
 name: shipping
 description: Ships code changes from branch to merge — branch, commit, push, PR, checks, merge. Use whenever asked to `commit`, `push`, `pr`/`ship`/`open a PR`/`merge this`, or manage branches, and whenever about to make code changes in a git repo, to confirm the branch is right before implementation starts — even if the user only described the change and never said the word "git".
-compatibility: Requires git, gh, cxg, and the cxg-commit, no-comments, code-review, security-review, and receiving-code-review skills.
+compatibility: Requires git, gh, cxg, and the review, cxg-commit, no-comments, and receiving-code-review skills.
 license: MIT
 metadata:
   author: h3y6e
