@@ -1,6 +1,6 @@
 # Sources
 
-Where each rule in `SKILL.md` comes from. Before changing or deleting a rule, reread its source here; before adding one, add its source. Quotes are verbatim apart from ASCII quote marks; retrieved 2026-10-16.
+Where each rule in `SKILL.md` comes from. Quotes are verbatim apart from ASCII quote marks; retrieved 2026-11-26.
 
 ## Sources
 
@@ -18,9 +18,9 @@ Where each rule in `SKILL.md` comes from. Before changing or deleting a rule, re
 | regression | paper | <https://arxiv.org/abs/2607.22520> |
 | reducer | paper | <https://arxiv.org/abs/2603.29919> |
 | must-vs-why | measured blog | <https://dev.classmethod.jp/articles/claude-skill-must-vs-reason/> |
-| pstack-eval | practitioner | `.vendor/skills/poteto-mode/playbooks/eval.md` |
-| pstack-guide | practitioner | <https://github.com/cursor/plugins/blob/main/pstack/docs/guide/09-make-it-yours.md> |
-| obra | practitioner | `.vendor/skills/writing-skills/SKILL.md` |
+| pstack-eval | practitioner | <https://github.com/cursor/plugins/blob/41e400932eca14f289e7db717a70455256b6d388/pstack/skills/poteto-mode/playbooks/eval.md> |
+| pstack-guide | practitioner | <https://github.com/cursor/plugins/blob/41e400932eca14f289e7db717a70455256b6d388/pstack/docs/guide/09-make-it-yours.md> |
+| obra | practitioner | <https://github.com/obra/superpowers/blob/22f0b463e7a5e579904dd6211a520321035526f7/skills/writing-skills/SKILL.md> |
 
 ## Rules
 
@@ -31,7 +31,7 @@ Where each rule in `SKILL.md` comes from. Before changing or deleting a rule, re
 | Compact beats comprehensive | skillsbench | "compact and standard-length Skills (+19.0 and +21.5 pp) outperform detailed (+14.5 pp) and comprehensive documentation (+0.7 pp)" |
 | Compact beats comprehensive | reducer | "Only 38.5% of skill body content is actionable core rules." |
 | Three regression modes | regression | "(i) skill-description osmosis … (ii) grounding displacement … (iii) verification displacement" |
-| No workflow summary in the description | obra | "Do NOT summarize the skill's process or workflow in the description." |
+| No workflow summary in the description | obra | "It never summarizes the skill's workflow, because an agent that reads a workflow summary follows it instead of reading the skill." |
 | Report gains and regressions separately | regression | "skill evaluations should report the paired gain and regression counts, not only the net pass rate" |
 | Hooks for rules that must hold every time | cc-skills | "Claude skipped a rule that must hold every time: move the rule into a hook" |
 | Key use case first in the description | cc-skills | "Put the key use case first" (listing truncates at 1,536 characters) |
@@ -56,7 +56,6 @@ Where each rule in `SKILL.md` comes from. Before changing or deleting a rule, re
 
 | Proposal | Reason |
 |---|---|
-| "Tell it to do the thing and skip the reason" (`.vendor/skills/poteto-mode/playbooks/authoring-a-skill.md`) | Unmeasured; must-vs-why and as-best measure or recommend the opposite. |
+| "Tell it to do the thing and skip the reason" ([pstack authoring-a-skill](https://github.com/cursor/plugins/blob/41e400932eca14f289e7db717a70455256b6d388/pstack/skills/poteto-mode/playbooks/authoring-a-skill.md)) | Unmeasured; must-vs-why and as-best measure or recommend the opposite. |
 | Validator link check | rumdl MD057 already reports missing relative link targets. |
-| rumdl MD061 forbidding `.vendor` in `skills/` | Misses code spans; no leak in `skills/` history. |
-| Validator body word limit | Not chosen; `creating-issues` and `designing-cli` exceed 500 words and would need splitting first. |
+| Validator body word limit | The 500-word aim yields to required instructions; a hard limit would reject skills that need more. |
