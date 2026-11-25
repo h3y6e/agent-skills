@@ -32,8 +32,6 @@ Give each change its own PR against the default branch; stacks delay merging. St
 
 ## Commit
 
-Do not change an agreed API or design just to pass tests; if it must change, ask first with the reason.
-
 Before committing, run the `no-comments` skill on the touched files.
 
 Use the `cxg-commit` skill for the commit message format, and pipe the message through `cxg lint` before committing.
