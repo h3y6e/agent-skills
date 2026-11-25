@@ -28,7 +28,7 @@ Give a PR stack to one child and worktree; `gh stack rebase` stops on another wo
 
 ## Track
 
-A child's state: `rex block call -b <block> program_status`. Watch in the background with a per-line streaming tool (e.g. Claude Code's Monitor): `sh scripts/watch-children.sh` for stopping children, and `sh scripts/watch-pr.sh <url>` per PR whose merge gates your next step, in any repository or merged by anyone, added on opening; it prints the PR's state on attach and on each event, and exits once `MERGED` or `CLOSED`. One-shot watches need restarts; one miss hides a stopped child.
+A child's state: `rex block call -b <block> program_status`. Watch in the background with a per-line streaming tool (e.g. Claude Code's Monitor): `sh scripts/watch-children.sh` for stopping children, and `sh scripts/watch-pr.sh <url>` per PR whose merge gates your next step, in any repository or merged by anyone, added on opening; it prints the PR's state on attach and on each event; stop it once it prints `MERGED` or `CLOSED`, and restart it if it ends first. One-shot watches need restarts; one miss hides a stopped child.
 
 `watch-children.sh` reports only changes; check children at start. On each notice, read `rex capture -b <label>` and act.
 
