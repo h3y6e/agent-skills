@@ -1,7 +1,7 @@
 ---
 name: orchestrating
 description: Coordinates parallel coding work from a bare repository by running one agent session per worktree in Rex and tracking them. Use when started in a bare repository, or asked about work already handed off from one.
-compatibility: Requires git, git-wt, jq, and rex.
+compatibility: Requires git, git-wt, gh, jq, and rex.
 license: MIT
 metadata:
   author: h3y6e
@@ -28,11 +28,11 @@ Give a PR stack to one child and worktree; `gh stack rebase` stops on another wo
 
 ## Track
 
-A child's state: `rex block call -b <block> program_status`. Watch in the background with a per-line streaming tool (e.g. Claude Code's Monitor): `sh scripts/watch-children.sh` for stopping children, and one watch per PR whose merge gates your next step, in any repository or merged by anyone, added on opening. One-shot watches need restarts; one miss hides a stopped child.
+A child's state: `rex block call -b <block> program_status`. Watch in the background with a per-line streaming tool (e.g. Claude Code's Monitor): `sh scripts/watch-children.sh` for stopping children, and `sh scripts/watch-pr.sh <url>` per PR whose merge gates your next step, in any repository or merged by anyone, added on opening; it prints the PR's state on attach and on each event, and exits once `MERGED` or `CLOSED`. One-shot watches need restarts; one miss hides a stopped child.
 
-It reports only changes; check children at start. Watch a PR until `state` is `MERGED` or `CLOSED`; a change watch misses an earlier merge. On each notice, read `rex capture -b <label>` and act.
+`watch-children.sh` reports only changes; check children at start. On each notice, read `rex capture -b <label>` and act.
 
-`done` means the agent is free, not finished; confirm what still runs (`gh pr checks --watch`). Check its commits' `decision` and `rejected` lines and PR diff against the agreed design and API, raising departures with the user.
+`done` means the agent is free, not finished: its PR is not done until required checks pass (`gh pr checks --required`), which local checks do not replace. Check its commits' `decision` and `rejected` lines and PR diff against the agreed design and API, raising departures with the user.
 
 Decide beforehand what each merge triggers: stack rebase, `git wt -d <branch>` and `rex window close <name>`, readying the next PR. Follow up on later failures, conflicts, or reviews. User-facing progress lists show only open items and whose turn each is.
 
