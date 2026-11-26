@@ -19,17 +19,13 @@ listen() {
   while :; do
     gh event listen --resource "$2" --follow --event com.github.pull_request.state.changed.v1,com.github.pull_request.review.submitted.v1,com.github.pull_request.merge_conflict.v1 >"$3" 2>&1 &
     pid=$!
-    status "$1" "$2" || {
-      kill "$pid"
-      return
-    }
     while IFS= read -r line; do
       case $line in
-        '{'*) status "$1" "$2" || {
+        '{'* | "Changes made "*"; read the current state now.") status "$1" "$2" || {
           kill "$pid"
           return
         } ;;
-        "Listening for events." | "Listening for events on a new subscription." | "Changes made "*"; read the current state now." | "Event stream "*", reconnecting"* | "Subscription "*", creating it again." | hint:* | " "*) ;;
+        "Listening for events." | "Listening for events on a new subscription." | "Event stream "*", reconnecting"* | "Subscription "*", creating it again." | hint:* | " "*) ;;
         *) echo "$1 $line" ;;
       esac
     done <"$3"
