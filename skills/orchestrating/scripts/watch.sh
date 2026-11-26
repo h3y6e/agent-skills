@@ -14,7 +14,7 @@ status() {
   case $pr in *" MERGED "* | *" CLOSED "*) return 1 ;; esac
 }
 
-listen() {
+listen() (
   trap 'rm "$3"' EXIT
   while :; do
     gh event listen --resource "$2" --follow --event com.github.pull_request.state.changed.v1,com.github.pull_request.review.submitted.v1,com.github.pull_request.merge_conflict.v1 >"$3" 2>&1 &
@@ -31,7 +31,7 @@ listen() {
     done <"$3"
     wait "$pid" || return 0
   done
-}
+)
 
 current() { rex block call -b "$1" program_status | jq -r '.records[] | select(.id == null) | .state'; }
 
