@@ -29,7 +29,7 @@ listen() {
           kill "$pid"
           return
         } ;;
-        "Listening for events." | "Changes made before this point"* | hint:* | " "*) ;;
+        "Listening for events." | "Listening for events on a new subscription." | "Changes made "*"; read the current state now." | "Event stream "*", reconnecting"* | "Subscription "*", creating it again." | hint:* | " "*) ;;
         *) echo "$1 $line" ;;
       esac
     done <"$3"
