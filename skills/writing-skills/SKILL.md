@@ -5,7 +5,7 @@ compatibility: Requires Node.js for the bundled validator.
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.11.8
+  version: 2026.11.9
 ---
 
 # Writing Skills
