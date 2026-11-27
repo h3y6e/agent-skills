@@ -5,7 +5,7 @@ compatibility: Requires git, gh, cxg, and the review, cxg-commit, no-comments, a
 license: MIT
 metadata:
   author: h3y6e
-  version: 2026.11.9
+  version: 2026.11.10
 ---
 
 # Shipping
