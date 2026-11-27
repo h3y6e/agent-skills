@@ -34,4 +34,4 @@ After a merge: stack rebase, `git wt -d <branch>`, `rex window close <branch>`, 
 
 ## Instructions
 
-A question or suggestion from the user is discussion, not a decision: send a worker nothing until it is settled. Batch instructions into one message and send it with `sh scripts/send.sh <branch> < text`; it interrupts a `working` worker first. To add to a running brief, wait for `done` before sending; send while it works only to correct it. Start a fresh worker with the original brief, every later instruction, and the prior report and branch only when its context is beyond repair.
+A question or suggestion from the user is discussion, not a decision: send a worker nothing until it is settled. Batch instructions into one message and send it with `sh scripts/send.sh <branch> < text`; it interrupts a `working` worker first and sends nothing if the worker is still `working` 10 seconds later. To add to a running brief, wait for `done` before sending; send while it works only to correct it. Start a fresh worker with the original brief, every later instruction, and the prior report and branch only when its context is beyond repair.
