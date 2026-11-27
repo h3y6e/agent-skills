@@ -1,6 +1,6 @@
 ---
 name: writing-japanese
-description: Norms for Japanese technical prose — paragraph logic, argument rigor, reader load, restrained rhetoric, and non-LLM phrasing. Use when writing, editing, or reviewing a Japanese book chapter, article, draft, or explanation.
+description: Norms for Japanese prose — paragraph logic, argument rigor, reader load, restrained rhetoric, and non-LLM phrasing. Use when writing or editing Japanese text that will be saved or published, even a single line or a draft another skill produces (docs, articles, explanations, PR/issue bodies, commit messages, description fields), or when reviewing Japanese prose. Not for chat replies to the user.
 metadata:
   version: 2026.11.10
   refs: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d, https://gist.github.com/k16shikano/eb2929f13ed19c97188393d297be8432
@@ -8,7 +8,8 @@ metadata:
 
 # 日本語技術文書の文章規範
 
-日本語で技術的な原稿（書籍の章、記事、解説文）を書く・推敲するときは、以下の規範に従う。
+保存・公開する日本語の文章（ドキュメント、記事、解説、PR・issue の本文、commit message、description 欄など）を書く・推敲するとき、また日本語の文章をレビューするときは、短いものでも以下の規範に従う。ユーザーへのチャット返信は対象外とする。
+段落構成のように長い文章を前提とする規範は、短い文章には該当する範囲でだけ適用する。
 読者に最後まで読み進めさせたい「読み物」を書く・推敲するとき、または「密度はあるが平坦でおもしろくない」文章を診断・修正するときは、[認知リズムを生むための日本語ライティング規範](references/pacing-and-tension.md) も読む。
 
 ## 段落と論証の構成
@@ -71,6 +72,8 @@ metadata:
 - 対象を指す語は具体的に選ぶ。「AI」「ツール」のような広い語でぼかさない。
 - 章や節で定式化・術語（K、契約、不変条件など）を導入したら、以後はその語で通す。「文脈」「ツール」「AI」のような曖昧語に後退しない（定式化する前の導入語として「文脈」などを使うのはよい）。
 - 術語・訳語は、その分野で慣用されている語を選ぶ（プッシュ通知は「配送」ではなく「配信」、など）。意味の近い漢語を一般語の感覚で充てない。
+- 識別子と定着した術語を除き、英語を不自然に混ぜない（「変更を apply する」ではなく「変更を適用する」）。
+- description 欄やそれに類する短い説明文では、文末に「。」を付けない。
 - 人物そのものに言及するときは原綴りで書く（Lehman、Bainbridge）。ただし、歴史上の人物や、人名を冠した概念を定着名で紹介するときは、日本語で通用しているカタカナの通称を使う。
 - 術語の響きを持つ語を、術語でない場面に流用しない（システムから人間までの連なりを「経路」と呼ぶ、など）。「届くまでの流れ」「あいだに何があるか」のように普通の言い方で書く。
 - イ形容詞の終止に「です」を続けた文（「難しいです」「多いです」）を書かない。これは文体の規則ではなく、文の流れの破綻の兆候である。イ形容詞を裸で言い切る必要が生じるのは、その文が前後から孤立しているからであり、流れている文章なら「〜は難しく、…」と文が続くか、「〜でしょう」「〜である」で受けられる。出現したら文末だけ取り繕わず、前後の流れごと書き直す。ナ形容詞の「〜です」（「重要です」）は対象外。
