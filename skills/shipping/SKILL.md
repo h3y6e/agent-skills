@@ -36,7 +36,7 @@ Before committing, run the `no-comments` skill on the touched files.
 
 Use the `cxg-commit` skill for the commit message format, and pipe the message through `cxg lint` before committing.
 
-On a PR branch, keep history as meaningful units, not a log of attempts. Rewrite it with `git history` (see `git history -h`; `reword` opens `GIT_EDITOR`), and push with `--force-with-lease`.
+On a PR branch, keep history as meaningful units, not a log of attempts: fold a later fix into the commit it corrects and add a new commit only for a new unit.
 
 ## PR
 
