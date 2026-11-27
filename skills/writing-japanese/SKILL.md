@@ -2,7 +2,7 @@
 name: writing-japanese
 description: Norms for Japanese prose — paragraph logic, argument rigor, reader load, restrained rhetoric, and non-LLM phrasing. Use when writing or editing Japanese text that will be saved or published, even a single line or a draft another skill produces (docs, articles, explanations, PR/issue bodies, commit messages, description fields), or when reviewing Japanese prose. Not for chat replies to the user.
 metadata:
-  version: 2026.11.10
+  version: 2026.11.11
   refs: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d, https://gist.github.com/k16shikano/eb2929f13ed19c97188393d297be8432, https://github.com/nanaism/yomiyasu, https://github.com/53able/no-ai-slop-ja, https://github.com/Forest-Project-Lab/jp-writing-skills, https://github.com/textlint-ja/textlint-rule-preset-ai-writing
 ---
 
